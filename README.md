@@ -8,5 +8,6 @@
 - [3월_insta_ranker_prompt](3월_insta_ranker_prompt/) — 검색 필터 조합으로 크리에이터 랭킹 리스트 타이틀·설명글을 자동 생성하는 DIFY 프롬프트
 - [4월_insta_label_prompt](4월_insta_label_prompt/) — 인스타 계정을 6개 Layer로 점수화하고 오디언스까지 추정하는 라벨링 프롬프트
 - [4월_youtube_comment_prompt](4월_youtube_comment_prompt/) — 유튜브 댓글로 시청자 성별·연령 분석을 검증하고 이상치를 재분배하는 프롬프트
+- [5월_insta_trend_prompt](5월_insta_trend_prompt/) — 트렌드 클러스터를 추출해 광고주 인사이트·트렌드 스토리를 생성하는 Dify 워크플로우 (자기검증 + Python 사실검증)
 
 _(작업 정리 진행 중)_

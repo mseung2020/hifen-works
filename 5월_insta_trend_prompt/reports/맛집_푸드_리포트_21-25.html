@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>맛집·푸드 트렌드 리포트 21–25</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #f4f4f4;
+    color: #1a1a1a;
+    line-height: 1.65;
+  }
+
+  /* ── 최상단 헤더 ── */
+  .site-header {
+    background: #fff;
+    border-bottom: 2px solid #ebebeb;
+    padding: 18px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .site-header .brand { font-size: 13px; color: #aaa; font-weight: 500; }
+  .site-header h1    { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+
+  /* ── 키워드 섹션 ── */
+  .keyword-section {
+    max-width: 1560px;
+    margin: 36px auto;
+    padding: 0 24px;
+  }
+
+  /* 키워드 넘버 배지 */
+  .keyword-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .keyword-badge .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #FF6B2B;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .keyword-badge .kw-title { font-size: 20px; font-weight: 800; }
+  .keyword-badge .phase-tag {
+    padding: 3px 11px;
+    border-radius: 20px;
+    background: #FFF0E8;
+    color: #FF6B2B;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  /* ── 3컬럼 레이아웃 ── */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* ── 메인 패널 공통 ── */
+  .panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 26px 24px 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #111;
+  }
+  .panel-title .accent { color: #FF6B2B; }
+
+  /* ── 광고주 인사이트 블록 ── */
+  .insight-block {
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .insight-block:last-child { margin-bottom: 0; }
+
+  .insight-block.yellow { background: #FFFBEB; }
+  .insight-block.blue   { background: #EFF6FF; }
+  .insight-block.purple { background: #F5F3FF; }
+
+  .insight-block-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .insight-block.yellow .insight-block-label { color: #D97706; }
+  .insight-block.blue   .insight-block-label { color: #2563EB; }
+  .insight-block.purple .insight-block-label { color: #7C3AED; }
+
+  .insight-block-body {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.72;
+  }
+
+  /* 캠페인 아이템 */
+  .campaign-item {
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px solid #EDE9FE;
+  }
+  .campaign-item:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .campaign-item-header {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #5B21B6;
+    margin-bottom: 4px;
+  }
+  .campaign-item-header::before { content: '• '; color: #7C3AED; }
+  .campaign-item-body {
+    font-size: 12.5px;
+    color: #4B5563;
+    line-height: 1.65;
+  }
+
+  /* ── 트렌드 스토리 타임라인 ── */
+  .timeline {
+    position: relative;
+    padding-left: 46px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 30px;
+    bottom: 30px;
+    width: 2px;
+    background: #FFD9C4;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 26px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+
+  .timeline-icon {
+    position: absolute;
+    left: -46px;
+    top: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #FF6B2B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .timeline-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #FF6B2B;
+    margin-bottom: 3px;
+    letter-spacing: 0.02em;
+  }
+  .timeline-sub {
+    font-size: 11.5px;
+    color: #9CA3AF;
+    margin-bottom: 6px;
+  }
+  .timeline-body {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.72;
+    background: #FFF8F5;
+    border-radius: 10px;
+    padding: 11px 13px;
+  }
+
+  /* ── 개발자 전용 패널 ── */
+  .dev-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 20px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1.5px dashed #d1d5db;
+  }
+
+  .dev-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .dev-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #F3F4F6;
+    color: #6B7280;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid #D1D5DB;
+  }
+  .dev-panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B7280;
+  }
+
+  .dev-section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9CA3AF;
+    margin: 14px 0 6px;
+  }
+  .dev-section-label:first-of-type { margin-top: 0; }
+
+  .dev-panel ul {
+    list-style: none;
+    padding: 0;
+  }
+  .dev-panel li {
+    font-size: 11.5px;
+    color: #6B7280;
+    line-height: 1.65;
+    padding: 6px 0 6px 14px;
+    position: relative;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .dev-panel li:last-child { border-bottom: none; }
+  .dev-panel li::before {
+    content: '※';
+    position: absolute;
+    left: 0;
+    color: #9CA3AF;
+    font-size: 10px;
+    top: 7px;
+  }
+
+  /* 구분선 */
+  .section-divider {
+    border: none;
+    border-top: 2px dashed #ddd;
+    margin: 44px 0 0;
+  }
+
+  @media (max-width: 1100px) {
+    .columns { grid-template-columns: 1fr 1fr; }
+    .dev-panel { grid-column: 1 / -1; }
+  }
+  @media (max-width: 700px) {
+    .columns { grid-template-columns: 1fr; }
+    .site-header { padding: 14px 18px; }
+    .keyword-section { padding: 0 14px; margin: 24px auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="brand">맛집·푸드</span>
+  <h1>인스타그램 트렌드 리포트 21–25</h1>
+</header>
+
+
+<!-- ══════════════════════════════════════════════
+     21. 컵마라탕
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-21">
+  <div class="keyword-badge">
+    <span class="num">21</span>
+    <span class="kw-title">컵마라탕</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">연남동 샤오마라를 기점으로 '500원 마라꼬치+컵마라탕' 조합이 길거리에서 들고 다니며 먹는 새로운 소비 포맷으로 각인되면서, 기존 마라탕의 최소 주문·칼로리 부담을 해소하는 간편 마라 카테고리가 형성됐어요.
+이 포맷은 '헬시플레저'·'혼밥'·'가성비' 해시태그와 결합해 지역 맛집 계정 협찬 콘텐츠를 통해 수원·대구·부산·천안·경주 등 거점으로 복제 확산되며 성숙 단계에 접어들고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 초중반 MZ 길거리 간식 소비층이에요.
+인증샷보다 '마라꼬치다발', '컵 들고 광안리 한 바퀴' 같은 행동 서사를 캡션에 담아 장소·음식·경험을 한 컷에 묶는 게시 방식이 두드러져요.
+지역 밀착 중형 계정은 협찬 게시물 비중과 DM 기반 전환 신호가 더 뚜렷한 반면, 대형 계정은 댓글 이벤트로 저장·태그 같은 확산·인지 지표 유도에 효과적인 역할을 하는 패턴이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">지역 신규 거점 선점 타이밍</div>
+          <div class="campaign-item-body">지역 신규 오픈 타이밍에 지역 밀착 계정 협찬 집행 및 '최초 상륙' 서사·위치 저장 CTA 캡션 필수화로 초기 방문 전환 경로 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">행동 서사형 UGC 포맷 표준화</div>
+          <div class="campaign-item-body">데이터에서 반복 관찰된 행동 화법('컵 들고 ○○ 한 바퀴', '마라꼬치다발 선물')을 협찬 캡션 가이드로 표준화하고 릴스 숏폼 승자 콘텐츠의 자사 채널 재공유를 통한 UGC 루프 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">시즌·제품 연동 프로모션</div>
+          <div class="campaign-item-body">시즌(겨울·봄)별 수요 차이에 따른 파생 SKU(컵마라떡볶이·마라반) 출시 타이밍 선점 및 거점 프로모션 연동을 통한 초기 재구매 유도.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 6~7월 · 소형 숏폼 채널</div>
+          <div class="timeline-body">2025년 6~7월 소형 숏폼 채널들이 초등학교 앞 가성비 컵마라탕 매장을 집중 소개하며 카테고리 관심 점화.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">유튜브 숏폼 먹방 포맷으로 관심이 시작되어 인스타그램 릴스의 매장 방문 인증·협찬 리뷰 포맷으로 전환되며 초기 확산 형성됨.
+2025년 10월 이후 샤오마라·셰셰마라·마라인더컵 등 프랜차이즈와 지역 로컬 협업 게시물이 전국 거점(수원·부산·대구·울산·경주)으로 확산 촉발됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">파생 메뉴(마라꼬치다발·컵마라떡볶이) 등장 및 복수 프랜차이즈의 동시 다점 출점으로 카테고리 성숙 진입됨.
+2026년 3~4월까지 협찬·지역 게시물 유입이 지속되나 포맷·메시지 유사성으로 차별화 신호 약화되어 정점 후 안정 상태 유지됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 dm_send_count가 수집되지 않아 DM 전환 신호 해석은 DM 데이터가 확보된 게시물에 한정해 추론했어요.</li>
+        <li>편의점 컵마라탕(오뚜기·팔도·농심 등 RTD 제품) 관련한 인스타그램 내 소비자 반응은 이번 데이터 셋에서 직접적으로 관찰되지 않았어요.</li>
+        <li>유튜브 콘텐츠는 조회수 편차가 크고 채널 구독자 규모 대비 고조회 영상이 혼재해 채널 규모와 도달 효율 상관관계는 단순 비교하기 어려운 구조이에요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>인스타그램 게시물 다수에서 views·likes 값이 0 또는 -1로 수집되어 정확한 도달 규모 비교에 한계가 있음.</li>
+        <li>점화 시점으로 판단한 2025년 6~7월 유튜브 숏폼 게시물은 구독자 수가 소규모이나 조회수가 높아 알고리즘 추천 경유 확산 가능성이 있으며, 실제 최초 점화 계기는 오프라인 매장 오픈 시점과 연동되어 있을 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     22. 수제 막걸리와 전통주
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-22">
+  <div class="keyword-badge">
+    <span class="num">22</span>
+    <span class="kw-title">수제 막걸리와 전통주</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">박재범의 '원소주' 출시가 MZ세대에게 전통주를 '힙한 술'로 각인시킨 점화 계기가 됐고, 온라인 판매 허용 이후 접근성이 열리면서 감각적인 패키지·지역 농산물 스토리를 앞세운 수제 막걸리가 홈술·혼술 문화와 결합해 일상 소비 품목으로 자리 잡았어요.
+트렌드 성숙 단계에 접어든 지금은 '술 빚기 클래스·북토크 시음회·양조장 감성 공간' 같은 체험형 포맷이 콘텐츠 주류가 되면서, 단순 음용을 넘어 경험과 서사를 공유하는 방식으로 확산 구조가 진화하고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~30대 가치 소비형 여성 음주 인구층.
+인스타그램에서 '무첨가·국내산 쌀·누룩' 원재료 서사를 캡션에 풀고 '#홈파티메뉴 #전통주추천 #수제막걸리' 해시태그를 조합하거나, '(공유·저장)' CTA를 본문 앞에 배치해 저장 유도형 게시물을 제작하는 패턴이 두드러져요.
+팔로워 규모가 소형~중형에 걸쳐 분산돼 있고, 협찬 표기 게시물은 식당 체험권 형태 PPL이 주를 이루며 제품 단독 협찬은 대형 계정에 집중되는 구조예요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">원재료 서사 협찬 표준화</div>
+          <div class="campaign-item-body">무첨가·국내산 쌀·저도수 세 키워드를 협찬 캡션 필수 조건으로 계약하고 도수별 라인업과 안주 페어링 조합을 시리즈 포맷으로 제작해 제품 차별점을 반복 각인하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">체험형 이벤트 연동</div>
+          <div class="campaign-item-body">술 빚기 클래스·북토크 시음회 등 체험 포맷을 후원하고 참가자 UGC에 브랜드 해시태그와 저장 CTA를 표준 조건으로 설정해 팬층 기반 확산 루프 구축하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">구매 경로 단일화 및 구독 전환</div>
+          <div class="campaign-item-body">카카오톡 선물하기 입점 또는 자사몰 구독 패키지를 세팅하고 협찬 게시물 캡션 링크를 해당 구매 경로로 단일 고정해 전환 이탈 최소화하기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 6~8월 · 다수 한식주점·양조장 계정</div>
+          <div class="timeline-body">문래·대전 등 지역 감성 한식주점과 양조장 계정들이 수제 막걸리 메뉴를 중심으로 게시물을 집중 업로드하며 카테고리 관심이 집중된 패턴.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">초기 지역 맛집 소개 포맷에서 '로제 막걸리 빚기 클래스'·'북토크 시음회' 등 체험형 이벤트 모집 포맷으로 전환되며 참여 유도 콘텐츠로 확산 경로가 다변화됨.
+2026년 3~4월에는 협찬 태그를 단 한식당 방문 후기와 프리미엄 수제 막걸리 브랜드 제공 리뷰가 집중 게시되며 상업적 전환 신호가 뚜렷하게 나타남.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">협찬·제공 표기 콘텐츠가 다수 진입하고 체험 클래스·북토크 시음회 등 파생 포맷이 병존하며 카테고리가 성숙 국면에 진입한 상태임.
+단순 맛집 소개보다 브랜드 스토리·페어링·DIY 양조 등 콘텐츠 분화가 가속되고 있어 차별화 없는 신규 진입의 효율은 낮아진 구간으로 판단됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>수집된 인스타그램 게시물 대부분의 dm_send_count가 null로 확인되어 DM 기반 전환 신호는 판단 불가.</li>
+        <li>유튜브 데이터가 없어 영상 플랫폼 확산 패턴은 trend_meta 정성 정보로만 보완됨.</li>
+        <li>likes 값이 -1로 기록된 게시물이 1건 포함되어 있어 해당 수치는 분석에서 제외됨.</li>
+        <li>게시물 표본이 12건으로 제한적이므로 협찬 밀도·계정 규모 분포 판단은 추세 참고 수준으로 활용 권장.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>content.youtube 데이터가 없어 유튜브 확산 경로는 서술에서 제외됨.</li>
+        <li>일부 게시물의 views·dm_send_count가 0 또는 null로 집계되어 정량적 임팩트 비교에 한계가 있음.</li>
+        <li>likes 값이 -1로 기록된 게시물(DXFul-fE6-1)이 포함되어 있어 해당 수치의 신뢰도에 유보가 필요함.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     23. 가정의 달 디저트 선물
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-23">
+  <div class="keyword-badge">
+    <span class="num">23</span>
+    <span class="kw-title">가정의 달 디저트 선물</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">어린이날·어버이날·스승의 날이 집중된 5월 시즌성을 배경으로, 파리바게뜨·스타벅스·호텔 베이커리 등 주요 브랜드가 4월 중순부터 카네이션 테마 한정판 디저트를 일제히 선공개하고 사전 예약을 개시하며 '예약 전쟁' 심리를 형성했어요.
+고물가 속에서도 '가심비'와 '스몰 럭셔리'를 추구하는 소비 심리가 맞물려, 단순 간식이 아닌 비주얼·스토리·건강까지 담은 디저트 선물이 소셜 미디어 인증 욕구와 결합해 빠르게 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 후반~40대 선물 기획자, 특히 감사 대상이 명확한 여성 소비자층.
+카네이션 앙금쿠키·화과자·한식 다과 등 비주얼 중심 제품에 '#저장' CTA를 붙이고 카카오채널 주문 유도 문구를 캡션에 고정하는 패턴이 두드러져요.
+팔로워 규모에 상관없이 협찬 게시물 비중이 매우 높고, 소규모 지역 공방 계정까지 '#가정의달선물 #어버이날선물 #스승의날선물' 3종 해시태그를 일관되게 조합해 시즌 검색 유입을 집중 공략하는 구조가 관찰돼요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">사전예약 긴박감 전개</div>
+          <div class="campaign-item-body">사전예약·한정수량 스토리를 캡션 핵심으로 배치하고 카카오채널·네이버 예약 링크를 고정해 잔여 구매 의향을 즉시 전환으로 연결하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">건강·재료 포지셔닝</div>
+          <div class="campaign-item-body">저당 앙금·무첨가·국산 찹쌀 등 건강 소구 문구를 협찬 가이드에 포함해 '예쁘지만 달기만 한' 디저트와 차별화하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">온·오프 연계 집행 설계</div>
+          <div class="campaign-item-body">백화점·팝업 출점(롯데·신세계 등) 시점에 맞춰 인스타 협찬을 동기화하고 '현장 픽업 가능' 안내로 온라인 예약을 오프라인 방문으로 연결하기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026년 3~4월 · 다수 계정</div>
+          <div class="timeline-body">특정 계정 점화보다 5월 시즌성(베이커리·카페·호텔 한정판 출시 및 사전예약) 계기 중심 관심 집중됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">소형 수제 공방의 사전예약 게시물이 협업·리뷰 포맷으로 전환되며 인플루언서 기반 확산 발생됨.
+4월 말~5월 초에는 팝업·백화점 입점 소식과 결합된 로컬 추천 포맷으로 확산 경로 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">협찬 리뷰·팝업 안내·DM 전환 유도 게시물이 동시다발적으로 증가하며 정점 진입 확인됨.
+파생 SKU 경쟁 진입과 조기 마감 신호가 관찰되며 카테고리 포화 직전 위치함.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>수집된 게시물 대부분의 dm_send_count가 null로, DM 기반 구매 전환 신호는 일부 계정에서만 확인되어 전체 대표성에 한계가 있어요.</li>
+        <li>YouTube 데이터가 없어 영상 포맷의 확산 패턴은 분석에서 제외했어요.</li>
+        <li>publish_date가 2025년 8~12월로 표기된 게시물이 일부 포함되어 있어 시즌 데이터 정합성 확인이 필요해요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>content.youtube 데이터가 없어 유튜브 확산 경로는 분석에서 제외됨.</li>
+        <li>일부 게시물의 likes 값이 -1로 기록되어 있어 해당 수치는 분석에서 제외됨.</li>
+        <li>dm_send_count가 null인 게시물이 다수 포함되어 있어 DM 전환 신호의 전체적 규모 파악에 한계가 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     24. 묵은지 김밥
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-24">
+  <div class="keyword-badge">
+    <span class="num">24</span>
+    <span class="kw-title">묵은지 김밥</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">GS25가 2025년 7월 '들기름묵은지참치김밥'을 출시해 두 달 만에 편의점 김밥 카테고리 1위에 오르며 '묵은지×참치×들기름' 조합이 소비자에게 각인됐어요.
+편의점 히트 이후 강민경·고현정·김신영 등 셀럽 레시피가 잇따라 유통되며 '맛있으면서 살 안 찌는 집밥 김밥'이라는 서사로 홈쿡·다이어트·K-푸드 채널 전반으로 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~40대 집밥 관심층 및 다이어터에요.
+'#묵은지참치김밥' '#키토김밥' '#다이어트도시락' 해시태그를 조합한 레시피 영상이 홈쿡 계정에서 집중 생산되고, 술집·이자카야 맛집 계정에서는 '광어·묵은지 소금김밥'이 시그니처 메뉴 소개 포맷으로 반복 등장하는 이중 소비 패턴이에요.
+중형 이상 계정의 레시피 영상에서 DM 전환 신호가 집중적으로 포착되며, 재료 공구·밀키트 연계 판매로 이어지는 구매 전환 경로가 두드러져요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">셀럽 레시피 서사 선점</div>
+          <div class="campaign-item-body">자사 재료(들기름·묵은지·참치캔 등)를 '셀럽 인증 조합'의 필수 재료로 포지셔닝하는 협찬 캡션 가이드를 중형 홈쿡 계정에 배포하고 '#묵은지참치김밥' 해시태그를 협찬 조건으로 설정해 브랜드 연계를 강화하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">다이어트·키토 파생 라인업 연동</div>
+          <div class="campaign-item-body">키토·저탄수 변형 포맷 확산 신호에 맞춰 '씻어 쓰는 묵은지' 또는 '키토용 소분팩' SKU를 출시하고 레시피 협찬 영상에 자사몰 연계 구매 경로를 고정해 전환을 단일화하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">이자카야·회식 채널 진입 타이밍</div>
+          <div class="campaign-item-body">광어·방어 묵은지 소금김밥이 외식 채널 시그니처로 자리잡는 흐름을 활용해 외식 브랜드·맛집 리뷰 계정과 협업을 집행하고, 제품 출처 서사를 캡션에 포함해 외식 채널 내 브랜드 인지 강화를 노리기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 7월 · GS25 들기름묵은지참치김밥 출시</div>
+          <div class="timeline-body">GS25 들기름묵은지참치김밥 출시로 편의점 채널에서 묵은지 김밥 카테고리 관심이 집중됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">2025년 10월 '오늘도이제이쿡' 채널의 대왕 광어묵은지김밥 쇼츠가 폭발적 도달을 기록하며 가정식 레시피 포맷으로 전환됐음.
+'30년 집밥 배여사'·'진지인' 등 요리 채널들이 후토마끼 스타일·컵밥 변형 포맷으로 분기하며 확산 경로가 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">2026년 3월~5월 집밥 레시피 계정과 전국 이자카야·맛집 계정의 동시 진입이 이어지며 카테고리가 일상 메뉴로 안착한 상태임.
+연예인 레시피(김신영·고현정) 파생 포맷과 키토·다이어트 변형 SKU가 복수 등장하고 소형 카페·지역 맛집까지 메뉴판에 정규 편성하는 양산화 시그널이 포착되어 정점 후 안정 단계 진입이 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>Instagram 게시물 다수가 맛집 메뉴판 나열 형태로 묵은지 김밥을 단순 언급한 수준이며, 트렌드 직접 반응 게시물과 구분이 필요해요.</li>
+        <li>dm_send_count가 null인 게시물이 절반 이상이라 DM 전환 신호는 데이터가 존재하는 일부 계정 기준으로 해석했어요.</li>
+        <li>셀럽(강민경·고현정·김신영) 언급은 YouTube 영상 설명 및 Instagram 캡션에서 확인된 내용 기준이며, 해당 셀럽의 직접 게시물은 데이터에 포함되지 않았어요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>GS25 출시 시점(2025년 7월)은 trend_meta 기술 기반이며 content 게시물 내 직접 확인은 불가함.</li>
+        <li>강민경 언급 효과는 유튜브 및 인스타그램 다수 게시물에서 간접 확인되나, 언급 원본 콘텐츠 날짜는 데이터 내 명시되지 않아 2025년 12월 확산 시점으로 추정됨.</li>
+        <li>instagram 게시물 다수가 묵은지 김밥을 메뉴 목록 중 하나로 단순 나열한 경우로, 해당 게시물의 실질적 트렌드 기여도는 제한적일 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     25. 무한리필
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-25">
+  <div class="keyword-badge">
+    <span class="num">25</span>
+    <span class="kw-title">무한리필</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">고물가 장기화로 외식 단가 부담이 임계점에 달한 시점에, '정해진 금액으로 양껏 먹는다'는 무한리필의 기본 명제가 가성비 소비 심리와 맞아떨어지며 재점화됐어요.
+조개구이·게장·샤브샤브·갈비·야끼니꾸 등 업종 전방위에서 '시간제한 없음'·'셀프바 무제한'·'주류 포함' 조건을 앞세운 체험형 릴스가 폭발적으로 생산되며, 인스타그램 지역 맛집 탐색 흐름을 타고 2025년 하반기부터 전국 동시 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~30대 직장인·대학생과 가족 단위 외식 수요자에요.
+#가성비맛집 #모임장소 해시태그를 조합하고 '저장·공유 필수' CTA를 캡션에 고정하며, 댓글 이벤트(식사권 증정)를 병행해 저장률과 전파력을 동시에 끌어올리는 협찬 패턴이에요.
+소형·마이크로 계정 중심의 협찬 집행과 DM 유입 중심의 전환 루프가 신뢰 서사('실제로 가봤다')를 만드는 주요 효율 신호예요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">지금 즉시 협찬 집행 타이밍</div>
+          <div class="campaign-item-body">트렌드가 성장기 재진입 국면인 현 시점에 소형·마이크로 지역 맛집 계정을 우선 선정해 협찬을 집행하고, 브랜드의 차별 조건을 캡션 필수 문구로 고정해 포지셔닝 격차를 선점하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">저장·DM 전환 유도 포맷 단일화</div>
+          <div class="campaign-item-body">'저장 필수+친구 태그+댓글 이벤트' 세트를 캡션 가이드로 표준화하고 DM 자동 응답으로 예약 링크나 쿠폰을 즉시 발송해 저장에서 방문 예약까지 전환 경로를 단일화하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">식재료 신선도 서사로 품질 의구심 방어</div>
+          <div class="campaign-item-body">'매일 아침 직송·국내산·당일 소진' 등 식재료 조달 과정을 릴스 초반에 노출하는 포맷을 협찬 크리에이티브 가이드에 의무화하고, 영수증 인증 리뷰 이벤트로 UGC 신뢰 루프를 형성하기.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 7~8월 · 맛또리 채널</div>
+          <div class="timeline-body">2025년 7~8월 맛또리 채널의 '2만 원대 역대급 무한리필' 등 가성비 무한리필 쇼츠 시리즈가 연달아 폭발적 조회 기록됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">유튜브의 단발성 쇼츠 리뷰 포맷이 인스타그램에서 지역 맛집 계정들의 릴스 협찬·체험 콘텐츠로 전환됨.
+2025년 11월~2026년 3월 전국 단위 지역 맛집 계정들이 조개구이·게장·고기 무한리필 업장을 집중 소개하는 형태로 확산 경로 다변화됨. 2026년 3~4월에는 프랜차이즈 뷔페 협찬 콘텐츠와 독립 로컬 맛집 체험 후기가 동시에 쏟아지며 단일 포맷에서 복수 서브카테고리로 분기됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">2026년 3~5월 게재 게시물에서 협찬·광고 콘텐츠 비중이 증가함.
+게장·조개구이·야끼니꾸·훠궈 등 세부 업종별 무한리필 신규 진입이 동시다발로 관찰되며 정점 진입으로 진단됨. 댓글 이벤트·식사권 증정이 다수 게시물에서 동시 진행되는 것은 업장 간 경쟁 심화와 전환 유도 필요성 증가 신호로 해석됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 followers 값이 null로 확인되어 팔로워 규모 분석에서 해당 계정은 제외했어요.</li>
+        <li>dm_send_count가 0 또는 null인 게시물이 다수 있어 DM 전환 신호는 수치가 명시된 게시물 기준으로만 판단했어요.</li>
+        <li>인스타그램 데이터가 특정 지역(전주·광주·인천·수원 등) 맛집 계정에 집중되어 있어 전국 단위 일반화에는 한계가 있을 수 있어요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>점화 시점 판단은 content.youtube publishDate 기준 최초 고임팩트 클러스터(2025년 7~8월 맛또리 시리즈)를 근거로 하였으며, 실제 검색량 급등 시점과 다소 차이가 있을 수 있음.</li>
+        <li>인스타그램 게시물 다수가 협찬·광고 표기를 포함하고 있어 유기적 바이럴과 유료 확산의 비중을 분리 판단하기 어려움.</li>
+        <li>현재 단계 판단은 2026년 4~5월 게시물 밀도와 협찬 콘텐츠 집중도를 근거로 하였으며, 실시간 검색량 데이터가 없어 정점 여부는 추가 검증 필요함.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

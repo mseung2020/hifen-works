@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엔터테인먼트 트렌드 리포트</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #f4f4f4;
+    color: #1a1a1a;
+    line-height: 1.65;
+  }
+
+  .site-header {
+    background: #fff;
+    border-bottom: 2px solid #ebebeb;
+    padding: 18px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .site-header .brand { font-size: 13px; color: #aaa; font-weight: 500; }
+  .site-header h1    { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+
+  .keyword-section {
+    max-width: 1560px;
+    margin: 36px auto;
+    padding: 0 24px;
+  }
+
+  .keyword-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .keyword-badge .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #1D6FE8;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .keyword-badge .kw-title { font-size: 20px; font-weight: 800; }
+  .keyword-badge .phase-tag {
+    padding: 3px 11px;
+    border-radius: 20px;
+    background: #EBF2FF;
+    color: #1D6FE8;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 26px 24px 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #111;
+  }
+  .panel-title .accent { color: #1D6FE8; }
+
+  .insight-block {
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .insight-block:last-child { margin-bottom: 0; }
+
+  .insight-block.yellow { background: #FFFBEB; }
+  .insight-block.blue   { background: #EFF6FF; }
+  .insight-block.purple { background: #F5F3FF; }
+
+  .insight-block-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .insight-block.yellow .insight-block-label { color: #D97706; }
+  .insight-block.blue   .insight-block-label { color: #2563EB; }
+  .insight-block.purple .insight-block-label { color: #7C3AED; }
+
+  .insight-block-body {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.72;
+  }
+
+  .campaign-item {
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px solid #EDE9FE;
+  }
+  .campaign-item:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .campaign-item-header {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #5B21B6;
+    margin-bottom: 4px;
+  }
+  .campaign-item-header::before { content: '• '; color: #7C3AED; }
+  .campaign-item-body {
+    font-size: 12.5px;
+    color: #4B5563;
+    line-height: 1.65;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 46px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 30px;
+    bottom: 30px;
+    width: 2px;
+    background: #C5D8FC;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 26px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+
+  .timeline-icon {
+    position: absolute;
+    left: -46px;
+    top: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #1D6FE8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .timeline-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1D6FE8;
+    margin-bottom: 3px;
+    letter-spacing: 0.02em;
+  }
+  .timeline-sub {
+    font-size: 11.5px;
+    color: #9CA3AF;
+    margin-bottom: 6px;
+  }
+  .timeline-body {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.72;
+    background: #F0F5FF;
+    border-radius: 10px;
+    padding: 11px 13px;
+  }
+
+  .dev-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 20px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1.5px dashed #d1d5db;
+  }
+
+  .dev-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .dev-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #F3F4F6;
+    color: #6B7280;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid #D1D5DB;
+  }
+  .dev-panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B7280;
+  }
+
+  .dev-section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9CA3AF;
+    margin: 14px 0 6px;
+  }
+  .dev-section-label:first-of-type { margin-top: 0; }
+
+  .dev-panel ul { list-style: none; padding: 0; }
+  .dev-panel li {
+    font-size: 11.5px;
+    color: #6B7280;
+    line-height: 1.65;
+    padding: 6px 0 6px 14px;
+    position: relative;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .dev-panel li:last-child { border-bottom: none; }
+  .dev-panel li::before {
+    content: '※';
+    position: absolute;
+    left: 0;
+    color: #9CA3AF;
+    font-size: 10px;
+    top: 7px;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 2px dashed #ddd;
+    margin: 44px 0 0;
+  }
+
+  @media (max-width: 1100px) {
+    .columns { grid-template-columns: 1fr 1fr; }
+    .dev-panel { grid-column: 1 / -1; }
+  }
+  @media (max-width: 700px) {
+    .columns { grid-template-columns: 1fr; }
+    .site-header { padding: 14px 18px; }
+    .keyword-section { padding: 0 14px; margin: 24px auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="brand">엔터테인먼트</span>
+  <h1>인스타그램 트렌드 리포트</h1>
+</header>
+
+
+<!-- ══════════════════════════════════════════════
+     01. 르세라핌
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-01">
+  <div class="keyword-badge">
+    <span class="num">01</span>
+    <span class="kw-title">르세라핌</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">2026년 4월 24일 선공개된 'CELEBRATION'이 멜로딕 테크노·하드스타일 장르를 K팝 걸그룹 퍼포먼스에 결합하며 '두려움을 인정한 뒤 자축한다'는 서사 전환이 기존 팬덤과 장르 취향층 모두에게 각인됐어요. 서울모닝커피클럽 모닝 레이브 깜짝 등장, 스피닝 강사 협업, 뽀로로 공식 계정의 패러디까지 플랫폼을 가로지르는 파생 포맷 확산이 정규 2집 'PUREFLOW pt.1' 발매를 앞두고 피크 모멘텀을 형성 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20·30대 여성 자기표현층이에요. 'CELEBRATION' 챌린지를 직접 촬영해 올리고, 패션 분석·다꾸·직캠 믹스 등 2차 창작 포맷으로 재가공하며 자발적 콘텐츠 루프를 형성하는 행동 패턴이에요. 마이크로 계정부터 매거진·라이프스타일 대형 계정까지 협찬 없이도 확산이 중형 이상 계정으로 자연 전이되는 전환 신호가 뚜렷해요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">정규 앨범 발매 전 선점 협찬 집행</div>
+          <div class="campaign-item-body">'PUREFLOW pt.1' 정규 발매 직전인 현 피크 상승 구간에 PPL 또는 협찬 계약 우선 확정, 곡 서사와 브랜드 메시지 부합 여부를 협찬 캡션 가이드에 명시해 발매 당일 동반 노출 타이밍 설계하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">챌린지 파생 포맷 브랜드 연동</div>
+          <div class="campaign-item-body">스피닝·댄스·다꾸 등 'CELEBRATION' 안무를 자체 콘텐츠로 재가공하는 라이프스타일 계정의 자발적 챌린지 화법을 대상으로 브랜드 제품 자연 삽입형 릴스 중심으로 배포해 UGC 연동 설계하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">'두려움 없는 성취' 서사 브랜드 각인</div>
+          <div class="campaign-item-body">FEARLESS에서 CELEBRATION으로 이어지는 내면 성장 서사를 캠페인 카피 뼈대로 채택하고, 멤버별 매력(카리스마·유머·퍼포먼스)을 활용한 멤버별 메시지 분기와 단독 광고 모델 전략으로 브랜드 이미지 일관 각인하기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026-04-24 · LE SSERAFIM 'CELEBRATION' 공식 MV 및 정규 2집 'PUREFLOW pt.1' 선공개 발매</div>
+          <div class="timeline-body">'CELEBRATION' 공식 MV 공개와 함께 멜로딕 테크노·하드스타일 장르 컴백이 단기간 집중적 관심을 촉발하며 카테고리 점화.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">HYBE LABELS 공식 채널의 MV 공개를 기점으로 직캠·릴레이댄스 포맷이 급속히 확산되며 퍼포먼스 중심 감상 콘텐츠로 형식 전환이 이뤄짐. 이후 스피닝 강사 협업 무대·모닝 레이브 게스트 출연·어린이 대상 패러디·다꾸·스크랩북 등 비팬덤 일상 포맷으로 분기하며 확산 경로 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">컴백 직후 음악 방송 직캠과 챌린지 콘텐츠가 단기 집중 확산되는 동시에 스피닝·모닝 레이브·스크랩북 등 비음악 장르 파생 콘텐츠가 동시다발적으로 생성되며 정점 진입이 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>르세라핌은 성숙기 아티스트로 최정상급 광고 단가가 예상되며, 예산 대비 효율 검토가 선행돼야 해요.</li>
+        <li>브랜드 메시지와 '두려움 없는·자축' 정체성의 부합 여부를 사전 검토하지 않으면 팬덤 반감이 발생할 수 있어요.</li>
+        <li>인스타그램 게시물 일부에서 dm_send_count가 null로 수집돼 DM 기반 전환 신호의 완전한 파악에 한계가 있어요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>정규 2집 'PUREFLOW pt.1' 발매(2026-05-22) 이후 데이터가 수집 시점(2026-05-08) 기준으로 포함되지 않아 발매 후 반응 및 단계 변화는 추가 관측이 필요함.</li>
+        <li>유튜브 공식 MV 조회 수 등 플랫폼 집계 데이터는 실시간 변동이 있으므로 현재 단계 판단은 수집 시점 기준임.</li>
+        <li>5월 22일 정규 2집 'PUREFLOW pt.1' 발매와 Spotify 공식 라이브 이벤트 등 추가 모멘텀이 예고되어 있어 정점 구간이 연장될 가능성이 높은 시점임.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     02. 하트시그널5
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-02">
+  <div class="keyword-badge">
+    <span class="num">02</span>
+    <span class="kw-title">하트시그널5</span>
+    <span class="phase-tag">급상승 구간</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">채널A 공식 유튜브 채널이 2026년 3월 티저를 공개하며 '저돌적 직진'과 'Z세대 솔직 연애법'이라는 키워드가 시청자에게 각인됐고, 4월 14일 첫 방송 이후 출연자 강유경·박우열 등 개별 러브라인 클립이 대규모 조회 신호로 확산되며 과몰입 포맷으로 재확산되고 있어요. MBTI 심리 분석·연상연하 관계 서사 등 방송 클립을 해석하는 2차 파생 콘텐츠가 인스타그램과 유튜브에서 동시 생산되며 원방송 시청과 무관하게 화제성이 유지되는 구조이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 중반~30대 초반 직장인 과몰입러. 출연자 직업(의사·브랜드 디렉터·스타트업 CEO)과 MBTI 서사에 공감하며 '분석·예측' 화법으로 댓글과 커뮤니티 참여를 주도하는 행동 패턴이에요. 공식 계정과 심리 분석 계정이 협찬 없이도 높은 공유 신호를 만들어내고, TVING 동시 스트리밍 접점에서 모바일 즉시 소비 성향이 뚜렷해요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">출연자 라이프스타일 PPL 선점</div>
+          <div class="campaign-item-body">방영 초중반 진입 전 출연자의 데이트·출근·카풀 장면에 자연스럽게 녹아드는 뷰티·F&amp;B·패션 카테고리 PPL 협의 우선 집행.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">팬 참여형 러브라인 예측 UGC</div>
+          <div class="campaign-item-body">매주 방영 직후 '이번 주 시그널 예측' 참여형 콘텐츠로 브랜드 계정에 UGC 루프를 구축하고, MBTI 기반 해석 화법을 협찬 파트너 가이드로 표준화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">OTT 연동 전환 경로 단일화</div>
+          <div class="campaign-item-body">TVING 스트리밍 접점에서 유입되는 즉시 소비층을 겨냥해 전용 랜딩페이지·한정 쿠폰으로 시청 직후 구매 전환 경로를 단일화.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026-03-26 · 하트시그널 라비티비 공식 유튜브 채널 티저 공개</div>
+          <div class="timeline-body">하트시그널 라비티비 공식 채널의 시즌5 티저 공개로 방영 전 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">공식 채널의 티저·예고편 포맷에서 출발해 4월 14일 첫 방송 직후 '몰표녀' '폭스남' 등 출연진 캐릭터 중심의 숏클립 포맷으로 전환되며 단기 집중 확산 기록됨. 이후 심리·MBTI 분석 계정이 출연자 감정을 해석하는 롱폼 해설 포맷으로 재가공하며 과몰입 시청자층을 중심으로 확산 경로가 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 급상승 구간</div>
+          <div class="timeline-body">방영 3주 차에 접어들며 공식 채널 숏클립의 전환 의향 신호가 농도 높게 집중되는 동시에, 외부 심리·분석 계정의 파생 해설 콘텐츠가 공식 콘텐츠에 버금가는 도달을 기록하며 급상승 구간 진입 확인됨. 출연진 개별 러브라인이 독립적 화제 단위로 분기하는 양상이 겹치며 팬덤 내 과몰입 심화 단계로 전환 중.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>시청률 지표에 상반된 평가(화제성 올킬 vs. 0%대 시청률)가 공존하므로 광고 효과 예측 시 TV 시청률보다 OTT 및 SNS 화제성 지표를 우선 기준으로 삼을 것을 권장.</li>
+        <li>instagram 게시물의 dm_send_count가 다수 null로 수집되어 DM 전환 신호는 공개된 일부 게시물 기준으로만 해석되었으며, 전체 전환 규모는 실제와 다를 수 있음.</li>
+        <li>audience 성별 비중은 입력 데이터에 명시되지 않아 연애 리얼리티 장르 특성과 콘텐츠 화법 패턴을 근거로 추론한 정성적 판단임.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>시청률 수치는 입력 데이터에 포함되지 않아 화제성 판단은 SNS 게시물 도달 및 DM 전환 신호 기반으로만 산정됨.</li>
+        <li>instagram 일부 게시물의 views가 0으로 기록되어 있어 해당 게시물의 실제 도달 규모는 확인 불가.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     03. 춤추는 나율
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-03">
+  <div class="keyword-badge">
+    <span class="num">03</span>
+    <span class="kw-title">춤추는 나율</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">AFstarz 소속 키즈 댄서 나율이 유튜브 쇼츠에서 '#dreamgirls #랜덤댄스 #챌린지' 해시태그 조합과 함께 '요즘 핫하다고?'라는 도발적 문구를 앞세운 숏폼을 올리며 K-POP 댄스 커버와 NG 리액션 포맷이 하나의 패턴으로 소비자에게 각인됐어요. 이 포맷이 인스타그램 릴스·틱톡까지 복제 확산되며, '키즈 크리에이터 × K-POP 챌린지 × 숏폼 NG 서사'의 조합이 2026년 초부터 중형 계정 중심으로 빠르게 퍼지고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">30~40대 초등학생 자녀를 둔 부모층 및 K-POP 댄스에 관심 있는 10대 청소년. 인스타그램 게시물 전반에서 '#아이돌지망생 #신인개발팀 #키즈크리에이터'를 협찬 캡션 필수 조건처럼 반복 삽입하며, 나율의 일상·NG 리액션에 반응하는 팬덤성 소비 행동이 관찰이에요. 팔로워 규모가 큰 중형 계정이 고빈도 연속 게시 방식으로 도달를 주도하며, DM 전송이 꾸준히 발생하는 게시물에서 직접 전환 의향 신호 확인이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">PPL 협찬 선제 진입</div>
+          <div class="campaign-item-body">트렌드가 성장·성숙 초기 단계인 지금 나율 채널의 숏폼 콘텐츠에 아동 댄스복·운동화·학습 교구 등 키즈 타깃 제품을 자연스럽게 배치하는 PPL 협찬 계약 우선 체결 및 협찬 캡션 노출 조건 설정으로 팬덤 유입과 구매 경로 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">NG·챌린지 시리즈 콘텐츠 설계</div>
+          <div class="campaign-item-body">게시물 전반에서 반복 확인되는 'NG 리액션 + K-POP 챌린지 도전' 포맷을 브랜드 챌린지 형식으로 전환해, 제품 사용 전·후 NG 장면을 삽입한 숏폼 시리즈를 나율 채널과 공동 제작하여 팬 참여형 UGC 루프로 이어지는 재공유 구조 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">학부모 커뮤니티 진입 순서 설계</div>
+          <div class="campaign-item-body">나율 콘텐츠를 자녀와 함께 소비하는 학부모 맘카페·육아 커뮤니티에서 자발 생산 중인 화법(아이돌 지망생 육성, 키즈 댄스 교육)을 먼저 수집한 뒤, 안전성·교육적 가치 메시지를 앞세운 브랜드 공식 계정 참여로 반감 없는 학부모층 진입 경로 확보.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026년 1월 초 · 춤추는나율(헤어날수없어 율♡) 채널</div>
+          <div class="timeline-body">춤추는나율 채널의 K-POP 댄스 쇼츠 집중 업로드로 키즈 댄서 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">춤추는나율 채널의 단독 댄스 퍼포먼스 쇼츠 포맷이 동일 소속 키즈 크리에이터들의 랜덤댄스·챌린지 참여 포맷으로 분기하며 AFstarz 생태계 전반으로 확산됨. 인스타그램에서는 다수 계정의 릴스 다수 업로드 패턴으로 전환되며 팬 접점 밀도 단기 확대.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">2026년 4월 중순부터 5월 초까지 인스타그램 릴스 게시 빈도가 하루 복수 업로드 수준으로 유지되고, 유튜브에서도 붐샤카라카·뮤직뮤직 등 파생 콘텐츠 시리즈가 반복 등장하며 포맷 다변화 없는 양적 확대 국면이 관찰됨. 동일 포맷의 반복 게시와 소속 크리에이터 태그 집중 현상이 겹치며 정점 진입 단계 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>인스타그램 게시물의 대다수가 단일 중형 계정에서 발행되어 계정 다양성이 제한적이며, 트렌드의 폭넓은 확산 여부를 단정하기 어려움.</li>
+        <li>audience 데이터에 연령·성별 구체 수치가 없어 반응층 정의는 콘텐츠 해시태그 패턴과 trend_meta 추론에 기반함.</li>
+        <li>DM 전송 건수는 일부 게시물에서만 확인되어 전환 신호의 대표성이 제한적임.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>인스타그램 게시물이 특정 계정에 집중되어 있어 팬층 반응 다양성 판단에 한계가 있음.</li>
+        <li>유튜브 데이터에 춤추는나율 본인 채널 외 동일 소속 채널(춤추는경환, 춤추는별하 등) 영상이 다수 포함되어 있어, 나율 개인 트렌드와 AFstarz 생태계 전반 트렌드가 혼재될 수 있음.</li>
+        <li>틱톡 플랫폼 데이터가 포함되지 않아 숏폼 확산 전체 경로 파악에 제한이 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="section-divider">
+
+<!-- ══════════════════════════════════════════════
+     04. 악마는 프라다를 입는다 2
+══════════════════════════════════════════════ -->
+<section class="keyword-section" id="kw-04">
+  <div class="keyword-badge">
+    <span class="num">04</span>
+    <span class="kw-title">악마는 프라다를 입는다 2</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">20세기 스튜디오가 2025년 촬영 현장의 파파라치 스타일 '의상 스포일러' 사진을 바이럴 마케팅 도구로 활용하며 패션 미디어와 SNS에서 먼저 화제를 만든 뒤, 보그코리아·마리끌레르 등 대형 패션 매거진 계정이 내한 레드카펫 현장을 잇달아 공유하며 '패션 아이콘의 귀환'이라는 서사가 국내 인스타그램을 중심으로 빠르게 증폭됐어요. 개봉 전 한국 최초 공개 전략과 배우 내한 기자간담회가 K-팬덤의 감성 반응('꽃신 선물', 'That's all' 재현 등)을 자극하며 팬 UGC와 협찬 콘텐츠가 동시에 쏟아지는 구조로 확산이 이어지고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">30대 초중반 밀레니얼 여성 및 패션·커리어에 관심 높은 2030 직장인 계층. 인스타그램에서 앤디 코디 재현, 영화 대사 캡션 활용, '#광고' 태그를 단 시사회 후기 릴스 등 영화 속 패션 무드를 자기 스타일로 풀어내는 UGC 패턴이 마이크로 계정부터 대형 패션 매거진 계정까지 동시 분포. 보그코리아·마리끌레르 등 대형 매거진 계정이 도달 볼륨을 주도하고, 팔로워 규모가 작은 일반 팬 계정과 협찬 마이크로 계정이 DM 전송과 저장 중심의 높은 관여도 신호를 동반하며 구매·관람 전환을 이끄는 이중 구조 보임.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">뷰티·패션 브랜드 콜라보 상영 이벤트 선점</div>
+          <div class="campaign-item-body">정샘물의 '뷰티 아이콘×패션 아이콘' 협업 상영회 포맷이 이미 화제 검증된 만큼, 뷰티·패션 브랜드는 현 상영 피크 구간 내 롯데시네마·메가박스 연계 '브랜드 테마 상영 이벤트'를 즉시 기획하고 참석자 전원에게 샘플 증정하는 오프라인 체험 전환 경로 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">캐릭터 무드 재현 UGC 루프 설계</div>
+          <div class="campaign-item-body">협찬 계정 캡션에 '미란다 무드' '앤디 룩' 등 캐릭터 화법을 필수 조건으로 설정하고, 관람 인증샷·코디 재현 릴스를 리그램하는 이벤트를 개봉 2주 차 현재 시점에 즉시 집행해 팬 UGC 생산 루프를 브랜드 채널로 흡수하는 구조 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">프리미엄 라이프스타일 브랜드 IP 서사 연동</div>
+          <div class="campaign-item-body">메르세데스-마이바흐·삼성 갤럭시 등 영화 PPL로 이미 노출된 프리미엄 카테고리 외에, '런웨이 세계관'과 자연스럽게 연결되는 프리미엄 라이프스타일·F&amp;B 브랜드가 '미란다의 선택' '앤디의 하루' 식 커스텀 레시피·큐레이션 콘텐츠를 스타벅스 사례처럼 즉시 제작해 영화 감상 전후 소비 맥락에 브랜드를 자연 삽입.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026-04-08 · 메릴 스트립·앤 해서웨이 내한 기자간담회 및 레드카펫 행사</div>
+          <div class="timeline-body">메릴 스트립·앤 해서웨이의 한국 내한 기자간담회 및 레드카펫 행사 개최로 20년 만의 재회 콘텐츠가 단기간 폭발적으로 집중되며 카테고리 관심 점화.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">대형 패션 매거진 계정의 레드카펫 이미지 게시로 확산이 시작됨. 이후 소형 팬 계정의 제작 콘텐츠와 유튜브 기반 숏폼·직캠·인터뷰 포맷이 확산 경로를 다변화시킴.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">4월 29일 개봉 직후 초기 흥행 신호(상영관 반응 및 관객 호평) 확인됨. 이후 소셜 미디어 확산은 공식 채널 중심의 굿즈·이벤트·캐릭터 소개 콘텐츠로 재편되어 정점 후 안정 국면으로 이행함.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 views 값이 0으로 수집되어 실제 영상 조회 성과와 차이가 있을 수 있으며, dm_send_count가 null인 게시물이 다수 포함되어 DM 전환 신호는 유효 데이터 보유 게시물 기준으로만 해석했어요.</li>
+        <li>협찬(#광고) 표기 게시물과 자발적 UGC가 혼재되어 있어 유기적 팬 반응과 유료 협찬 효과를 분리 측정하기 어려운 구조예요.</li>
+        <li>분석 시점(2026년 5월 8일) 기준 개봉 약 10일 경과 데이터로, 이후 N차 관람 및 입소문 확산 추이에 따라 트렌드 지속 기간이 달라질 수 있어요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>일부 인스타그램 게시물의 views가 0으로 기록되어 있어 실제 도달 규모가 과소 반영되었을 수 있음.</li>
+        <li>dm_send_count가 null인 게시물이 다수 포함되어 전환 의향 신호의 정량적 집계에 한계가 있음.</li>
+        <li>개봉 후(4월 29일~5월 8일) 데이터 수집 기간이 약 10일로 짧아 정점 후 안정 단계의 하강 속도를 판단하기에 충분하지 않을 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>

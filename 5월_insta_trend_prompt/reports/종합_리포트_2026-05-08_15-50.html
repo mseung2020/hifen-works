@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인스타그램 트렌드 종합 리포트 · 2026-05-08</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #f4f4f4;
+    color: #1a1a1a;
+    line-height: 1.65;
+  }
+
+  /* ── 최상단 헤더 ── */
+  .site-header {
+    background: #fff;
+    border-bottom: 2px solid #ebebeb;
+    padding: 18px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .site-header .brand { font-size: 13px; color: #aaa; font-weight: 500; }
+  .site-header h1    { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+  .site-header .date { font-size: 12px; color: #bbb; margin-left: auto; }
+
+  /* ── 카테고리 헤더 ── */
+  .category-header {
+    max-width: 1560px;
+    margin: 44px auto 0;
+    padding: 0 24px;
+  }
+  .category-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+  }
+
+  /* 카테고리별 헤더 색 */
+  .cat-food-header   .category-label { background: #FFF0E8; color: #FF6B2B; }
+  .cat-beauty-header .category-label { background: #F3EAFE; color: #9C5FD4; }
+  .cat-enter-header  .category-label { background: #EBF2FF; color: #1D6FE8; }
+
+  /* ── 카테고리 색상 변수 ── */
+  .cat-food   { --c-accent: #FF6B2B; --c-light: #FFF0E8; --c-tl-line: #FFD9C4; --c-tl-bg: #FFF8F5; }
+  .cat-beauty { --c-accent: #9C5FD4; --c-light: #F3EAFE; --c-tl-line: #E0CFFA; --c-tl-bg: #FAF7FF; }
+  .cat-enter  { --c-accent: #1D6FE8; --c-light: #EBF2FF; --c-tl-line: #C5D8FC; --c-tl-bg: #F0F5FF; }
+
+  /* ── 키워드 섹션 ── */
+  .keyword-section {
+    max-width: 1560px;
+    margin: 28px auto;
+    padding: 0 24px;
+  }
+
+  /* 키워드 넘버 배지 */
+  .keyword-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .keyword-badge .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .keyword-badge .kw-title { font-size: 20px; font-weight: 800; }
+  .keyword-badge .phase-tag {
+    padding: 3px 11px;
+    border-radius: 20px;
+    background: var(--c-light);
+    color: var(--c-accent);
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  /* ── 3컬럼 레이아웃 ── */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* ── 메인 패널 공통 ── */
+  .panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 26px 24px 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+
+  .panel-title {
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #111;
+  }
+  .panel-title .accent { color: var(--c-accent); }
+
+  /* ── 광고주 인사이트 블록 ── */
+  .insight-block {
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .insight-block:last-child { margin-bottom: 0; }
+
+  .insight-block.yellow { background: #FFFBEB; }
+  .insight-block.blue   { background: #EFF6FF; }
+  .insight-block.purple { background: #F5F3FF; }
+
+  .insight-block-label {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .insight-block.yellow .insight-block-label { color: #D97706; }
+  .insight-block.blue   .insight-block-label { color: #2563EB; }
+  .insight-block.purple .insight-block-label { color: #7C3AED; }
+
+  .insight-block-body {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.72;
+  }
+
+  /* 캠페인 아이템 */
+  .campaign-item {
+    margin-top: 11px;
+    padding-top: 11px;
+    border-top: 1px solid #EDE9FE;
+  }
+  .campaign-item:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .campaign-item-header {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #5B21B6;
+    margin-bottom: 4px;
+  }
+  .campaign-item-header::before { content: '• '; color: #7C3AED; }
+  .campaign-item-body {
+    font-size: 12.5px;
+    color: #4B5563;
+    line-height: 1.65;
+  }
+
+  /* ── 트렌드 스토리 타임라인 ── */
+  .timeline {
+    position: relative;
+    padding-left: 46px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 30px;
+    bottom: 30px;
+    width: 2px;
+    background: var(--c-tl-line);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 26px;
+  }
+  .timeline-item:last-child { margin-bottom: 0; }
+
+  .timeline-icon {
+    position: absolute;
+    left: -46px;
+    top: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--c-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .timeline-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--c-accent);
+    margin-bottom: 3px;
+    letter-spacing: 0.02em;
+  }
+  .timeline-sub {
+    font-size: 11.5px;
+    color: #9CA3AF;
+    margin-bottom: 6px;
+  }
+  .timeline-body {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.72;
+    background: var(--c-tl-bg);
+    border-radius: 10px;
+    padding: 11px 13px;
+  }
+
+  /* ── 개발자 전용 패널 ── */
+  .dev-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 20px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    border: 1.5px dashed #d1d5db;
+  }
+
+  .dev-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .dev-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #F3F4F6;
+    color: #6B7280;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid #D1D5DB;
+  }
+  .dev-panel-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B7280;
+  }
+
+  .dev-section-label {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9CA3AF;
+    margin: 14px 0 6px;
+  }
+  .dev-section-label:first-of-type { margin-top: 0; }
+
+  .dev-panel ul { list-style: none; padding: 0; }
+  .dev-panel li {
+    font-size: 11.5px;
+    color: #6B7280;
+    line-height: 1.65;
+    padding: 6px 0 6px 14px;
+    position: relative;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .dev-panel li:last-child { border-bottom: none; }
+  .dev-panel li::before {
+    content: '※';
+    position: absolute;
+    left: 0;
+    color: #9CA3AF;
+    font-size: 10px;
+    top: 7px;
+  }
+
+  /* ── 구분선 ── */
+  .section-divider {
+    border: none;
+    border-top: 2px dashed #ddd;
+    margin: 44px 0 0;
+  }
+
+  /* 카테고리 경계 구분선 */
+  .category-break {
+    border: none;
+    border-top: 3px solid #e0e0e0;
+    margin: 56px 0 0;
+  }
+
+  @media (max-width: 1100px) {
+    .columns { grid-template-columns: 1fr 1fr; }
+    .dev-panel { grid-column: 1 / -1; }
+  }
+  @media (max-width: 700px) {
+    .columns { grid-template-columns: 1fr; }
+    .site-header { padding: 14px 18px; }
+    .keyword-section { padding: 0 14px; margin: 24px auto; }
+    .category-header { padding: 0 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <span class="brand">인스타그램 트렌드</span>
+  <h1>종합 리포트</h1>
+  <span class="date">2026-05-08 15:50</span>
+</header>
+
+
+<div class="category-header cat-food-header">
+  <span class="category-label">맛집·푸드</span>
+</div>
+
+<section class="keyword-section cat-food" id="kw-food-21">
+  <div class="keyword-badge">
+    <span class="num">21</span>
+    <span class="kw-title">컵마라탕</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">연남동 샤오마라를 기점으로 '500원 마라꼬치+컵마라탕' 조합이 길거리에서 들고 다니며 먹는 새로운 소비 포맷으로 각인되면서, 기존 마라탕의 최소 주문·칼로리 부담을 해소하는 간편 마라 카테고리가 형성됐어요.<br>이 포맷은 '헬시플레저'·'혼밥'·'가성비' 해시태그와 결합해 지역 맛집 계정 협찬 콘텐츠를 통해 수원·대구·부산·천안·경주 등 거점으로 복제 확산되며 성숙 단계에 접어들고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 초중반 MZ 길거리 간식 소비층이에요.<br>인증샷보다 '마라꼬치다발', '컵 들고 광안리 한 바퀴' 같은 행동 서사를 캡션에 담아 장소·음식·경험을 한 컷에 묶는 게시 방식이 두드러져요.<br>지역 밀착 중형 계정은 협찬 게시물 비중과 DM 기반 전환 신호가 더 뚜렷한 반면, 대형 계정은 댓글 이벤트로 저장·태그 같은 확산·인지 지표 유도에 효과적인 역할을 하는 패턴이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">지역 신규 거점 선점 타이밍</div>
+          <div class="campaign-item-body">지역 신규 오픈 타이밍에 지역 밀착 계정 협찬 집행 및 '최초 상륙' 서사·위치 저장 CTA 캡션 필수화로 초기 방문 전환 경로 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">행동 서사형 UGC 포맷 표준화</div>
+          <div class="campaign-item-body">데이터에서 반복 관찰된 행동 화법('컵 들고 ○○ 한 바퀴', '마라꼬치다발 선물')을 협찬 캡션 가이드로 표준화하고 릴스 숏폼 승자 콘텐츠의 자사 채널 재공유를 통한 UGC 루프 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">시즌·제품 연동 프로모션</div>
+          <div class="campaign-item-body">시즌(겨울·봄)별 수요 차이에 따른 파생 SKU(컵마라떡볶이·마라반) 출시 타이밍 선점 및 거점 프로모션 연동을 통한 초기 재구매 유도.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 6~7월 · 소형 숏폼 채널</div>
+          <div class="timeline-body">2025년 6~7월 소형 숏폼 채널들이 초등학교 앞 가성비 컵마라탕 매장을 집중 소개하며 카테고리 관심 점화.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">유튜브 숏폼 먹방 포맷으로 관심이 시작되어 인스타그램 릴스의 매장 방문 인증·협찬 리뷰 포맷으로 전환되며 초기 확산 형성됨.<br>2025년 10월 이후 샤오마라·셰셰마라·마라인더컵 등 프랜차이즈와 지역 로컬 협업 게시물이 전국 거점(수원·부산·대구·울산·경주)으로 확산 촉발됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">파생 메뉴(마라꼬치다발·컵마라떡볶이) 등장 및 복수 프랜차이즈의 동시 다점 출점으로 카테고리 성숙 진입됨.<br>2026년 3~4월까지 협찬·지역 게시물 유입이 지속되나 포맷·메시지 유사성으로 차별화 신호 약화되어 정점 후 안정 상태 유지됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 dm_send_count가 수집되지 않아 DM 전환 신호 해석은 DM 데이터가 확보된 게시물에 한정해 추론했어요.</li>
+        <li>편의점 컵마라탕(오뚜기·팔도·농심 등 RTD 제품) 관련한 인스타그램 내 소비자 반응은 이번 데이터 셋에서 직접적으로 관찰되지 않았어요.</li>
+        <li>유튜브 콘텐츠는 조회수 편차가 크고 채널 구독자 규모 대비 고조회 영상이 혼재해 채널 규모와 도달 효율 상관관계는 단순 비교하기 어려운 구조이에요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>인스타그램 게시물 다수에서 views·likes 값이 0 또는 -1로 수집되어 정확한 도달 규모 비교에 한계가 있음.</li>
+        <li>점화 시점으로 판단한 2025년 6~7월 유튜브 숏폼 게시물은 구독자 수가 소규모이나 조회수가 높아 알고리즘 추천 경유 확산 가능성이 있으며, 실제 최초 점화 계기는 오프라인 매장 오픈 시점과 연동되어 있을 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-food" id="kw-food-22">
+  <div class="keyword-badge">
+    <span class="num">22</span>
+    <span class="kw-title">수제 막걸리와 전통주</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">박재범의 '원소주' 출시가 MZ세대에게 전통주를 '힙한 술'로 각인시킨 점화 계기가 됐고, 온라인 판매 허용 이후 접근성이 열리면서 감각적인 패키지·지역 농산물 스토리를 앞세운 수제 막걸리가 홈술·혼술 문화와 결합해 일상 소비 품목으로 자리 잡았어요.<br>트렌드 성숙 단계에 접어든 지금은 '술 빚기 클래스·북토크 시음회·양조장 감성 공간' 같은 체험형 포맷이 콘텐츠 주류가 되면서, 단순 음용을 넘어 경험과 서사를 공유하는 방식으로 확산 구조가 진화하고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~30대 가치 소비형 여성 음주 인구층.<br>인스타그램에서 '무첨가·국내산 쌀·누룩' 원재료 서사를 캡션에 풀고 '#홈파티메뉴 #전통주추천 #수제막걸리' 해시태그를 조합하거나, '(공유·저장)' CTA를 본문 앞에 배치해 저장 유도형 게시물을 제작하는 패턴이 두드러져요.<br>팔로워 규모가 소형~중형에 걸쳐 분산돼 있고, 협찬 표기 게시물은 식당 체험권 형태 PPL이 주를 이루며 제품 단독 협찬은 대형 계정에 집중되는 구조예요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">원재료 서사 협찬 표준화</div>
+          <div class="campaign-item-body">무첨가·국내산 쌀·저도수 세 키워드를 협찬 캡션 필수 조건으로 계약하고 도수별 라인업과 안주 페어링 조합을 시리즈 포맷으로 제작해 제품 차별점을 반복 각인하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">체험형 이벤트 연동</div>
+          <div class="campaign-item-body">술 빚기 클래스·북토크 시음회 등 체험 포맷을 후원하고 참가자 UGC에 브랜드 해시태그와 저장 CTA를 표준 조건으로 설정해 팬층 기반 확산 루프 구축하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">구매 경로 단일화 및 구독 전환</div>
+          <div class="campaign-item-body">카카오톡 선물하기 입점 또는 자사몰 구독 패키지를 세팅하고 협찬 게시물 캡션 링크를 해당 구매 경로로 단일 고정해 전환 이탈 최소화하기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 6~8월 · 다수 한식주점·양조장 계정</div>
+          <div class="timeline-body">문래·대전 등 지역 감성 한식주점과 양조장 계정들이 수제 막걸리 메뉴를 중심으로 게시물을 집중 업로드하며 카테고리 관심이 집중된 패턴.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">초기 지역 맛집 소개 포맷에서 '로제 막걸리 빚기 클래스'·'북토크 시음회' 등 체험형 이벤트 모집 포맷으로 전환되며 참여 유도 콘텐츠로 확산 경로가 다변화됨.<br>2026년 3~4월에는 협찬 태그를 단 한식당 방문 후기와 프리미엄 수제 막걸리 브랜드 제공 리뷰가 집중 게시되며 상업적 전환 신호가 뚜렷하게 나타남.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">협찬·제공 표기 콘텐츠가 다수 진입하고 체험 클래스·북토크 시음회 등 파생 포맷이 병존하며 카테고리가 성숙 국면에 진입한 상태임.<br>단순 맛집 소개보다 브랜드 스토리·페어링·DIY 양조 등 콘텐츠 분화가 가속되고 있어 차별화 없는 신규 진입의 효율은 낮아진 구간으로 판단됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>수집된 인스타그램 게시물 대부분의 dm_send_count가 null로 확인되어 DM 기반 전환 신호는 판단 불가.</li>
+        <li>유튜브 데이터가 없어 영상 플랫폼 확산 패턴은 trend_meta 정성 정보로만 보완됨.</li>
+        <li>likes 값이 -1로 기록된 게시물이 1건 포함되어 있어 해당 수치는 분석에서 제외됨.</li>
+        <li>게시물 표본이 12건으로 제한적이므로 협찬 밀도·계정 규모 분포 판단은 추세 참고 수준으로 활용 권장.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>content.youtube 데이터가 없어 유튜브 확산 경로는 서술에서 제외됨.</li>
+        <li>일부 게시물의 views·dm_send_count가 0 또는 null로 집계되어 정량적 임팩트 비교에 한계가 있음.</li>
+        <li>likes 값이 -1로 기록된 게시물(DXFul-fE6-1)이 포함되어 있어 해당 수치의 신뢰도에 유보가 필요함.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-food" id="kw-food-23">
+  <div class="keyword-badge">
+    <span class="num">23</span>
+    <span class="kw-title">가정의 달 디저트 선물</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">어린이날·어버이날·스승의 날이 집중된 5월 시즌성을 배경으로, 파리바게뜨·스타벅스·호텔 베이커리 등 주요 브랜드가 4월 중순부터 카네이션 테마 한정판 디저트를 일제히 선공개하고 사전 예약을 개시하며 '예약 전쟁' 심리를 형성했어요.<br>고물가 속에서도 '가심비'와 '스몰 럭셔리'를 추구하는 소비 심리가 맞물려, 단순 간식이 아닌 비주얼·스토리·건강까지 담은 디저트 선물이 소셜 미디어 인증 욕구와 결합해 빠르게 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 후반~40대 선물 기획자, 특히 감사 대상이 명확한 여성 소비자층.<br>카네이션 앙금쿠키·화과자·한식 다과 등 비주얼 중심 제품에 '#저장' CTA를 붙이고 카카오채널 주문 유도 문구를 캡션에 고정하는 패턴이 두드러져요.<br>팔로워 규모에 상관없이 협찬 게시물 비중이 매우 높고, 소규모 지역 공방 계정까지 '#가정의달선물 #어버이날선물 #스승의날선물' 3종 해시태그를 일관되게 조합해 시즌 검색 유입을 집중 공략하는 구조가 관찰돼요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">사전예약 긴박감 전개</div>
+          <div class="campaign-item-body">사전예약·한정수량 스토리를 캡션 핵심으로 배치하고 카카오채널·네이버 예약 링크를 고정해 잔여 구매 의향을 즉시 전환으로 연결하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">건강·재료 포지셔닝</div>
+          <div class="campaign-item-body">저당 앙금·무첨가·국산 찹쌀 등 건강 소구 문구를 협찬 가이드에 포함해 '예쁘지만 달기만 한' 디저트와 차별화하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">온·오프 연계 집행 설계</div>
+          <div class="campaign-item-body">백화점·팝업 출점(롯데·신세계 등) 시점에 맞춰 인스타 협찬을 동기화하고 '현장 픽업 가능' 안내로 온라인 예약을 오프라인 방문으로 연결하기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026년 3~4월 · 다수 계정</div>
+          <div class="timeline-body">특정 계정 점화보다 5월 시즌성(베이커리·카페·호텔 한정판 출시 및 사전예약) 계기 중심 관심 집중됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">소형 수제 공방의 사전예약 게시물이 협업·리뷰 포맷으로 전환되며 인플루언서 기반 확산 발생됨.<br>4월 말~5월 초에는 팝업·백화점 입점 소식과 결합된 로컬 추천 포맷으로 확산 경로 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">협찬 리뷰·팝업 안내·DM 전환 유도 게시물이 동시다발적으로 증가하며 정점 진입 확인됨.<br>파생 SKU 경쟁 진입과 조기 마감 신호가 관찰되며 카테고리 포화 직전 위치함.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>수집된 게시물 대부분의 dm_send_count가 null로, DM 기반 구매 전환 신호는 일부 계정에서만 확인되어 전체 대표성에 한계가 있어요.</li>
+        <li>YouTube 데이터가 없어 영상 포맷의 확산 패턴은 분석에서 제외했어요.</li>
+        <li>publish_date가 2025년 8~12월로 표기된 게시물이 일부 포함되어 있어 시즌 데이터 정합성 확인이 필요해요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>content.youtube 데이터가 없어 유튜브 확산 경로는 분석에서 제외됨.</li>
+        <li>일부 게시물의 likes 값이 -1로 기록되어 있어 해당 수치는 분석에서 제외됨.</li>
+        <li>dm_send_count가 null인 게시물이 다수 포함되어 있어 DM 전환 신호의 전체적 규모 파악에 한계가 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-food" id="kw-food-24">
+  <div class="keyword-badge">
+    <span class="num">24</span>
+    <span class="kw-title">묵은지 김밥</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">GS25가 2025년 7월 '들기름묵은지참치김밥'을 출시해 두 달 만에 편의점 김밥 카테고리 1위에 오르며 '묵은지×참치×들기름' 조합이 소비자에게 각인됐어요.<br>편의점 히트 이후 강민경·고현정·김신영 등 셀럽 레시피가 잇따라 유통되며 '맛있으면서 살 안 찌는 집밥 김밥'이라는 서사로 홈쿡·다이어트·K-푸드 채널 전반으로 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~40대 집밥 관심층 및 다이어터에요.<br>'#묵은지참치김밥' '#키토김밥' '#다이어트도시락' 해시태그를 조합한 레시피 영상이 홈쿡 계정에서 집중 생산되고, 술집·이자카야 맛집 계정에서는 '광어·묵은지 소금김밥'이 시그니처 메뉴 소개 포맷으로 반복 등장하는 이중 소비 패턴이에요.<br>중형 이상 계정의 레시피 영상에서 DM 전환 신호가 집중적으로 포착되며, 재료 공구·밀키트 연계 판매로 이어지는 구매 전환 경로가 두드러져요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">셀럽 레시피 서사 선점</div>
+          <div class="campaign-item-body">자사 재료(들기름·묵은지·참치캔 등)를 '셀럽 인증 조합'의 필수 재료로 포지셔닝하는 협찬 캡션 가이드를 중형 홈쿡 계정에 배포하고 '#묵은지참치김밥' 해시태그를 협찬 조건으로 설정해 브랜드 연계를 강화하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">다이어트·키토 파생 라인업 연동</div>
+          <div class="campaign-item-body">키토·저탄수 변형 포맷 확산 신호에 맞춰 '씻어 쓰는 묵은지' 또는 '키토용 소분팩' SKU를 출시하고 레시피 협찬 영상에 자사몰 연계 구매 경로를 고정해 전환을 단일화하기</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">이자카야·회식 채널 진입 타이밍</div>
+          <div class="campaign-item-body">광어·방어 묵은지 소금김밥이 외식 채널 시그니처로 자리잡는 흐름을 활용해 외식 브랜드·맛집 리뷰 계정과 협업을 집행하고, 제품 출처 서사를 캡션에 포함해 외식 채널 내 브랜드 인지 강화를 노리기</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 7월 · GS25 들기름묵은지참치김밥 출시</div>
+          <div class="timeline-body">GS25 들기름묵은지참치김밥 출시로 편의점 채널에서 묵은지 김밥 카테고리 관심이 집중됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">2025년 10월 '오늘도이제이쿡' 채널의 대왕 광어묵은지김밥 쇼츠가 폭발적 도달을 기록하며 가정식 레시피 포맷으로 전환됐음.<br>'30년 집밥 배여사'·'진지인' 등 요리 채널들이 후토마끼 스타일·컵밥 변형 포맷으로 분기하며 확산 경로가 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">2026년 3월~5월 집밥 레시피 계정과 전국 이자카야·맛집 계정의 동시 진입이 이어지며 카테고리가 일상 메뉴로 안착한 상태임.<br>연예인 레시피(김신영·고현정) 파생 포맷과 키토·다이어트 변형 SKU가 복수 등장하고 소형 카페·지역 맛집까지 메뉴판에 정규 편성하는 양산화 시그널이 포착되어 정점 후 안정 단계 진입이 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>Instagram 게시물 다수가 맛집 메뉴판 나열 형태로 묵은지 김밥을 단순 언급한 수준이며, 트렌드 직접 반응 게시물과 구분이 필요해요.</li>
+        <li>dm_send_count가 null인 게시물이 절반 이상이라 DM 전환 신호는 데이터가 존재하는 일부 계정 기준으로 해석했어요.</li>
+        <li>셀럽(강민경·고현정·김신영) 언급은 YouTube 영상 설명 및 Instagram 캡션에서 확인된 내용 기준이며, 해당 셀럽의 직접 게시물은 데이터에 포함되지 않았어요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>GS25 출시 시점(2025년 7월)은 trend_meta 기술 기반이며 content 게시물 내 직접 확인은 불가함.</li>
+        <li>강민경 언급 효과는 유튜브 및 인스타그램 다수 게시물에서 간접 확인되나, 언급 원본 콘텐츠 날짜는 데이터 내 명시되지 않아 2025년 12월 확산 시점으로 추정됨.</li>
+        <li>instagram 게시물 다수가 묵은지 김밥을 메뉴 목록 중 하나로 단순 나열한 경우로, 해당 게시물의 실질적 트렌드 기여도는 제한적일 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-food" id="kw-food-25">
+  <div class="keyword-badge">
+    <span class="num">25</span>
+    <span class="kw-title">무한리필</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">고물가 장기화로 외식 단가 부담이 임계점에 달한 시점에, '정해진 금액으로 양껏 먹는다'는 무한리필의 기본 명제가 가성비 소비 심리와 맞아떨어지며 재점화됐어요.<br>조개구이·게장·샤브샤브·갈비·야끼니꾸 등 업종 전방위에서 '시간제한 없음'·'셀프바 무제한'·'주류 포함' 조건을 앞세운 체험형 릴스가 폭발적으로 생산되며, 인스타그램 지역 맛집 탐색 흐름을 타고 2025년 하반기부터 전국 동시 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~30대 직장인·대학생과 가족 단위 외식 수요자에요.<br>#가성비맛집 #모임장소 해시태그를 조합하고 '저장·공유 필수' CTA를 캡션에 고정하며, 댓글 이벤트(식사권 증정)를 병행해 저장률과 전파력을 동시에 끌어올리는 협찬 패턴이에요.<br>소형·마이크로 계정 중심의 협찬 집행과 DM 유입 중심의 전환 루프가 신뢰 서사('실제로 가봤다')를 만드는 주요 효율 신호예요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">지금 즉시 협찬 집행 타이밍</div>
+          <div class="campaign-item-body">트렌드가 성장기 재진입 국면인 현 시점에 소형·마이크로 지역 맛집 계정을 우선 선정해 협찬을 집행하고, 브랜드의 차별 조건을 캡션 필수 문구로 고정해 포지셔닝 격차를 선점하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">저장·DM 전환 유도 포맷 단일화</div>
+          <div class="campaign-item-body">'저장 필수+친구 태그+댓글 이벤트' 세트를 캡션 가이드로 표준화하고 DM 자동 응답으로 예약 링크나 쿠폰을 즉시 발송해 저장에서 방문 예약까지 전환 경로를 단일화하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">식재료 신선도 서사로 품질 의구심 방어</div>
+          <div class="campaign-item-body">'매일 아침 직송·국내산·당일 소진' 등 식재료 조달 과정을 릴스 초반에 노출하는 포맷을 협찬 크리에이티브 가이드에 의무화하고, 영수증 인증 리뷰 이벤트로 UGC 신뢰 루프를 형성하기.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 7~8월 · 맛또리 채널</div>
+          <div class="timeline-body">2025년 7~8월 맛또리 채널의 '2만 원대 역대급 무한리필' 등 가성비 무한리필 쇼츠 시리즈가 연달아 폭발적 조회 기록됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">유튜브의 단발성 쇼츠 리뷰 포맷이 인스타그램에서 지역 맛집 계정들의 릴스 협찬·체험 콘텐츠로 전환됨.<br>2025년 11월~2026년 3월 전국 단위 지역 맛집 계정들이 조개구이·게장·고기 무한리필 업장을 집중 소개하는 형태로 확산 경로 다변화됨. 2026년 3~4월에는 프랜차이즈 뷔페 협찬 콘텐츠와 독립 로컬 맛집 체험 후기가 동시에 쏟아지며 단일 포맷에서 복수 서브카테고리로 분기됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">2026년 3~5월 게재 게시물에서 협찬·광고 콘텐츠 비중이 증가함.<br>게장·조개구이·야끼니꾸·훠궈 등 세부 업종별 무한리필 신규 진입이 동시다발로 관찰되며 정점 진입으로 진단됨. 댓글 이벤트·식사권 증정이 다수 게시물에서 동시 진행되는 것은 업장 간 경쟁 심화와 전환 유도 필요성 증가 신호로 해석됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 followers 값이 null로 확인되어 팔로워 규모 분석에서 해당 계정은 제외했어요.</li>
+        <li>dm_send_count가 0 또는 null인 게시물이 다수 있어 DM 전환 신호는 수치가 명시된 게시물 기준으로만 판단했어요.</li>
+        <li>인스타그램 데이터가 특정 지역(전주·광주·인천·수원 등) 맛집 계정에 집중되어 있어 전국 단위 일반화에는 한계가 있을 수 있어요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>점화 시점 판단은 content.youtube publishDate 기준 최초 고임팩트 클러스터(2025년 7~8월 맛또리 시리즈)를 근거로 하였으며, 실제 검색량 급등 시점과 다소 차이가 있을 수 있음.</li>
+        <li>인스타그램 게시물 다수가 협찬·광고 표기를 포함하고 있어 유기적 바이럴과 유료 확산의 비중을 분리 판단하기 어려움.</li>
+        <li>현재 단계 판단은 2026년 4~5월 게시물 밀도와 협찬 콘텐츠 집중도를 근거로 하였으며, 실시간 검색량 데이터가 없어 정점 여부는 추가 검증 필요함.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="category-break">
+
+
+<div class="category-header cat-beauty-header">
+  <span class="category-label">뷰티·헤어</span>
+</div>
+
+<section class="keyword-section cat-beauty" id="kw-beauty-04">
+  <div class="keyword-badge">
+    <span class="num">04</span>
+    <span class="kw-title">톤업 선크림</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">스키니멀리즘 기조 아래 '파데프리·쌩얼크림' 화법이 뷰티 릴스를 통해 확산되면서 자외선 차단과 피부 톤 보정을 동시에 해결하는 멀티유즈 제품으로 톤업 선크림이 각인됐어요.<br>다이소의 저가 톤업 선크림 출시에 따라 '올영 대체템' 소비 흐름이 형성되며 가성비 탐색형 소비자층까지 유입돼 확산 속도가 빨라지고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 초중반 스키니멀리즘 실천층 및 파데프리 지향 직장인·대학생이에요.<br>'파데프리' '쌩얼크림' '화잘먹' '깐달걀 피부' 같은 화법을 협찬 캡션에 고정하고, #올영세일·#다이소신상·#내돈내산 태그를 조합해 저장 유도형 게시물을 반복 양산하고 있어요.<br>팔로워 수가 비교적 작은 마이크로 계정이 협찬 게시물을 주로 생산하고, 소규모 계정에서도 DM 문의가 집중되어 조회수 대비 구매 전환 신호로 작동하는 패턴이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">올리브영 세일 구간 선점</div>
+          <div class="campaign-item-body">세일 직전 여러 마이크로 협찬 계정을 동시 집행하고 '#올영세일 #파데프리 #톤업선크림'을 캡션 필수 조건으로 설정해 세일 기간 내 검색 유입과 구매 전환 경로를 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">다이소 채널 역활용 포지셔닝</div>
+          <div class="campaign-item-body">다이소 비교 콘텐츠가 늘어나는 시점에 성분·지속력·피부 적합성 차별점을 전·후 비포앤애프터 릴스 포맷으로 제작해 프리미엄 포지션을 선명하게 각인.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">피부 고민별 컬러 코렉팅 서사 표준화</div>
+          <div class="campaign-item-body">핑크·퍼플·그린·베이지 등 컬러별 코렉팅 화법(예: 노란기 보정용 퍼플, 붉은기 정돈용 그린)을 협찬 캡션 가이드로 표준화해 소비자가 자신의 고민을 제품과 직접 연결하는 UGC 루프를 설계.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 9월 · 다이소 톤업 선크림 출시</div>
+          <div class="timeline-body">2025년 9월 다이소 가성비 톤업 선크림 소개로 단기 폭발적 도달 기록됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">다이소 채널에서 시작된 가성비 비교 포맷이 올리브영 세일 협찬 콘텐츠로 전환됨.<br>이후 달바·이니스프리·아비브 중심의 파데프리 루틴 리뷰로 확산 경로 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">2026년 3~5월 올리브영 세일 시즌에 다수 브랜드 협찬 콘텐츠 단기 집중됨.<br>다이소 신규 SKU 연속 출시와 컬러 세분화 진입이 겹치며 카테고리 양산화 신호 뚜렷함, 저장·DM 중심 정보 수집 패턴 우세.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 views 값이 0으로 기록돼 있어 실제 도달 규모 추정에 한계가 있을 수 있음.</li>
+        <li>dm_send_count가 null 또는 극소값인 게시물이 다수 포함돼 있어 DM 전환 패턴은 유효 데이터 기반으로 제한적으로 해석함.</li>
+        <li>협찬·광고 표기 게시물과 내돈내산 게시물이 혼재해 있어 소비자 자발 확산과 유료 확산의 비율을 정확히 분리하기 어려움.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>2025년 9월 이전 게시물 수가 적어 점화 이전 구간의 확산 흐름 검증 제한됨.</li>
+        <li>다이소 채널 게시물의 도달이 상대적으로 큼. 해당 계정의 전반적 콘텐츠 성격을 고려하면 다이소는 촉매 역할로 해석하는 것이 적절할 수 있음.</li>
+        <li>올리브영 세일 시즌(3~5월) 집중 현상이 현재 단계 판단에 계절성 이벤트 효과를 일부 포함할 가능성 존재.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-beauty" id="kw-beauty-05">
+  <div class="keyword-badge">
+    <span class="num">05</span>
+    <span class="kw-title">펩타이드</span>
+    <span class="phase-tag">급상승 구간</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">저분자 펩타이드 기술 발전으로 흡수율 한계가 극복되면서, '과학적으로 입증된 안티에이징 성분'을 요구하는 소비자 수요와 맞물려 펩타이드가 스킨케어 필수 성분으로 재각인됐어요.<br>코스알엑스 더 6 펩타이드 스킨 부스터 세럼이 올리브영 세일 기간마다 반복 입점·할인 구조로 협찬 콘텐츠를 폭발적으로 양산하고, 메디큐브가 PDRN+펩타이드 라인을 지속 확장하면서 '펩타이드=화잘먹·탄력 치트키'라는 공식이 인스타그램 전반에 빠르게 각인되고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 후반~30대 중반 효능 중심 스킨케어 소비자이에요.<br>올리브영 세일 기간에 맞춰 '화잘먹' '결광' '슬로우에이징' 화법을 협찬 캡션에 표준화하고, #펩타이드세럼 #올영세일 해시태그를 고정 조합으로 사용하며 구매 전환 CTA를 캡션 말미에 배치하는 패턴이 반복 관찰이에요.<br>마이크로~소형 계정의 협찬 게시물 비중이 압도적으로 높고, 팔로워 규모가 작은 계정일수록 오히려 DM 유입 신호가 산발적으로 확인되는 반면, 중·대형 계정은 댓글 이벤트 방식으로 전환 경로를 단일화하는 구조가 두드러져요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">올영 세일 주기 선점</div>
+          <div class="campaign-item-body">올리브영 세일 일정과 연동한 세일 기간 한정 기획세트 구성 및 세일 개시 2주 전부터 마이크로 계정 협찬 사전 적재로 세일 주기 선점하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">효능 화법 표준화 후 UGC 루프 설계</div>
+          <div class="campaign-item-body">협찬 캡션의 '화잘먹·결광·슬로우에이징' 화법을 브랜드 가이드로 표준화하고, 댓글 이벤트로 수집한 UGC를 광고 소재로 재활용하는 루프 설계하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">성분 진화 서사로 경쟁 포지셔닝</div>
+          <div class="campaign-item-body">저분자 펩타이드의 업그레이드 포인트(함량·종류 등)를 협찬 캡션 필수 항목으로 정하고 '리뉴얼 전·후' 비교 포맷으로 제품의 성분 차별점을 각인시키기.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 10~11월 · COSRX 캠페인</div>
+          <div class="timeline-body">코스알엑스 더 6 펩타이드 스킨 부스터 세럼을 전면에 내세운 NCT 마크 협업 캠페인의 유튜브 공개로 펩타이드 세럼 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">코스알엑스 공식 계정의 올리브영 세일 연계 협찬 릴스에서 뷰티 전문가·일반 사용자 계정의 '화잘먹 루틴' 리뷰 포맷으로 형식 전환되며 2026년 2~3월 단기 집중 확산 기록됨.<br>메디큐브 PDRN 핑크 펩타이드 앰플은 의사 계정의 팩폭 리뷰에서 대형 뷰티 유튜버의 세럼 비교 영상으로 포맷이 분기하며 확산 경로 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 급상승 구간</div>
+          <div class="timeline-body">2026년 4~5월 메디큐브 제로 모공 원데이 펩타이드 세럼 리뉴얼 출시를 계기로 대형 계정부터 소형 계정까지 협찬 게시물이 단기 집중됨, 코스알엑스 블루 펩타이드 세럼 신제품이 5월 올리브영 온라인 런칭과 맞물리며 신규 SKU 진입이 겹쳐 급상승 구간 진입 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 dm_send_count가 0 또는 null로 기록되어 DM 전환 신호는 일부 계정에 한해 확인 가능하며, 전체 트렌드의 DM 효율을 단정하기 어려움.</li>
+        <li>협찬 게시물이 대다수를 차지해 자발적 소비자 반응과 협찬 유발 반응의 구분이 제한적임.</li>
+        <li>유튜브 데이터는 조회수 편차가 크고 일부 영상은 뷰티 외 카테고리(브이로그·엔터) 내 간접 노출로, 펩타이드 키워드의 직접적 반응 지표로 사용하기에 한계가 있음.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>점화 시점 판단은 유튜브 content.youtube의 publishDate 기준이며, 인스타그램 최초 게시물과 약 1~2개월 선행 관계로 추정됨.</li>
+        <li>메디큐브 제로 모공 원데이 펩타이드 세럼의 정확한 리뉴얼 출시일은 데이터 내 명시되지 않아 게시물 집중 시점(2026년 4월 하순)을 기준으로 판단함.</li>
+        <li>코스알엑스 블루 펩타이드 세럼의 올리브영 온라인 런칭일(2026년 5월 1일)은 게시물 description 내 언급 기준이며 공식 발표 자료로 검증되지 않음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-beauty" id="kw-beauty-06">
+  <div class="keyword-badge">
+    <span class="num">06</span>
+    <span class="kw-title">중단발 레이어드컷</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">선미의 허쉬컷, 아이브 레이의 C컬 레이어드 등 다수의 여자 연예인이 중단발 레이어드 스타일을 연달아 선보이며 '볼륨감+얼굴형 보완+간편한 손질'이라는 조합이 소비자에게 각인됐어요.<br>이 조합이 '거지존 극복'이라는 실용적 니즈와 맞물리면서 헤어 디자이너 계정과 셀프 스타일링 콘텐츠 포맷으로 인스타그램·유튜브 전반에 걸쳐 지속 확산되고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20~30대 뷰티 얼리어답터 여성층이에요.<br>'저장해두고 참고하세요' 같은 저장·댓글 유도 CTA와 #헤어컨설팅·#하이레이어드컷·#거지존 해시태그 조합을 캡션에 고정하는 패턴이에요.<br>협찬 없이도 DM 예약을 유도하는 게시물이 빈번하고, 저장·댓글 유도 CTA 반복과 특정 해시태그 조합이 검색·예약 전환으로 연결되는 효율 신호가 있어요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">셀프 손질 튜토리얼 PPL 선점</div>
+          <div class="campaign-item-body">인스타·유튜브에서 반복되는 '드라이기만으로 볼륨 살리기' 등 초간단 손질 포맷에 헤어 드라이어·에센스·스타일링 기기를 자연스럽게 녹인 협찬 콘텐츠 집행으로 '집에서도 미용실 퀄리티' 서사와 제품 기능 각인 동시 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">거지존 극복 서사 브랜드 연결</div>
+          <div class="campaign-item-body">'거지존 탈출' '애매한 기장도 고급지게' 같은 트렌드 언어를 브랜드 협찬 캡션 가이드에 반영해, 헤어 케어·스타일링 제품을 실용적 니즈 해결 서사와 연결함.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">오프라인 전환을 위한 예약 연동</div>
+          <div class="campaign-item-body">미용실 계정에서 '네이버 예약·프로필 링크' CTA가 자주 등장하는 점을 활용해, 협찬 시 네이버 예약 이벤트(할인 코드 등)를 조건으로 계약해 온라인 노출에서 오프라인 시술 예약까지 이어지는 전환 경로 설계.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 5~8월 · 다수 계정</div>
+          <div class="timeline-body">특정 계정 점화보다 미용실 시술·튜토리얼 게시를 계기로 관심이 집중된 패턴.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">초기 미용실 시술 결과물 이미지 중심 게시에서 헤어 전문 채널의 손질법·펌 결과물 쇼츠 포맷으로 전환되며 단기 집중 도달이 기록됨.<br>이후 '거지존 극복', '셀프스타일링', '얼굴형 커버 컨설팅' 등 실용 정보 포맷으로 분기하며 확산 경로가 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">2026년 3~5월 기준 헤어 디자이너 교육 클래스 모집, 커트 기법 강의 콘텐츠 등 기술 양산화 시그널이 뚜렷하게 등장하며 정점 후 안정 단계 진입이 확인됨.<br>다수 소형 계정의 모방 진입과 지역 미용실 단위 콘텐츠 범람이 카테고리 포화 수준에 근접하고 있음.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>일부 게시물의 followers 값이 null로 확인되어 팔로워 규모 분포 분석에 일부 공백이 있을 수 있어요.</li>
+        <li>views가 0으로 기록된 게시물이 다수 포함되어 있어, 실제 도달 규모는 데이터상 수치보다 클 수 있어요.</li>
+        <li>인스타그램 게시물 기준 분석이 중심이며, 유튜브 채널별 구독자·조회수 편차가 크므로 플랫폼 간 효율 비교 시 별도 검증이 필요해요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>일부 인스타그램 게시물의 views 값이 0으로 기록되어 있어 해당 게시물의 실제 도달 규모 판단에 제한이 있음.</li>
+        <li>팔로워 수가 null인 계정(gonaru00)이 포함되어 있어 해당 게시물의 계정 영향력 평가에 불확실성이 존재함.</li>
+        <li>점화 시점은 데이터 내 최초 게시일(2025년 5월)을 기준으로 판단하였으나, 실제 트렌드 시작은 더 이전일 가능성이 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="category-break">
+
+
+<div class="category-header cat-enter-header">
+  <span class="category-label">엔터테인먼트</span>
+</div>
+
+<section class="keyword-section cat-enter" id="kw-enter-05">
+  <div class="keyword-badge">
+    <span class="num">05</span>
+    <span class="kw-title">베이비몬스터</span>
+    <span class="phase-tag">급상승 구간</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">YG엔터테인먼트가 '블랙핑크 후속'이라는 서사를 데뷔 전부터 단계적 예고 콘텐츠로 설계해 팬덤 기대감을 먼저 형성했고, 데뷔곡 공개 직후 유튜브 폭발적 조회와 틱톡 바이럴이 동시에 점화되며 글로벌 팬덤 확장의 기반이 만들어졌어요.<br>2026년 5월 미니 3집 '춤(CHOOM)' 컴백과 2026~27 월드투어 발표가 맞물리면서 공식 대형 채널의 티저 콘텐츠·팬페이지 팬캠·댄스 챌린지 튜토리얼이 동시다발로 생산되는 '릴리즈 피크' 구간에 현재 진입해 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">20대 여성 K팝 팬덤 및 동남아·일본 중심의 글로벌 팬층.<br>컴백 당일 멤버별 포인트 댄스 컷·팬캠 클립을 즉각 재편집해 올리는 반응형 소비가 두드러지며, '#CHOOM #춤 #babymonster'를 멤버 개인 해시태그(#KAWAIRUKA 등)와 함께 조합하는 멀티태그 패턴이 확산 중.<br>공식 대형 계정이 도달 볼륨을 만들고, 마이크로~소형 팬페이지가 DM 전송이 활발한 멤버 포커스 클립으로 팬덤 내 확산을 촉진하는 이중 구조이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">월드투어 연계 후원 선점</div>
+          <div class="campaign-item-body">공연 투어 티켓 판매 활성 구간에 공연 후원·현장 부스 협찬 계약을 우선 체결해 '춤(CHOOM) 투어 공식 파트너' 서사를 팬덤 접점 콘텐츠 캡션에 고정, 브랜드 인지 전환 경로 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">댄스 챌린지 UGC 루프 설계</div>
+          <div class="campaign-item-body">공식 포인트 댄스 튜토리얼 화법을 협찬 캡션 가이드로 표준화해 마이크로 댄서·팬페이지에 배포하고 브랜드 CTA를 챌린지 참여 조건에 연결해 팬덤에서 일반 소비자까지 확산 경로 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">멤버 IP 연계 한정 콜라보 선점</div>
+          <div class="campaign-item-body">패션·라이프스타일 협업 사례에서의 팬 반응이 높은 점을 활용해 멤버 단독 한정 패키지 콜라보 협의를 추진하고 선예약 이벤트로 구매 의향 전환을 촉진.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 7월 · BABYMONSTER 'HOT SAUCE' M/V</div>
+          <div class="timeline-body">2025년 7월 BABYMONSTER 공식 채널의 'HOT SAUCE' 뮤직비디오 및 댄스 프랙티스 공개로 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">BABYMONSTER 공식 채널의 퍼포먼스 영상에서 출발해 멤버 중심 팬 채널과 편집된 숏폼 포맷으로 전환되며 글로벌 도달이 확대됨.<br>2025년 10월 'WE GO UP' 컴백 이후에는 팬캠·라이브 클립·언박싱 등 파생 포맷으로 분기하며 인스타그램·유튜브 전반으로 확산 경로가 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 급상승 구간</div>
+          <div class="timeline-body">2026년 4~5월 미니 3집 '춤(CHOOM)' 컴백을 앞두고 멤버별 무빙 포스터가 YG 공식 채널과 일본 레이블 채널에 집중 게시되어 팬덤 트래픽이 단기 급증함.<br>컴백 당일 음원 플랫폼과 외부 매거진의 협찬 콘텐츠 진입이 겹치며 급상승 구간 진입이 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>인스타그램 게시물 대다수가 터키어·인도네시아어 팬페이지 계정으로 구성되어 있어 국내 팬덤 행동 패턴을 직접 대표하지 않을 수 있음.</li>
+        <li>dm_send_count가 null인 게시물이 다수 포함되어 있어 DM 전환 효율 추정에 한계가 있으며, 유효 DM 수치는 일부 계정에서만 관찰됨.</li>
+        <li>팔로워 값이 null인 팬캠 계정이 존재해 해당 계정의 규모 분류가 불가능하며, 실제 도달 규모는 조회수 기반으로만 간접 추정됨.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>인스타그램 데이터의 상당수가 터키어 팬 계정(babymonstermagazintr) 단일 출처에 집중되어 있어 국내 및 글로벌 전체 확산 강도를 과소 반영할 수 있음.</li>
+        <li>일부 인스타그램 게시물의 likes·comments 값이 -1로 수집되어 정확한 인게이지먼트 산출에 한계가 있음.</li>
+        <li>유튜브 공식 채널 조회수는 팬 채널 대비 압도적으로 높으나, 틱톡 등 숏폼 플랫폼 데이터가 포함되지 않아 실제 바이럴 규모는 본 분석보다 클 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-enter" id="kw-enter-06">
+  <div class="keyword-badge">
+    <span class="num">06</span>
+    <span class="kw-title">2026 한일가왕전</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">MBN과 크레아 스튜디오가 '현역가왕' 시리즈 팬덤을 한일 국가 대항전 포맷으로 결집시킨 점이 트렌드의 배경이에요.<br>1·2차전 연속 무승부라는 이례적 전개가 '짜고 친 거 아냐?' 논쟁을 촉발하며, 최종회를 앞두고 유튜브 클립·인스타 무대 하이라이트 중심으로 한일 양국 팬덤의 공유가 집중되는 구조이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">40대~60대 중장년층 중심의 트로트·엔카 팬덤층이에요.<br>출연진별 응원 투표 독려, 무대 클립 리그램, 팬카페 연계 투표 안내 등 팬덤 주도형 확산 행동이 인스타그램 전반에서 뚜렷한 활동으로 이어지고 있어요.<br>공식 방송사 계정의 짧은 하이라이트 릴스 집중 배포, 응원 링크 안내(투표 유도), '#2026한일가왕전' 해시태그 집중 사용이 공유·저장·댓글 유입을 촉진하는 고유한 효율 신호이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">종영 직후 하이라이트 연계 광고 선점</div>
+          <div class="campaign-item-body">종영 직후 유튜브·인스타 하이라이트 클립에 프리롤·미드롤 광고 집행으로 잔여 화제성 활용해 브랜드 노출 선점.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">출연진 콜라보 자체 콘텐츠 기획</div>
+          <div class="campaign-item-body">출연진과의 콜라보형 자체 콘텐츠를 기획해 시즌 종료 후 팬 커뮤니티 유입과 브랜드 친밀도 강화를 도모.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">다음 시즌 기획 초기 참여로 PPL 포지션 확보</div>
+          <div class="campaign-item-body">다음 시즌 기획 초기 단계 참여를 목표로 방송사와 협의해 PPL·스폰서십 포지션을 선점.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026년 4월 · MBN 2026 한일가왕전 첫 방송</div>
+          <div class="timeline-body">2026년 4월 MBN &lt;2026 한일가왕전&gt; 첫 방송을 기점으로 한일 음악 국가대항전에 대한 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">MBN MUSIC 채널의 무대 클립 쇼츠 포맷이 단기 폭발적 도달을 기록하며 유튜브 확산의 핵심 경로로 작동함.<br>이후 MBN 계열 채널들이 회차별 하이라이트·리액션 해설 포맷으로 분기하고 인스타그램 일부 계정이 무대 클립과 출연진 밀착 영상으로 재가공하며 팬덤 내 확산 경로가 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">5월 12일 최종회를 앞두고 회차 예고·선공개 콘텐츠가 집중 게시되며 팬덤 결집 신호는 유지되고 있으나, 시즌 종영이 임박한 만큼 신규 유입보다 기존 팬덤 소비 중심으로 전환된 정점 후 안정 단계로 진입 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>별도 데이터 주의사항 없음.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>일부 인스타그램 게시물의 views 값이 0으로 기록되어 있어 실제 도달 규모 판단에 제한이 있음.</li>
+        <li>시청률 수치 및 연령·성별 시청자 구성 데이터는 입력 데이터에 포함되지 않아 정성적 해석으로 대체함.</li>
+        <li>차기 시즌 기획 여부 및 일정은 공개된 정보가 없어 광고주 권고는 가능성 기반으로 작성됨.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-enter" id="kw-enter-07">
+  <div class="keyword-badge">
+    <span class="num">07</span>
+    <span class="kw-title">춤추는 곰돌 랜덤플레이댄스</span>
+    <span class="phase-tag">정점 후 안정</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">댄스 크리에이터 춤추는 곰돌(AFSTARZ 대표)이 오프라인 버스킹과 유튜브·틱톡·인스타그램을 동시 운영하며 '누구나 즉흥 참여'하는 랜덤플레이댄스 포맷을 대중화했고, 어린이날·지역 축제 등 공공 행사에 정기 섭외되며 K-pop 팬덤 바깥으로 접점이 확장됐어요.<br>AFSTARZ 소속 키즈 크리에이터들이 공통 해시태그를 묶어 콘텐츠를 양산하면서 팬덤 연령대가 낮아지고 '아이돌 지망생 키즈' 서사가 결합된 변형 포맷으로 확산 중이에요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">초등학생 이하 키즈와 이들을 동반한 30·40대 부모층이에요.<br>K-pop 커버댄스와 챌린지 참여를 일상적으로 소비하며, 캡션과 해시태그에서 성장 서사(예: '#아이돌지망생 #키즈크리에이터 #캐스팅')를 반복적으로 사용하는 사용자가 주요 반응층이에요.<br>주요 확산 신호는 캡션 해시태그의 일관성, 오프라인 행사 공지에서의 DM·댓글 집중, 특정 크리에이터의 반복 업로드로 인한 계정 분포 편중이에요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">오프라인 버스킹 현장 후원 선점</div>
+          <div class="campaign-item-body">AFSTARZ 버스킹 스케줄 패턴에 맞춘 음료·의류·소품 현장 협찬 계약 선제 체결 및 행사 공지 캡션에 브랜드 태그 필수화로 오프라인 참여자와 온라인 시청자 동시 노출 경로 단일화.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">키즈 크리에이터 시리즈 협찬 설계</div>
+          <div class="campaign-item-body">공통 해시태그·성장 서사 캡션 구조에 브랜드 성장 메시지를 결합한 협찬 가이드 제공 및 유튜브 쇼츠·인스타 릴스 동시 배포로 크로스플랫폼 누적 노출 설계.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">지자체·공공 행사 연계 브랜드 각인</div>
+          <div class="campaign-item-body">지역 공공 행사 섭외 패턴을 활용해 지자체·기관과 공동 후원 형태로 진입하고, 현장 참여 인증형 이벤트로 오프라인 참여자를 자사 채널 전환 경로로 연결.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2025년 6월 · AFSTARZ 키즈 크리에이터 군</div>
+          <div class="timeline-body">2025년 6월 AFSTARZ 소속 키즈 크리에이터들의 랜덤플레이댄스 쇼츠 콘텐츠가 유튜브에 집중 게시되며 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">유튜브 쇼츠 중심의 버스킹·챌린지 영상 포맷이 인스타그램 릴스로 이식되어 팬 참여형 반응 콘텐츠로 전환됨.<br>2026년 초부터 지자체 어린이날 행사 초청 및 지역 오프라인 버스킹 스케줄 공지 게시물이 복수 계정에서 동시 등장하며 온·오프라인 확산 경로 다변화됨.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 후 안정</div>
+          <div class="timeline-body">AFSTARZ 소속 크리에이터들의 인스타그램 게시 빈도는 2026년 4~5월에 최고조를 기록하고 있으나, 개별 콘텐츠의 전환 신호 농도는 고르지 않고 팔로워 대비 조회 효율이 분산되는 양상임.<br>지자체·지역 행사 초청이 정례화되고 월간 버스킹 스케줄이 공식 계정에서 반복 공지되며 카테고리가 제도화·루틴화 단계로 진입 확인됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>인스타그램 게시물 다수가 특정 키즈 크리에이터의 반복 업로드로 구성되어 있어 계정별 콘텐츠 분포가 편중되어 있을 수 있어요.</li>
+        <li>dm_send_count가 null인 게시물이 다수라 DM 전환 신호는 값이 존재하는 일부 게시물 기준으로만 분석되었어요.</li>
+        <li>유튜브 데이터의 조회수·좋아요 수는 쇼츠 포맷 특성상 인스타그램 릴스와 직접 비교가 어려워요.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>인스타그램 게시물 다수(leegahee1004_nayul)가 '#오늘아님' 태그를 포함해 실제 촬영 시점과 게시 시점이 불일치할 수 있으며, 이는 확산 시점 판단의 정확도에 영향을 줄 수 있음.</li>
+        <li>유튜브 데이터의 조회수는 누적 수치로, 게시 직후 급등 여부와 현재 유입 속도를 구분하기 어려워 단계 판단은 인스타그램 게시 밀도와 오프라인 이벤트 신호를 병행 참고함.</li>
+        <li>틱톡 플랫폼 데이터가 포함되지 않아 해당 채널의 확산 기여도는 분석에서 제외됨.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<section class="keyword-section cat-enter" id="kw-enter-08">
+  <div class="keyword-badge">
+    <span class="num">08</span>
+    <span class="kw-title">성시경의 고막남친</span>
+    <span class="phase-tag">정점 진입</span>
+  </div>
+
+  <div class="columns">
+
+    <div class="panel">
+      <div class="panel-title"><span class="accent">AI 분석</span> 광고주 인사이트</div>
+
+      <div class="insight-block yellow">
+        <div class="insight-block-label">🕯️ 왜 뜨고 있나요?</div>
+        <div class="insight-block-body">KBS '더 시즌즈' 아홉 번째 시즌 MC로 확정된 성시경이 '뻔하지 않고 웃기기 위해' 직접 '고막남친'이라는 제목을 골랐다고 밝히면서, 40대 중반 아티스트와 '남친'이라는 표현 사이의 괴리감이 온라인 커뮤니티와 언론에서 논란으로 점화됐어요.<br>이 제목 논란 자체가 화제성을 만들었고, 3월 27일 첫 방송 이후 악뮤·이무진·승관 등 출연 아티스트별 무대 클립이 KBS 공식 채널을 통해 꾸준히 누적되며 트렌드가 성숙 단계로 안착하고 있어요.</div>
+      </div>
+
+      <div class="insight-block blue">
+        <div class="insight-block-label">👤 누구에게 인기있나요?</div>
+        <div class="insight-block-body">30~40대 발라드·보컬 중심 음악 애호가층과 성시경 장기 팬덤이에요.<br>게스트 아티스트(이무진·악뮤·승관 등) 팬덤이 무대 클립을 '#고막남친 #성시경의고막남친' 해시태그로 재가공·배포하며 방송 외부 확산을 주도하고 있어요.<br>인스타그램에서는 공식 계정 게시물이 많은 한편, 마이크로 음악 큐레이션 계정들의 '현장 감동 서사' 캡션이 저장·공유 전환을 높이며 추가 확산을 만들어내고 있어요.</div>
+      </div>
+
+      <div class="insight-block purple">
+        <div class="insight-block-label">✦ 캠페인에 어떻게 활용하면 좋을까요?</div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">방송 PPL 타이밍 선점</div>
+          <div class="campaign-item-body">협찬 협의 진행 및 게스트 대기실 소품·MC 의상 등 편안하고 신뢰감 있는 일상 아이템으로 노출 범위 한정하여 성시경 이미지와 자연스럽게 연동하기.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">무대 감동 서사 콘텐츠 연계</div>
+          <div class="campaign-item-body">고반응 무대 클립을 생산·확산하는 마이크로 음악 큐레이션 계정과 협업해 감성 CTA(저장·공유 유도)를 삽입한 협업형 콘텐츠 집행.</div>
+        </div>
+        <div class="campaign-item">
+          <div class="campaign-item-header">세대 공명 포지셔닝 각인</div>
+          <div class="campaign-item-body">80·90년대 명곡 재발견과 선후배 공명 서사를 활용한 브랜드 스토리 릴스 제작·배포로 '검증된 클래식' 포지션 각인.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">트렌드 스토리</div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✦</div>
+          <div class="timeline-label">점화</div>
+          <div class="timeline-sub">2026년 3월 · 더 시즌즈-성시경의 고막남친 타이틀 공개</div>
+          <div class="timeline-body">2026년 3월 KBS '더 시즌즈' 아홉 번째 시즌 타이틀 공개와 함께 제목 선정 비하인드가 화제가 되며 카테고리 관심 집중.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">👥</div>
+          <div class="timeline-label">확산 경로</div>
+          <div class="timeline-body">공식 인스타그램 계정의 예고·스포일러 이미지 포스팅에서 공식 유튜브 채널의 무대 하이라이트 쇼츠 포맷으로 형식이 전환되며 단기 폭발적 도달이 기록됨.<br>이후 음악 큐레이션 계정들이 무대 감상 서사형 롱캡션 콘텐츠로 재가공하며 이무진·한로로·악뮤 등 게스트 중심의 감동 무대 바이럴로 확산 경로 다변화.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔥</div>
+          <div class="timeline-label">현재 단계 · 정점 진입</div>
+          <div class="timeline-body">회차가 거듭될수록 게스트 조합별 듀엣 무대가 독립적인 바이럴 단위로 소비되고, 외부 음악 큐레이션 계정의 자발적 재가공 콘텐츠가 집중적으로 생산되며 정점 진입 확인됨.<br>특히 2026년 5월 이무진X성시경 '숙녀에게' 듀엣 무대가 인스타그램 등 플랫폼에서 전환 신호 농도 상승을 유발하며 프로그램 외부로의 콘텐츠 확산 가속화됨.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dev-panel">
+      <div class="dev-panel-header">
+        <span class="dev-badge">DEV ONLY</span>
+        <span class="dev-panel-title">데이터 주의사항</span>
+      </div>
+      <div class="dev-section-label">광고주 인사이트</div>
+      <ul>
+        <li>인스타그램 게시물이 공식 계정 단일 출처에 집중되어 있어 독립적인 UGC 확산 규모는 제한적으로 추정됨.</li>
+        <li>audience 연령대·성별 비중은 공개 데이터로 특정되지 않아, 콘텐츠 화법 및 게스트 팬덤 패턴에서 간접 추론한 것임.</li>
+        <li>일부 게시물의 views 값이 0으로 기재되어 있어 해당 게시물의 실제 도달 규모는 확인 불가.</li>
+        <li>dm_send_count가 null인 게시물이 일부 존재해 DM 전환 패턴의 완전한 분석에는 한계가 있음.</li>
+      </ul>
+      <div class="dev-section-label">트렌드 스토리</div>
+      <ul>
+        <li>일부 게시물(views: 0, dm_send_count: null)은 수집 시점 기준 미집계 상태일 수 있어 해당 게시물의 임팩트 판단에서 제외됨.</li>
+        <li>인스타그램 데이터가 공식 계정(theseasons2023) 중심으로 편중되어 있어 팬 계정 및 일반 사용자 확산 규모는 과소 반영되었을 수 있음.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+</body>
+</html>
