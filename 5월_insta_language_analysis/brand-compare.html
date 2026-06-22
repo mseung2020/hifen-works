@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>인광기 — 카테고리 언어 비교</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --orange:#F7692B;
+      --orange-bg:#FFF3EE;
+      --orange-bg2:#FFEDE3;
+      --orange-border:#FFD4BF;
+      --bg:#F5F6F8;
+      --white:#fff;
+      --border:#E8EAEE;
+      --border-light:#F0F2F5;
+      --text1:#1A1A2E;
+      --text2:#545454;
+      --text3:#9B9B9B;
+      --text4:#BDBDBD;
+      --red:#E04A4A;
+      --red-bg:#FFEEEE;
+      --red-border:#FFCFCF;
+    }
+    body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text1);font-size:13px;}
+
+    /* ── HEADER ── */
+    .header-wrap{position:sticky;top:0;z-index:200;}
+    .header{height:70px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:0;}
+    .logo{display:flex;align-items:center;text-decoration:none;margin-right:32px;flex-shrink:0;gap:7px;}
+    .logo-icon{width:28px;height:28px;background:var(--orange);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+    .logo-text{font-size:18px;font-weight:900;color:var(--text1);letter-spacing:-.6px;}
+    .header-nav{display:flex;align-items:center;gap:4px;margin-right:16px;}
+    .nav-item{display:flex;align-items:center;gap:4px;font-size:14px;color:var(--text2);font-weight:500;padding:6px 14px;border-radius:6px;border:none;background:none;cursor:pointer;font-family:inherit;white-space:nowrap;text-decoration:none;transition:background .12s,color .12s;}
+    .nav-item:hover{background:var(--bg);color:var(--text1);}
+    .new-badge{font-size:9px;font-weight:800;color:var(--orange);letter-spacing:.3px;line-height:1;flex-shrink:0;}
+    .header-search{width:280px;height:36px;display:flex;align-items:center;gap:7px;background:#F5F6F8;border:1px solid transparent;border-radius:8px;padding:0 12px;margin-left:auto;transition:border-color .15s,box-shadow .15s;}
+    .header-search:focus-within{border-color:var(--orange);background:#fff;box-shadow:0 0 0 3px rgba(247,105,43,.08);}
+    .header-search input{flex:1;border:none;outline:none;background:transparent;font-size:13px;font-family:inherit;color:var(--text1);}
+    .header-search input::placeholder{color:var(--text4);}
+    .header-util{display:flex;align-items:center;gap:8px;margin-left:14px;}
+    .header-news{font-size:14px;color:var(--text2);border:none;background:none;cursor:pointer;font-family:inherit;padding:6px 10px;border-radius:6px;white-space:nowrap;font-weight:500;display:flex;align-items:center;gap:3px;transition:background .12s;}
+    .header-news:hover{background:var(--bg);}
+    .header-avatar{width:32px;height:32px;border-radius:50%;background:#3DBA85;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;cursor:pointer;}
+
+    /* ── MAIN ── */
+    #main{max-width:1280px;margin:0 auto;padding:18px 24px 48px;}
+
+    /* ── CARD BASE ── */
+    .card{background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+    .card-head{padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+    .card-title{font-size:13px;font-weight:800;color:var(--text1);}
+    .card-sub{font-size:11px;color:var(--text3);}
+    .ai-badge{font-size:11px;font-weight:700;background:var(--orange);color:#fff;padding:3px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;}
+
+    /* ── CATEGORY BAR ── */
+    .cat-bar{background:#fff;border:1px solid var(--border);border-radius:12px;margin-bottom:12px;position:relative;}
+    .cat-bar-inner{display:flex;align-items:center;gap:5px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;}
+    .cat-bar-inner::-webkit-scrollbar{display:none;}
+    .cat-bar-arrow{position:absolute;top:50%;right:8px;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;border:1.5px solid var(--orange-border);background:#fff;color:var(--orange);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:-8px 0 12px rgba(255,255,255,.9);font-family:inherit;transition:all .14s;z-index:2;}
+    .cat-bar-arrow:hover{background:var(--orange-bg);border-color:var(--orange);}
+    .cat-tab{font-size:12px;font-weight:600;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);color:var(--text2);background:#fff;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .14s;flex-shrink:0;}
+    .cat-tab.on{border-color:var(--orange);color:var(--orange);font-weight:700;}
+    .cat-tab:hover:not(.on){border-color:var(--text3);color:var(--text1);}
+
+    /* ── BRAND SELECTOR ── */
+    .selector-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:12px 20px;margin-bottom:12px;}
+    .selector-row{display:flex;align-items:center;gap:10px;}
+    .selector-label{font-size:11px;font-weight:700;color:var(--text3);white-space:nowrap;flex-shrink:0;}
+    .preset-tabs{display:flex;gap:5px;}
+    .preset-tab{font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px;border:1.5px solid var(--border);color:var(--text2);background:var(--white);cursor:pointer;transition:all .14s;white-space:nowrap;font-family:inherit;}
+    .preset-tab.on{background:var(--orange);color:#fff;border-color:var(--orange);}
+    .preset-tab:hover:not(.on){border-color:var(--orange);color:var(--orange);}
+    .selector-sep{width:1px;height:22px;background:var(--border);flex-shrink:0;}
+
+    /* 원형 브랜드 칩 */
+    .brand-circles{display:flex;align-items:center;gap:10px;}
+    .bc-item{display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;}
+    .bc-wrap{position:relative;width:40px;height:40px;}
+    .bc-img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border);display:block;}
+    .bc-img-fallback{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;}
+    .bc-x{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--text2);color:#fff;border:1.5px solid #fff;font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-family:inherit;padding:0;transition:background .12s;}
+    .bc-x:hover{background:var(--text1);}
+    .bc-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+    .bc-name{font-size:10px;font-weight:600;color:var(--text2);white-space:nowrap;}
+    .bc-add-item{display:flex;flex-direction:column;align-items:center;gap:3px;align-self:flex-start;flex-shrink:0;}
+    .bc-add{width:40px;height:40px;border-radius:50%;border:1.5px dashed var(--orange-border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--orange);font-weight:300;transition:all .14s;flex-shrink:0;}
+    .bc-add:hover{border-color:var(--orange);background:var(--orange-bg);}
+    .bc-add-label{font-size:10px;font-weight:700;color:var(--orange);white-space:nowrap;}
+
+    /* 크레딧 표시 */
+    .credit-wrap{display:flex;align-items:center;margin-left:auto;flex-shrink:0;}
+    .credit-pill{display:flex;align-items:center;gap:7px;background:#E8EFFD;border-radius:10px;padding:6px 6px 6px 13px;}
+    .credit-diamond{color:#4A7FE7;font-size:15px;line-height:1;flex-shrink:0;}
+    .credit-text{font-size:12px;font-weight:600;color:var(--text1);white-space:nowrap;}
+    .credit-charge{font-size:12px;font-weight:700;background:#4A7FE7;color:#fff;border:none;border-radius:7px;padding:6px 13px;cursor:pointer;font-family:inherit;transition:opacity .12s;white-space:nowrap;}
+    .credit-charge:hover{opacity:.88;}
+
+    /* ── TERRITORY CARD ── */
+    .territory-card{margin-bottom:12px;}
+    .territory-legend{display:flex;align-items:center;gap:14px;padding:2px 20px 14px;flex-wrap:wrap;}
+    .legend-item{display:flex;align-items:center;gap:5px;}
+    .legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+    .legend-label{font-size:11px;color:var(--text2);font-weight:600;}
+    .legend-sep{width:1px;height:14px;background:var(--border);flex-shrink:0;}
+    .legend-empty-wrap{display:flex;align-items:center;gap:5px;}
+    .legend-empty-box{width:18px;height:9px;border-radius:2px;background:var(--border-light);border:1.5px solid var(--border);}
+
+    .territory-body{padding:4px 20px 22px;}
+    .territory-row{display:flex;align-items:center;gap:12px;margin-bottom:9px;}
+    .territory-row:last-child{margin-bottom:0;}
+    .t-label{font-size:12px;font-weight:700;color:var(--text2);width:124px;flex-shrink:0;text-align:right;}
+    .t-bar-wrap{flex:1;height:34px;border-radius:8px;overflow:hidden;display:flex;background:var(--border-light);border:1px solid var(--border);position:relative;}
+    .t-bar-segment{height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text1);background:#fff;border-right:1px solid var(--border);transition:width .45s cubic-bezier(.4,0,.2,1);overflow:hidden;white-space:nowrap;cursor:pointer;position:relative;flex-shrink:0;}
+    .t-bar-segment:last-of-type{border-right:none;}
+    .t-bar-segment:hover{background:var(--orange-bg);}
+    .t-bar-segment::after{content:'↗';position:absolute;right:5px;top:50%;transform:translateY(-50%);font-size:9px;opacity:0;transition:opacity .15s;color:var(--orange);}
+    .t-bar-segment:hover::after{opacity:1;}
+    .seg-content{display:flex;align-items:center;gap:4px;padding:0 8px;pointer-events:none;overflow:hidden;}
+    .seg-logo{width:16px;height:16px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid rgba(0,0,0,.08);}
+    .seg-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .t-bar-empty{flex:1;height:100%;background:var(--border-light);cursor:default;}
+    .t-right{width:90px;flex-shrink:0;display:flex;align-items:center;gap:6px;}
+    .t-empty-pct{font-size:11px;font-weight:800;color:var(--text4);}
+    .t-empty-pct.opportunity{color:var(--orange);}
+    .t-white-badge{font-size:9px;font-weight:800;background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border);padding:2px 6px;border-radius:4px;white-space:nowrap;}
+
+    /* ── BOTTOM GRID ── */
+    .bottom-grid{display:grid;grid-template-columns:320px 1fr;gap:12px;align-items:start;}
+    .right-col{display:flex;flex-direction:column;gap:12px;}
+
+    /* ── KEYWORD OVERLAP ── */
+    .kw-section-head{padding:12px 16px 5px;display:flex;align-items:center;justify-content:space-between;}
+    .kw-section-title{font-size:12px;font-weight:800;color:var(--text1);}
+    .kw-section-title.gap{color:var(--orange);}
+    .kw-overlap-row{display:flex;align-items:center;gap:7px;padding:6px 16px;transition:background .12s;}
+    .kw-overlap-row:hover{background:var(--bg);}
+    .kw-rank{font-size:11px;font-weight:900;color:var(--text4);width:16px;text-align:right;flex-shrink:0;}
+    .kw-rank.top3{color:var(--orange);}
+    .kw-word{font-size:12px;font-weight:700;color:var(--text1);width:68px;flex-shrink:0;}
+    .kw-logos{display:flex;gap:4px;align-items:center;}
+    .kw-logo{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border);flex-shrink:0;}
+    .kw-logo.empty{opacity:.15;filter:grayscale(1);}
+    .kw-logo-fallback{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800;color:#fff;flex-shrink:0;}
+    .kw-logo-fallback.empty{opacity:.15;filter:grayscale(1);}
+    .kw-divider{height:1px;background:var(--border-light);margin:4px 16px;}
+
+    /* ── CREATOR REC ── */
+    .creator-rec-list{padding:4px 8px 10px;}
+    .creator-rec-row{display:flex;align-items:center;gap:8px;padding:8px 8px;border-radius:8px;cursor:pointer;transition:background .12s;}
+    .creator-rec-row:hover{background:var(--bg);}
+    .cr-rank{font-size:12px;font-weight:900;color:var(--text4);width:18px;text-align:center;flex-shrink:0;}
+    .cr-rank.top{color:var(--orange);}
+    .cr-avatar{width:30px;height:30px;border-radius:50%;object-fit:cover;border:1px solid var(--border-light);flex-shrink:0;background:var(--border-light);}
+    .cr-info{flex:1;min-width:0;}
+    .cr-id{font-size:12px;font-weight:700;color:var(--text1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .cr-sub{font-size:10px;color:var(--text3);margin-top:1px;}
+    .cr-icons{display:flex;gap:4px;flex-shrink:0;}
+    .cr-icon-btn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:border-color .12s,background .12s;}
+    .cr-icon-btn:hover{border-color:var(--orange);background:var(--orange-bg);}
+    .cr-tags{display:flex;gap:5px;flex-shrink:0;}
+    .cr-tag{font-size:10px;font-weight:600;color:var(--text2);background:var(--bg);border:1px solid var(--border);padding:4px 9px;border-radius:6px;white-space:nowrap;}
+    .cr-fit-badge{font-size:10px;font-weight:800;color:var(--orange);white-space:nowrap;flex-shrink:0;width:78px;text-align:right;}
+    .cr-cta{font-size:11px;font-weight:700;color:#fff;background:var(--orange);border:none;border-radius:6px;padding:5px 12px;white-space:nowrap;cursor:pointer;font-family:inherit;transition:opacity .12s;flex-shrink:0;}
+    .cr-cta:hover{opacity:.88;}
+
+    /* ── AI DIRECTION ── */
+    .ai-dir-body{padding:16px 18px 20px;}
+    .ai-dir-top{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+    .ai-dir-badge{font-size:10px;font-weight:800;background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border);padding:3px 10px;border-radius:6px;}
+    .ai-dir-text{font-size:13px;color:var(--text2);line-height:1.9;}
+    .ai-dir-text strong{color:var(--text1);font-weight:800;}
+    .ai-dir-divider{height:1px;background:var(--border-light);margin:14px 0;}
+    .ai-dir-tags-label{font-size:10px;font-weight:700;color:var(--text3);margin-bottom:8px;}
+    .ai-dir-tags{display:flex;flex-wrap:wrap;gap:5px;}
+    .ai-dir-tag{font-size:11px;font-weight:600;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:3px 10px;border-radius:6px;}
+
+    /* ── PANEL OVERLAY ── */
+    .panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.28);z-index:500;}
+    .panel-overlay.show{display:block;}
+    .slide-panel{
+      position:fixed;top:0;right:0;bottom:0;
+      width:clamp(600px,62vw,900px);
+      background:#fff;
+      z-index:501;
+      overflow-y:auto;
+      overflow-x:hidden;
+      box-shadow:-12px 0 40px rgba(0,0,0,.14);
+      transform:translateX(100%);
+      transition:transform .3s cubic-bezier(.32,.72,0,1);
+    }
+    .slide-panel.open{transform:translateX(0);}
+
+    /* Panel header */
+    .panel-hdr{
+      position:sticky;top:0;z-index:10;
+      background:#fff;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;padding:0 14px;height:44px;
+    }
+    .panel-close{background:none;border:none;cursor:pointer;font-size:16px;font-weight:700;color:var(--text3);padding:4px 6px;border-radius:6px;font-family:inherit;transition:background .12s,color .12s;line-height:1;}
+    .panel-close:hover{background:var(--bg);color:var(--text1);}
+
+    /* Panel body container */
+    .panel-body{padding:12px 14px 32px;}
+
+    /* Panel brand+AI card */
+    .p-brand-card{background:#fff;border:none;border-radius:10px;margin-bottom:10px;display:flex;align-items:stretch;overflow:hidden;position:relative;}
+    .p-brand-ai-corner{position:absolute;top:14px;right:16px;font-size:10px;font-weight:700;background:var(--orange);color:#fff;padding:2px 9px;border-radius:5px;}
+    .p-brand-left{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:16px 18px;}
+    .p-brand-logo{width:56px;height:56px;border-radius:50%;flex-shrink:0;object-fit:cover;background:var(--border-light);}
+    .p-brand-meta{display:flex;flex-direction:column;gap:5px;}
+    .p-brand-namerow{display:flex;align-items:center;gap:5px;}
+    .p-brand-name{font-size:17px;font-weight:900;letter-spacing:-.5px;line-height:1.1;}
+    .p-brand-yt{width:16px;height:16px;flex-shrink:0;}
+    .p-brand-followers{font-size:10px;color:var(--text3);font-weight:600;}
+    .p-brand-cat{font-size:11px;color:var(--text2);background:var(--bg);padding:3px 8px;border-radius:5px;display:inline-block;align-self:flex-start;}
+    .p-brand-divider{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;}
+    .p-brand-verdict{flex:1;min-width:0;padding:16px 18px;display:flex;flex-direction:column;}
+    .p-verdict-head{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+    .p-verdict-title{font-size:14px;font-weight:800;}
+    .p-ai-badge{font-size:10px;font-weight:700;background:var(--orange);color:#fff;padding:2px 7px;border-radius:5px;}
+    .p-verdict-text{font-size:12px;color:var(--text2);line-height:1.75;}
+
+    /* Panel similar brands */
+    .p-sim-col-head{display:grid;grid-template-columns:18px 1fr 36px 48px;gap:4px;padding:7px 12px 5px;border-bottom:1px solid var(--border-light);}
+    .p-sim-col-head span{font-size:10px;font-weight:700;color:var(--text3);}
+    .p-sim-list{padding:4px 5px 6px;}
+    .p-sim-row{display:grid;grid-template-columns:18px 1fr 36px 48px;align-items:center;gap:4px;padding:5px 4px;border-radius:6px;cursor:pointer;transition:background .12s;}
+    .p-sim-row:hover{background:var(--bg);}
+    .p-sim-rank{font-size:11px;font-weight:900;color:var(--text4);text-align:center;}
+    .p-sim-rank.top{color:var(--orange);}
+    .p-sim-brand{display:flex;align-items:center;gap:5px;min-width:0;}
+    .p-sim-logo{width:22px;height:22px;border-radius:50%;flex-shrink:0;object-fit:cover;background:var(--border-light);}
+    .p-sim-name{font-size:11px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .p-sim-ppl{font-size:10px;color:var(--text2);text-align:right;}
+    .p-sim-sim{font-size:11px;font-weight:800;color:var(--orange);text-align:right;}
+
+    /* Panel two-col */
+    .p-cols{display:flex;gap:8px;align-items:flex-start;}
+    .p-col-left{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;}
+    .p-col-right{width:210px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;}
+
+    /* Panel card */
+    .p-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+    .p-card-head{padding:10px 13px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px;}
+    .p-card-title{font-size:12px;font-weight:800;color:var(--text1);}
+    .p-card-sub{font-size:10px;color:var(--text3);}
+
+    /* 블럭 외부 제목 레이블 */
+    .p-block-head{display:flex;align-items:center;gap:7px;padding:0 2px 7px;margin-top:7px;}
+    .p-block-head.col{flex-direction:column;align-items:flex-start;gap:2px;}
+    .p-block-title{font-size:14px;font-weight:800;color:var(--text1);}
+    .p-block-sub{font-size:10px;color:var(--text3);}
+
+    /* Panel keyword grid */
+    .p-kw-grid{display:grid;grid-template-columns:repeat(4,1fr);padding:10px 0 10px;}
+    .p-kw-item{display:flex;align-items:center;gap:7px;padding:6px 11px;}
+    .p-kw-rank{font-size:11px;font-weight:900;width:16px;flex-shrink:0;text-align:right;color:var(--text4);}
+    .p-kw-rank.top{color:var(--orange);}
+    .p-kw-word{font-size:11px;font-weight:600;color:var(--text2);}
+
+    /* Panel pattern tabs */
+    .p-ptabs{display:flex;gap:4px;padding:15px 11px 15px; flex-wrap:wrap;}
+    .p-ptab{font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;border:1.5px solid var(--border);color:var(--text2);background:#fff;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .14s;}
+    .p-ptab.on{background:var(--orange);color:#fff;border-color:var(--orange);}
+
+    /* Panel pattern desc bar */
+    .p-pattern-desc{margin:0 11px 8px;padding:9px 13px;background:var(--orange-bg);border:1px solid var(--orange-border);border-radius:7px;display:none;}
+    .p-pattern-desc.show{display:block;}
+    .p-pattern-phrase{font-size:12px;font-weight:800;color:var(--text1);margin-bottom:2px;}
+    .p-pattern-label-txt{font-size:10px;color:var(--orange);font-weight:700;}
+
+    /* Panel post grid: 3 col + scroll */
+    .p-post-count{padding:0 12px 6px;font-size:10px;color:var(--text3);}
+    .p-post-count strong{color:var(--text2);}
+    /* 포스트 카드 고정 높이 — flex column으로 스크롤 영역이 남은 공간 채움 */
+    .p-posts-fixed{height:770px;display:flex;flex-direction:column;overflow:hidden;}
+    .p-posts-fixed .p-card-head{flex-shrink:0;}
+    .p-posts-fixed .p-ptabs{flex-shrink:0;}
+    .p-posts-fixed .p-pattern-desc{flex-shrink:0;}
+    .p-posts-fixed .p-post-count{flex-shrink:0;}
+    .p-post-scroll{flex:1;min-height:0;overflow-y:auto;}
+    .p-post-scroll::-webkit-scrollbar{width:6px;}
+    .p-post-scroll::-webkit-scrollbar-thumb{background:#D5D8DD;border-radius:3px;}
+    .p-post-scroll::-webkit-scrollbar-thumb:hover{background:#BDBDBD;}
+    .p-post-scroll::-webkit-scrollbar-track{background:transparent;}
+    .p-post-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 11px 12px;}
+    .p-post-card{border-radius:7px;overflow:hidden;background:#fff;border:1px solid var(--border-light);cursor:pointer;transition:box-shadow .14s,transform .14s;}
+    .p-post-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.09);transform:translateY(-1px);}
+    .p-post-img{height:300px; width:100%;aspect-ratio:1/1;object-fit:cover;display:block;background:var(--border-light);}
+    .p-post-info{padding:7px 8px 8px;}
+    .p-post-tag{font-size:9px;font-weight:700;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:1px 5px;border-radius:3px;display:inline-block;margin-bottom:3px;}
+    .p-post-cap{font-size:10px;color:var(--text1);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-weight:600;margin-bottom:3px;}
+    .p-post-date{font-size:9px;color:var(--text4);margin-bottom:3px;}
+    .p-post-stat{font-size:9px;color:var(--text3);}
+    .p-post-stat .v{color:var(--red);font-weight:800;}
+    .p-post-creator{display:flex;align-items:center;gap:4px;margin-top:7px;padding-top:7px;border-top:1px solid var(--border-light);}
+    .p-post-creator .av{width:16px;height:16px;border-radius:50%;object-fit:cover;background:var(--border-light);flex-shrink:0;}
+    .p-post-creator .nm{font-size:9px;font-weight:700;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0;}
+    .p-post-creator .lk{font-size:8px;font-weight:600;color:var(--text3);white-space:nowrap;flex-shrink:0;}
+
+    /* Panel radar */
+    .p-radar-wrap{padding:10px 12px 0px;display:flex;justify-content:center;}
+
+    /* Panel creator */
+    .p-creator-list{padding:4px 5px 6px;}
+    .p-creator-row{display:grid;grid-template-columns:18px 1fr 40px 32px;align-items:center;gap:4px;padding:5px 4px;border-radius:6px;cursor:pointer;transition:background .12s;}
+    .p-creator-row:hover{background:var(--bg);}
+    .p-cr-rank{font-size:11px;font-weight:900;color:var(--text4);text-align:center;}
+    .p-cr-rank.top{color:var(--orange);}
+    .p-cr-person{display:flex;align-items:center;gap:5px;min-width:0;}
+    .p-cr-avatar{width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--border-light);flex-shrink:0;background:var(--border-light);}
+    .p-cr-id{font-size:10px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .p-cr-flw{font-size:10px;color:var(--text2);text-align:right;}
+    .p-cr-ppl{font-size:10px;font-weight:800;color:var(--orange);text-align:right;}
+
+    /* Panel AI reco full-width */
+    .p-ai-section{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:8px;}
+    .p-ai-section-head{padding:10px 14px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:8px;}
+    .p-ai-section-title{font-size:12px;font-weight:800;color:var(--text1);flex:1;}
+    .p-ai-grid{display:grid;grid-template-columns:repeat(3,1fr);}
+    .p-ai-item{padding:14px 16px;border-right:1px solid var(--border-light);}
+    .p-ai-item:last-child{border-right:none;}
+    .p-ai-num{font-size:9px;font-weight:800;background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border);padding:2px 7px;border-radius:20px;display:inline-block;margin-bottom:9px;}
+    .p-ai-quote{font-size:12px;font-weight:800;color:var(--text1);line-height:1.5;margin-bottom:8px;}
+    .p-ai-reason{font-size:11px;color:var(--text3);line-height:1.65;margin-bottom:10px;}
+    .p-ai-tags{display:flex;flex-wrap:wrap;gap:5px;}
+    .p-ai-tag{font-size:10px;font-weight:600;color:var(--orange);background:var(--orange-bg);border:1px solid var(--orange-border);padding:3px 9px;border-radius:6px;}
+
+    /* ── PANEL PAGINATION ── */
+    .p-pagination{display:flex;align-items:center;justify-content:center;gap:2px;padding:8px 0 10px;border-top:1px solid var(--border-light);margin-top:2px;}
+    .p-pg-btn{min-width:26px;height:26px;border-radius:6px;border:none;background:none;font-size:12px;font-weight:700;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;font-family:inherit;}
+    .p-pg-btn:hover{background:var(--bg);color:var(--text1);}
+    .p-pg-btn.on{background:var(--orange);color:#fff;}
+    .p-pg-btn.arrow{font-size:14px;color:var(--text4);}
+    .p-pg-btn.arrow:hover{color:var(--orange);background:none;}
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .fu{animation:fadeUp .3s ease both;}
+    .fu:nth-child(2){animation-delay:.05s;}
+    .fu:nth-child(3){animation-delay:.1s;}
+
+    /* ══════════════════════════════════════════
+       HOME (대문)
+    ══════════════════════════════════════════ */
+    .home-view{max-width:1000px;margin:0 auto;padding:54px 24px 80px;}
+    .home-hero{display:flex;align-items:center;justify-content:center;gap:11px;margin-bottom:30px;}
+    .home-hero-icon{width:40px;height:40px;background:var(--orange);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .home-title{font-size:33px;font-weight:900;letter-spacing:-1.2px;color:var(--text1);}
+
+    /* 검색창 (목업) */
+    .home-search-big{max-width:800px;margin:0 auto;height:60px;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:0 10px 0 24px;box-shadow:0 4px 18px rgba(26,26,46,.05);transition:border-color .15s,box-shadow .15s;}
+    .home-search-big:focus-within{border-color:var(--orange);box-shadow:0 4px 22px rgba(247,105,43,.13);}
+    .home-search-big input{flex:1;border:none;outline:none;background:transparent;font-size:16px;font-family:inherit;color:var(--text1);}
+    .home-search-big input::placeholder{color:var(--text4);}
+    .home-search-go{width:42px;height:42px;border-radius:11px;border:none;background:var(--orange);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .12s;}
+    .home-search-go:hover{opacity:.88;}
+
+    /* 최근 검색 히스토리 (목업) */
+    .home-history{max-width:800px;margin:18px auto 0;}
+    .home-history-label{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:9px;display:block;}
+    .home-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+    .home-chips::-webkit-scrollbar{display:none;}
+    .home-chip{font-size:13px;font-weight:500;color:var(--text2);background:#fff;border:1px solid var(--border);border-radius:18px;padding:7px 15px;white-space:nowrap;font-family:inherit;flex-shrink:0;}
+
+    /* 단어 랭킹에 부속된 프리셋 바로가기 리스트 */
+    .home-preset-divider{height:1px;background:var(--border-light);margin:8px 14px 0;}
+    .home-preset-sublabel{font-size:11px;font-weight:700;color:var(--text3);padding:15px 18px 7px;}
+    .home-preset-list{padding:0 8px 12px;display:flex;flex-direction:column;gap:1px;}
+    .home-preset-row{display:flex;align-items:center;gap:10px;width:100%;padding:10px 10px;border:none;background:none;border-radius:9px;cursor:pointer;font-family:inherit;text-align:left;transition:background .12s;}
+    .home-preset-row:hover{background:var(--orange-bg);}
+    .home-preset-row.soon,.home-preset-row.disabled{cursor:default;}
+    .home-preset-row.soon:hover,.home-preset-row.disabled:hover{background:none;}
+    .home-preset-row.disabled{opacity:.45;}
+    .hp-name{font-size:14px;font-weight:700;color:var(--text1);flex-shrink:0;}
+    .hp-sub{font-size:11px;color:var(--text3);font-weight:500;}
+    .home-preset-row.soon .hp-sub{color:var(--text4);}
+    .hp-arrow{margin-left:auto;font-size:18px;font-weight:700;color:var(--orange);flex-shrink:0;line-height:1;}
+
+    /* 랭킹 카드 2단 */
+    .home-cards{max-width:1000px;margin:34px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+    .home-rank-card{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+    .home-rank-head{padding:16px 18px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border-light);}
+    .home-rank-hicon{font-size:16px;line-height:1;}
+    .home-rank-htitle{font-size:15px;font-weight:800;color:var(--text1);}
+    .home-rank-tabs{display:flex;gap:5px;padding:11px 14px 4px;overflow-x:auto;scrollbar-width:none;}
+    .home-rank-tabs::-webkit-scrollbar{display:none;}
+    .home-rank-tab{font-size:12px;font-weight:600;padding:5px 13px;border-radius:18px;border:1.5px solid var(--border);color:var(--text2);background:#fff;cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0;transition:all .14s;}
+    .home-rank-tab.on{background:var(--orange);color:#fff;border-color:var(--orange);}
+    .home-rank-tab:hover:not(.on):not(.mock){border-color:var(--orange);color:var(--orange);}
+    .home-rank-tab.mock{cursor:default;color:var(--text4);}
+    .home-rank-colhead{display:flex;align-items:center;padding:15px 18px 12px;border-bottom:1px solid var(--border-light);}
+    .home-rank-colhead .ch-rank{width:34px;font-size:11px;font-weight:700;color:var(--text3);flex-shrink:0;}
+    .home-rank-colhead .ch-main{flex:1;font-size:11px;font-weight:700;color:var(--text3);}
+    .home-rank-colhead .ch-val{font-size:11px;font-weight:700;color:var(--text3);text-align:right;white-space:nowrap;}
+    .home-rank-list{padding:4px 0 10px;}
+    .home-rank-row{display:flex;align-items:center;padding:12px 18px;}
+    .home-rank-row+.home-rank-row{border-top:1px solid var(--border-light);}
+    .home-rank-num{width:34px;font-size:15px;font-weight:900;color:var(--text4);flex-shrink:0;}
+    .home-rank-num.top{color:var(--orange);}
+    .home-rank-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+    .home-rank-name{font-size:14px;font-weight:700;color:var(--text1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .home-rank-eg{font-size:11px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .home-rank-val{font-size:13px;font-weight:800;color:var(--text2);text-align:right;white-space:nowrap;padding-left:10px;}
+    .home-rank-colhead .ch-m{width:52px;font-size:10.5px;font-weight:700;color:var(--text3);text-align:right;white-space:nowrap;flex-shrink:0;margin-left:7px;}
+    .home-rank-colhead .ch-m.pri{color:var(--orange);}
+    .home-rank-m{width:52px;font-size:12px;font-weight:700;color:var(--text3);text-align:right;white-space:nowrap;flex-shrink:0;margin-left:7px;}
+    .home-rank-m.pri{color:var(--orange);font-weight:800;font-size:13px;}
+    .home-rank-empty{padding:34px 18px;text-align:center;font-size:12px;color:var(--text4);}
+
+    @media(max-width:860px){
+      .home-cards{grid-template-columns:1fr;}
+    }
+
+    /* ══════════════════════════════════════════
+       CREDIT MODAL (크레딧 소모 확인)
+    ══════════════════════════════════════════ */
+    .cm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:600;align-items:center;justify-content:center;padding:20px;}
+    .cm-overlay.show{display:flex;}
+    .cm-modal{background:#fff;border-radius:22px;width:100%;max-width:430px;padding:26px 28px 26px;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:cmIn .25s cubic-bezier(.32,.72,0,1);}
+    @keyframes cmIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+    .cm-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+    .cm-title{font-size:22px;font-weight:900;color:var(--text1);letter-spacing:-.6px;}
+    .cm-close{background:none;border:none;font-size:22px;color:var(--text3);cursor:pointer;padding:4px;line-height:1;font-family:inherit;}
+    .cm-close:hover{color:var(--text1);}
+    .cm-body{display:flex;flex-direction:column;}
+    .cm-badge{font-size:14px;font-weight:800;color:var(--orange);background:var(--orange-bg);padding:6px 16px;border-radius:18px;align-self:center;margin:20px 0 16px;}
+    .cm-amount{display:flex;align-items:center;justify-content:center;gap:11px;align-self:center;margin-bottom:24px;}
+    .cm-diamond{color:var(--orange);font-size:30px;line-height:1;}
+    .cm-num{font-size:42px;font-weight:900;color:var(--text1);line-height:1;}
+    .cm-divider{width:100%;height:1px;background:var(--border);margin-bottom:16px;}
+    .cm-row{width:100%;display:flex;align-items:center;justify-content:space-between;font-size:16px;font-weight:600;color:var(--text2);padding:8px 2px;}
+    .cm-row .cm-have{font-weight:800;color:var(--text1);}
+    .cm-row .cm-left{font-weight:800;color:var(--orange);}
+    .cm-cta{width:100%;margin-top:20px;height:58px;border:none;border-radius:16px;background:var(--orange);color:#fff;font-size:18px;font-weight:800;cursor:pointer;font-family:inherit;transition:opacity .12s;}
+    .cm-cta:hover{opacity:.9;}
+  </style>
+</head>
+<body>
+
+<!-- HEADER (decorative) -->
+<div class="header-wrap">
+  <header class="header">
+    <a class="logo" href="#" onclick="goHome();return false;">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="2.2"/>
+          <circle cx="12" cy="12" r="4.2" stroke="#fff" stroke-width="2.2"/>
+          <circle cx="17.2" cy="6.8" r="1.2" fill="#fff"/>
+        </svg>
+      </div>
+      <span class="logo-text">인광기</span>
+    </a>
+    <nav class="header-nav">
+      <a class="nav-item" href="#">유튜브 도구 <span style="font-size:10px;margin-left:1px;">▾</span></a>
+      <a class="nav-item" href="#">인스타그램 도구 <span class="new-badge">NEW</span><span style="font-size:10px;margin-left:1px;">▾</span></a>
+      <a class="nav-item" href="#">유광기 EXPRESS</a>
+      <a class="nav-item" href="#">가격 안내</a>
+      <a class="nav-item" href="#">유광기 사용법</a>
+    </nav>
+    <div class="header-search">
+      <input type="text" placeholder="채널명, 브랜드명을 검색해 보세요." />
+      <button style="background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;" type="button">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+          <path d="M7.33333 12.6667C10.2789 12.6667 12.6667 10.2789 12.6667 7.33333C12.6667 4.38781 10.2789 2 7.33333 2C4.38781 2 2 4.38781 2 7.33333C2 10.2789 4.38781 12.6667 7.33333 12.6667Z" stroke="#9B9B9B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14.0016 14.0016L11.1016 11.1016" stroke="#9B9B9B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="header-util">
+      <button class="header-news" type="button">소식 및 문의 <span style="font-size:10px;">▾</span></button>
+      <div class="header-avatar">M</div>
+    </div>
+  </header>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <!-- ════════════ HOME (대문) ════════════ -->
+  <section id="homeView" class="home-view">
+    <div class="home-hero">
+      <div class="home-hero-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="18" height="13" rx="2.5" stroke="#fff" stroke-width="2"/>
+          <path d="M7 21h10M9 17v4M15 17v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 12l2.2-2.4L12 11l2.5-3 1.5 2" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="home-title">브랜드 언어 비교기</h1>
+    </div>
+
+    <!-- 검색창 (목업) -->
+    <div class="home-search-big">
+      <input type="text" placeholder="브랜드명을 검색해 보세요." />
+      <button class="home-search-go" type="button" title="검색">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+          <path d="M7.33 12.67A5.33 5.33 0 1 0 7.33 2a5.33 5.33 0 0 0 0 10.67Z" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 14l-2.9-2.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 최근 검색 히스토리 (목업) -->
+    <div class="home-history">
+      <span class="home-history-label">최근 검색 히스토리</span>
+      <div class="home-chips" id="homeChips"></div>
+    </div>
+
+    <!-- 랭킹 카드 2단 -->
+    <div class="home-cards">
+      <!-- 요즘 뜨는 언어 패턴 -->
+      <div class="home-rank-card">
+        <div class="home-rank-head">
+          <span class="home-rank-hicon">🔥</span>
+          <span class="home-rank-htitle">요즘 뜨는 광고 패턴</span>
+        </div>
+        <div class="home-rank-colhead">
+          <span class="ch-rank">순위</span>
+          <span class="ch-main">패턴 · 예시 문구</span>
+          <span class="ch-m pri">조회수</span>
+          <span class="ch-m">포스트</span>
+          <span class="ch-m">좋아요</span>
+        </div>
+        <div class="home-rank-list" id="homeTrendList"></div>
+      </div>
+
+      <!-- 카테고리별 인기 단어 -->
+      <div class="home-rank-card">
+        <div class="home-rank-head">
+          <span class="home-rank-hicon">#</span>
+          <span class="home-rank-htitle">자주 사용되는 광고 단어</span>
+        </div>
+        <div class="home-rank-tabs" id="homeKwTabs"></div>
+        <div class="home-rank-colhead">
+          <span class="ch-rank">순위</span>
+          <span class="ch-main">단어</span>
+          <span class="ch-val">언급 빈도</span>
+        </div>
+        <div class="home-rank-list" id="homeKwList"></div>
+        <!-- 랭킹에 부속된 프리셋 바로가기 리스트 -->
+        <div class="home-preset-divider"></div>
+        <div class="home-preset-sublabel">카테고리 바로 비교하기</div>
+        <div class="home-preset-list" id="homePresets"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════ DASHBOARD (브랜드 비교) ════════════ -->
+  <div id="dashboardView" style="display:none;">
+
+  <!-- Category Bar -->
+  <div class="cat-bar">
+    <div class="cat-bar-inner">
+      <button class="cat-tab">모든 카테고리</button>
+      <button class="cat-tab on">뷰티 &amp; 메이크업</button>
+      <button class="cat-tab">패션 &amp; 의류</button>
+      <button class="cat-tab">음식 &amp; 음료</button>
+      <button class="cat-tab">리빙 &amp; 인테리어</button>
+      <button class="cat-tab">IT &amp; 전자기기</button>
+      <button class="cat-tab">쇼핑 &amp; 유통</button>
+      <button class="cat-tab">의료 &amp; 건강</button>
+      <button class="cat-tab">결혼 &amp; 육아</button>
+      <button class="cat-tab">교육 &amp; 커리어</button>
+      <button class="cat-tab">여행</button>
+      <button class="cat-tab">레저 &amp; 스포츠</button>
+      <button class="cat-tab">피트니스 &amp; 다이어트</button>
+      <button class="cat-tab">자동차</button>
+      <button class="cat-tab">엔터테인먼트</button>
+      <button class="cat-tab">금융</button>
+    </div>
+    <button class="cat-bar-arrow" onclick="scrollCats()" title="더 보기">›</button>
+  </div>
+
+  <!-- Brand Selector -->
+  <div class="selector-card fu">
+    <div class="selector-row">
+      <span class="selector-label">카테고리</span>
+      <div class="preset-tabs" id="presetTabs">
+        <button class="preset-tab on" onclick="selectPreset('serum',this)">뷰티 세럼</button>
+        <button class="preset-tab" onclick="selectPreset('sun',this)">선케어</button>
+        <button class="preset-tab" onclick="selectPreset('cleansing',this)">클렌징</button>
+        <button class="preset-tab" style="color:var(--text4);border-color:var(--border-light);cursor:default;" disabled>추가 예정</button>
+      </div>
+      <div class="selector-sep"></div>
+      <span class="selector-label">비교 브랜드</span>
+      <div class="brand-circles" id="brandChips"></div>
+      <div class="bc-add-item">
+        <button class="bc-add" onclick="alert('브랜드 추가 기능은 준비 중입니다.')" title="브랜드 추가">+</button>
+        <span class="bc-add-label">브랜드 추가</span>
+      </div>
+      <div class="credit-wrap">
+        <div class="credit-pill">
+          <span class="credit-diamond">◆</span>
+          <span class="credit-text">잔여 크레딧: 197개</span>
+          <button class="credit-charge">충전</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Territory Card -->
+  <div class="card territory-card fu">
+    <div class="card-head" style="flex-direction:column;align-items:flex-start;gap:4px;">
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span class="card-title">자주 쓰는 문장 패턴</span>
+        <span class="ai-badge">AI 생성</span>
+      </div>
+      <span class="card-sub">패턴별 브랜드 점유율 · 브랜드 클릭 시 상세 분석 보기</span>
+    </div>
+    <div class="territory-body" id="territoryBody"></div>
+  </div>
+
+  <!-- Bottom Grid -->
+  <div class="bottom-grid">
+
+    <!-- Left: Keyword Overlap -->
+    <div class="card fu">
+      <div class="card-head">
+        <div>
+          <span class="card-title">브랜드별 단어 랭킹</span>
+          <span class="card-sub" style="margin-left:8px;">브랜드 간 포화 단어 vs 언어 공백</span>
+        </div>
+      </div>
+      <div id="keywordOverlap"></div>
+    </div>
+
+    <!-- Right column -->
+    <div class="right-col">
+
+      <!-- Creator Rec -->
+      <div class="card fu">
+        <div class="card-head">
+          <div>
+            <span class="card-title">공백 영역 언어 핏 크리에이터</span>
+            <span class="card-sub" style="margin-left:8px;">미선점 언어 스타일 보유 인플루언서</span>
+          </div>
+        </div>
+        <div id="creatorRec"></div>
+      </div>
+
+      <!-- AI Direction -->
+      <div class="card fu">
+        <div class="card-head">
+          <div style="display:flex;align-items:center;gap:7px;">
+            <span class="card-title">AI 언어 포지셔닝 전략</span>
+            <span class="ai-badge">AI 생성</span>
+          </div>
+        </div>
+        <div id="aiDirection"></div>
+      </div>
+
+    </div>
+  </div>
+
+  </div><!-- /dashboardView -->
+
+</div>
+
+<!-- CREDIT MODAL (크레딧 소모 확인) -->
+<div class="cm-overlay" id="creditOverlay" onclick="handleCreditOverlay(event)">
+  <div class="cm-modal">
+    <div class="cm-head">
+      <span class="cm-title">브랜드 언어 비교하기</span>
+      <button class="cm-close" onclick="closeCreditModal()" title="닫기">&times;</button>
+    </div>
+    <div class="cm-body">
+      <span class="cm-badge">사용하는 크레딧</span>
+      <div class="cm-amount">
+        <span class="cm-diamond">◆</span>
+        <span class="cm-num">1</span>
+      </div>
+      <div class="cm-divider"></div>
+      <div class="cm-row"><span>현재 보유한 크레딧 수</span><span class="cm-have">197개</span></div>
+      <div class="cm-row"><span>사용 후 남은 크레딧 수</span><span class="cm-left">196개</span></div>
+      <button class="cm-cta" onclick="confirmCredit()">크레딧 사용하고 비교하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE PANEL OVERLAY -->
+<div class="panel-overlay" id="panelOverlay" onclick="handleOverlayClick(event)">
+  <div class="slide-panel" id="slidePanel">
+    <div class="panel-hdr">
+      <button class="panel-close" onclick="closePanel()">&gt;&gt;</button>
+    </div>
+    <div class="panel-body" id="panelBody"></div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+
+const ALL_BRANDS = [
+  {name:'넘버즈인', color:'#E84A6F', key:'numbuzin',
+   logo:'https://yt3.googleusercontent.com/3vlG8UB1EIxD5LWgMGTvlMWF7hPGBs7t20d1p6Z6dXNgbYIdiYvty4kvoILNqgoUiSwBMXEL=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'마녀공장', color:'#7C5CBF', key:'manyeo',
+   logo:'https://yt3.googleusercontent.com/qtJNF1gn-Zw9u1MyY6VGGWwy5dPFAhJ_eZhfrOZQXk8HnuS52g2mQ3MdwwHnPr9qflMcnUqzEw=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'아누아',   color:'#4A9E6F', key:'anua',
+   logo:'https://yt3.googleusercontent.com/ytc/AIdro_mnooZnjYQRf_kXxG0OXNFt_vHD6-jFOR-nQnDRKvzR8Q=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'토리든',   color:'#3A86C8', key:'torriden',
+   logo:'https://yt3.googleusercontent.com/NgLrls0UmQSARW-n6_ZYt-b5G13fyrGONJEeVl5A7vX89ndaRi5vmZFJ-DRZxwXFh50OGEIUpJo=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'클리오',   color:'#C44D6E', key:'clio',
+   logo:'https://yt3.googleusercontent.com/uR9F9WbYQmXsFQ892r4i1wmmTNMJKmYUGNxj_aVyTb5k-udPj1EtkE2cXWMK86zt8k-oH_tDbKI=s900-c-k-c0x00ffffff-no-rj'},
+];
+
+let activeBrands = [...ALL_BRANDS];
+
+/* ── 대문(HOME) 데이터 ── */
+/* 요즘 뜨는 언어 패턴 — '뜬다' = 패턴을 쓴 포스트 합산 조회수 */
+const HOME_TREND_PATTERNS = [
+  {label:'감각형 의태어',      phrase:'"보들보들 아기 피부결이 되~"',         views:12400000, posts:1240, likes:1860000},
+  {label:'사회적 증거 인용',    phrase:'"올리브영 1등 결세럼으로 유명한"',      views:9800000,  posts:980,  likes:1420000},
+  {label:'긴급성·프로모션',     phrase:'"역대급 할인이라 놓치지 말고"',         views:8600000,  posts:870,  likes:1050000},
+  {label:'트렌드·바이럴',       phrase:'"X에서 찐 바이럴 되고있는"',           views:7300000,  posts:640,  likes:980000},
+  {label:'비포&애프터 변화',    phrase:'"화장까지 잘 먹는 보들쫀득 피부"',      views:6100000,  posts:720,  likes:870000},
+  {label:'일상 공감 스토리',    phrase:'"늦잠 잔 날 5분 만에 생얼 정리"',      views:5400000,  posts:590,  likes:760000},
+  {label:'성분·전문성 강조',    phrase:'"바쿠치올+판토텐산이 모공을"',         views:4200000,  posts:410,  likes:540000},
+  {label:'리뉴얼·신상 강조',    phrase:'"단종인 줄 알았는데 리뉴얼로 돌아온"',  views:3500000,  posts:480,  likes:430000},
+  {label:'캐릭터·콜라보 에디션',phrase:'"망곰 에디션 너무 귀여워서"',          views:2800000,  posts:220,  likes:510000},
+  {label:'내부자 정보',        phrase:'"직원가보다 싸다고 하실 만큼"',         views:1900000,  posts:150,  likes:190000},
+];
+
+/* 자주 사용되는 광고 단어 — 빈도수(언급 횟수) 기준.
+   탭은 메인 페이지 카테고리(목업), '뷰티 & 메이크업'만 활성 */
+const HOME_CATEGORY_TABS = [
+  '전체','뷰티 & 메이크업','패션 & 의류','음식 & 음료','리빙 & 인테리어',
+  'IT & 전자기기','쇼핑 & 유통','의료 & 건강','결혼 & 육아','교육 & 커리어',
+  '여행','레저 & 스포츠','피트니스 & 다이어트','자동차','엔터테인먼트','금융',
+];
+const HOME_KW_ACTIVE_TAB = '뷰티 & 메이크업';
+const HOME_KW_BEAUTY = [
+  {w:'세럼',    f:18420},{w:'모공',    f:14210},{w:'보들보들',f:11890},
+  {w:'피부결',  f:10350},{w:'촉촉',    f:8740 },{w:'올리브영',f:7620 },
+  {w:'화잘먹',  f:6980 },{w:'진정',    f:5410 },{w:'리뉴얼',  f:4870 },
+  {w:'쫀쫀',    f:4230 },
+];
+
+/* 최근 검색 히스토리 (목업) */
+const HOME_HISTORY = ['넘버즈인','뷰티 세럼','마녀공장','아누아','선케어','토리든','클리오','클렌징','올리브영','모공결'];
+
+/* 바로가기 프리셋 */
+const HOME_PRESETS = [
+  {key:'serum',     name:'뷰티 세럼', sub:'',     state:'active'},
+  {key:'sun',       name:'선케어',    sub:'준비 중', state:'soon'},
+  {key:'cleansing', name:'클렌징',    sub:'준비 중', state:'soon'},
+  {key:'soon',      name:'추가 예정', sub:'',     state:'disabled'},
+];
+
+/* Territory — 각 패턴별 브랜드 점유율 (전체 5개 브랜드 기준) */
+const TERRITORY_FULL = [
+  {pattern:'감각형 의태어', segs:[
+    {brand:'넘버즈인', pct:32},
+    {brand:'마녀공장', pct:22},
+    {brand:'아누아',   pct:18},
+    {brand:'토리든',   pct:12},
+    {brand:'클리오',   pct:8},
+  ]},
+  {pattern:'사회적 증거', segs:[
+    {brand:'클리오',   pct:26},
+    {brand:'넘버즈인', pct:22},
+    {brand:'아누아',   pct:18},
+    {brand:'마녀공장', pct:11},
+  ]},
+  {pattern:'긴급성·프로모션', segs:[
+    {brand:'마녀공장', pct:30},
+    {brand:'클리오',   pct:24},
+    {brand:'넘버즈인', pct:18},
+    {brand:'토리든',   pct:8},
+  ]},
+  {pattern:'트렌드·바이럴', segs:[
+    {brand:'마녀공장', pct:22},
+    {brand:'토리든',   pct:18},
+    {brand:'클리오',   pct:8},
+  ]},
+  {pattern:'내부자 정보', segs:[
+    {brand:'넘버즈인', pct:15},
+    {brand:'아누아',   pct:10},
+  ]},
+];
+
+/* 중복 단어 */
+const KW_TOP = [
+  {word:'세럼',     brands:['넘버즈인','마녀공장','아누아','토리든','클리오']},
+  {word:'모공',     brands:['넘버즈인','마녀공장','아누아','토리든','클리오']},
+  {word:'피부결',   brands:['넘버즈인','마녀공장','아누아','토리든']},
+  {word:'촉촉',     brands:['넘버즈인','마녀공장','아누아','클리오']},
+  {word:'올리브영', brands:['넘버즈인','마녀공장','클리오']},
+  {word:'보들보들', brands:['넘버즈인','마녀공장']},
+  {word:'트러블',   brands:['넘버즈인','클리오']},
+  {word:'콜라겐',   brands:['마녀공장','토리든']},
+  {word:'아기피부', brands:['넘버즈인','마녀공장']},
+  {word:'진정',     brands:['아누아','클리오']},
+];
+const KW_GAP = [
+  {word:'성분설명',   brands:['토리든']},
+  {word:'피부장벽',   brands:['아누아']},
+  {word:'히알루론산', brands:['토리든']},
+  {word:'리포솜',     brands:['마녀공장']},
+  {word:'더마테스트', brands:['클리오']},
+  {word:'임상결과',   brands:['아누아']},
+  {word:'전문가추천', brands:['넘버즈인']},
+  {word:'인체적용',   brands:['토리든']},
+  {word:'피부과급',   brands:['클리오']},
+  {word:'자생성분',   brands:['마녀공장']},
+];
+
+/* 크리에이터 추천 — 공백 영역 언어 핏 */
+const CREATOR_REC = [
+  {id:'ryukeyhoon',  sub:'뷰티 마케터 시각 · 내부자 정보형', cats:'패션 외 2개', tiers:'럭셔리 외 2개', fit:'내부자 정보 핏',
+   pic:'https://storage.googleapis.com/instagram-profile-picture/ryukeyhoon-profile-picture.jpg'},
+  {id:'still___mag', sub:'에디터 분석형 · 전문 용어 활용',   cats:'패션 외 2개', tiers:'럭셔리 외 2개', fit:'내부자 정보 핏',
+   pic:'https://storage.googleapis.com/instagram-profile-picture/still___mag-profile-picture.jpg'},
+  {id:'4complexion', sub:'성분·전문 리뷰 중심',              cats:'패션 외 2개', tiers:'럭셔리 외 2개', fit:'내부자 정보 핏',
+   pic:'https://storage.googleapis.com/instagram-profile-picture/4complexion-profile-picture.jpg'},
+  {id:'classysavhee',sub:'트렌드 셋팅 · 빠른 픽업',          cats:'패션 외 2개', tiers:'럭셔리 외 2개', fit:'트렌드·바이럴 핏',
+   pic:'https://storage.googleapis.com/instagram-profile-picture/classysavhee-profile-picture.jpg'},
+  {id:'heyinns',     sub:'글로벌 트렌드 바이럴 콘텐츠',      cats:'패션 외 2개', tiers:'럭셔리 외 2개', fit:'트렌드·바이럴 핏',
+   pic:'https://storage.googleapis.com/instagram-profile-picture/heyinns-profile-picture.jpg'},
+];
+
+/* AI 언어 포지셔닝 전략 */
+const AI_DIRECTION = {
+  text:`이 카테고리에서 <strong>내부자 정보 강조</strong> 언어 영토가 <strong>75% 비어있습니다.</strong> 성분 설명·임상 근거·전문가 비하인드 정보 중심의 콘텐츠로 접근하면, 현재 <strong>감각형 의태어(92%)</strong>로 포화된 경쟁 언어와 명확하게 차별화됩니다. <strong>트렌드·바이럴</strong> 영역 역시 52% 공백 상태로, 두 패턴을 결합한 <em>'전문가가 실제로 쓰는 이유'</em> 포맷이 현시점에서 가장 선점 가능성이 높습니다.`,
+  tags:['성분 전문가 포맷','비하인드 인증형','바이럴 전문가 콜라보'],
+};
+
+/* ── Panel 내부용 데이터 (numbuzin 기반) ── */
+const P_WORDS = [
+  {w:'세럼',f:10},{w:'보들보들',f:9},{w:'올리브영',f:9},{w:'모공결',f:8},
+  {w:'콜라겐',f:7},{w:'역대급',f:7},{w:'판토텐산',f:7},{w:'쫀쫀하게',f:6},
+  {w:'아기피부',f:6},{w:'리뉴얼',f:6},{w:'피지',f:6},{w:'클렌징오일',f:6},
+  {w:'진정',f:6},{w:'트러블',f:6},{w:'촉촉하게',f:5},{w:'바쿠치올',f:5},
+  {w:'결케어',f:5},{w:'1번패드',f:5},{w:'톤업베이지',f:5},{w:'글루타치온',f:5},
+];
+const P_PATTERNS = {
+  sensory:{label:'감각형 의태어 강조', phrase:'"보들보들 아기 피부결이 되~"'},
+  social: {label:'사회적 증거 인용',   phrase:'"올리브영 1등 결세럼으로 유명한"'},
+  promo:  {label:'긴급성+프로모션 유도',phrase:'"역대급 할인이라 놓치지 말고"'},
+  viral:  {label:'트렌드/바이럴 레퍼런스',phrase:'"X에서 찐 바이럴 되고있는"'},
+  insider:{label:'내부자 정보 강조',   phrase:'"직원가보다 싸다고 하실 만큼"'},
+};
+const P_POSTS = [
+  {thumb:'images/posts/DQ81HkskZ0e.jpg',views:2041088,comments:0,likes:160,date:'2025.11.12',creator:'iamleecherry',caption:'효과 200% 끌어올리는 꿀팁 대방출 .. ✨ 영상에서 보여준 4가지 방법만 따라 해도 진짜 피부에 팩이 쫘악~ 흡수돼서 효과가 확 달라짐 ㅋ ⭐️ 이건 꼭 저장',pattern:'sensory'},
+  {thumb:'images/posts/DWi8qYtTPXI.jpg',views:1146982,comments:17,likes:1356,date:'2026.03.31',creator:'harrykongjaban',caption:'퇴사하는 사람 특: 묘하게 얼굴 좋음 요즘 이상하게 야근해도 얼굴이 좋았던 콩자반... 설마 저 두고 퇴사하나 햇는데 그냥 넘버즈인 3번 세럼 발랏다네요..^.^',pattern:'promo'},
+  {thumb:'images/posts/DWlbIMekl7T.jpg',views:785247,comments:137,likes:18001,date:'2026.04.01',creator:'gardenofniiya',caption:'뚱냥맨 단계별로 쓰다듬고 반응보기 ㅋㅋ🚨 아빠 피부 만졌다가 사포같이 거칠거려서 저도 모르게 손톱 갈아버릴 뻔 했습니다,,💅🏻 그래서 넘버즈인 3번 모공결 세럼',pattern:'promo'},
+  {thumb:'images/posts/DK6yBarJH5R.jpg',views:552000,comments:72,likes:14000,date:'2025.06.15',creator:'_k_jixxy',caption:'📢아아, 넘버즈인과 지냐가 함께 만든 "24시간 파우더" ‼️최초 스포‼️ 시작합니다🩵 *유튜브 쇼츠에 올라가는 광고 영상이지만, 인스타에서도 공유하기 위해 단순',pattern:'insider'},
+  {thumb:'images/posts/DVYFLcJkpWr.jpg',views:430577,comments:28,likes:0,date:'2026.03.02',creator:'nana6a6y',caption:'만약 내가 연프에 나간다면? 안녕하세요 망상병 환자입니다,,ㅎㅎ 요즘 환연상 솔지상 나솔상 등등 많이 보이길래 어그로 좀 끌어봤는데옹…🫢💕💕 연프 보면 다들 관리',pattern:'sensory'},
+  {thumb:'images/posts/DSVGv-Wk6mr.jpg',views:368829,comments:26,likes:151,date:'2025.12.17',creator:'hamaneaing',caption:'주변사람은 다아는 넘버즈인 3번 라인 악개... 하마닝.. 오늘은 결세럼을 들고왔읍니다! (꽁짜 결세럼팩과 함께 ~💌) 같은 성분의 팩과 세럼을 같이 사용하면 효',pattern:'social'},
+  {thumb:'images/posts/DV6O_lNCMQc.jpg',views:346026,comments:64,likes:11593,date:'2026.03.16',creator:'olafflee',caption:'ad sorry my sundays are reserved 🫧🛁🧖🏼‍♀️💗 vinopure purifying mask lifting face mask moistu',pattern:'sensory'},
+  {thumb:'images/posts/DYO8cEHTrLA.jpg',views:335231,comments:68,likes:9460,date:'2026.05.12',creator:'onnya_s2',caption:'✨🪞小物とかも全部可愛いもので揃えてる女のお家VLOG🎀🤍 最近お気に入りの の3番クレンジング☁️🫧 鬼乾燥肌でクレンジングの後お肌のカサカサ感でずっと悩んでたけど、 これに出会',pattern:'social'},
+  {thumb:'images/posts/DW6CeuVEo1T.jpg',views:322019,comments:82,likes:3136,date:'2026.04.09',creator:'joyseodiary',caption:'잠시. 기억난 망한 왕홍의 기억. . . 남동팔씨가 메이크업 해준다길래 맡겼는데 요 난리.나부렀음.~💦💦 그래서 바로 넘버즈인 3번 보들보들 세럼클렌저로 지워줬어',pattern:'viral'},
+  {thumb:'images/posts/DXJk8gvEsG9.jpg',views:320944,comments:172,likes:7998,date:'2026.04.15',creator:'queendaeri',caption:'찹쌀떡 잘 먹는 언니 넘버즈인 3번 보들보들 모공결 세럼 쓰고 화장까지 잘 먹는 보들쫀득 피부 완성 4/16(목) 저녁 6시 올리브영 라이브 \'단 1시간\' 보들쫀',pattern:'sensory'},
+  {thumb:'images/posts/DRO6F_jksRE.jpg',views:291973,comments:10,likes:3,date:'2025.11.19',creator:'sshinhyenaa',caption:'요즘 X에서 계속 보이던 넘버즈인 1번 패드, 궁금해서 결국 저도 써봤어요. 올리브영은 품절이어서 공식몰에서 구매했는데, 직접 써보니 왜 이렇게 화제가 됐는지 알',pattern:'social'},
+  {thumb:'images/posts/DWiwynZhD5I.jpg',views:286462,comments:1665,likes:1145,date:'2026.03.31',creator:'tabemacle',caption:'브랜드 담당자한테 따졌는데 제가 잘못인가요 ... 이번 일 더 알려지라고 도 합니다,,, 제가 샵에 알게된 세럼이고 평상시에도 너무 잘 써서 협업을 하기러 했거든',pattern:'sensory'},
+  {thumb:'images/posts/DRPYJ9xAVAY.jpg',views:284018,comments:25,likes:993,date:'2025.11.19',creator:'seol222un',caption:'. . . X에서 찐 바이럴 되고있는 넘버즈인 1번 패드 !!!💚 진짜 시카잎을 갈아만든 면과 대나무 면 양면패드라 반 갈라서 사용할 수도 있어요 일석이조라는 말',pattern:'social'},
+  {thumb:'images/posts/DWgVCnmkgD2.jpg',views:277101,comments:605,likes:570,date:'2026.03.30',creator:'nana6a6y',caption:'본식 전까지 꾸준히 해줄 나이트루틴🌙 관리의 첫단계는 바로바로 클렌징인거 이미 아시줘..! 전부터 애정하던 넘버즈인 3번 세럼이 그대로 들어간 세럼 클렌저가 나온',pattern:'sensory'},
+  {thumb:'images/posts/DQoVYToEsI7.jpg',views:271493,comments:14,likes:779,date:'2025.11.04',creator:'vvooyq',caption:'과 함께하는 아기피부 프로젝또!👶 요즘 넘버즈인 3번라인 3종세트로 모공케어 해주고 있는데 진차.. 너무 좋아서 다 쓰면 또 쟁일 예정🤤 그리고 지금! 💥넘버즈인',pattern:'sensory'},
+  {thumb:'images/posts/DWi-oGxkcHw.jpg',views:255090,comments:65,likes:1086,date:'2026.03.31',creator:'kongsook__',caption:'단종이 왜이리 유행이야 제가 꾸준히 몇통째 쓰고 있는 넘버즈인 3번 결세럼이 이번에 리뉴얼되면서 "3번 보들보들 모공결세럼"으로 이름도 바꾸고 나오셨다 ✨💦 올영',pattern:'promo'},
+  {thumb:'images/posts/DQwdSSKEl7o.jpg',views:250592,comments:31,likes:533,date:'2025.11.07',creator:'bnf_sunny',caption:'팩 nn개 써본 사람의 1등팩 추천🤍 속건조, 꺼진 피부, 푸석한 결, 열감, 칙칙한 피부톤까지 숫자팩 5종으로 집중 타파 해보삼!!!💥 1번 팩 PMS로 예민한',pattern:'sensory'},
+  {thumb:'images/posts/DWlczyjE1uF.jpg',views:198046,comments:14,likes:3830,date:'2026.04.01',creator:'hanchaerm',caption:'본격 만화속에 나오는 케이크 먹기✨ 톰과제리에 나오는 보들보들 치즈케이크인데 요 치즈케이크보다 더 부드러운 피부를 만들어주는 넘버즈인 3번 세럼!!3️⃣✨ 이번에',pattern:'sensory'},
+  {thumb:'images/posts/DXbcMB3EwbP.jpg',views:181941,comments:217,likes:1431,date:'2026.04.22',creator:'anssxmetic',caption:'5분 생얼 메이크업 싹 정리해줄게요 📝 메이크업 치트키? = 대충 막 바를 수 있는 파데프리템. 응응.. 너 하나만 있으면 돼 /// 넘버즈인 3번 톤업베이지를',pattern:'social'},
+  {thumb:'images/posts/DWlTK2SgI4T.jpg',views:175722,comments:28,likes:3058,date:'2026.04.01',creator:'just_maesil',caption:'솔직히 나만 거울보고 놀란거아니잖아;; 근데 피부결만 좋아도 반은 먹고 들어간다ㅋ 💗넘버즈인 3번 모공결세럼으로 외모정병탈출! 피부를 튼튼하게 만들어주는 비피다x',pattern:'sensory'},
+  {thumb:'images/posts/DVGLpbtk8Sh.jpg',views:175681,comments:19,likes:324,date:'2026.02.23',creator:'sosohan_shopping',caption:'무뚝뚝함 끝판왕 울 남친이 갑자기 "너 오늘 좀 귀엽다? 피부 뭐야?"라고 칭찬함;; 나 진짜 아무것도 안 하고 넘버즈인 3번 세럼 하나 바꿨을 뿐인데!! 🥚 사',pattern:'sensory'},
+  {thumb:'images/posts/DUx_fU4E0lZ.jpg',views:156494,comments:1,likes:1689,date:'2026.02.15',creator:'azu_pinkxx',caption:'春のお買い物と美容でモチベ🆙な1日🌟 これから紫外線もきつくなってくるので 今のうちにシミケアを始めるのって とっても大事✨🥹 の 5番 シミ・痕跡卒業フルケアセット はQoo10',pattern:'promo'},
+  {thumb:'images/posts/DXbe1drCe9B.jpg',views:152353,comments:46,likes:1007,date:'2026.04.22',creator:'ramnuggi',caption:'ㅇㄴ 저 요즘 약속 계속 늦어서 엘베 화장하는데 파데 할 시간 없어서 이걸로 해결하거든요? 전부터 잘 쓰던 넘버즈인 3번 톤업베이지 ^^ 근데 이게 지금 올영에서',pattern:'sensory'},
+  {thumb:'images/posts/DYg0Xw2gn2N.jpg',views:151351,comments:58,likes:464,date:'2026.05.19',creator:'hhhyangggg',caption:'나 이제 술먹고 세수 안하고 자면 인간아니다 !! 무조건 촉촉하게 세수하고 잔다 🫒5/20(수) 오특💋 3️⃣번 클렌징 오일 200ml 37% OFF (28,00',pattern:'sensory'},
+  {thumb:'images/posts/DYmFE0dRIWr.jpg',views:139349,comments:3,likes:1034,date:'2026.05.21',creator:'michan.koreaholic',caption:'『毎日投稿中❤️‍🔥フォローしてね』 韓国お土産 定番のアレ！今買っちゃダメ 大人気のすべすべキメケア 3番シートマスクが バブルパックになって登場🫧✨ これは今！シートマスク買っ',pattern:'viral'},
+  {thumb:'images/posts/DYHLPLnP5jg.jpg',views:127325,comments:33,likes:2940,date:'2026.05.09',creator:'_k_jixxy',caption:'가만히 있어도 🔥빡치는🔥 매직데이에 온 걸 환영해..🙂..(a.k.a. 매직데이에도 공주의 덕목은 유지하기ㅋ)',pattern:'insider'},
+  {thumb:'images/posts/DYZSo1MTMSM.jpg',views:124484,comments:37,likes:323,date:'2026.05.16',creator:'vividaeun_',caption:'꽁꽁 숨겨왔던 내가 N년 동안 짝사랑한 첫사랑 만나는 날 ,, 진짜 너무 떨려 화잘먹 치트키로 유명한 넘버즈인 3번 라인으로 화잘먹 피부결 완성 해봤는데 어때요?',pattern:'sensory'},
+  {thumb:'images/posts/DSr_VE2D90o.jpg',views:123092,comments:4,likes:97,date:'2025.12.25',creator:'friendship___jung',caption:'요즘 핫한 넘버즈인 패드를 1+1로 겟! sns 대란템 패드 원하는 패드 1개를 가져가는 미친 구성 이거 놓칠거야?! 진정+결까지 한번에 관리하니까 피부 컨디션이',pattern:'sensory'},
+  {thumb:'images/posts/DRUA2GvkdBg.jpg',views:122694,comments:16,likes:1611,date:'2025.11.21',creator:'numbuzin_official',caption:'🩵넘버즈인 x 지냐 2차 화보 촬영 현장 🩵 🗓️2025.11.24 10시 30분 넘버즈인 공식몰 넘버즈인 x 지냐 NEW 화보와 함께 1번 라인 앵콜마켓이 돌아',pattern:'promo'},
+  {thumb:'images/posts/DQtrJUWgYwc.jpg',views:121560,comments:151,likes:655,date:'2025.11.06',creator:'from_yeseu1',caption:'아니 이게 뭔데 외국분들 올영에서 이것만 쓸어가요? 트렌드 민감한 나, 바로 달려갔는데 이 브랜드만 품절🤯 왜 다들 여러 종류로 사는지 이제 알았음. 피부 상태별',pattern:'social'},
+  {thumb:'images/posts/DROtknnD2EK.jpg',views:120744,comments:11,likes:109,date:'2025.11.19',creator:'jae_hyun_22',caption:'요즘 X에서 난리 난 그 토너패드!!! 저도 궁금해서 결국 써봤어요 올리브영에서도 잠깐 품절됐던 제품이라 얼마나 좋길래 싶었는데… 써보니까 이유가 있더라구요 바로',pattern:'promo'},
+  {thumb:'images/posts/DYmwtGNRh_D.jpg',views:116231,comments:17,likes:3852,date:'2026.05.22',creator:'eunchogreen',caption:'특이한 시딩깡 ෆ 공주님의 외출준비 ㄱㄱ💕',pattern:'sensory'},
+  {thumb:'images/posts/DRj1qHSjYQm.jpg',views:112000,comments:51,likes:2923,date:'2025.11.27',creator:'closmain',caption:'Glazed glow secret? Gua sha routine with NAD✨ NAD toner for slip, NAD eye cream + gua sha',pattern:'social'},
+  {thumb:'images/posts/DWOpwPkSXmB.jpg',views:95739,comments:32,likes:1794,date:'2026.03.23',creator:'ryukeyhoon',caption:'2년차 뷰티 마케터가 느낀 콘텐츠 마케터 꼭 해야하는 유형..👨‍⚖️ 콘텐츠 마케터의 비추 유형은 지난 릴스 보고 오세요!!🏃💦 - product info 아비브',pattern:'promo'},
+  {thumb:'images/posts/DWiZBNdE8yJ.jpg',views:86262,comments:221,likes:1400,date:'2026.03.31',creator:'anssxmetic',caption:'다들 경민님 닮았다 해주셔서 커버해 봤는데 역시나 미남은 따라할 수 업네요.. 그냥 남장 메이크업으로 봐주세요..🤦‍♂️ 최근들어 요철 고민 DM이 진짜 많이 들',pattern:'sensory'},
+  {thumb:'images/posts/DYkTBu_TWeD.jpg',views:82905,comments:68,likes:778,date:'2026.05.21',creator:'with_sophie.b',caption:'Unboxing some new skincare goodies💜 Trying out the Numbuzin No.9 line - the Volume-up Esse',pattern:'promo'},
+  {thumb:'images/posts/DXZQ822gZQx.jpg',views:81553,comments:6,likes:962,date:'2026.04.21',creator:'heyinns',caption:'The smell is potent but it works!!! 🥹 right now on YesStyle, they\'re doing a buy 1 get 1 F',pattern:'viral'},
+  {thumb:'images/posts/DRRi_bCEgl3.jpg',views:77514,comments:13,likes:3,date:'2025.11.20',creator:'',caption:'ずーーっと妹と白玉美容液興味あって調べてて、実際使ったのですが本当に良いので（動画からも分かると思う、、！）ぜひ見てみて欲しい、、！！‎🤍 25歳も、透明感の肌であり続けるゾ、、、',pattern:'insider'},
+  {thumb:'images/posts/DXoV822E53t.jpg',views:70502,comments:57,likes:688,date:'2026.04.27',creator:'hyoh.ya',caption:'여러분 4행시는 제가 효경이한테 억지로 시킨거니까 봐주세요🩷 보내주신 선크림🧴 써보고 너무 좋아서 열심히 찍어봤어요!! 효경이는 지성이라 블러ver. 사용했어요ㅎ',pattern:'sensory'},
+  {thumb:'images/posts/DRMUN11j58i.jpg',views:66394,comments:0,likes:1324,date:'2025.11.18',creator:'jieunme_',caption:'요즘 X 바이럴 되고있는 패드? 말 그대로 밀가루 끊은 것처럼 피부가 맨들맨들해지는 그 느낌… 진짜 바로 체감됐어요 🤍🪽 저녁에 닦토로 한 번, 아침엔 가볍게 결',pattern:'sensory'},
+  {thumb:'images/posts/DXLmhUsvvqv.jpg',views:59792,comments:18,likes:3,date:'2026.04.16',creator:'quinnie121__',caption:'저 드디어 파운데이션 끊었어요… 요즘은 그냥 이거 하나로 끝냄. 넘버즈인 3번 톤업 블러 / 3번 톤업 글로우 🤍 이제 블러 vs 글로우 취향대로 고르는 파데프리',pattern:'social'},
+  {thumb:'images/posts/DO8Z9wukt27.jpg',views:58922,comments:17,likes:1067,date:'2025.09.23',creator:'gumeeee__',caption:'생리 때마다 피부 뒤집어지는 공주들!!!! 무조건 주목!!!!🚨나님 이 기간 되면 무조건 나는데 그럴 때 마다 넘버즈인 써주는데 진정 ㄹㅇ 뒤집어즴 .... 써봐',pattern:'sensory'},
+  {thumb:'images/posts/DV59g_ckupz.jpg',views:58610,comments:0,likes:102,date:'2026.03.15',creator:'momo_in_kr',caption:'日焼け止めどれがいい？？ ＼2月24日発売／ 🧴9番 NMN ハリツヤモイストUVクリーム SPF 50+PA++++で安心だし NMN× コラーゲン× ペプチド配合だから美容液を',pattern:'social'},
+  {thumb:'images/posts/DYi2Ks9p3jb.jpg',views:58034,comments:20,likes:282,date:'2026.05.20',creator:'moogguzzang',caption:'피지 짜지 말래서 진짜로 정석대로 해봤음.. 클렌징오일 싫어했는데 이건 조트라 사랑함 . .ㅋ',pattern:'promo'},
+  {thumb:'images/posts/DYoBJw6PWa9.jpg',views:55589,comments:44,likes:3,date:'2026.05.22',creator:'quinnie121__',caption:'화장만 하면 각질 뜨고 베이스 끼는 사람 저만 아니죠…🥲 특히 바쁜 아침에는 프렙 단계 길어지면 손이 잘 안 가는데 요즘 제 화잘먹 루틴에 추가된 신상 🫧 넘버즈',pattern:'sensory'},
+  {thumb:'images/posts/DWFd-uCDwi6.jpg',views:54905,comments:106,likes:3,date:'2026.03.20',creator:'yepmanythings',caption:'✨️ Steal it at just $69 (worth $345)!!!, Enjoy 80% OFF + Extra 5% OFF with code YEPMANY5 P',pattern:'viral'},
+  {thumb:'images/posts/DWbjX_9kWe0.jpg',views:50975,comments:5,likes:54,date:'2026.03.28',creator:'chaen_yyang',caption:'[광고] 아침부터 느껴진 달라진 피부결✨ 리뉴얼되어 새로 출시된 3번 세럼💦 기존처럼 피부결을 보들보들하게 해주는데 바쿠치올이 추가돼서 모공까지 더 쫀쫀하게🫢 나',pattern:'sensory'},
+  {thumb:'images/posts/DVahJU8D6G1.jpg',views:50505,comments:92,likes:702,date:'2026.03.03',creator:'its.__yen',caption:'밀가루 끊기 1일차…? 글쎄요?! 저는 올영세일 토너패드로 관리할게요!! >_< 환절기만 되면 울긋불긋 뒤집어지는 개복치 피부 대표 1인 .. 바로 전데요😖 트위',pattern:'promo'},
+  {thumb:'images/posts/DYusBFSpnPo.jpg',views:49515,comments:6,likes:3,date:'2026.05.25',creator:'haelog.record',caption:'중요한 약속 있는 날 늦잠 잤을 때… 스킨케어 하나하나 바를 시간도 없는데 베이스까지 안 먹으면 진짜 멘붕이잖아요😭 그럴 때 저는 메이크업 전에 넘버즈인 3번 매',pattern:'sensory'},
+  {thumb:'images/posts/DXy5emDTX_m.jpg',views:46212,comments:42,likes:92,date:'2026.05.01',creator:'flan_721',caption:'우리.. 중요한 날인데 화장 안 먹으면 진짜 스트레스 받잖아요?🥲 저같경 결혼식 하객으로 갈 때... 옷은 제대로 입었는데 화장 뜨면 머리 뽑고싶음(???????',pattern:'insider'},
+  {thumb:'images/posts/DRJuEXnAae1.jpg',views:41100,comments:0,likes:22,date:'2025.11.17',creator:'bae._ss0',caption:'X 에서 난리난 그 패드?! X에서 지금 무슨 피부가 너무 좋아졌다고 찐으로 엄청 바이럴 되고 있는 토너패드가 있다던데?! 실제로 써보니까 진짜 밀가루 끊은 것처',pattern:'social'},
+  {thumb:'images/posts/DJiRbDYBFz0.jpg',views:40836,comments:6,likes:185,date:'2025.05.12',creator:'705mhz',caption:'립글로스를 얼굴에 바른다고..? 젤리 먹기만 하지 말고, 이제 피부에 발라봐❣️ * 본 게시물은 넘버즈인 서포터즈 활동으로 제품을 제공받아 제작되었습니다 요즘 완',pattern:'social'},
+  {thumb:'images/posts/DSR9mqhkp_I.jpg',views:40263,comments:1,likes:32,date:'2025.12.15',creator:'omj_0406',caption:'24시간 화잘먹 꿀조합 알려드림✨ 저의 최애 꿀조합 패드 공식몰에서 프로모션하고 있어요!👏🏻 📢 내맘대로 골라 담는 넘버즈인 패드 1+1 56,000원 → 28,',pattern:'sensory'},
+  {thumb:'images/posts/DWLmwiaPZUV.jpg',views:39296,comments:2,likes:277,date:'2026.03.22',creator:'jixoo_zip',caption:'저 3번 세럼 n통째 쓰던 사람인데 이번에 리뉴얼된다고 해서 먼저 써봤어요 피부결이랑 모공 때문에 계속 쓰던 라인이라 솔직히 더 좋아질 수 있나 싶었는데 세럼은',pattern:'social'},
+  {thumb:'images/posts/DV50TtRgtP7.jpg',views:38613,comments:134,likes:3,date:'2026.03.15',creator:'skinjoyedbyana',caption:'Products listed below⬇️ Relief Sun Aqua Fresh Daily Airfit Sunscreen Clear Filter Sun Esse',pattern:'social'},
+  {thumb:'images/posts/DYKDjryvTK2.jpg',views:38472,comments:30,likes:0,date:'2026.05.10',creator:'quinnie121__',caption:'🌙 요즘 자기 전에 꼭 하는 넘버즈인 나이트 루틴✨ 🫧 3번 클렌징오일로 메이크업 싹 지워주고 🩵 3번 모공제로 화잘먹 패드로 피부결 정리 💧 3번 토너로 수분',pattern:'sensory'},
+  {thumb:'images/posts/DXwN56JvA30.jpg',views:38324,comments:0,likes:72,date:'2026.04.30',creator:'cosupa_korea',caption:'numbuzin mozoワンダーシティ 📍開催場所：愛知県名古屋市西区二方町40 mozoワンダーシティ 2階 🕒時間：10:00〜21:00 韓国好きなら絶対テンション上がる💗',pattern:'promo'},
+  {thumb:'images/posts/DWeOWFJE__q.jpg',views:37969,comments:0,likes:93,date:'2026.03.29',creator:'chaewonsays',caption:'아니 넘버즈인 양반 이게 무슨 소리요😡 피부결 책임져주던 3번 세럼이 단종된다고 해서 화날 뻔.. 하다가 리뉴얼돼서 돌아온다길래 노선변경ㅎㅎ❤️‍🔥 그냥 패키지만',pattern:'sensory'},
+  {thumb:'images/posts/DQ_8bJKj-bz.jpg',views:36862,comments:14,likes:3,date:'2025.11.13',creator:'still___mag',caption:'(올영 VIP) 에디터가 정착한 환절기 팩 .. 🤍🪽 피부과에서 암만 레이저·스킨부스터 다 해봐도 환절기만 되면 화장 뜨는 게 고민이었는데 \'넘버즈인 1번팩\' 1',pattern:'sensory'},
+  {thumb:'images/posts/DTFTxuDCYPm.jpg',views:35381,comments:71,likes:953,date:'2026.01.04',creator:'baekdokki',caption:'독기의 ASMR with.numbuzin 안녕하세요 독기입니다 ㅎㅎ 오늘은 특별히 asmr 컨텐츠를 준비해봤어요! 감사하게도 넘버즈인이랑 이번 컨텐츠를 제작하게',pattern:'promo'},
+  {thumb:'images/posts/DTSM5pQDxKF.jpg',views:32815,comments:8,likes:143,date:'2026.01.09',creator:'sinzuhee',caption:'아나운서 지망생 vlog 2탄🎤 -kbs편 *영상에서 사용한 세럼, 팩 정보 : 3번 보들 결 세럼, 3번 참은만큼 보들보들 결세럼팩 💇‍♀️헤어 : 🤍 💄메이크',pattern:'sensory'},
+  {thumb:'images/posts/DHX3cU1yqye.jpg',views:32071,comments:17,likes:87,date:'2025.03.19',creator:'eonjinko',caption:'다들 울퉁불퉁한 턱살 없애시고 싶으신가요 ㅋ!!! 넘버즈인 9번 팩이랑 에센스로 턱선 지켜보ㅈr 😇✨',pattern:'social'},
+  {thumb:'images/posts/DYrTFdUBLXG.jpg',views:31105,comments:8,likes:3,date:'2026.05.23',creator:'co5meticat_',caption:'큰일났다!! 늦잠공쥬 지각 👑 5/25(월)~5/29(금) 올리브영 단독 선런칭 정상가 27,000원 → 할인가 17,900원(33% OFF)',pattern:'promo'},
+  {thumb:'images/posts/DYZe4Fco8VE.jpg',views:30669,comments:10,likes:62,date:'2026.05.16',creator:'1cmmmn',caption:'자연광에서 살아남기☀️☠️',pattern:'viral'},
+  {thumb:'images/posts/DWjE0gmy8Pm.jpg',views:29664,comments:1,likes:102,date:'2026.03.31',creator:'flan_721',caption:'뷰티크리에이터 하더니 퇴사했냐고요?!? ..아니요🥸 피부가 좋아졌다고 다 퇴사한 건 아닙니다 흑흑 요새 자주 쓴 요 제품 덕분..!! 드디어 그날이 왔어요… 4월',pattern:'promo'},
+  {thumb:'images/posts/DRMt2l_CWYZ.jpg',views:29400,comments:-1,likes:0,date:'2025.11.18',creator:'byeol8384',caption:'X에서 보고 넘 궁금했던 제품! 품절 풀려서 바로 사용해 봤는데 이거 진짜 최고다!! 밀가루 끊은것 처럼 고민이였던 좁쌀 여드름을 잡아주더라고요!! 저와 같은 고',pattern:'promo'},
+  {thumb:'images/posts/DWboyUnjFJa.jpg',views:29180,comments:5,likes:3,date:'2026.03.28',creator:'su._.by',caption:'나 몇 통째 쓰던 피부결 레전드 3번 세럼 단종된다는 소식 듣고 진짜 식겁했는데…😨 다행히 없어지는 게 아니라 리뉴얼돼서 돌아온 거였음🔥 원래도 이거 쓰는 이유가',pattern:'sensory'},
+  {thumb:'images/posts/DRZDZuDk4si.jpg',views:28863,comments:7,likes:163,date:'2025.11.23',creator:'you.nxeo_',caption:'넘버즈인에서 제품제공을 해주셧어용 . . . [프로모션 소개] ▶️ 넘버즈인 공식몰 단독 프로모션 ★★★★★ 넘버즈인 마스크팩 5종을 오직 넘버즈인 공식몰에서만!',pattern:'sensory'},
+  {thumb:'images/posts/DRPY04Pga8x.jpg',views:28005,comments:1,likes:483,date:'2025.11.19',creator:'minseonyu_',caption:'요즘 X에서 난리난 그 패드, 나도 결국 써봤어요 💚 진짜 "밀가루 끊은 것처럼 피부 좋아진다"는 말… 괜히 도는 게 아니더라!!!!!!!! 이거 쓰고 나서 피부',pattern:'sensory'},
+  {thumb:'images/posts/DYm96R2v0OT.jpg',views:26154,comments:353,likes:1028,date:'2026.05.22',creator:'belezacomdu',caption:'Na você encontra os melhores produtos de k-beauty. Essa área exige ativos que justifiquem',pattern:'insider'},
+  {thumb:'images/posts/DWgi6tmk-ST.jpg',views:25577,comments:8,likes:3,date:'2026.03.30',creator:'mingsoo_yoo',caption:'수정화장 필요없는 화장꿀템👍 제 화잘먹 치트키는 바로 요고🤍 [넘버즈인 3번 모공결 세럼] 피부결 정돈 + 모공 커버까지 한 번에 돼서 매끈한 깐달걀 피부 만들기',pattern:'sensory'},
+  {thumb:'images/posts/DUFjz1xj4Xw.jpg',views:24469,comments:5,likes:35,date:'2026.01.29',creator:'en_eden_',caption:'<넘버즈인 5번 글루타치온C 흔적 앰플&패드> 트러블 피부도 걱정 없는 24시간 밀착 케어 가능한 ☀️미백케어 제품☀️이에요. 메이크업 전에 사용해봤는데 피부 광',pattern:'promo'},
+  {thumb:'images/posts/DUTxZM4kyWB.jpg',views:22891,comments:33,likes:84,date:'2026.02.04',creator:'atozbibi',caption:'올리브영에 넘버즈인 망곰 에디션이 떴어요 ⸜(*ˊᗜˋ*)⸝ 패키지가 너무 귀여워서 홀린 듯이 집어왔는데 직접 써보고 제품력에 더 반했다는 거 ! ꔛ 3번 보들보들',pattern:'sensory'},
+  {thumb:'images/posts/DWsnI_TEb8j.jpg',views:20451,comments:10,likes:3,date:'2026.04.04',creator:'innshushu',caption:'왔다... 넘버즈인 3라인 리뉴얼 기념 마켓 💥 넘버즈인이 진짜 할인 세게 안 하는 브랜드로 유명한데요,,, 대대적인 3번 라인 리뉴얼을 맞이하여 특급 할인에 들',pattern:'sensory'},
+  {thumb:'images/posts/DRXF2qXk0v1.jpg',views:19900,comments:7,likes:459,date:'2025.11.22',creator:'azu_pinkxx',caption:'美白ケアにおすすめな 5番 色素くすみ肌 白玉グルタチオンCセット🍋 メガ割だとお得に購入できます🤍🍋',pattern:'sensory'},
+  {thumb:'images/posts/DW3n80jDgEi.jpg',views:19485,comments:14,likes:290,date:'2026.04.08',creator:'skincare.zombie',caption:'Body skin fighting gravity alone..🤔 Partner The No.9 Essence is currently available at 39%',pattern:'social'},
+  {thumb:'images/posts/C_NK_D5hRIa.jpg',views:19250,comments:12,likes:48,date:'2024.08.28',creator:'codukyun',caption:'본 게시물은 넘버즈인 서포터즈 활동으로 제품을 제공받아 제작되었습니다. [넘버즈인 5번 글루타치온C 아로마 마사징 딥클렌저] 메이크업뿐만 아니라, 하루의 피로까지',pattern:'social'},
+  {thumb:'images/posts/DT9m5MREsuv.jpg',views:18988,comments:10,likes:3,date:'2026.01.26',creator:'___dewwww',caption:'이렇게 귀여운데 어떻게 안사요?🧸✨ 넘버즈인하면? 3번라인!💡 화잘먹으로 유명한 3번라인과 망곰이가 만나서 귀여움 한도초과😇🪽 ✅ 2월 신상템이니까 위시리스트로',pattern:'sensory'},
+  {thumb:'images/posts/DWwHTO7E1jT.jpg',views:16008,comments:4,likes:951,date:'2026.04.05',creator:'azu_pinkxx',caption:'ゆるゆるVLOG🐰🩷 4/1から発売した の ☑︎3番 もちすべ毛穴ケアセラムクレンジングを 使ってみたけど 軽いテクスチャーでベタつきを忘れる 新感覚セラムクレンジングで するっ',pattern:'insider'},
+  {thumb:'images/posts/DYuHPjJAYIK.jpg',views:15975,comments:11,likes:131,date:'2026.05.24',creator:'to_charminggg',caption:'요즘 버블팩 유행인 건 알았는데 드디어 넘버즈인 3번 라인에서도 나옴…🫧 아침에 시간 없을 때 팩 대신 쓰기 너무 좋았던 이유가 LHA + PHA 성분이 각질을',pattern:'sensory'},
+  {thumb:'images/posts/DYJ-gmdJW4f.jpg',views:15488,comments:21,likes:165,date:'2026.05.10',creator:'da._.jane__',caption:'오후만 되면 피부 갑갑한 느낌 혹시 공감 되시는 분 있을까요?? 저는 아침 저녁으로 스킨케어 꼼꼼히 하다보니 오후에 꼬옥 그 쌓이고 쌓였던 제품들이 피부 숨을 턱',pattern:'sensory'},
+  {thumb:'images/posts/DXHF-vqgdRO.jpg',views:15073,comments:3,likes:3,date:'2026.04.14',creator:'rizzroom_',caption:'🆕 넘버즈인 3번 뭐가 다를까⁉️ 넘버즈인 3번라인이 싹 바뀐 거 아셨나요? ☁️🎀 특히 넘버즈인 도자기결 톤업베이지 선크림은 내 피부 표현 취향에 맞춰 두 가지',pattern:'sensory'},
+  {thumb:'images/posts/DYr-QKTsdHG.jpg',views:13211,comments:0,likes:78,date:'2026.05.24',creator:'its._chuu',caption:'본 게시물은 넘버즈인 서포터즈 활동으로 제작되었습니다. 화잘먹 피부 만들고 싶다면 주목 🫧✨ 넘버즈인 3번 버블팩 버블 한 펌프로 각질은 매끈하게',pattern:'sensory'},
+  {thumb:'images/posts/DWvee0XySf1.jpg',views:13094,comments:6,likes:3,date:'2026.04.05',creator:'100__sy',caption:'3번세럼 쓰면 nctwish 콘서트 갈수 있다고? 제가 정말 자주 쓰는 3번라인이 업그레이드 리뉴얼 해서 돌아왔는데요! 화잘먹세럼하면 누구나 들어봤을법한 3번세럼',pattern:'promo'},
+  {thumb:'images/posts/DRPHmLXk5aQ.jpg',views:12970,comments:55,likes:96,date:'2025.11.19',creator:'zzi_9uma',caption:'나 찌구마 넘버즈린 3번 라인으로 피부 광명 찾았다!! 📂 넘버즈인 📄 3번 결광가득 에센스 토너 📄 3번 보들보들 결 세럼 📄 3번 참은만큼 보들보들 결 세럼팩',pattern:'sensory'},
+  {thumb:'images/posts/DUKPYZckvvF.jpg',views:12780,comments:3,likes:124,date:'2026.01.31',creator:'z1nisfree_',caption:'피부가 망곰이 스트레스볼처럼 된 느낌 !💓 진짜로 쫀득해짐 , ,🧸✨ 피부결 하면 유명한 넘버즈인 3번 세럼 ! ! 바르고마자 피부결이 매끈해지니까 3번 톤업 파',pattern:'sensory'},
+  {thumb:'images/posts/DV3XsGKgRMy.jpg',views:12536,comments:1,likes:3,date:'2026.03.14',creator:'ruko_ichigoka',caption:'テニス部６年間でも 今の肌質に慣れてるのはまーじで 日焼け対策してたから☀️✨ 最近のおすすめ日焼け止め numbuzin ( ) 9番 NMN ハリツヤモイストUVクリーム',pattern:'sensory'},
+  {thumb:'images/posts/DN5q8B0ExpL.jpg',views:12284,comments:0,likes:45,date:'2025.08.28',creator:'lulun1023',caption:'がメガ割期間に めちゃくちゃお得になるよ！！！ ㊙️8/31だけ数量限定でメガ割価格からさらに500円オフ！ 1セット4〜5個あるのに5000円切るセットになる😇 意味わからんくら',pattern:'social'},
+  {thumb:'images/posts/DYP35BdoR7S.jpg',views:12160,comments:29,likes:145,date:'2026.05.13',creator:'jjei2y',caption:'요즘 화장이 괜히 들뜨고 모공 끼임 심해 보이는 날 있잖아요 그럴 때 피부결부터 정리해주는 게 진짜 중요하더라구요✨ 요즘 제가 메이크업 전에 꼭 하는 루틴은 넘버',pattern:'sensory'},
+  {thumb:'images/posts/DWgmzyFiTbp.jpg',views:11938,comments:12,likes:3,date:'2026.03.30',creator:'0.e__b_',caption:'🩷클렌징 뭘 써도 만족스럽지 않았다면? 3번 세럼 한 통 가득 담은 신개념 세럼 클렌저 본 게시물은 넘버즈인 서포터즈 활동으로 제품을 제공받아 제작되었습니다',pattern:'promo'},
+  {thumb:'images/posts/DTcZBZKkpjW.jpg',views:11538,comments:16,likes:3,date:'2026.01.13',creator:'c_ajin',caption:'(조금 이른) 개강 메이크업 -! 수다쟁이라 주제 한 5개 바뀜주의🚨 —————— 미백 & 흔적관리엔 넘버즈인 5번 라인!! 패드+앰플이 2만원대래요오 💛 얼른',pattern:'promo'},
+  {thumb:'images/posts/DV8YUBIE6WW.jpg',views:11466,comments:3,likes:552,date:'2026.03.16',creator:'azu_pinkxx',caption:'いちご狩りとSwitch２買う日のVLOG🍓🎮 いちご狩りって少し日差しが気になるので しっかりUVケアしていくよ🎶 9番 NMN ハリツヤモイストUVクリーム SPF 50+PA',pattern:'viral'},
+  {thumb:'images/posts/DVzAZ2wCExP.jpg',views:11386,comments:8,likes:323,date:'2026.03.13',creator:'noeliacadenass',caption:'Puntuando Skincare Coreano🇰🇷 con un Si✅ y un No❌ Espero que no me odies por algún producto',pattern:'insider'},
+  {thumb:'images/posts/DWsBl8hz0h9.jpg',views:11156,comments:3,likes:539,date:'2026.04.04',creator:'styledby.sunday',caption:'유우시 생일축하해 다 같이 축하해주자🎂 (feat. 🌟4월 5일까지만! 올리브영 온라인에서만 진행하는 NCT WISH 포토 스티커& 콘서트 티켓 증정 모공종결 마',pattern:'social'},
+  {thumb:'images/posts/DSohqX0kiHS.jpg',views:11094,comments:2,likes:26,date:'2025.12.24',creator:'q_.rena',caption:'콜라겐팩 많이 써봤는데 "아, 이건 좀 다르다" 싶었던 건 오랜만이에요. 넘버즈인 2번 로즈 PDRN 콜라겐 플럼핑 마스크팩은 정제수보다 콜라겐 수가 더 많은 게',pattern:'sensory'},
+  {thumb:'images/posts/DYhntirTD9k.jpg',views:11014,comments:1,likes:0,date:'2026.05.20',creator:'_mprzchi',caption:'Botox? 👀 This Numbuzin No.9 combo has been making my skin look smoother, firmer, and way m',pattern:'sensory'},
+  {thumb:'images/posts/DQjudw7jwN-.jpg',views:10908,comments:14,likes:24,date:'2025.11.02',creator:'coduk_mango',caption:'시험기간엔 다들 화장하세요? 저는 ㅎㅎ 안 합니다(단호) 근데 이번 시험기간에 유일하게 바른 건 바로 넘버즈인 5번 글루타치온 앰플💛 피부 톤까지 살려주는 개강추',pattern:'social'},
+  {thumb:'images/posts/DSiw002kkek.jpg',views:10673,comments:7,likes:218,date:'2025.12.22',creator:'___sooran',caption:'*제품협찬* 내가 데일리로 즐겨쓰는 마스크팩 브랜드 ! 바로 🩷 진짜 다양한 타입으로 피부컨디션 맞춘 케어 가능한데 그 중 탄력& 볼륨케어 는 👍🏻 ⠀ 로즈 PD',pattern:'sensory'},
+  {thumb:'images/posts/DWgz95XAEze.jpg',views:10547,comments:28,likes:66,date:'2026.03.30',creator:'beauty_newbird',caption:'세럼 한병이 고대로 들어간 클렌징 오일이라니..!!! 넘버즈인 3번 클렌징 오일',pattern:'social'},
+  {thumb:'images/posts/DX-zNAKBrk1.jpg',views:10472,comments:19,likes:3,date:'2026.05.06',creator:'giants_chuu',caption:'본격적으로 시작된 뙤약볕 직관 시즌!☀️ (이벤트 마감) 이번 광주 원정에서 제 피부를 살려준 찐 직관템 공유합니다! 야구장 갈 때 무거운 선크림은 절대 못 바르',pattern:'sensory'},
+  {thumb:'images/posts/DWoSJ0pDznL.jpg',views:10345,comments:6,likes:3,date:'2026.04.02',creator:'iizxez',caption:'본 게시물은 넘버즈인 서포터즈 활동으로 제작되었습니다. 4월 올리브영 X 넘버즈인 프로모션 3번 보들보들 모공결세럼 30ml + 30ml 더블기획',pattern:'promo'},
+  {thumb:'images/posts/DT_dxkOEiEX.jpg',views:10325,comments:11,likes:238,date:'2026.01.27',creator:'___sooran',caption:'(제품제공) 요즘 맘카페에서 난리라는 루틴, 마스크팩으로 유명한 의 No.5가 토너패드 & 앰플도 출시되었어요 🧸 ⠀ 비타성분 가득담았음에도 미백라틴의 특유 끈적',pattern:'sensory'},
+  {thumb:'images/posts/DSUtUdBElL2.jpg',views:9887,comments:0,likes:82,date:'2025.12.16',creator:'youngni_view',caption:'🔥 [넘버즈인 공식몰] 단독 혜택! 하나만 사도 무료배송은 물론 3만원 이상 구매 시 2번 세럼 10일치 무료 증정! 넘버즈인 3번 세럼+ 팩 세트 찐으로 좋음',pattern:'sensory'},
+  {thumb:'images/posts/DYO9AcpzqA5.jpg',views:9584,comments:8,likes:3,date:'2026.05.12',creator:'mingsoo_yoo',caption:'어려보이는 사람들 보면 화장 두껍게 안 하고 피부결부터 잡더라고요 제가 요즘 잘 쓰고 있는 📌넘버즈인 3번 라인! 요철, 모공 정리에 효과가 정말 좋더라고요 확실',pattern:'sensory'},
+  {thumb:'images/posts/DYzCSu_BV0L.jpg',views:9356,comments:3,likes:3,date:'2026.05.26',creator:'ddafm.en',caption:'ついに私が大好きなナンバーズイン3番からバブルパックが出たの、激アツすぎない？！🫧 バブルパックはメイク前に使うと肌艶々になるから本当にオススメ！ 5/29(金)からQoo10で購',pattern:'promo'},
+  {thumb:'images/posts/DT4n8uuCeo2.jpg',views:9177,comments:37,likes:202,date:'2026.01.24',creator:'now_cos',caption:'역대급 귀엽고 알찬 기획의 등장..✨🐻 보들보들 피부결☁️하면 넘버즈인 3번 라인인 거 다들 아시죠!? 제 최애 3번라인이 망곰이와 콜라보를 했습니다..🥹 이번',pattern:'sensory'},
+  {thumb:'images/posts/DQs6g9tk7aj.jpg',views:8950,comments:41,likes:3,date:'2025.11.06',creator:'0tti_da',caption:'⠀ 💥따가운 만큼 효과보는 마스크팩..?!💥 ⠀ 처음엔 살짝 따끔~ 하지만, 그게 바로 팅클포어콤플렉스™가 모공 속 노폐물을 녹여 모공 · 요철 · 피부결을 매끈',pattern:'sensory'},
+  {thumb:'images/posts/DRBm3QNEjJz.jpg',views:3600,comments:0,likes:3,date:'2025.11.14',creator:'_b.cos_',caption:'응급 진정 필요할 때 바로 복구할 수 있는 방법!? 🏷️ 넘버즈인 1번 히알루로닉 판토텐산 클리어 수딩 거즈팩 히알루론산 + 판토텐산으로 -> 속 수분, 붉은기,',pattern:'sensory'},
+  {thumb:'images/posts/DWSkG0_gb0v.jpg',views:3579,comments:14,likes:98,date:'2026.03.25',creator:'yoxgjxe',caption:'넘버즈인에게 택배를 받았습니다🙊',pattern:'social'},
+  {thumb:'images/posts/DWdUZ2mE_Fe.jpg',views:3527,comments:1,likes:3,date:'2026.03.29',creator:'ziheee',caption:'저 넘버즈인 제품 정말 사랑하거든요 .. 💗✨ 패드는 n통째 쓸 만큼 너무 좋아하는 브랜드 제품인데 요번에 3번 세럼이 새롭게 리뉴얼 됐데요! 기존 3번 세럼만이',pattern:'sensory'},
+  {thumb:'images/posts/DSCLjNLkyrL.jpg',views:3510,comments:0,likes:25,date:'2025.12.09',creator:'dalsta_',caption:'저 인스타 광고뜨거나 시중에 괜찮다는 마스크팩은 전부 다 사보는거 아시죠..?(한번 살 때 10만원치씩 삼^^) 근데 이 팩 진짜 좋아요..👍 저 믿고 써보셔도',pattern:'promo'},
+  {thumb:'images/posts/DX8VH31RrdJ.jpg',views:3479,comments:2,likes:41,date:'2026.05.05',creator:'its._chuu',caption:'본 게시물은 넘버즈인 서포터즈 활동으로 제작되었습니다. 피부 자신 없어서 밤에만 썸남 만났다면 필독! 🌙 자연광 아래서도 살아남는 넘버즈인 3번',pattern:'sensory'},
+  {thumb:'images/posts/DXbqAWqE2A4.jpg',views:3402,comments:56,likes:131,date:'2026.04.22',creator:'zee.u__0',caption:'출근길 특 ,, 바빠서 선크림 바를 시간 없음🥺 이제는 다들 그러면 큰일 나시는 거 아시죠! 이제는 피부 지켜야할 나이•••っ•̤ ༝ •̤c☀️ 그럼 \'넘버즈인',pattern:'social'},
+  {thumb:'images/posts/DYqCx5lBjnG.jpg',views:3394,comments:9,likes:62,date:'2026.05.23',creator:'omj_0406',caption:'🚨늦잠 자서 화장 뜰까 봐 식은땀 흘린 사람 집중! 오늘 진짜 중요한 약속인데 늦잠 자서 멘탈 바사삭...😱 피부 화장 다 뜨고 모공 난리 날 뻔했는데, 이번에',pattern:'promo'},
+  {thumb:'images/posts/DWqb1vYj1Zs.jpg',views:3391,comments:3,likes:3,date:'2026.04.03',creator:'jinnitto',caption:'오해 마.. 전에 것도 5통 비우긴함💦 기초 국밥템 넘버즈인 3번 세럼 새로워진거!! 다들 알고 계셨쬬?!??🚨 전에 너무 쓰다보니 무난해진 느낌이라 그런지 6번',pattern:'promo'},
+  {thumb:'images/posts/DTH08-RkY0v.jpg',views:3371,comments:4,likes:3,date:'2026.01.05',creator:'blh7rzb',caption:'🤍👍',pattern:'social'},
+  {thumb:'images/posts/DWttNcHiVuY.jpg',views:3364,comments:23,likes:78,date:'2026.04.05',creator:'maeng_beauty',caption:'넘버즈인 3번 세럼 누가 말도 없이 사라지래… 가 아니라 더 좋아져서 나왔어요!!🩷🩷🩷 원래도 피부결+화잘먹 세럼 치트키인데 이번엔 모공까지 챙겨준다네요••• 얼',pattern:'promo'},
+  {thumb:'images/posts/DYZdajCyZGE.jpg',views:3361,comments:13,likes:3,date:'2026.05.16',creator:'byeol8384',caption:'모공 쫀쫀 피부 만드는 방법은!!? 8,900원 3번 루틴 미니어처 키트 하나면 할 수 있다뉸~~',pattern:'sensory'},
+  {thumb:'images/posts/DYuZVzpzZMK.jpg',views:3352,comments:14,likes:3,date:'2026.05.24',creator:'hyeri10205_',caption:'동대문 출근 GRWM 🚨 - 지각편 - 평소엔 늦잠 진짜 안자는데 왜 하필 동대문 가는 날 늦잠,,,? 민낯으로 가려다가 저번에 사장님들이 못알아 보셔서 어쩔 수',pattern:'sensory'},
+  {thumb:'images/posts/DXWzOWhj506.jpg',views:3327,comments:0,likes:3,date:'2026.04.20',creator:'oii.log',caption:'흐음… 비추템의 리뉴얼?! 3번 톤업이 3번 톤업 블러와 3번 톤업 글로우로✨ 무광 도자기할래 유약 도자기할래🙆‍♀️ 취향따라 선택하는 파데프리 넘버즈인… 기존',pattern:'promo'},
+  {thumb:'images/posts/DTgTK4yE5ju.jpg',views:3318,comments:10,likes:3,date:'2026.01.15',creator:'steam__hyony',caption:'승무원 시절 ✈️, 매번 바뀌는 시차보다도 힘들었던 건 매번 다른 환경에 적응해야 하는 피부 컨디션이었는데요 🥹 저와 같은 고민 가지신 승무원분들은 물론 , 겨울',pattern:'sensory'},
+  {thumb:'images/posts/DT7fxgRE5mB.jpg',views:3285,comments:32,likes:3,date:'2026.01.25',creator:'umm.bini',caption:'(저장•공유) 올영메이트하다가 상처 받은 썰.. (사실 이건 약과임💀) 🪄넘버즈인 5번 글루타치온C 흔적 필름패드 🪄넘버즈인 5번 글루타치온C 흔적 앰플 ➡️오직',pattern:'social'},
+  {thumb:'images/posts/DVRJtOxjRYf.jpg',views:3265,comments:64,likes:1007,date:'2026.02.28',creator:'anna.ka.shm',caption:'You can shop all my favorite K-beauty finds on Stylevana.com and use my code INF10ANNAKA f',pattern:'viral'},
+  {thumb:'images/posts/DWitCAnEVmT.jpg',views:3260,comments:37,likes:81,date:'2026.03.31',creator:'9race.zip',caption:'아니 이걸 단종시켜요...?🥲 가 아닌 더 강력하게 업그레이드🆙⭐️! 건성들의 로망 보들보들 피부 어네가 떠먹여줌🪽 미니어처로 누구보다 빠르게 체험해봤는데 다음날',pattern:'promo'},
+  {thumb:'images/posts/DRtwiI8jwys.jpg',views:3257,comments:16,likes:0,date:'2025.12.01',creator:'re_beauty._',caption:'베이스 잘 먹으려면 전날 팩이 중요해,,, 🫒올영세일 할인 중‼️ 🌟5매 기획 16,000원➡️8,920원 🌟10매 기획 40,000원➡️17,390원 🩵1번 팩',pattern:'sensory'},
+  {thumb:'images/posts/DYgIPWbTZ9d.jpg',views:3251,comments:33,likes:59,date:'2026.05.19',creator:'lookxxlight',caption:'저만 이렇게 출근하는거 아니죠? 아침에 너무 바쁘고 더 자고싶은데… 최소한의 예의와 매일 갈등하는 나… 일단 피부결이라도 좋으면 화장을 덜 해도 깔끔해보여요 그래',pattern:'sensory'},
+  {thumb:'images/posts/DVQhi4UkrIn.jpg',views:3233,comments:3,likes:51,date:'2026.02.27',creator:'aknacktool_sub1n_',caption:'셀 수도 없이 많은 공병을 남긴, 여러 번 소개하고 추천했던 넘버즈인 3번 세럼.. 💕 청담샵 기초템에 빠질수가 없죠?? 화장 전 기초 케어로 쓰기 딱 좋은 제품',pattern:'social'},
+  {thumb:'images/posts/DYUQQwDhF5O.jpg',views:3230,comments:38,likes:217,date:'2026.05.14',creator:'goun_zip',caption:'| 운동하고 나이트케어하는 30대 현실 루틴••🙂‍↔️ with 넘버즈인 ☾.˖٭ -3번 클렌징 오일 -3번 모공제로 화잘먹 패드 -3번 결 부스터 토너 -3번',pattern:'sensory'},
+  {thumb:'images/posts/DBD_wHOSX9F.jpg',views:3207,comments:2,likes:29,date:'2024.10.13',creator:'eonjinko',caption:'본 컨텐츠는 넘버즈인 서포터즈로서 제품 제공 받아 제작되었습니다. 올영 메이트의 피부 관리법은 ? 후후 🩵🪽',pattern:'social'},
+  {thumb:'images/posts/DWbmjTTkoBP.jpg',views:3163,comments:8,likes:3,date:'2026.03.28',creator:'newna.ree',caption:'이건 없으면 안 되는 쟁여템 불안템 ㅎ 피부결세럼? 무조건 넘버즈인 3번 세럼^^ 기존에 쓰던 것도 제품력 너무 만족스러웠는데 이번에 리뉴얼되면서 바쿠치올 up,',pattern:'promo'},
+  {thumb:'images/posts/DPHPCJGDPJi.jpg',views:3160,comments:34,likes:121,date:'2025.09.30',creator:'alexa.miks',caption:'Werbung/Collaboration Vor kurzem habe ich Produkte von Numbuzin aus der 9. Linie ausprobie',pattern:'insider'},
+  {thumb:'images/posts/DWJCAJnDwrV.jpg',views:3579,comments:7,likes:295,date:'2026.03.19',creator:'noeliacadenass_dup',caption:'Mejores productos de Skincare Coreano🇰🇷💖 Para mi estos son los productos de skincare corea',pattern:'viral'},
+  {thumb:'images/posts/DUV6utxD1LY.jpg',views:5995,comments:54,likes:189,date:'2026.02.05',creator:'z_oan222___',caption:'제 피부 쫀득함 좀 보세요✨ 이미 많은 분들의 정착템으로 유명한 넘버즈인 3번 라인! 이번에 망곰 에디션으로 나왔길래 출시 전부터 사용했는데요! 영상 속 망곰 스',pattern:'sensory'},
+  {thumb:'images/posts/DYZeyetT887.jpg',views:5964,comments:4,likes:39,date:'2026.05.16',creator:'min9_uri',caption:'강습 두달차 수린이의 겟레디윗미 - - -',pattern:'insider'},
+  {thumb:'images/posts/DULmMcugRFv.jpg',views:5936,comments:7,likes:137,date:'2026.02.01',creator:'buangdan',caption:'🩷넘버즈인 망곰 에디션 출시🩷 2월 1일 오늘 넘버즈인 망곰 에디션이 출시됐어! 이번 망곰 에디션은 넘버즈인의 3번 라인으로 아기천사 망곰이처럼 보들보들한 피부결',pattern:'sensory'},
+  {thumb:'images/posts/DYUQoarBZV7.jpg',views:5898,comments:11,likes:185,date:'2026.05.14',creator:'ta1999122',caption:'むくみがひどい時とか大事な用事がある日に9番のパックまじでいい。本当に愛用してる。 フェイスラインまで包み込む感じの使用感がまたいい。',pattern:'sensory'},
+  {thumb:'images/posts/DWb545zkyJf.jpg',views:5879,comments:12,likes:295,date:'2026.03.29',creator:'minibeauty___',caption:'클렌징 오일 특유의 미끈거림과 답답함 때문에 피하셨던 분들, 혹은 오일만 쓰면 트러블 올라왔던 분들! 모두 여기 집중해 주세요👀✨ 넘버즈인에서 그 유명한 \'3번',pattern:'promo'},
+  {thumb:'images/posts/DS18G03kwW8.jpg',views:5690,comments:133,likes:352,date:'2025.12.29',creator:'all.about.loomy',caption:'😁바빠도 꼭 하는 팩 한 장으로 시술급 탄력 관리 넘버즈인 2번 콜라겐 팩 연말이라 정신없이 바쁜 요즘, 솔직히 스킨케어 단계 여러 개 챙길 여유 없잖아요. 그래',pattern:'sensory'},
+];
+const P_CREATORS = [
+  {id:'_k_jixxy',      followers:127000, ppl:38, pic:'https://storage.googleapis.com/instagram-profile-picture/_k_jixxy-profile-picture.jpg'},
+  {id:'gardenofniiya', followers:84000,  ppl:31, pic:'https://storage.googleapis.com/instagram-profile-picture/gardenofniiya-profile-picture.jpg'},
+  {id:'olafflee',      followers:203000, ppl:27, pic:'https://storage.googleapis.com/instagram-profile-picture/olafflee-profile-picture.jpg'},
+  {id:'hweekmag',      followers:56000,  ppl:24, pic:'https://storage.googleapis.com/instagram-profile-picture/hweekmag-profile-picture.jpg'},
+  {id:'onnya_s2',      followers:91000,  ppl:19, pic:'https://storage.googleapis.com/instagram-profile-picture/onnya_s2-profile-picture.jpg'},
+  {id:'queendaeri',    followers:148000, ppl:17, pic:'https://storage.googleapis.com/instagram-profile-picture/queendaeri-profile-picture.jpg'},
+  {id:'eunchogreen',   followers:39000,  ppl:14, pic:'https://storage.googleapis.com/instagram-profile-picture/eunchogreen-profile-picture.jpg'},
+  {id:'hanchaerm',     followers:72000,  ppl:12, pic:'https://storage.googleapis.com/instagram-profile-picture/hanchaerm-profile-picture.jpg'},
+  {id:'sunnyday_kr',   followers:61000,  ppl:9,  pic:'https://storage.googleapis.com/instagram-profile-picture/sunnyday_kr-profile-picture.jpg'},
+  {id:'beauty.haeun',  followers:45000,  ppl:7,  pic:'https://storage.googleapis.com/instagram-profile-picture/beauty.haeun-profile-picture.jpg'},
+  {id:'joyseodiary',   followers:38000,  ppl:7,  pic:'https://storage.googleapis.com/instagram-profile-picture/joyseodiary-profile-picture.jpg'},
+  {id:'nana6a6y',      followers:31000,  ppl:6,  pic:'https://storage.googleapis.com/instagram-profile-picture/nana6a6y-profile-picture.jpg'},
+  {id:'hamaneaing',    followers:27000,  ppl:6,  pic:'https://storage.googleapis.com/instagram-profile-picture/hamaneaing-profile-picture.jpg'},
+  {id:'ramnuggi',      followers:24000,  ppl:6,  pic:'https://storage.googleapis.com/instagram-profile-picture/ramnuggi-profile-picture.jpg'},
+  {id:'just_maesil',   followers:21000,  ppl:5,  pic:'https://storage.googleapis.com/instagram-profile-picture/just_maesil-profile-picture.jpg'},
+  {id:'vividaeun_',    followers:18000,  ppl:5,  pic:'https://storage.googleapis.com/instagram-profile-picture/vividaeun_-profile-picture.jpg'},
+  {id:'mingsoo_yoo',   followers:15000,  ppl:5,  pic:'https://storage.googleapis.com/instagram-profile-picture/mingsoo_yoo-profile-picture.jpg'},
+  {id:'youngni_view',  followers:12000,  ppl:5,  pic:'https://storage.googleapis.com/instagram-profile-picture/youngni_view-profile-picture.jpg'},
+  {id:'its._chuu',     followers:9800,   ppl:5,  pic:'https://storage.googleapis.com/instagram-profile-picture/its._chuu-profile-picture.jpg'},
+  {id:'beauty_newbird',followers:8200,   ppl:4,  pic:'https://storage.googleapis.com/instagram-profile-picture/beauty_newbird-profile-picture.jpg'},
+];
+const P_RADAR_DATA   = [72,85,65,88,55];
+const P_RADAR_LABELS = ['감성 소구','기능 강조','일상 연결','사회적 증거','트렌드 반영'];
+const P_AI_RECO = [
+  {t:'출근길 5분, 3번 세럼 한 방울로 아기피부 모드 ON',r:'구체적 사용 시점·루틴을 결합해 일상 연결성 강화. 짧은 시간과 극적인 결과를 병치하면 클릭 유도 효과가 높아집니다.',tags:['일상 연결','시간 절약','즉효 강조']},
+  {t:'피부과 다녀온 듯한 결, 집에서 1번 라인 3주면 충분해요',r:'기능 효과를 시술 비교로 시각화하여 신뢰도와 기능 강조를 동시에 충족. "3주"라는 구체적 기간이 실제 구매 결정을 앞당깁니다.',tags:['기능 강조','시술 비교','신뢰도']},
+  {t:'민감 피부 친구 3명이 동시에 결제한 그 패드',r:'또래 추천형 사회적 증거 패턴 보완. 숫자(3명)와 공동 구매 뉘앙스가 바이럴 확산에 유리한 구조입니다.',tags:['사회적 증거','또래 추천','바이럴']},
+];
+const P_SIMILAR_BRANDS = [
+  {name:'마녀공장',   color:'#7C5CBF', sim:94, ppl:41, logo:'https://yt3.googleusercontent.com/qtJNF1gn-Zw9u1MyY6VGGWwy5dPFAhJ_eZhfrOZQXk8HnuS52g2mQ3MdwwHnPr9qflMcnUqzEw=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'아누아',     color:'#4A9E6F', sim:91, ppl:37, logo:'https://yt3.googleusercontent.com/ytc/AIdro_mnooZnjYQRf_kXxG0OXNFt_vHD6-jFOR-nQnDRKvzR8Q=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'토리든',     color:'#3A86C8', sim:87, ppl:29, logo:'https://yt3.googleusercontent.com/NgLrls0UmQSARW-n6_ZYt-b5G13fyrGONJEeVl5A7vX89ndaRi5vmZFJ-DRZxwXFh50OGEIUpJo=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'라운드랩',   color:'#E07B4A', sim:83, ppl:24, logo:'https://yt3.googleusercontent.com/ytc/AIdro_lLlKeDBBNPBO1FW7jkxvXpJyyM6CU2AR7NMx2GIjFFxQ=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'클리오',     color:'#C44D6E', sim:79, ppl:33, logo:'https://yt3.googleusercontent.com/uR9F9WbYQmXsFQ892r4i1wmmTNMJKmYUGNxj_aVyTb5k-udPj1EtkE2cXWMK86zt8k-oH_tDbKI=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'메디힐',     color:'#5BA8A0', sim:74, ppl:18, logo:'https://yt3.googleusercontent.com/ID_plep2pgwsZtxBF8d74BqaL7mMO2xk3JqVEOVG42xo2pO-DBqLmX2nGk-X1G0YGernMWtcvQ=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'이니스프리', color:'#6A9E4A', sim:70, ppl:52, logo:'https://yt3.googleusercontent.com/UcfLkIcCV2kZNyNKkC8JpqFmu3bOm7m_irwsijF4JaBbiA_vY-D7Ap4WNhwycfTzH6xm95UAPw=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'닥터지',     color:'#4A7ABF', sim:66, ppl:15, logo:'https://yt3.googleusercontent.com/fdkah2D64rOPYGW-QXep-DDsVePTs5kVgJ2ornvWEdok-I9dIyjKswOD21P7LHue-a0mNzPs2w=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'비플레인',   color:'#A08060', sim:61, ppl:11, logo:'https://yt3.googleusercontent.com/Ajl1YOCdfJjzm6cUr-LZXLcX-oPT17p5vUJXbqcvXS0H8VRo5LdRPRqGoVOh_9HPEDPR5v1X0w=s900-c-k-c0x00ffffff-no-rj'},
+  {name:'웰라쥬',     color:'#8A6AB0', sim:57, ppl:9,  logo:'https://yt3.googleusercontent.com/wBqxSm46kbXKajbcXQnc7EbB0jSwA60_-9eyT6VJsSg02z4ZI-vI_tF92hndyCzRl8z6JYiyfHE=s900-c-k-c0x00ffffff-no-rj'},
+];
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function fmt(n){
+  if(n>=10000) return (n/10000).toFixed(1)+'만';
+  if(n>=1000)  return (n/1000).toFixed(1)+'천';
+  return n;
+}
+/* 브랜드 인덱스 기반 무채색 팔레트 */
+const NEUTRAL_PALETTE = ['#1C1C2E','#3D3D5C','#6B6B8A','#9A9AB0','#C0C0CE'];
+function neutralColor(name){
+  const idx = ALL_BRANDS.findIndex(b=>b.name===name);
+  return NEUTRAL_PALETTE[idx>=0 ? idx : NEUTRAL_PALETTE.length-1];
+}
+function brandColor(name){
+  return (ALL_BRANDS.find(b=>b.name===name)||{color:'#9B9B9B'}).color;
+}
+const AVATAR_PH = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='14' fill='%23F0F2F5'/%3E%3C/svg%3E";
+
+/* 소형 액션 아이콘 */
+const IG_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+  <rect x="3" y="3" width="18" height="18" rx="5" stroke="#F7692B" stroke-width="2"/>
+  <circle cx="12" cy="12" r="4" stroke="#F7692B" stroke-width="2"/>
+  <circle cx="17" cy="7" r="1.2" fill="#F7692B"/></svg>`;
+const LINK_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+  <path d="M14 4h6v6" stroke="#9B9B9B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 4l-9 9" stroke="#9B9B9B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" stroke="#9B9B9B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+/* ══════════════════════════════════════════
+   PRESET
+══════════════════════════════════════════ */
+function scrollCats(){
+  const inner = document.querySelector('.cat-bar-inner');
+  if(inner) inner.scrollBy({left:240, behavior:'smooth'});
+}
+
+function selectPreset(key, el){
+  document.querySelectorAll('.preset-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  if(key!=='serum'){
+    alert('해당 카테고리 데이터는 준비 중입니다.');
+    el.classList.remove('on');
+    document.querySelector('.preset-tab').classList.add('on');
+  }
+}
+
+/* ══════════════════════════════════════════
+   BRAND CHIPS
+══════════════════════════════════════════ */
+function renderChips(){
+  const wrap = document.getElementById('brandChips');
+  wrap.innerHTML = activeBrands.map(b=>`
+    <div class="bc-item">
+      <div class="bc-wrap">
+        <img class="bc-img" src="${b.logo}" alt="${b.name}"
+          onerror="this.outerHTML='<div class=\\'bc-img-fallback\\'style=\\'background:${b.color}\\'>${b.name[0]}</div>'">
+        <button class="bc-x" onclick="removeBrand('${b.key}')">×</button>
+      </div>
+      <div class="bc-dot" style="background:${b.color}"></div>
+      <span class="bc-name">${b.name}</span>
+    </div>
+  `).join('');
+}
+
+function removeBrand(key){
+  if(activeBrands.length<=2){alert('최소 2개 브랜드가 필요합니다.');return;}
+  activeBrands = activeBrands.filter(b=>b.key!==key);
+  renderChips();
+  renderTerritory();
+}
+
+/* ══════════════════════════════════════════
+   LEGEND
+══════════════════════════════════════════ */
+function renderLegend(){
+  const el = document.getElementById('territoryLegend');
+  const items = activeBrands.map(b=>`
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${b.color}"></div>
+      <span class="legend-label">${b.name}</span>
+    </div>
+  `).join('');
+  el.innerHTML = items + `
+    <div class="legend-sep"></div>
+    <div class="legend-item legend-empty-wrap">
+      <div class="legend-empty-box"></div>
+      <span class="legend-label" style="color:var(--text3)">미선점 공백</span>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════
+   TERRITORY BARS
+══════════════════════════════════════════ */
+function renderTerritory(){
+  const activeNames = new Set(activeBrands.map(b=>b.name));
+  const el = document.getElementById('territoryBody');
+
+  el.innerHTML = TERRITORY_FULL.map(row=>{
+    const visibleSegs = row.segs.filter(s=>activeNames.has(s.brand));
+    const used = visibleSegs.reduce((a,s)=>a+s.pct,0);
+    const empty = Math.max(0, 100-used);
+    const isOpportunity = empty >= 40;
+
+    const segHtml = visibleSegs.map(s=>{
+      const brand = ALL_BRANDS.find(b=>b.name===s.brand);
+      const showLabel = s.pct >= 10;
+      return `<div class="t-bar-segment"
+        style="width:${s.pct}%;"
+        onclick="openPanel('${brand?.key||'numbuzin'}')"
+        title="${s.brand} — 클릭해서 상세 분석 보기">
+        ${showLabel ? `<div class="seg-content">
+          <img class="seg-logo" src="${brand?.logo||''}" alt=""
+            onerror="this.style.display='none'">
+          <span class="seg-name">${s.brand}</span>
+        </div>` : ''}
+      </div>`;
+    }).join('');
+
+    const emptyPctClass = isOpportunity ? 'opportunity' : '';
+
+    return `
+      <div class="territory-row">
+        <div class="t-label">${row.pattern}</div>
+        <div class="t-bar-wrap">
+          ${segHtml}
+          <div class="t-bar-empty"></div>
+        </div>
+        <div class="t-right">
+          <span class="t-empty-pct ${emptyPctClass}">${empty}% 공백</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════
+   KEYWORD OVERLAP
+══════════════════════════════════════════ */
+function renderKeywordOverlap(){
+  const el = document.getElementById('keywordOverlap');
+  el.innerHTML = `
+    <div class="kw-section-head">
+      <span class="kw-section-title">자주 쓰는 단어</span>
+    </div>
+    <div id="kwTopList"></div>
+    <div id="kwTopPag"></div>
+    <div class="kw-divider" style="margin:8px 16px;"></div>
+    <div class="kw-section-head">
+      <span class="kw-section-title gap">혼자 쓰는 단어</span>
+    </div>
+    <div id="kwGapList"></div>
+    <div id="kwGapPag"></div>
+    <div style="height:8px;"></div>
+  `;
+  renderKwTop(1);
+  renderKwGap(1);
+}
+
+const KW_PER_PAGE = 5;
+
+function kwRowHtml(k, idx){
+  const rank = idx + 1;
+  const topCls = rank <= 3 ? ' top3' : '';
+  const logos = ALL_BRANDS.map(b=>{
+    const used = k.brands.includes(b.name);
+    const cls = used ? 'kw-logo' : 'kw-logo empty';
+    return `<img class="${cls}" src="${b.logo}" alt="${b.name}" title="${b.name}${used?'':' — 미사용'}"
+      onerror="this.outerHTML='<div class=\\'kw-logo-fallback ${used?'':'empty'}\\'style=\\'background:${b.color}\\'>${b.name[0]}</div>'">`;
+  }).join('');
+  return `<div class="kw-overlap-row">
+    <span class="kw-rank${topCls}">${rank}</span>
+    <span class="kw-word">${k.word}</span>
+    <div class="kw-logos">${logos}</div>
+  </div>`;
+}
+
+function kwPagHtml(total, page, fn){
+  let h = `<div class="p-pagination">
+    <button class="p-pg-btn arrow" onclick="${fn}(${Math.max(1,page-1)})">‹</button>`;
+  for(let p=1;p<=total;p++)
+    h+=`<button class="p-pg-btn${p===page?' on':''}" onclick="${fn}(${p})">${p}</button>`;
+  h+=`<button class="p-pg-btn arrow" onclick="${fn}(${Math.min(total,page+1)})">›</button></div>`;
+  return h;
+}
+
+function renderKwTop(page){
+  const start = (page-1)*KW_PER_PAGE;
+  const slice = KW_TOP.slice(start, start+KW_PER_PAGE);
+  document.getElementById('kwTopList').innerHTML = slice.map((k,i)=>kwRowHtml(k,start+i)).join('');
+  document.getElementById('kwTopPag').innerHTML  = kwPagHtml(Math.ceil(KW_TOP.length/KW_PER_PAGE), page, 'renderKwTop');
+}
+
+function renderKwGap(page){
+  const start = (page-1)*KW_PER_PAGE;
+  const slice = KW_GAP.slice(start, start+KW_PER_PAGE);
+  document.getElementById('kwGapList').innerHTML = slice.map((k,i)=>kwRowHtml(k,start+i)).join('');
+  document.getElementById('kwGapPag').innerHTML  = kwPagHtml(Math.ceil(KW_GAP.length/KW_PER_PAGE), page, 'renderKwGap');
+}
+
+/* ══════════════════════════════════════════
+   CREATOR REC
+══════════════════════════════════════════ */
+function renderCreatorRec(){
+  const el = document.getElementById('creatorRec');
+  el.innerHTML = `<div class="creator-rec-list">
+    ${CREATOR_REC.map((c,i)=>{
+      const topCls = i<3?' top':'';
+      return `<div class="creator-rec-row">
+        <span class="cr-rank${topCls}">${i+1}</span>
+        <img class="cr-avatar" src="${c.pic}" alt="" onerror="this.src='${AVATAR_PH}'">
+        <div class="cr-info">
+          <div class="cr-id">@${c.id}</div>
+          <div class="cr-sub">${c.sub}</div>
+        </div>
+        <div class="cr-icons">
+          <button class="cr-icon-btn" title="인스타그램 프로필">${IG_SVG}</button>
+          <button class="cr-icon-btn" title="외부 링크 열기">${LINK_SVG}</button>
+        </div>
+        <div class="cr-tags">
+          <span class="cr-tag">${c.cats}</span>
+          <span class="cr-tag">${c.tiers}</span>
+        </div>
+        <span class="cr-fit-badge">${c.fit}</span>
+        <button class="cr-cta">상세보기</button>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+/* ══════════════════════════════════════════
+   AI DIRECTION
+══════════════════════════════════════════ */
+function renderAIDirection(){
+  const el = document.getElementById('aiDirection');
+  el.innerHTML = `<div class="ai-dir-body">
+    <div class="ai-dir-top">
+      <span class="ai-dir-badge">카테고리 언어 공백 분석</span>
+    </div>
+    <div class="ai-dir-text">${AI_DIRECTION.text}</div>
+    <div class="ai-dir-divider"></div>
+    <div class="ai-dir-tags-label">추천 콘텐츠 방향</div>
+    <div class="ai-dir-tags">
+      ${AI_DIRECTION.tags.map(t=>`<span class="ai-dir-tag">📌 ${t}</span>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════
+   PANEL — OPEN / CLOSE
+══════════════════════════════════════════ */
+function openPanel(brandKey){
+  const brand = ALL_BRANDS.find(b=>b.key===brandKey) || ALL_BRANDS[0];
+  renderPanelContent(brand);
+
+  document.getElementById('panelOverlay').classList.add('show');
+  requestAnimationFrame(()=>{
+    document.getElementById('slidePanel').classList.add('open');
+  });
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel(){
+  document.getElementById('slidePanel').classList.remove('open');
+  setTimeout(()=>{
+    document.getElementById('panelOverlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }, 300);
+}
+
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('panelOverlay')) closePanel();
+}
+
+/* ══════════════════════════════════════════
+   PANEL — CONTENT
+══════════════════════════════════════════ */
+function renderPanelContent(brand){
+  const body = document.getElementById('panelBody');
+
+  /* Brand + AI summary */
+  const brandSummary = `
+    <div class="p-brand-card">
+      <span class="p-brand-ai-corner">AI 생성</span>
+      <div class="p-brand-left">
+        <img class="p-brand-logo" src="${brand.logo}" alt="${brand.name}"
+          onerror="this.outerHTML='<div class=\\'p-brand-logo\\'style=\\'display:flex;align-items:center;justify-content:center;background:${brand.color};color:#fff;font-size:13px;font-weight:700;\\'>${brand.name[0]}</div>'">
+        <div class="p-brand-meta">
+          <div class="p-brand-namerow">
+            <span class="p-brand-name" style="color:${brand.color}">${brand.name}</span>
+            <svg class="p-brand-yt" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="4" fill="#E04A4A"/><path d="M10 9l5 3-5 3V9z" fill="#fff"/></svg>
+          </div>
+          <div class="p-brand-followers">팔로워 정보 없음</div>
+          <div class="p-brand-cat">뷰티 &amp; 메이크업</div>
+        </div>
+      </div>
+      <div class="p-brand-divider"></div>
+      <div class="p-brand-verdict">
+        <div class="p-verdict-head">
+          <span class="p-verdict-title">AI 종합 평가</span>
+        </div>
+        <div class="p-verdict-text">${brand.name} 광고는 '보들보들', '쫀쫀하게', '아기피부' 같은 감각형 형용사와 프로모션 정보를 결합한 후기형 캡션이 주를 이룹니다. 크리에이터의 일상 경험담과 셀럽 콜라보, 바이럴 언급 등 사회적 증거를 적극 활용하며 숫자 라인 중심의 제품 호명이 반복됩니다.</div>
+      </div>
+    </div>
+  `;
+
+  /* Keywords */
+  const sorted = [...P_WORDS].sort((a,b)=>b.f-a.f).slice(0,20);
+  const kwHtml = sorted.map((w,i)=>{
+    const top = i<3?' top':'';
+    return `<div class="p-kw-item">
+      <span class="p-kw-rank${top}">${i+1}</span>
+      <span class="p-kw-word">${w.w}</span>
+    </div>`;
+  }).join('');
+
+  /* Posts */
+  const postHtml = P_POSTS.map(p=>{
+    const cr = p.creator || '';
+    const crPic = cr ? `https://storage.googleapis.com/instagram-profile-picture/${cr}-profile-picture.jpg` : AVATAR_PH;
+    const crRow = cr ? `<div class="p-post-creator">
+          <img class="av" src="${crPic}" alt="" onerror="this.src='${AVATAR_PH}'">
+          <span class="nm">${cr}</span>
+          <span class="lk">인플루언서 ›</span>
+        </div>` : '';
+    return `
+    <div class="p-post-card">
+      <img class="p-post-img" src="${p.thumb}" alt=""
+        onerror="this.outerHTML='<div class=\\'p-post-img\\'style=\\'display:flex;align-items:center;justify-content:center;font-size:18px;\\'>📷</div>'">
+      <div class="p-post-info">
+        <span class="p-post-tag">${P_PATTERNS[p.pattern].label}</span>
+        <div class="p-post-cap">${p.caption}</div>
+        <div class="p-post-date">${p.date}</div>
+        <div class="p-post-stat"><span class="v">조회수 ${fmt(p.views)}</span> · 💬${fmt(p.comments)} · ♡${fmt(p.likes)}</div>
+        ${crRow}
+      </div>
+    </div>`;
+  }).join('');
+
+  /* Radar */
+  const radarSvg = buildRadar();
+
+  /* Creators & Similar brands — rendered after innerHTML via dedicated functions */
+
+  /* AI reco */
+  const aiRecoHtml = P_AI_RECO.map((a,i)=>`
+    <div class="p-ai-item">
+      <span class="p-ai-num">추천 ${i+1}</span>
+      <div class="p-ai-quote">"${a.t}"</div>
+      <div class="p-ai-reason">${a.r}</div>
+      <div class="p-ai-tags">${(a.tags||[]).map(t=>`<span class="p-ai-tag">✓ ${t}</span>`).join('')}</div>
+    </div>
+  `).join('');
+
+  body.innerHTML = `
+    ${brandSummary}
+
+    <div class="p-cols">
+      <div class="p-col-left">
+
+        <!-- Keywords -->
+        <div class="p-block-head">
+          <span class="p-block-title">자주 사용된 키워드 TOP 20</span>
+          <span class="p-block-sub">실제 등장 빈도 기반</span>
+        </div>
+        <div class="p-card">
+          <div class="p-kw-grid">${kwHtml}</div>
+        </div>
+
+        <!-- Posts -->
+        <div class="p-block-head">
+          <span class="p-block-title">문장 패턴 &amp; 대표 포스트</span>
+          <span class="p-block-sub">패턴 선택 시 관련 포스트 표시</span>
+        </div>
+        <div class="p-card p-posts-fixed">
+          <div class="p-ptabs">
+            <button class="p-ptab on" onclick="panelFilter('all',this)">전체</button>
+            <button class="p-ptab" data-key="sensory" onclick="panelFilter('sensory',this)">감각형 의태어 강조</button>
+            <button class="p-ptab" data-key="social"  onclick="panelFilter('social',this)">사회적 증거 인용</button>
+            <button class="p-ptab" data-key="promo"   onclick="panelFilter('promo',this)">긴급성+프로모션 유도</button>
+            <button class="p-ptab" data-key="viral"   onclick="panelFilter('viral',this)">트렌드/바이럴 레퍼런스</button>
+            <button class="p-ptab" data-key="insider" onclick="panelFilter('insider',this)">내부자 정보 강조</button>
+          </div>
+          <div class="p-pattern-desc" id="panelDescBar">
+            <div class="p-pattern-phrase" id="panelDescPhrase"></div>
+            <div class="p-pattern-label-txt" id="panelDescLabel"></div>
+          </div>
+          <div class="p-post-count" id="panelPostCount">전체 <strong>${P_POSTS.length}건</strong></div>
+          <div class="p-post-scroll"><div class="p-post-grid" id="panelPostGrid">${postHtml}</div></div>
+        </div>
+
+      </div>
+      <div class="p-col-right">
+
+        <!-- Radar -->
+        <div class="p-block-head">
+          <span class="p-block-title">언어 성격 분석</span>
+          <span class="p-ai-badge" style="font-size:10px;padding:2px 7px;">AI 생성</span>
+        </div>
+        <div class="p-card">
+          <div class="p-radar-wrap">${radarSvg}</div>
+        </div>
+
+        <!-- Creators -->
+        <div class="p-block-head col">
+          <span class="p-block-title">언어 핏 크리에이터</span>
+          <span class="p-block-sub">이 브랜드 톤과 유사한 인플루언서</span>
+        </div>
+        <div class="p-card">
+          <div style="display:grid;grid-template-columns:18px 1fr 40px 32px;gap:4px;padding:7px 12px 5px;border-bottom:1px solid var(--border-light);">
+            <span></span>
+            <span style="font-size:10px;font-weight:700;color:var(--text3);">인플루언서</span>
+            <span style="font-size:10px;font-weight:700;color:var(--text3);text-align:right;">팔로워</span>
+            <span style="font-size:10px;font-weight:700;color:var(--text3);text-align:right;">PPL</span>
+          </div>
+          <div id="panelCreatorList"></div>
+          <div id="panelCreatorPag"></div>
+        </div>
+
+        <!-- Similar Brands -->
+        <div class="p-block-head col">
+          <span class="p-block-title">유사 언어 패턴 브랜드</span>
+          <span class="p-block-sub">언어 벡터 유사도 기준</span>
+        </div>
+        <div class="p-card">
+          <div class="p-sim-col-head">
+            <span></span><span>채널</span>
+            <span style="text-align:right;">PPL</span>
+            <span style="text-align:right;">유사도</span>
+          </div>
+          <div id="panelSimList"></div>
+          <div id="panelSimPag"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- AI Reco full-width -->
+    <div class="p-block-head" style="margin-top:20px;">
+      <span class="p-block-title">AI 추천 코멘트 &amp; 캠페인 활용 방안</span>
+      <span class="p-ai-badge" style="font-size:10px;padding:2px 7px;">AI 생성</span>
+    </div>
+    <div class="p-ai-section">
+      <div class="p-ai-grid">${aiRecoHtml}</div>
+    </div>
+  `;
+
+  renderPanelCreators(1);
+  renderPanelBrands(1);
+}
+
+/* Panel creators pagination */
+const P_PER_CREATOR = 10;
+const P_PER_BRAND   = 5;
+
+function renderPanelCreators(page){
+  const start = (page-1)*P_PER_CREATOR;
+  const slice = P_CREATORS.slice(start, start+P_PER_CREATOR);
+  document.getElementById('panelCreatorList').innerHTML =
+    `<div class="p-creator-list">${slice.map((c,i)=>{
+      const rank = start+i+1;
+      const topCls = rank<=3?' top':'';
+      return `<div class="p-creator-row">
+        <div class="p-cr-rank${topCls}">${rank}</div>
+        <div class="p-cr-person">
+          <img class="p-cr-avatar" src="${c.pic}" alt="" onerror="this.src='${AVATAR_PH}'">
+          <span class="p-cr-id">@${c.id}</span>
+        </div>
+        <div class="p-cr-flw">${fmt(c.followers)}</div>
+        <div class="p-cr-ppl">${c.ppl}</div>
+      </div>`;
+    }).join('')}</div>`;
+
+  const total = Math.ceil(P_CREATORS.length/P_PER_CREATOR);
+  let pag = `<div class="p-pagination">
+    <button class="p-pg-btn arrow" onclick="renderPanelCreators(${Math.max(1,page-1)})">‹</button>`;
+  for(let p=1;p<=total;p++)
+    pag+=`<button class="p-pg-btn${p===page?' on':''}" onclick="renderPanelCreators(${p})">${p}</button>`;
+  pag+=`<button class="p-pg-btn arrow" onclick="renderPanelCreators(${Math.min(total,page+1)})">›</button></div>`;
+  document.getElementById('panelCreatorPag').innerHTML = pag;
+}
+
+function renderPanelBrands(page){
+  const start = (page-1)*P_PER_BRAND;
+  const slice = P_SIMILAR_BRANDS.slice(start, start+P_PER_BRAND);
+  document.getElementById('panelSimList').innerHTML =
+    `<div class="p-sim-list">${slice.map((b,i)=>{
+      const rank = start+i+1;
+      const topCls = rank<=3?' top':'';
+      const logoEl = b.logo
+        ? `<img class="p-sim-logo" src="${b.logo}" alt="${b.name}" onerror="this.outerHTML='<div class=\\'p-sim-logo\\'style=\\'display:flex;align-items:center;justify-content:center;background:${b.color};color:#fff;font-size:9px;font-weight:800;\\'>${b.name[0]}</div>'">`
+        : `<div class="p-sim-logo" style="background:${b.color};display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:800;">${b.name[0]}</div>`;
+      return `<div class="p-sim-row">
+        <div class="p-sim-rank${topCls}">${rank}</div>
+        <div class="p-sim-brand">${logoEl}<span class="p-sim-name">${b.name}</span></div>
+        <div class="p-sim-ppl">${b.ppl}개</div>
+        <div class="p-sim-sim">${b.sim}%</div>
+      </div>`;
+    }).join('')}</div>`;
+
+  const total = Math.ceil(P_SIMILAR_BRANDS.length/P_PER_BRAND);
+  let pag = `<div class="p-pagination">
+    <button class="p-pg-btn arrow" onclick="renderPanelBrands(${Math.max(1,page-1)})">‹</button>`;
+  for(let p=1;p<=total;p++)
+    pag+=`<button class="p-pg-btn${p===page?' on':''}" onclick="renderPanelBrands(${p})">${p}</button>`;
+  pag+=`<button class="p-pg-btn arrow" onclick="renderPanelBrands(${Math.min(total,page+1)})">›</button></div>`;
+  document.getElementById('panelSimPag').innerHTML = pag;
+}
+
+/* Panel pattern filter */
+function panelFilter(key, el){
+  el.closest('.p-card').querySelectorAll('.p-ptab').forEach(t=>t.classList.toggle('on',t===el));
+
+  const descBar    = document.getElementById('panelDescBar');
+  const descPhrase = document.getElementById('panelDescPhrase');
+  const descLabel  = document.getElementById('panelDescLabel');
+  const scrollEl   = document.querySelector('.p-post-scroll');
+
+  /* descBar 높이 변화 측정 → scrollTop으로 보정 */
+  const prevH = descBar.classList.contains('show') ? descBar.offsetHeight : 0;
+
+  if(key==='all'){
+    descBar.classList.remove('show');
+  } else {
+    descBar.classList.add('show');
+    descPhrase.textContent = P_PATTERNS[key].phrase;
+    descLabel.textContent  = P_PATTERNS[key].label;
+  }
+
+  const newH = descBar.classList.contains('show') ? descBar.offsetHeight : 0;
+  const diff = newH - prevH;
+  if(diff !== 0) scrollEl.scrollTop = Math.max(0, scrollEl.scrollTop + diff);
+
+  const grid    = document.getElementById('panelPostGrid');
+  const countEl = document.getElementById('panelPostCount');
+  let count = 0;
+  grid.querySelectorAll('.p-post-card').forEach((c,i)=>{
+    const match = key==='all' || P_POSTS[i].pattern===key;
+    c.style.display = match?'':'none';
+    if(match) count++;
+  });
+  countEl.innerHTML = key==='all'?`전체 <strong>${count}건</strong>`:`<strong>${count}건</strong> 해당`;
+}
+
+/* ══════════════════════════════════════════
+   RADAR
+══════════════════════════════════════════ */
+function buildRadar(){
+  const W=210,cx=105,cy=100,r=68,n=5;
+  const ang = Array.from({length:n},(_,i)=>-Math.PI/2+(2*Math.PI*i/n));
+  const pt  = (v,i)=>({x:cx+r*(v/100)*Math.cos(ang[i]),y:cy+r*(v/100)*Math.sin(ang[i])});
+  let svg = `<svg viewBox="0 0 ${W} 210" style="width:100%;max-width:200px;">`;
+
+  [20,40,60,80,100].forEach(s=>{
+    const pts = ang.map(a=>`${cx+r*(s/100)*Math.cos(a)},${cy+r*(s/100)*Math.sin(a)}`).join(' ');
+    svg += `<polygon points="${pts}" fill="none" stroke="#E8EAEE" stroke-width="1"/>`;
+  });
+  ang.forEach(a=>{
+    svg += `<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#E8EAEE" stroke-width="1"/>`;
+  });
+  const bPts = P_RADAR_DATA.map((v,i)=>{const p=pt(v,i);return`${p.x},${p.y}`;}).join(' ');
+  svg += `<polygon points="${bPts}" fill="rgba(247,105,43,.13)" stroke="#F7692B" stroke-width="2"/>`;
+  P_RADAR_DATA.forEach((v,i)=>{
+    const p=pt(v,i);
+    svg+=`<circle cx="${p.x}" cy="${p.y}" r="3" fill="#F7692B"/>`;
+  });
+  P_RADAR_LABELS.forEach((l,i)=>{
+    const lx=cx+(r+24)*Math.cos(ang[i]);
+    const ly=cy+(r+24)*Math.sin(ang[i]);
+    svg+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#9B9B9B" font-weight="700" font-family="-apple-system,sans-serif">${l}</text>`;
+  });
+  svg += '</svg>';
+  return svg;
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+function init(){
+  /* 대문 */
+  renderHome();
+  /* 대시보드(숨겨진 채 미리 렌더) */
+  renderChips();
+  renderTerritory();
+  renderKeywordOverlap();
+  renderCreatorRec();
+  renderAIDirection();
+}
+
+window.addEventListener('load', init);
+
+/* ══════════════════════════════════════════
+   HOME (대문)
+══════════════════════════════════════════ */
+function homeViews(n){
+  if(n>=10000) return Math.round(n/10000).toLocaleString('en-US')+'만';
+  if(n>=1000)  return n.toLocaleString('en-US');
+  return ''+n;
+}
+function homeFreq(n){ return n.toLocaleString('en-US')+'회'; }
+function homePosts(n){ return n.toLocaleString('en-US')+'개'; }
+
+function renderHome(){
+  /* 히스토리 칩 (목업) */
+  document.getElementById('homeChips').innerHTML =
+    HOME_HISTORY.map(h=>`<span class="home-chip">${h}</span>`).join('');
+
+  /* 프리셋 — 단어 랭킹에 부속된 리스트 */
+  document.getElementById('homePresets').innerHTML = HOME_PRESETS.map(p=>{
+    const cls = p.state==='active' ? '' : ` ${p.state}`;
+    const onclick = p.state==='active'
+      ? `onclick="openCreditModal()"`
+      : p.state==='soon'
+        ? `onclick="alert('해당 카테고리 데이터는 준비 중입니다.')"`
+        : '';
+    const arrow = p.state==='active' ? `<span class="hp-arrow">›</span>` : '';
+    return `<button class="home-preset-row${cls}" ${onclick}>
+      <span class="hp-name">${p.name}</span>
+      ${p.sub ? `<span class="hp-sub">${p.sub}</span>` : ''}
+      ${arrow}
+    </button>`;
+  }).join('');
+
+  /* 뜨는 언어 패턴 랭킹 — 합산 조회수 내림차순 정렬 */
+  const trends = [...HOME_TREND_PATTERNS].sort((a,b)=>b.views-a.views);
+  document.getElementById('homeTrendList').innerHTML = trends.map((t,i)=>{
+    const top = i<3 ? ' top' : '';
+    return `<div class="home-rank-row">
+      <span class="home-rank-num${top}">${i+1}</span>
+      <div class="home-rank-main">
+        <span class="home-rank-name">${t.label}</span>
+        <span class="home-rank-eg">${t.phrase}</span>
+      </div>
+      <span class="home-rank-m pri">${homeViews(t.views)}</span>
+      <span class="home-rank-m">${homePosts(t.posts)}</span>
+      <span class="home-rank-m">${homeViews(t.likes)}</span>
+    </div>`;
+  }).join('');
+
+  /* 광고 단어 — 메인 카테고리 탭(목업, 뷰티만 활성) */
+  renderHomeKwTabs();
+  renderHomeKw();
+}
+
+function renderHomeKwTabs(){
+  /* 탭은 목업: 활성 탭만 'on', 나머지는 'mock'(클릭 불가) */
+  document.getElementById('homeKwTabs').innerHTML = HOME_CATEGORY_TABS.map(label=>{
+    const on = label===HOME_KW_ACTIVE_TAB;
+    return `<button class="home-rank-tab${on?' on':' mock'}">${label}</button>`;
+  }).join('');
+}
+function renderHomeKw(){
+  document.getElementById('homeKwList').innerHTML = HOME_KW_BEAUTY.map((k,i)=>{
+    const top = i<3 ? ' top' : '';
+    return `<div class="home-rank-row">
+      <span class="home-rank-num${top}">${i+1}</span>
+      <div class="home-rank-main">
+        <span class="home-rank-name">${k.w}</span>
+      </div>
+      <span class="home-rank-val">${homeFreq(k.f)}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ── 화면 토글 ── */
+function enterDashboard(){
+  document.getElementById('homeView').style.display = 'none';
+  document.getElementById('dashboardView').style.display = '';
+  window.scrollTo(0,0);
+}
+function goHome(){
+  closePanel();
+  document.getElementById('dashboardView').style.display = 'none';
+  document.getElementById('homeView').style.display = '';
+  window.scrollTo(0,0);
+}
+
+/* ── 크레딧 소모 모달 ── */
+function openCreditModal(){
+  document.getElementById('creditOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeCreditModal(){
+  document.getElementById('creditOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+function handleCreditOverlay(e){
+  if(e.target===document.getElementById('creditOverlay')) closeCreditModal();
+}
+function confirmCredit(){
+  closeCreditModal();
+  enterDashboard();
+}
+</script>
+</body>
+</html>

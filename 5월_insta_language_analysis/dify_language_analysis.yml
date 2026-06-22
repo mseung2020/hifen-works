@@ -1,0 +1,170 @@
+app:
+  description: 넘버즈인 인스타그램 광고 캡션을 분석하여 언어 패턴 JSON을 생성합니다
+  icon: 📊
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: 넘버즈인 광고 언어 분석
+  use_icon_as_answer_icon: false
+
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  graph:
+    nodes:
+
+      - id: start
+        type: custom
+        width: 244
+        height: 54
+        position:
+          x: 50
+          y: 280
+        positionAbsolute:
+          x: 50
+          y: 280
+        sourcePosition: right
+        targetPosition: left
+        selected: false
+        data:
+          type: start
+          title: 시작
+          desc: ''
+          selected: false
+          variables:
+            - field: captions
+              label: 광고 캡션 목록
+              type: paragraph
+              max_length: 100000
+              options: []
+              required: true
+
+      - id: llm
+        type: custom
+        width: 244
+        height: 98
+        position:
+          x: 360
+          y: 280
+        positionAbsolute:
+          x: 360
+          y: 280
+        sourcePosition: right
+        targetPosition: left
+        selected: false
+        data:
+          type: llm
+          title: 언어 패턴 분석
+          desc: ''
+          selected: false
+          model:
+            provider: openai
+            name: gpt-4o
+            mode: chat
+            completion_params:
+              temperature: 0.2
+              max_tokens: 4000
+          prompt_template:
+            - role: system
+              text: |
+                당신은 인스타그램 광고 언어 패턴 분석 전문가입니다.
+                입력된 캡션들을 분석하여 반드시 순수한 JSON만 출력하세요.
+                JSON 앞뒤로 어떠한 텍스트, 마크다운 코드블록도 포함하지 마세요.
+            - role: user
+              text: |
+                다음은 넘버즈인(스킨케어 브랜드) 인스타그램 광고 캡션입니다.
+                좋아요 100개 이상 한국어 포스트 상위 50개입니다.
+
+                ---
+                {{#start.captions#}}
+                ---
+
+                위 캡션들을 분석하여 아래 JSON 구조로 출력하세요.
+
+                {
+                  "brand": "넘버즈인",
+                  "category": "스킨케어",
+                  "verdict": "전체 언어 성격에 대한 2~3문장 요약. 어떤 소구 방식이 주를 이루는지, 현재 카테고리 트렌드와의 갭이 있다면 무엇인지 포함.",
+                  "words": [
+                    {"w": "단어", "f": 빈도점수}
+                  ],
+                  "phrases": [
+                    {"t": "캡션에서 실제로 자주 쓰인 표현", "n": "패턴 유형명"}
+                  ],
+                  "ai": [
+                    {"t": "추천 광고 문구", "r": "이 문구가 효과적인 근거 (성과 패턴 기반)"}
+                  ],
+                  "radar": {
+                    "brand": [감성소구점수, 기능강조점수, 일상연결점수, 사회적증거점수, 트렌드반영점수],
+                    "avg": [65, 55, 60, 60, 65]
+                  },
+                  "similar": [
+                    {"name": "유사 언어 패턴 브랜드명", "desc": "유사한 이유 한 줄", "pct": "XX%", "c": "#배경색헥스", "tc": "#텍스트색헥스"}
+                  ]
+                }
+
+                규칙:
+                - words: 상위 20개, f는 1~10 사이 정수 (실제 빈도 기반)
+                - phrases: 5개, 실제 캡션에서 추출한 표현
+                - ai: 3개, 현재 캡션에 없지만 이 카테고리에서 성과 낼 수 있는 추천 문구
+                - radar: 각 항목 0~100 사이 정수, 실제 캡션 데이터 기반으로 산정
+                - similar: 4개, 언어 스타일이 비슷한 실제 뷰티 브랜드
+          variables: []
+          vision:
+            enabled: false
+            configs:
+              detail: high
+          context:
+            enabled: false
+            variable_selector: []
+
+      - id: end
+        type: custom
+        width: 244
+        height: 54
+        position:
+          x: 670
+          y: 280
+        positionAbsolute:
+          x: 670
+          y: 280
+        sourcePosition: right
+        targetPosition: left
+        selected: false
+        data:
+          type: end
+          title: 출력
+          desc: ''
+          selected: false
+          outputs:
+            - name: result
+              type: string
+              value_selector:
+                - llm
+                - text
+
+    edges:
+      - id: edge-start-llm
+        type: custom
+        selected: false
+        source: start
+        sourceHandle: source
+        target: llm
+        targetHandle: target
+        data:
+          isInIteration: false
+          sourceType: start
+          targetType: llm
+
+      - id: edge-llm-end
+        type: custom
+        selected: false
+        source: llm
+        sourceHandle: source
+        target: end
+        targetHandle: target
+        data:
+          isInIteration: false
+          sourceType: llm
+          targetType: end
+
+  version: '0.1'
