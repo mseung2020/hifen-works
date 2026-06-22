@@ -1,0 +1,42 @@
+{
+  "brand_name": "LG생활건강",
+  "brand_name_en": "LG",
+  "topic": "뷰티 & 스킨케어",
+  "logo": "logo.png",
+  "base_csv": "base_LG생활건강.csv",
+  "competitors_heatmap": [
+    "메디큐브",
+    "라네즈",
+    "이니스프리",
+    "에스트라",
+    "설화수",
+    "정샘물",
+    "케라스타즈"
+  ],
+  "competitors_alert_top3": [
+    "메디큐브",
+    "라네즈",
+    "이니스프리"
+  ],
+  "oly_brand_id_map": {
+    "112": "LG생활건강",
+    "4002": "메디큐브",
+    "80": "라네즈",
+    "63": "이니스프리",
+    "79": "에스트라",
+    "119": "설화수",
+    "78449": "정샘물",
+    "4516": "덴티스테",
+    "61511": "케라스타즈"
+  },
+  "oly_chart_brands": [
+    "메디큐브",
+    "라네즈",
+    "이니스프리",
+    "에스트라",
+    "설화수"
+  ],
+  "oly_enabled": false,
+  "oly_product_brand_name": "LG생활건강",
+  "cta_link": "https://ugwanggi.com/"
+}

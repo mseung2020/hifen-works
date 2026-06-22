@@ -1,0 +1,40 @@
+{
+  "brand_name": "아누아",
+  "brand_name_en": "anua",
+  "topic": "뷰티 & 스킨케어",
+  "logo": "logo.jpg",
+  "base_csv": "base_아누아.csv",
+  "competitors_heatmap": [
+    "메디힐",
+    "이니스프리",
+    "달바",
+    "에뛰드",
+    "클리오",
+    "아비브",
+    "에스쁘아"
+  ],
+  "competitors_alert_top3": [
+    "메디힐",
+    "이니스프리",
+    "달바"
+  ],
+  "oly_brand_id_map": {
+    "61045": "아누아",
+    "107": "메디힐",
+    "63": "이니스프리",
+    "46": "달바",
+    "81": "에뛰드",
+    "84": "클리오",
+    "123": "아비브",
+    "117": "에스쁘아"
+  },
+  "oly_chart_brands": [
+    "아누아",
+    "메디힐",
+    "이니스프리",
+    "달바",
+    "에뛰드"
+  ],
+  "oly_product_brand_name": "아누아",
+  "cta_link": "https://ugwanggi.com/"
+}

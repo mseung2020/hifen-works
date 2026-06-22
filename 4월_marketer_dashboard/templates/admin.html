@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유광기 — 브랜드 리포트 관리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#FAFAFA;color:#1a1a1a;min-height:100vh}
+:root{--o:#FF6B35;--ol:#FFF3ED}
+
+.admin-header{
+  background:#fff;border-bottom:1px solid #eee;padding:24px 40px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.admin-logo{font-size:24px;font-weight:900;color:var(--o)}
+.admin-sub{font-size:13px;color:#888}
+
+.admin-content{max-width:1000px;margin:48px auto;padding:0 40px}
+.admin-title{font-size:20px;font-weight:700;margin-bottom:8px}
+.admin-desc{font-size:14px;color:#888;margin-bottom:32px}
+
+.brand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+
+.brand-card{
+  background:#fff;border-radius:16px;padding:28px;
+  border:2px solid #eee;cursor:pointer;transition:all .25s;
+  text-decoration:none;color:inherit;display:block;
+}
+.brand-card:hover{border-color:var(--o);box-shadow:0 8px 32px rgba(255,107,53,.12);transform:translateY(-3px)}
+
+.brand-card-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.brand-card-logo{width:52px;height:52px;border-radius:12px;object-fit:cover;background:#f0f0f0}
+.brand-card-name{font-size:18px;font-weight:700}
+.brand-card-topic{font-size:12px;color:#888;margin-top:2px}
+
+.brand-card-arrow{
+  display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;background:var(--ol);
+  color:var(--o);font-size:16px;margin-left:auto;transition:background .2s;
+}
+.brand-card:hover .brand-card-arrow{background:var(--o);color:#fff}
+
+.empty-state{
+  text-align:center;padding:80px 40px;color:#aaa;
+}
+.empty-state p{font-size:16px;margin-bottom:8px}
+.empty-state small{font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="admin-header">
+  <div>
+    <div class="admin-logo">유광기</div>
+    <div class="admin-sub">브랜드 마케팅 리포트 관리</div>
+  </div>
+</header>
+
+<main class="admin-content">
+  <div class="admin-title">브랜드 리포트</div>
+  <div class="admin-desc">분석할 브랜드를 선택하세요</div>
+
+  {% if brands %}
+  <div class="brand-grid">
+    {% for b in brands %}
+    <a href="/brand/{{ b.id }}" class="brand-card">
+      <div class="brand-card-top">
+        <img src="/data/{{ b.id }}/{{ b.logo }}" class="brand-card-logo" onerror="this.style.background='#f0f0f0'">
+        <div>
+          <div class="brand-card-name">{{ b.name }}</div>
+          <div class="brand-card-topic">{{ b.topic }}</div>
+        </div>
+        <div class="brand-card-arrow">&#8594;</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <p>등록된 브랜드가 없습니다</p>
+    <small>data/ 폴더에 브랜드 폴더를 추가하세요</small>
+  </div>
+  {% endif %}
+</main>
+
+</body>
+</html>

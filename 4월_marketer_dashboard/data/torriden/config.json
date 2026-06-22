@@ -1,0 +1,39 @@
+{
+  "brand_name": "토리든",
+  "brand_name_en": "torriden",
+  "topic": "뷰티 & 스킨케어",
+  "logo": "logo.jpg",
+  "base_csv": "base_토리든.csv",
+  "competitors_heatmap": [
+    "메디힐",
+    "이니스프리",
+    "에뛰드",
+    "페리페라",
+    "웨이크메이크",
+    "신신제약",
+    "클리오"
+  ],
+  "competitors_alert_top3": [
+    "메디힐",
+    "이니스프리",
+    "에뛰드"
+  ],
+  "oly_brand_id_map": {
+    "116": "토리든",
+    "107": "메디힐",
+    "63": "이니스프리",
+    "81": "에뛰드",
+    "239": "페리페라",
+    "103": "웨이크메이크",
+    "84": "클리오"
+  },
+  "oly_chart_brands": [
+    "토리든",
+    "메디힐",
+    "이니스프리",
+    "에뛰드",
+    "클리오"
+  ],
+  "oly_product_brand_name": "토리든",
+  "cta_link": "https://ugwanggi.com/"
+}

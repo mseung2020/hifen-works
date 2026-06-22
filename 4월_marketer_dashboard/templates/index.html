@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유광기 — 브랜드 리포트</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   GLOBAL RESET & VARIABLES
+   ══════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#fff;color:#1a1a1a;overflow-x:hidden}
+:root{
+  --o:#FF6B35;--ol:#FFF3ED;--od:#E55A2B;
+  --g50:#FAFAFA;--g100:#F5F5F5;--g200:#EEE;--g400:#BDBDBD;--g600:#757575;--g900:#1a1a1a;
+}
+.version-panel{display:none}
+
+/* ══════════════════════════════════════
+   TOOLTIP HELP ICON
+   ══════════════════════════════════════ */
+.tip{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;
+  width:15px;height:15px;border-radius:50%;font-size:9px;font-weight:600;
+  cursor:help;flex-shrink:0;vertical-align:middle;margin-left:5px;
+  background:var(--g200);color:var(--g600);transition:all .15s;
+}
+.tip:hover{background:var(--o);color:#fff}
+.tip::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:var(--g900);color:#fff;padding:10px 14px;border-radius:10px;
+  font-size:11px;font-weight:400;line-height:1.5;width:260px;white-space:normal;
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:9000;
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+}
+.tip::before{
+  content:'';position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--g900);
+  pointer-events:none;opacity:0;transition:opacity .2s;z-index:9000;
+}
+.tip:hover::after,.tip:hover::before{opacity:1}
+/* Right-aligned tooltips for edge cases */
+.tip.tip-left::after{left:auto;right:0;transform:none}
+.tip.tip-left::before{left:auto;right:12px;transform:none}
+
+/* Version-specific tip styles */
+/* A: default gray circle */
+/* B: slightly smaller */
+.vb-panel .tip{width:14px;height:14px;font-size:8px;background:#f0f0f0}
+/* C: elegant thin border */
+.vc-section .tip{width:16px;height:16px;background:transparent;border:1.5px solid var(--g400);color:var(--g400);font-size:9px}
+.vc-section .tip:hover{border-color:var(--o);background:var(--o);color:#fff}
+
+/* Chart wrapper — prevents infinite height growth */
+.chart-wrap{position:relative;width:100%;height:240px}
+.chart-wrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
+
+/* ══════════════════════════════════════
+   FLOATING HOME BUTTON
+   ══════════════════════════════════════ */
+#home-btn{
+  display:none;position:fixed;bottom:28px;right:28px;z-index:9999;
+  width:48px;height:48px;border-radius:50%;background:var(--o);color:#fff;
+  border:none;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,53,.35);
+  transition:transform .2s,box-shadow .2s;
+  align-items:center;justify-content:center;line-height:1;
+  text-align:center;padding:0;
+}
+#home-btn:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(255,107,53,.5)}
+
+/* ══════════════════════════════════════
+   LANDING PAGE
+   ══════════════════════════════════════ */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#fff 40%,var(--ol) 100%);padding:40px}
+.landing-logo{font-size:32px;font-weight:900;color:var(--o);margin-bottom:8px}
+.landing-logo span{color:var(--g900)}
+.landing-sub{font-size:16px;color:var(--g600);margin-bottom:48px;text-align:center}
+.landing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:960px;width:100%}
+.landing-card{
+  background:#fff;border-radius:20px;padding:32px;border:2px solid var(--g200);
+  cursor:pointer;transition:all .25s;text-align:center;
+}
+.landing-card:hover{border-color:var(--o);box-shadow:0 12px 40px rgba(255,107,53,.12);transform:translateY(-4px)}
+.landing-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.landing-card p{font-size:13px;color:var(--g600);line-height:1.6;margin-bottom:16px}
+.landing-tag{display:inline-block;background:var(--ol);color:var(--o);font-size:11px;font-weight:600;padding:4px 12px;border-radius:12px}
+.landing-preview{height:120px;background:var(--g50);border-radius:12px;margin-bottom:16px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.landing-preview svg{width:90%;height:90%}
+
+/* ══════════════════════════════════════
+   SHARED COMPONENTS
+   ══════════════════════════════════════ */
+.s-card{background:#fff;border-radius:16px;padding:24px;border:1px solid var(--g200);transition:box-shadow .2s}
+.s-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.s-card-title{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.s-card-title small{font-size:12px;color:var(--g400);font-weight:400}
+.s-badge{background:var(--o);color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+.s-badge-light{background:var(--ol);color:var(--o);font-size:11px;padding:3px 10px;border-radius:10px;font-weight:600}
+
+/* Rank item */
+.s-rank{list-style:none}
+.s-rank li{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--g100);font-size:13px;gap:10px}
+.s-rank li:last-child{border:none}
+.s-rank .num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;background:var(--g100);color:var(--g600)}
+.s-rank .num.top{background:var(--o);color:#fff}
+.s-rank .name{flex:1;font-weight:500}
+.s-rank .val{font-weight:600;color:var(--o)}
+.s-rank .bar-bg{width:80px;height:6px;background:var(--g100);border-radius:3px}
+.s-rank .bar-fill{height:100%;background:var(--o);border-radius:3px}
+.s-rank .self{background:var(--ol);border-radius:8px;padding:10px 8px}
+
+/* ══════════════════════════════════════
+   VERSION A — CLEAN MINIMAL
+   ══════════════════════════════════════ */
+.va-nav{background:#fff;border-bottom:1px solid var(--g200);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
+.va-logo{font-weight:900;font-size:20px;color:var(--o)}
+.va-logo span{color:var(--g900)}
+.va-hero{background:linear-gradient(135deg,#fff 0%,var(--ol) 100%);padding:48px 40px 40px;border-bottom:1px solid var(--g200);max-width:1400px;margin:0 auto}
+.va-hero h1{font-size:28px;font-weight:700}
+.va-hero h1 em{color:var(--o);font-style:normal}
+.va-hero-sub{font-size:14px;color:var(--g600);margin-top:8px}
+.va-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:32px}
+.va-kpi{background:#fff;border-radius:12px;padding:20px;border:1px solid var(--g200)}
+.va-kpi-label{font-size:12px;color:var(--g600);font-weight:500}
+.va-kpi-value{font-size:28px;font-weight:700;margin-top:4px}
+.va-kpi-change{font-size:12px;margin-top:4px}
+.va-kpi-change.up{color:var(--o)}
+.va-kpi-change.down{color:#E53935}
+.va-content{padding:32px 40px;max-width:1400px;margin:0 auto}
+.va-section-title{font-size:18px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.va-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px}
+.va-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:32px}
+.va-grid-21{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:32px}
+.va-alert{background:var(--ol);border:1px solid #FFD4BC;border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:13px}
+.va-alert strong{color:var(--od)}
+
+/* Creator cards */
+.va-creator-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.va-creator{background:#fff;border-radius:12px;padding:20px;text-align:center;border:1px solid var(--g200);transition:all .2s}
+.va-creator:hover{border-color:var(--o);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,107,53,.1)}
+.va-creator img{width:56px;height:56px;border-radius:50%;object-fit:cover;margin-bottom:12px;background:var(--g200)}
+.va-creator-name{font-size:14px;font-weight:600}
+.va-creator-subs{font-size:12px;color:var(--g600);margin-top:2px}
+.va-creator-tags{display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+.va-creator-tag{font-size:10px;background:var(--ol);color:var(--o);padding:2px 8px;border-radius:10px}
+.va-creator-stats{display:flex;justify-content:center;gap:16px;margin-top:12px;font-size:11px;color:var(--g600)}
+.va-creator-stats strong{font-weight:700;color:var(--g900);display:block}
+
+/* ══════════════════════════════════════
+   VERSION B — DATA-DENSE DASHBOARD
+   ══════════════════════════════════════ */
+.vb-wrap{display:flex;min-height:100vh}
+.vb-sidebar{width:240px;background:#fff;border-right:1px solid #eee;padding:24px 0;position:fixed;top:0;bottom:0;z-index:100;overflow-y:auto}
+.vb-logo{padding:0 24px 24px;font-weight:900;font-size:18px;color:var(--o);border-bottom:1px solid #f0f0f0}
+.vb-logo span{color:var(--g900)}
+.vb-brand-box{margin:16px 12px;padding:16px;background:var(--ol);border-radius:12px;text-align:center}
+.vb-brand-avatar{width:48px;height:48px;border-radius:12px;background:var(--o);margin:0 auto 8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px}
+.vb-menu{padding:16px 12px}
+.vb-menu-label{font-size:10px;color:#aaa;font-weight:600;text-transform:uppercase;letter-spacing:1px;padding:16px 12px 8px}
+.vb-menu-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:500;color:#666;cursor:default;margin-bottom:2px}
+.vb-menu-item.active{background:var(--o);color:#fff}
+.vb-main{margin-left:240px;flex:1;padding:24px 28px}
+.vb-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.vb-topbar h1{font-size:22px;font-weight:700}
+.vb-scores{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.vb-score{background:#fff;border-radius:14px;padding:20px;border:1px solid #eee}
+.vb-score.hl{background:linear-gradient(135deg,var(--o),#FF8F5E);color:#fff}
+.vb-score-label{font-size:12px;color:#888;font-weight:500}
+.vb-score.hl .vb-score-label{color:rgba(255,255,255,.8)}
+.vb-score-val{font-size:32px;font-weight:900;margin:6px 0}
+.vb-score-sub{font-size:11px;color:#888}
+.vb-score.hl .vb-score-sub{color:rgba(255,255,255,.7)}
+.vb-row{display:grid;gap:16px;margin-bottom:16px}
+.vb-row.g21 .vb-panel .s-rank li{padding:8px 0;font-size:12px}
+#vb-abs-rank li{padding:8px 0;font-size:12px}
+.vb-row.g21{grid-template-columns:2fr 1fr}
+.vb-row.g11{grid-template-columns:1fr 1fr}
+.vb-panel{background:#fff;border-radius:14px;padding:20px;border:1px solid #eee}
+.vb-panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.vb-panel-title{font-size:14px;font-weight:700}
+
+/* Heatmap */
+.vb-heatmap{width:100%;border-collapse:separate;border-spacing:3px}
+.vb-heatmap th{font-size:10px;color:#888;font-weight:500;padding:4px;text-align:center}
+.vb-heatmap td{padding:8px 4px;text-align:center;border-radius:6px;font-size:11px;font-weight:600}
+.hm5{background:var(--o);color:#fff}.hm4{background:#FF8F5E;color:#fff}.hm3{background:#FFB088;color:#fff}.hm2{background:#FFD4BC}.hm1{background:var(--ol)}.hm0{background:#f5f5f5;color:#ccc}
+
+/* Creator rows */
+.vb-cr{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f5f5f5}
+.vb-cr:last-child{border:none}
+.vb-cr img{width:36px;height:36px;border-radius:50%;object-fit:cover;background:#eee}
+.vb-cr-info{flex:1}
+.vb-cr-name{font-size:13px;font-weight:600}
+.vb-cr-sub{font-size:11px;color:#888}
+.vb-cr-warn{font-size:10px;background:var(--ol);color:var(--od);padding:2px 8px;border-radius:8px}
+.vb-cr-metric{text-align:right}
+.vb-cr-metric-val{font-size:14px;font-weight:700;color:var(--o)}
+.vb-cr-metric-label{font-size:10px;color:#aaa}
+
+/* Oly products */
+.vb-oly{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5}
+.vb-oly:last-child{border:none}
+.vb-oly img{width:40px;height:40px;border-radius:8px;object-fit:cover;background:#f0f0f0}
+.vb-oly-info{flex:1}
+.vb-oly-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.vb-oly-cat{font-size:10px;color:#aaa}
+.vb-oly-rank{text-align:right}
+.vb-oly-rank-val{font-size:16px;font-weight:900}
+.vb-oly-up{color:#4CAF50;font-size:10px}
+.vb-oly-down{color:#E53935;font-size:10px}
+
+/* ══════════════════════════════════════
+   VERSION C — STORYTELLING
+   ══════════════════════════════════════ */
+.vc-side{position:fixed;left:0;top:0;bottom:0;width:56px;background:#fff;border-right:1px solid #f0f0f0;z-index:100;display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:6px}
+.vc-side-logo{font-weight:900;font-size:16px;color:var(--o);margin-bottom:24px}
+.vc-dot{width:10px;height:10px;border-radius:50%;background:#ddd;cursor:pointer;transition:all .2s}
+.vc-dot.active{background:var(--o);transform:scale(1.3)}
+.vc-main{margin-left:56px}
+.vc-section{min-height:100vh;padding:80px;position:relative;border-bottom:1px solid #f0f0f0}
+
+.vc-hero{background:linear-gradient(160deg,#fff 40%,var(--ol) 100%);display:flex;flex-direction:column;justify-content:center}
+.vc-eyebrow{font-size:13px;color:var(--o);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.vc-h1{font-size:48px;font-weight:900;line-height:1.2;max-width:700px}
+.vc-h1 em{color:var(--o);font-style:normal}
+.vc-desc{font-size:18px;color:#666;margin-top:20px;max-width:500px;line-height:1.6}
+.vc-hero-stats{display:flex;gap:48px;margin-top:48px}
+.vc-hero-num{font-size:48px;font-weight:900;color:var(--o)}
+.vc-hero-label{font-size:14px;color:#888;margin-top:4px}
+
+.vc-section-eyebrow{font-size:12px;color:var(--o);font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.vc-h2{font-size:36px;font-weight:900;line-height:1.3;margin-bottom:8px}
+.vc-h2-sub{font-size:16px;color:#888;margin-bottom:40px}
+
+.vc-big-compare{display:flex;gap:32px;align-items:center;margin-bottom:28px;justify-content:center}
+.vc-comp-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:0}
+.vc-comp-panel{background:var(--g50);border-radius:20px;padding:36px}
+.vc-comp-panel-eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--g600);margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--g200)}
+.vc-comp-market-sub{font-size:26px;font-weight:900;color:var(--o);margin-bottom:28px;line-height:1.2}
+.vc-comp-panel .vc-bc-num{font-size:52px}
+.vc-comp-panel .vc-bc-brand{font-size:16px}
+.vc-comp-panel .vc-bc-vs{width:40px;height:40px;font-size:13px}
+.vc-bc-brand{font-size:20px;font-weight:700;margin-bottom:4px}
+.vc-bc-num{font-size:64px;font-weight:900;line-height:1}
+.vc-bc-num.orange{color:var(--o)}.vc-bc-num.gray{color:#ddd}
+.vc-bc-unit{font-size:14px;color:#888}
+.vc-bc-vs{width:48px;height:48px;border-radius:50%;background:var(--o);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+
+.vc-statement{background:var(--ol);border-radius:20px;padding:32px 40px;margin:28px 0 36px;position:relative;border-left:4px solid var(--o)}
+.vc-statement-q{font-size:22px;font-weight:700;line-height:1.5}
+.vc-statement-q em{color:var(--o);font-style:normal}
+.vc-statement-sub{font-size:14px;color:#888;margin-top:14px}
+
+.vc-h-bars{max-width:600px}
+.vc-hbar{margin-bottom:16px}
+.vc-hbar-head{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+.vc-hbar-name{font-weight:600}
+.vc-hbar-val{font-weight:700;color:var(--o)}
+.vc-hbar-track{height:10px;background:#f5f5f5;border-radius:5px;overflow:hidden}
+.vc-hbar-fill{height:100%;border-radius:5px}
+.vc-hbar-fill.self{background:var(--o)}.vc-hbar-fill.comp{background:#FFD4BC}
+
+.vc-showcase{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.vc-sc{background:var(--g50);border-radius:16px;padding:28px;border:2px solid transparent;transition:all .3s}
+.vc-sc:hover{border-color:var(--o);box-shadow:0 12px 40px rgba(255,107,53,.1);transform:translateY(-4px)}
+.vc-sc-top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.vc-sc img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#ddd}
+.vc-sc-name{font-size:16px;font-weight:700}
+.vc-sc-subs{font-size:12px;color:#888}
+.vc-sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vc-sc-stat{background:#fff;border-radius:10px;padding:12px;text-align:center}
+.vc-sc-stat-val{font-size:18px;font-weight:900;color:var(--o)}
+.vc-sc-stat-label{font-size:10px;color:#888;margin-top:2px}
+.vc-sc-warn{margin-top:12px;padding:8px 12px;background:var(--ol);border-radius:8px;font-size:11px;color:var(--o);text-align:center;font-weight:600}
+
+/* Audience pyramid */
+.vc-audience{display:flex;gap:48px;align-items:center}
+.vc-pyramid{flex:1}
+.vc-pyr-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.vc-pyr-label{width:44px;text-align:right;font-size:11px;color:#888}
+.vc-pyr-bar-l{height:20px;background:#FFB088;border-radius:3px 0 0 3px}
+.vc-pyr-mid{width:1px;height:20px;background:#ddd;flex-shrink:0}
+.vc-pyr-bar-r{height:20px;background:var(--o);border-radius:0 3px 3px 0}
+.vc-insights{flex:1}
+.vc-insight{background:var(--g50);border-radius:12px;padding:20px;margin-bottom:12px;border-left:3px solid var(--o)}
+.vc-insight-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.vc-insight-desc{font-size:13px;color:#666;line-height:1.5}
+
+.vc-oly-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.vc-oly-chart{background:var(--g50);border-radius:16px;padding:32px}
+.vc-oly-title{font-size:16px;font-weight:700;margin-bottom:20px}
+.vc-oly-item{display:flex;align-items:center;gap:20px;padding:16px 20px;background:var(--g50);border-radius:12px;margin-bottom:8px;transition:background .2s}
+.vc-oly-item:hover{background:var(--ol)}
+.vc-oly-pos{font-size:28px;font-weight:900;color:var(--o);width:56px;flex-shrink:0;text-align:center}
+.vc-oly-pinfo{flex:1}
+.vc-oly-pname{font-size:14px;font-weight:600}
+.vc-oly-pcat{font-size:11px;color:#888}
+.vc-oly-trend{font-size:12px;font-weight:700}
+.oly-up{color:#4CAF50}.oly-down{color:#E53935}
+
+.vc-cta{background:var(--o);min-height:50vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;border:none}
+.vc-cta-title{font-size:36px;font-weight:900;margin-bottom:12px}
+.vc-cta-sub{font-size:16px;opacity:.8;margin-bottom:32px}
+.vc-cta-btn{display:inline-block;padding:16px 48px;background:#fff;color:var(--o);border-radius:12px;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:transform .2s}
+.vc-cta-btn:hover{transform:scale(1.05);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════ */
+@media(max-width:1024px){
+  .landing-grid{grid-template-columns:1fr}
+  .va-kpis{grid-template-columns:repeat(3,1fr)}
+  .va-creator-grid{grid-template-columns:repeat(2,1fr)}
+  .vc-showcase{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     LANDING PAGE
+     ══════════════════════════════════════ -->
+<div id="landing">
+  <div style="position:absolute;top:20px;right:24px"><a href="/admin/login" style="font-size:12px;color:var(--g400);text-decoration:none;padding:6px 14px;border:1px solid var(--g200);border-radius:8px;transition:all .15s" onmouseover="this.style.color='var(--o)';this.style.borderColor='var(--o)'" onmouseout="this.style.color='#BDBDBD';this.style.borderColor='#EEE'">&#9881; 관리</a></div>
+  <div class="landing-logo">유광기</div>
+  <div id="landing-brand" style="display:flex;align-items:center;gap:12px;margin-bottom:8px;margin-left:-24px"></div>
+  <p class="landing-sub">보고 싶은 형태를 선택하세요</p>
+  <div class="landing-grid">
+    <div class="landing-card" onclick="showVersion('a')">
+      <div class="landing-preview">
+        <svg viewBox="0 0 200 80">
+          <rect x="10" y="5" width="180" height="10" rx="2" fill="#f0f0f0"/>
+          <rect x="10" y="20" width="55" height="25" rx="4" fill="#FFF3ED"/>
+          <rect x="70" y="20" width="55" height="25" rx="4" fill="#FFF3ED"/>
+          <rect x="130" y="20" width="55" height="25" rx="4" fill="#FFF3ED"/>
+          <rect x="10" y="50" width="88" height="25" rx="4" fill="#FFF3ED"/>
+          <rect x="102" y="50" width="88" height="25" rx="4" fill="#FFD4BC"/>
+        </svg>
+      </div>
+      <h3>A. Clean Minimal</h3>
+      <p>카드 기반 레이아웃, 넓은 여백<br>KPI를 한눈에 파악</p>
+      <span class="landing-tag">심플 & 직관적</span>
+    </div>
+    <div class="landing-card" onclick="showVersion('b')">
+      <div class="landing-preview">
+        <svg viewBox="0 0 200 80">
+          <rect x="0" y="0" width="40" height="80" rx="0" fill="#FFF3ED"/>
+          <rect x="45" y="5" width="35" height="18" rx="3" fill="#FF6B35"/>
+          <rect x="83" y="5" width="35" height="18" rx="3" fill="#FFD4BC"/>
+          <rect x="121" y="5" width="35" height="18" rx="3" fill="#FFD4BC"/>
+          <rect x="159" y="5" width="35" height="18" rx="3" fill="#FFD4BC"/>
+          <rect x="45" y="28" width="148" height="22" rx="3" fill="#FFF3ED"/>
+          <rect x="45" y="54" width="70" height="22" rx="3" fill="#FFF3ED"/>
+          <rect x="119" y="54" width="74" height="22" rx="3" fill="#FFF3ED"/>
+        </svg>
+      </div>
+      <h3>B. Data-Dense Dashboard</h3>
+      <p>사이드바 + 밀집형 패널<br>히트맵, 실무 대시보드 느낌</p>
+      <span class="landing-tag">정보 밀도 높음</span>
+    </div>
+    <div class="landing-card" onclick="showVersion('c')">
+      <div class="landing-preview">
+        <svg viewBox="0 0 200 80">
+          <rect x="0" y="0" width="10" height="80" rx="0" fill="#FFF3ED"/>
+          <rect x="20" y="10" width="120" height="12" rx="2" fill="#FF6B35" opacity=".3"/>
+          <rect x="20" y="28" width="160" height="8" rx="2" fill="#f0f0f0"/>
+          <rect x="20" y="42" width="160" height="30" rx="4" fill="#FFF3ED"/>
+          <text x="40" y="60" font-size="8" fill="#FF6B35" font-weight="700">192 vs 84</text>
+        </svg>
+      </div>
+      <h3>C. Storytelling</h3>
+      <p>풀페이지 스크롤, 프레젠테이션 느낌<br>"위기감 → 행동" 스토리라인</p>
+      <span class="landing-tag">스토리 중심</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VERSION A — CLEAN MINIMAL
+     ══════════════════════════════════════ -->
+<div id="version-a" class="version-panel">
+  <nav class="va-nav">
+    <div class="va-logo" style="cursor:pointer" onclick="goHome()">유광기</div>
+  </nav>
+  <section class="va-hero">
+    <h1 id="va-hero-title" style="display:flex;align-items:center;gap:12px"></h1>
+    <div class="va-hero-sub" id="va-hero-sub"></div>
+    <div class="va-kpis" id="va-kpis"></div>
+  </section>
+  <div class="va-content">
+    <div class="va-alert" id="va-alert"></div>
+    <div class="va-section-title">경쟁사 크리에이터 점유 현황 <span class="s-badge">CRITICAL</span></div>
+    <div class="va-grid-2">
+      <div class="s-card" style="display:flex;flex-direction:column"><div class="s-card-title"><span>브랜드별 크리에이터 협업 수</span><span style="display:flex;align-items:center;gap:4px"><small>같은 크리에이터 풀 내</small><span class="tip" data-tip="해당 브랜드와 협업한 크리에이터들이 다른 브랜드와도 얼마나 많은 영상을 만들었는지 비교합니다.">?</span></span></div><div class="chart-wrap" style="margin-top:auto;flex:1"><canvas id="va-chart-comp"></canvas></div></div>
+      <div class="s-card"><div class="s-card-title">경쟁사 위협 순위 <span class="tip" data-tip="같은 크리에이터 풀 내에서 협업 영상이 많은 브랜드 순서입니다. 해당 브랜드의 위치가 강조되어 있습니다.">?</span></div><ul class="s-rank" id="va-rank"></ul></div>
+    </div>
+    <div class="va-section-title">뷰티 시장 전체 브랜드 순위 <span class="tip" data-tip="뷰티 & 메이크업 카테고리 전체 브랜드의 크리에이터 협업 영상 수 기준 절대 순위입니다. 어떤 브랜드를 보든 동일한 순위가 표시됩니다.">?</span></div>
+    <div class="va-grid-2">
+      <div class="s-card" style="display:flex;flex-direction:column"><div class="s-card-title">시장 전체 순위 <small id="va-abs-total"></small></div><div class="chart-wrap" style="margin-top:auto;flex:1"><canvas id="va-chart-abs"></canvas></div></div>
+      <div class="s-card"><div class="s-card-title">시장 순위 리스트</div><ul class="s-rank" id="va-abs-rank"></ul></div>
+    </div>
+    <div id="va-oly-section">
+    <div class="va-section-title">올리브영 제품 순위 추이 <span class="s-badge">NEW</span></div>
+    <div class="va-grid-21">
+      <div class="s-card"><div class="s-card-title">브랜드 스코어 추이 <small> </small><span class="tip" data-tip="올리브영 내 브랜드 종합 점수의 약 5개월간 변화입니다. 해당 브랜드 포함 주요 경쟁 5개 브랜드를 비교합니다.">?</span></div><div class="chart-wrap"><canvas id="va-chart-oly"></canvas></div></div>
+      <div class="s-card"><div class="s-card-title"><span class="brand-name-label">TOP 제품</span> <span class="tip" data-tip="올리브영 전체 카테고리에서 해당 브랜드 제품의 현재 순위입니다. 옆의 숫자는 직전 대비 순위 변동폭입니다.">?</span></div><ul class="s-rank" id="va-oly-products"></ul></div>
+    </div>
+    </div>
+    <div class="va-section-title">TOP 크리에이터 <span class="tip" data-tip="구독자가 많은 순서로 정렬됩니다. 평균 조회수와 참여율은 채널 전체 기준이며, ${B} 영상만의 수치는 아닙니다.">?</span></div>
+    <div class="va-creator-grid" id="va-creators-grid"></div>
+    <div class="va-section-title">오디언스 인사이트 <span class="tip" data-tip="해당 브랜드와 협업한 크리에이터 채널들의 시청자 특성을 평균 낸 결과입니다. 채널 규모와 무관하게 동일 비중으로 반영됩니다.">?</span></div>
+    <div class="va-grid-3">
+      <div class="s-card"><div class="s-card-title">시청자 성별 비율 <span class="tip" data-tip="협업 크리에이터 채널을 시청하는 여성과 남성의 평균 비율입니다.">?</span></div><div class="chart-wrap"><canvas id="va-chart-gender"></canvas></div></div>
+      <div class="s-card"><div class="s-card-title">연령대 분포 <span class="tip" data-tip="13세부터 65세 이상까지 7개 연령구간별 시청자 비율입니다. 여성(진한색)과 남성(연한색)을 구분하여 표시합니다.">?</span></div><div class="chart-wrap"><canvas id="va-chart-age"></canvas></div></div>
+      <div class="s-card"><div class="s-card-title">광고 vs 오가닉 <span class="tip" data-tip="전체 영상 중 브랜드가 비용을 지불한 광고 영상과, 크리에이터가 자발적으로 언급한 오가닉 영상의 비율입니다.">?</span></div><div class="chart-wrap"><canvas id="va-chart-ads"></canvas></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VERSION B — DATA-DENSE DASHBOARD
+     ══════════════════════════════════════ -->
+<div id="version-b" class="version-panel">
+  <div class="vb-wrap">
+    <aside class="vb-sidebar">
+      <div class="vb-logo" style="cursor:pointer" onclick="goHome()">유광기</div>
+      <div class="vb-brand-box">
+        <img id="vb-brand-logo" src="" style="width:48px;height:48px;border-radius:12px;object-fit:cover;margin:0 auto 8px">
+        <div id="vb-brand-name" style="font-size:14px;font-weight:700"></div>
+        <div id="vb-brand-topic" style="font-size:11px;color:#888"></div>
+      </div>
+      <div class="vb-menu">
+        <div class="vb-menu-label">분석</div>
+        <div class="vb-menu-item active">&#9673; 대시보드</div>
+        <div class="vb-menu-item">&#9876; 경쟁사 분석</div>
+        <div class="vb-menu-item">&#9733; 크리에이터</div>
+        <div class="vb-menu-item">&#9654; 콘텐츠 성과</div>
+        <div class="vb-menu-item">&#9775; 오디언스</div>
+        <div class="vb-menu-label">커머스</div>
+        <div class="vb-menu-item">&#9749; 올리브영</div>
+      </div>
+    </aside>
+    <main class="vb-main">
+      <div class="vb-topbar"><h1>Dashboard</h1></div>
+      <div class="vb-scores" id="vb-scores"></div>
+      <div class="vb-row g21">
+        <div class="vb-panel">
+          <div class="vb-panel-head"><div><div class="vb-panel-title">크리에이터 공유 히트맵 <span class="tip" data-tip="해당 브랜드 크리에이터가 경쟁 브랜드와 얼마나 겹치는지 보여줍니다. 숫자가 클수록(색이 진할수록) 같은 크리에이터를 두고 경쟁이 치열합니다.">?</span></div><div style="font-size:11px;color:#aaa">해당 브랜드 크리에이터가 경쟁 브랜드와 얼마나 겹치는지</div></div><span class="s-badge-light">위기 지표</span></div>
+          <table class="vb-heatmap" id="vb-heatmap"></table>
+        </div>
+        <div class="vb-panel">
+          <div class="vb-panel-head"><div class="vb-panel-title">브랜드 위협 TOP <span class="tip" data-tip="같은 크리에이터 풀 안에서 협업 영상이 많은 브랜드 순서입니다.">?</span></div></div>
+          <ul class="s-rank" id="vb-rank"></ul>
+        </div>
+      </div>
+      <div class="vb-row g11">
+        <div class="vb-panel">
+          <div class="vb-panel-head"><div class="vb-panel-title">시장 전체 브랜드 순위 <span class="tip" data-tip="뷰티 카테고리 전체 브랜드의 절대적 순위입니다. 모든 브랜드에서 동일한 순위가 표시됩니다.">?</span></div></div>
+          <ul class="s-rank" id="vb-abs-rank"></ul>
+        </div>
+        <div class="vb-panel" style="display:flex;flex-direction:column">
+          <div class="vb-panel-head"><div class="vb-panel-title">시장 순위 차트</div><span class="s-badge-light" id="vb-abs-total"></span></div>
+          <div class="chart-wrap" style="flex:1;min-height:160px"><canvas id="vb-chart-abs"></canvas></div>
+        </div>
+      </div>
+      <div class="vb-row g11">
+        <div class="vb-panel">
+          <div class="vb-panel-head"><div class="vb-panel-title">주요 크리에이터 현황 <span class="tip" data-tip="구독자 수가 많은 순서로 정렬됩니다. '경쟁사 N개 협업' 태그는 해당 크리에이터가 경쟁 브랜드와도 동시에 활동 중이라는 의미입니다.">?</span></div><span class="s-badge-light">모니터링</span></div>
+          <div id="vb-creators"></div>
+        </div>
+        <div class="vb-panel" style="display:flex;flex-direction:column;justify-content:center">
+          <div class="vb-panel-head"><div class="vb-panel-title">오디언스 프로필 <span class="tip" data-tip="협업 크리에이터 채널 시청자의 성별과 연령 분포 평균입니다. 채널 규모와 무관하게 동일 비중으로 반영됩니다.">?</span></div></div>
+          <div style="display:flex;gap:20px;align-items:center;justify-content:center;flex:1">
+            <div style="flex:0 0 140px"><div class="chart-wrap" style="height:140px"><canvas id="vb-chart-gender"></canvas></div></div>
+            <div style="flex:1"><div class="chart-wrap" style="height:160px"><canvas id="vb-chart-age"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="vb-row g11" id="vb-oly-section">
+        <div class="vb-panel">
+          <div class="vb-panel-head"><div class="vb-panel-title">올리브영 브랜드 스코어 <span class="tip" data-tip="올리브영 내 브랜드 종합 점수의 약 5개월간 변화입니다. 주요 경쟁 5개 브랜드를 비교합니다.">?</span></div></div>
+          <div class="chart-wrap" style="height:200px"><canvas id="vb-chart-oly"></canvas></div>
+        </div>
+        <div class="vb-panel">
+          <div class="vb-panel-head"><div class="vb-panel-title"><span class="brand-name-label">제품 순위</span> <span class="tip" data-tip="올리브영 전체 카테고리 기준 현재 순위입니다. 화살표는 직전 대비 순위 변동을 나타냅니다.">?</span></div><span class="s-badge-light">올리브영</span></div>
+          <div id="vb-oly-products"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VERSION C — STORYTELLING
+     ══════════════════════════════════════ -->
+<div id="version-c" class="version-panel">
+  <nav class="vc-side">
+    <div class="vc-side-logo" style="cursor:pointer" onclick="goHome()">유</div>
+    <div class="vc-dot active" data-sec="vc-sec-0"></div><div class="vc-dot" data-sec="vc-sec-1"></div><div class="vc-dot" data-sec="vc-sec-2"></div><div class="vc-dot" data-sec="vc-sec-3"></div><div class="vc-dot" data-sec="vc-sec-4"></div>
+  </nav>
+  <main class="vc-main">
+    <!-- Hero -->
+    <section id="vc-sec-0" class="vc-section vc-hero">
+      <div class="vc-eyebrow">Brand Intelligence Report</div>
+      <div id="vc-hero-logo" style="display:flex;align-items:center;gap:16px;margin-bottom:16px"></div>
+      <h1 class="vc-h1" id="vc-hero-title"></h1>
+      <p class="vc-desc" id="vc-hero-desc"></p>
+      <div class="vc-hero-stats" id="vc-hero-stats"></div>
+    </section>
+    <!-- Competition -->
+    <section id="vc-sec-1" class="vc-section">
+      <div class="vc-section-eyebrow">Competitive Landscape</div>
+      <h2 class="vc-h2" id="vc-comp-headline"></h2>
+      <div class="vc-h2-sub" id="vc-comp-sub"></div>
+      <div class="vc-statement" id="vc-statement"></div>
+      <div class="vc-comp-grid">
+        <div class="vc-comp-panel">
+          <div class="vc-comp-panel-eyebrow">같은 크리에이터 풀 안에서</div>
+          <div class="vc-big-compare" id="vc-big-compare"></div>
+          <div class="vc-h-bars" id="vc-hbars" style="max-width:100%"></div>
+        </div>
+        <div class="vc-comp-panel">
+          <div class="vc-comp-panel-eyebrow">뷰티 시장 전체 순위</div>
+          <div class="vc-comp-market-sub" id="vc-abs-sub"></div>
+          <div class="vc-h-bars" id="vc-abs-bars" style="max-width:100%"></div>
+        </div>
+      </div>
+      <div id="vc-abs-headline" style="display:none"></div>
+    </section>
+    <!-- Creators -->
+    <section id="vc-sec-2" class="vc-section">
+      <div class="vc-section-eyebrow">Creator Intelligence</div>
+      <h2 class="vc-h2">주목해야 할 크리에이터 <span class="tip" data-tip="구독자가 많은 순서로 정렬됩니다. 평균 조회수와 참여율은 채널 전체 기준이며, 경고 태그는 경쟁 브랜드와 동시 활동 중임을 뜻합니다.">?</span></h2>
+      <div class="vc-h2-sub">가장 높은 성과를 내는 크리에이터와 이탈 위험 크리에이터</div>
+      <div class="vc-showcase" id="vc-showcase"></div>
+    </section>
+    <!-- Audience -->
+    <section id="vc-sec-3" class="vc-section">
+      <div class="vc-section-eyebrow">Audience Insight</div>
+      <h2 class="vc-h2" id="vc-audience-title"> <span class="tip" data-tip="협업 크리에이터 채널 시청자의 성별·연령 분포를 평균 낸 결과입니다. 채널 규모와 무관하게 동일 비중으로 반영됩니다.">?</span></h2>
+      <div class="vc-h2-sub">협업 크리에이터 채널의 시청자 인구통계 종합</div>
+      <div class="vc-audience">
+        <div class="vc-pyramid" id="vc-pyramid"></div>
+        <div class="vc-insights" id="vc-insights"></div>
+      </div>
+    </section>
+    <!-- Oliveyoung -->
+    <section id="vc-sec-4" class="vc-section">
+      <div class="vc-section-eyebrow">Olive Young Analytics</div>
+      <h2 class="vc-h2">올리브영에서의 위치 <span class="tip" data-tip="올리브영 내 브랜드 종합 점수와 제품 순위를 주요 경쟁사와 비교합니다. 약 5개월간의 추이입니다.">?</span></h2>
+      <div class="vc-h2-sub" id="vc-oly-sub"></div>
+      <div class="vc-oly-grid">
+        <div class="vc-oly-chart"><div class="vc-oly-title">브랜드 스코어 추이 <span class="tip" data-tip="주황 굵은 선이 해당 브랜드입니다. 점수가 높을수록 올리브영 내 브랜드 파워가 강합니다.">?</span></div><div class="chart-wrap"><canvas id="vc-chart-oly"></canvas></div></div>
+        <div><div class="vc-oly-title"><span class="brand-name-label">제품 순위</span> <span class="tip" data-tip="올리브영 전체 카테고리 기준 현재 순위입니다. 화살표는 직전 대비 순위 변동을 나타냅니다.">?</span></div><div id="vc-oly-products"></div></div>
+      </div>
+    </section>
+    <!-- CTA -->
+    <section class="vc-section vc-cta">
+      <div>
+        <div class="vc-cta-title">지금 행동하지 않으면<br>크리에이터는 경쟁사로 갑니다</div>
+        <div class="vc-cta-sub">데이터 기반의 맞춤 전략으로 시장 포지션을 되찾으세요</div>
+        <a id="vc-cta-link" href="" target="_blank" class="vc-cta-btn" style="text-decoration:none">맞춤 전략 컨설팅 시작하기</a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- HOME BUTTON -->
+<button id="home-btn" onclick="goHome()">&#8962;</button>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════ -->
+<script>
+const D = {{ data | tojson | safe }};
+const B = D.brand_name;
+let charts = [];
+let vcObserver = null;
+
+/* ── Version C: dot navigation ── */
+function initVcDots() {
+  const dots = document.querySelectorAll('.vc-dot');
+  const sections = [0,1,2,3,4].map(i => document.getElementById('vc-sec-'+i));
+
+  // Click → scroll to section
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const sec = document.getElementById(dot.dataset.sec);
+      if (sec) sec.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // Scroll → activate dot
+  if (vcObserver) vcObserver.disconnect();
+  vcObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target);
+        if (idx >= 0) {
+          dots.forEach(d => d.classList.remove('active'));
+          dots[idx].classList.add('active');
+        }
+      }
+    });
+  }, {threshold: 0.4});
+
+  sections.forEach(sec => { if (sec) vcObserver.observe(sec); });
+}
+
+/* ── Navigation ── */
+/* ── 공통 브랜드 정보 세팅 (페이지 로드 시 1회) ── */
+function initBrandInfo() {
+  const logo = D.logo;
+  // Landing
+  document.getElementById('landing-brand').innerHTML = `<img src="${logo}" style="width:48px;height:48px;border-radius:12px;object-fit:cover"><span style="font-size:22px;font-weight:700;color:var(--g900)">${B} 브랜드 리포트</span>`;
+  // Title
+  document.title = '유광기 — ' + B + ' 브랜드 리포트';
+  // Brand name labels (제품 순위 등)
+  document.querySelectorAll('.brand-name-label').forEach(el => { el.textContent = B + ' ' + el.textContent; });
+}
+initBrandInfo();
+
+function showVersion(v) {
+  document.getElementById('landing').style.display = 'none';
+  document.querySelectorAll('.version-panel').forEach(el => el.style.display = 'none');
+  document.getElementById('version-' + v).style.display = 'block';
+  document.getElementById('home-btn').style.display = 'flex';
+  window.scrollTo(0, 0);
+  destroyCharts();
+  if (v === 'a') initA();
+  else if (v === 'b') initB();
+  else if (v === 'c') initC();
+}
+function goHome() {
+  document.querySelectorAll('.version-panel').forEach(el => el.style.display = 'none');
+  document.getElementById('landing').style.display = 'flex';
+  document.getElementById('home-btn').style.display = 'none';
+  window.scrollTo(0, 0);
+  destroyCharts();
+}
+function destroyCharts() { charts.forEach(c => c.destroy()); charts = []; }
+
+/* ── Helpers ── */
+function mkChart(id, cfg) {
+  const ctx = document.getElementById(id);
+  if (!ctx) return null;
+  const c = new Chart(ctx, cfg);
+  charts.push(c);
+  return c;
+}
+const OLY_COLORS = {};
+(D.oly_chart_brands||[]).forEach((bn,i) => { OLY_COLORS[bn] = i===0?'#FF6B35':['#999','#bbb','#ccc','#ddd'][i-1]||'#eee'; });
+
+function rankHtml(items, max) {
+  return items.map((it, i) => {
+    const isSelf = it.is_self || it.name === B;
+    const cls = isSelf ? 'self' : '';
+    const numCls = (i < 3 || isSelf) ? 'num top' : 'num';
+    const pct = Math.round(it.count / max * 100);
+    return `<li class="${cls}"><span class="${numCls}">${isSelf ? D.brand_rank : i+1}</span><span class="name" style="${isSelf?'color:var(--o);font-weight:700':''}">${it.name}</span><span class="val">${it.count}건</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></li>`;
+  }).join('');
+}
+
+function absRankHtml(items, max) {
+  return items.map(it => {
+    const isSelf = it.is_self || it.name === B;
+    const cls = isSelf ? 'self' : '';
+    const numCls = (it.rank <= 3 || isSelf) ? 'num top' : 'num';
+    const pct = Math.round(it.count / max * 100);
+    return `<li class="${cls}"><span class="${numCls}">${it.rank}</span><span class="name" style="${isSelf?'color:var(--o);font-weight:700':''}">${it.name}</span><span class="val">${it.count}건</span><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></li>`;
+  }).join('');
+}
+
+function olyProductHtml(products, variant) {
+  if (variant === 'vb') {
+    return products.map(p => {
+      const arrow = p.rank_change > 0 ? `<span class="vb-oly-up">&#9650; ${p.rank_change}</span>` : p.rank_change < 0 ? `<span class="vb-oly-down">&#9660; ${Math.abs(p.rank_change)}</span>` : '';
+      return `<div class="vb-oly"><img src="${p.image}" onerror="this.style.background='#f0f0f0';this.src=''"><div class="vb-oly-info"><div class="vb-oly-name">${p.name}</div><div class="vb-oly-cat">${p.category}</div></div><div class="vb-oly-rank"><div class="vb-oly-rank-val" style="color:var(--o)">#${p.rank}</div>${arrow}</div></div>`;
+    }).join('');
+  }
+  if (variant === 'vc') {
+    return products.map(p => {
+      const arrow = p.rank_change > 0 ? `<span class="oly-up">&#9650; ${p.rank_change}계단</span>` : p.rank_change < 0 ? `<span class="oly-down">&#9660; ${Math.abs(p.rank_change)}계단</span>` : '';
+      return `<div class="vc-oly-item"><div class="vc-oly-pos">#${p.rank}</div><div class="vc-oly-pinfo"><div class="vc-oly-pname">${p.name}</div><div class="vc-oly-pcat">${p.category}</div></div><div class="vc-oly-trend">${arrow}</div></div>`;
+    }).join('');
+  }
+  // va
+  return products.map((p, i) => {
+    const numCls = i < 2 ? 'num top' : 'num';
+    return `<li><span class="${numCls}">${i+1}</span><span class="name" style="font-size:12px">${p.name}</span><span class="val">#${p.rank}</span></li>`;
+  }).join('');
+}
+
+function olyLineChart(canvasId) {
+  const brands = D.oly_chart_brands;
+  const datasets = brands.map(bn => {
+    const pts = D.oly_score_trend[bn] || [];
+    return {
+      label: bn,
+      data: pts.map(p => ({x: p.date, y: p.score})),
+      borderColor: OLY_COLORS[bn] || '#ccc',
+      borderWidth: bn === B ? 3 : 1.5,
+      pointRadius: 0,
+      tension: 0.3,
+      borderDash: (bn !== B && bn !== D.oly_top_comp_name) ? [4,4] : [],
+    };
+  });
+  // Get all unique dates as labels
+  const allDates = [...new Set(brands.flatMap(bn => (D.oly_score_trend[bn]||[]).map(p=>p.date)))].sort();
+  // Sample every 7th date for labels
+  const labelDates = allDates.filter((_, i) => i % 7 === 0);
+
+  return mkChart(canvasId, {
+    type:'line',
+    data:{labels: allDates, datasets},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        x:{type:'category', ticks:{maxTicksLimit:8, font:{size:10}, color:'#aaa'}, grid:{display:false}},
+        y:{beginAtZero:true, ticks:{font:{size:10}, color:'#aaa'}, grid:{color:'#f5f5f5'}}
+      },
+      plugins:{legend:{position:'bottom', labels:{font:{size:11}, usePointStyle:true, padding:16}}}
+    }
+  });
+}
+
+/* ══════════════════════════════════════
+   VERSION A INIT
+   ══════════════════════════════════════ */
+function initA() {
+  if (!D.oly_enabled) {
+    const sec = document.getElementById('va-oly-section');
+    if (sec) sec.style.display = 'none';
+  }
+
+  const logo = D.logo;
+  const top3 = D.competitors_alert_top3;
+  const top3Str = top3.join(', ');
+
+  // Hero
+  document.getElementById('va-hero-title').innerHTML = `<img src="${logo}" style="width:40px;height:40px;border-radius:10px;object-fit:cover"><span><em style="color:var(--o);font-style:normal">${B}</em> 브랜드 리포트</span>`;
+  document.getElementById('va-hero-sub').textContent = `${D.topic} 카테고리 | 크리에이터 ${D.total_creators}명 분석 기준`;
+
+  // KPIs — 1위 여부에 따른 분기
+  const isTop = D.brand_rank <= 3;
+  const rankCls = isTop ? 'up' : 'down';
+  const rankChange = isTop ? D.brand_counts.length+'개 브랜드 중 상위권' : D.brand_counts.length+'개 브랜드 중';
+  const olyCompare = D.oly_latest_score >= D.oly_top_comp_score
+    ? (D.oly_top_comp_name ? D.oly_top_comp_name+' '+D.oly_top_comp_score+' 대비 높음' : '')
+    : (D.oly_top_comp_name ? D.oly_top_comp_name+' '+D.oly_top_comp_score+' 대비 낮음' : '');
+  const olyCls = D.oly_latest_score >= D.oly_top_comp_score ? 'up' : 'down';
+
+  const kpis = [
+    {label:'총 협업 영상', value:D.total_videos, change:'', cls:'', tip:`${B}가 언급된 유튜브 영상의 총 개수입니다.`},
+    {label:'총 조회수', value:D.total_views_fmt, change:'', cls:'', tip:'위 영상들의 누적 조회수를 모두 합산한 수치입니다.'},
+    {label:'평균 참여율', value:D.avg_engagement + '%', change:'', cls:'', tip:`협업 크리에이터 채널 전체의 평균 참여율입니다. ${B} 영상만의 참여율이 아닌 점 참고해주세요.`},
+    {label:'경쟁사 대비 순위', value:D.brand_rank + '위', change:rankChange, cls:rankCls, tip:'같은 크리에이터 풀 안에서 협업 영상 수가 많은 브랜드 순서로 매긴 순위입니다.'},
+    {label:'올리브영 브랜드 점수', value:D.oly_latest_score || '-', change:olyCompare, cls:olyCls, tip:'올리브영 내 브랜드 종합 평가 점수입니다. 가장 최근 집계일 기준입니다.'},
+  ];
+  document.getElementById('va-kpis').innerHTML = kpis.map(k =>
+    `<div class="va-kpi"><div class="va-kpi-label">${k.label} <span class="tip" data-tip="${k.tip}">?</span></div><div class="va-kpi-value" ${k.cls==='down'?'style="color:var(--o)"':''}>${k.value}</div><div class="va-kpi-change ${k.cls}">${k.change}</div></div>`
+  ).join('');
+
+  // Alert
+  document.getElementById('va-alert').innerHTML = `<span style="font-size:20px">&#9888;</span><div><strong>주의:</strong> ${B} 크리에이터 중 <strong>${D.overlap_top3_count}명이 경쟁사(${top3Str})와 동시 협업</strong> 중입니다. <span class="tip" data-tip="${B} 크리에이터 목록과 각 경쟁사 크리에이터 목록의 겹치는 인원을 합산한 수치입니다.">?</span></div>`;
+
+  // Competition bar chart
+  const bcTop = D.brand_counts.slice(0, 10);
+  const bcHasSelf = bcTop.some(b => b.is_self);
+  const bc = bcHasSelf ? bcTop : bcTop.slice(0, 9).concat(D.brand_counts.filter(b => b.is_self).slice(0, 1));
+  mkChart('va-chart-comp', {
+    type:'bar',
+    data:{
+      labels: bc.map(b=>b.name),
+      datasets:[{data:bc.map(b=>b.count), backgroundColor:bc.map(b=>b.is_self?'#FF6B35':'#FFD4BC'), borderRadius:4}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f5f5f5'},ticks:{font:{size:10}}},x:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+
+  // Rank
+  const vaTop7 = D.brand_counts.slice(0,7);
+  const vaHasSelf = vaTop7.some(b=>b.is_self);
+  document.getElementById('va-rank').innerHTML = rankHtml(vaHasSelf ? vaTop7 : vaTop7.concat(D.brand_counts.filter(b=>b.is_self)), D.brand_counts[0].count);
+
+  // Absolute market rank
+  const absTop10 = D.abs_rank.slice(0,8);
+  const absHasSelf = absTop10.some(b=>b.is_self);
+  const absItems = absHasSelf ? absTop10 : absTop10.slice(0,7).concat(D.abs_rank.filter(b=>b.is_self).slice(0,1));
+  const absMax = absItems[0]?.count || 1;
+  document.getElementById('va-abs-total').textContent = D.abs_total_brands + '개 뷰티 브랜드 중';
+  document.getElementById('va-abs-rank').innerHTML = absRankHtml(absItems, absMax);
+  mkChart('va-chart-abs', {
+    type:'bar',
+    data:{labels:absItems.map(b=>b.name),datasets:[{data:absItems.map(b=>b.count),backgroundColor:absItems.map(b=>b.is_self?'#FF6B35':'#FFD4BC'),borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f5f5f5'},ticks:{font:{size:10}}},x:{ticks:{font:{size:9}},grid:{display:false}}}}
+  });
+
+  // Oly score chart
+  olyLineChart('va-chart-oly');
+
+  // Oly products
+  document.getElementById('va-oly-products').innerHTML = olyProductHtml(D.oly_products.slice(0,5), 'va');
+
+  // Creators
+  document.getElementById('va-creators-grid').innerHTML = D.top_creators.slice(0,8).map(c =>
+    `<div class="va-creator"><img src="${c.thumbnail}" onerror="this.style.background='var(--g200)';this.src=''"><div class="va-creator-name">${c.name}</div><div class="va-creator-subs">${c.subscribers_fmt} 구독</div><div class="va-creator-tags">${c.tags.map(t=>`<span class="va-creator-tag">${t}</span>`).join('')}</div><div class="va-creator-stats"><div><strong>${c.avg_views_fmt}</strong>평균 조회</div><div><strong>${c.engagement_rate}%</strong>참여율</div></div></div>`
+  ).join('');
+
+  // Gender donut
+  mkChart('va-chart-gender', {
+    type:'doughnut',
+    data:{labels:['여성','남성'],datasets:[{data:[D.female_pct,D.male_pct],backgroundColor:['#FF6B35','#FFD4BC'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12}}}}
+  });
+
+  // Age bar
+  mkChart('va-chart-age', {
+    type:'bar',
+    data:{labels:D.age_distribution.map(a=>a.label),datasets:[{label:'여성',data:D.age_distribution.map(a=>a.female),backgroundColor:'#FF6B35',borderRadius:3},{label:'남성',data:D.age_distribution.map(a=>a.male),backgroundColor:'#FFD4BC',borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}},scales:{x:{stacked:true,ticks:{font:{size:10}},grid:{display:false}},y:{stacked:true,ticks:{font:{size:10}},grid:{color:'#f5f5f5'}}}}
+  });
+
+  // Ads vs Organic
+  mkChart('va-chart-ads', {
+    type:'bar',
+    data:{labels:['광고','오가닉'],datasets:[{data:[D.ads_pct,D.organic_pct],backgroundColor:['#FF6B35','#FFB088'],borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%',font:{size:10}},grid:{color:'#f5f5f5'}},x:{ticks:{font:{size:12,weight:'bold'}},grid:{display:false}}}}
+  });
+}
+
+/* ══════════════════════════════════════
+   VERSION B INIT
+   ══════════════════════════════════════ */
+function initB() {
+  if (!D.oly_enabled) {
+    const sec = document.getElementById('vb-oly-section');
+    if (sec) sec.style.display = 'none';
+  }
+
+  // Sidebar brand info
+  document.getElementById('vb-brand-logo').src = D.logo;
+  document.getElementById('vb-brand-name').textContent = B;
+  document.getElementById('vb-brand-topic').textContent = D.topic;
+
+  // Score cards — 1위 여부 분기
+  const vbIsTop = D.brand_rank <= 3;
+  const vbRankSub = vbIsTop ? D.brand_counts.length+'개 브랜드 중 상위권' : D.brand_counts.length+'개 브랜드 중';
+  const scores = [
+    {label:'경쟁 순위', value:D.brand_rank+'위', sub:vbRankSub, hl:true, tip:'같은 크리에이터 풀 내 협업 영상 수 기준 순위입니다.'},
+    {label:'협업 크리에이터', value:D.total_creators, sub:D.oly_top_comp_name ? D.oly_top_comp_name+' 대비 비교' : '', hl:false, tip:`${B}가 언급된 영상을 올린 고유 크리에이터 수입니다.`},
+    {label:'올리브영 스코어', value:D.oly_latest_score || '-', sub:'카테고리 내 비교 필요', hl:false, tip:'올리브영 내 브랜드 종합 평가 점수입니다. 가장 최근 집계일 기준입니다.'},
+    {label:'평균 참여율', value:D.avg_engagement+'%', sub:'채널 전체 기준', hl:false, tip:`협업 크리에이터 채널 전체의 평균 참여율입니다. ${B} 영상만의 수치가 아닌 점 참고해주세요.`},
+  ];
+  document.getElementById('vb-scores').innerHTML = scores.map(s =>
+    `<div class="vb-score ${s.hl?'hl':''}"><div class="vb-score-label">${s.label} <span class="tip" data-tip="${s.tip}" ${s.hl?'style="background:rgba(255,255,255,.3);color:#fff"':''}>?</span></div><div class="vb-score-val">${s.value}</div><div class="vb-score-sub">${s.sub}</div></div>`
+  ).join('');
+
+  // Heatmap
+  const hb = D.heatmap_brands;
+  const hm = D.heatmap;
+  const maxHm = Math.max(...hm.flat().filter(v=>v>0));
+  let hmHtml = '<tr><th></th>' + hb.slice(1).map(b=>`<th>${b.slice(0,3)}</th>`).join('') + '</tr>';
+  hm.forEach((row, ri) => {
+    hmHtml += `<tr><th style="text-align:left;${ri===0?'color:var(--o)':''}">${hb[ri].slice(0,6)}</th>`;
+    row.slice(1).forEach((val, ci) => {
+      if (ri === ci + 1) { hmHtml += '<td class="hm0">-</td>'; return; }
+      const level = val === 0 ? 0 : val > maxHm*0.8 ? 5 : val > maxHm*0.6 ? 4 : val > maxHm*0.4 ? 3 : val > maxHm*0.2 ? 2 : 1;
+      hmHtml += `<td class="hm${level}">${val}</td>`;
+    });
+    hmHtml += '</tr>';
+  });
+  document.getElementById('vb-heatmap').innerHTML = hmHtml;
+
+  // Rank
+  const vbTop7 = D.brand_counts.slice(0,7);
+  const vbHasSelf = vbTop7.some(b=>b.is_self);
+  document.getElementById('vb-rank').innerHTML = rankHtml(vbHasSelf ? vbTop7 : vbTop7.concat(D.brand_counts.filter(b=>b.is_self)), D.brand_counts[0].count);
+
+  // Creators
+  document.getElementById('vb-creators').innerHTML = D.top_creators.slice(0,5).map(c => {
+    const warn = c.competing_count > 0 ? `<span class="vb-cr-warn">경쟁사 ${c.competing_count}개 협업</span>` : '';
+    return `<div class="vb-cr"><img src="${c.thumbnail}" onerror="this.style.background='#eee';this.src=''"><div class="vb-cr-info"><div class="vb-cr-name">${c.name}</div><div class="vb-cr-sub">${c.subscribers_fmt} | ${c.tags[0]||'뷰티'}</div></div>${warn}<div class="vb-cr-metric"><div class="vb-cr-metric-val">${c.avg_views_fmt}</div><div class="vb-cr-metric-label">평균 조회</div></div></div>`;
+  }).join('');
+
+  // Gender donut
+  mkChart('vb-chart-gender', {
+    type:'doughnut',
+    data:{labels:['여성','남성'],datasets:[{data:[D.female_pct,D.male_pct],backgroundColor:['#FF6B35','#FFD4BC'],borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{display:false}}}
+  });
+
+  // Age bar
+  mkChart('vb-chart-age', {
+    type:'bar',
+    data:{labels:D.age_distribution.map(a=>a.label),datasets:[{label:'여성',data:D.age_distribution.map(a=>a.female),backgroundColor:'#FF6B35',borderRadius:2},{label:'남성',data:D.age_distribution.map(a=>a.male),backgroundColor:'#FFD4BC',borderRadius:2}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9}}},y:{stacked:true,ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+
+  // Absolute market rank
+  const vbAbsTop = D.abs_rank.slice(0,8);
+  const vbAbsHasSelf = vbAbsTop.some(b=>b.is_self);
+  const vbAbsItems = vbAbsHasSelf ? vbAbsTop : vbAbsTop.concat(D.abs_rank.filter(b=>b.is_self));
+  const vbAbsMax = vbAbsItems[0]?.count || 1;
+  document.getElementById('vb-abs-total').textContent = D.abs_total_brands + '개 브랜드 중';
+  document.getElementById('vb-abs-rank').innerHTML = absRankHtml(vbAbsItems, vbAbsMax);
+  mkChart('vb-chart-abs', {
+    type:'bar',
+    data:{labels:vbAbsItems.map(b=>b.name),datasets:[{data:vbAbsItems.map(b=>b.count),backgroundColor:vbAbsItems.map(b=>b.is_self?'#FF6B35':'#FFD4BC'),borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f5f5f5'},ticks:{font:{size:10}}},x:{ticks:{font:{size:9}},grid:{display:false}}}}
+  });
+
+  // Oly score
+  olyLineChart('vb-chart-oly');
+
+  // Oly products
+  document.getElementById('vb-oly-products').innerHTML = olyProductHtml(D.oly_products.slice(0,4), 'vb');
+}
+
+/* ══════════════════════════════════════
+   VERSION C INIT
+   ══════════════════════════════════════ */
+function initC() {
+  if (!D.oly_enabled) {
+    const sec = document.getElementById('vc-sec-4');
+    if (sec) sec.style.display = 'none';
+    const dot = document.querySelector('.vc-dot[data-sec="vc-sec-4"]');
+    if (dot) dot.style.display = 'none';
+  }
+
+  initVcDots();
+  const logo = D.logo;
+  const top3 = D.competitors_alert_top3;
+
+  // Hero
+  document.getElementById('vc-hero-logo').innerHTML = `<img src="${logo}" style="width:56px;height:56px;border-radius:14px;object-fit:cover">`;
+  document.getElementById('vc-hero-title').innerHTML = `<em style="color:var(--o);font-style:normal">${B}</em>는 지금<br>어디에 서 있는가?`;
+  document.getElementById('vc-hero-desc').textContent =
+    `${D.total_creators}명의 크리에이터, ${D.brand_counts.reduce((s,b)=>s+b.count,0).toLocaleString()}개의 영상, ${D.brand_counts.length}개의 경쟁 브랜드. 데이터가 말하는 ${B}의 현재 위치를 확인하세요.`;
+  document.getElementById('vc-hero-stats').innerHTML = [
+    {num:D.brand_rank+'위', label:'크리에이터 점유 순위'},
+    {num:D.oly_latest_score, label:'올리브영 브랜드 스코어'},
+    {num:D.total_videos, label:'총 협업 영상'},
+  ].map(s=>`<div><div class="vc-hero-num">${s.num}</div><div class="vc-hero-label">${s.label}</div></div>`).join('');
+
+  // Competition — 1위면 VS 대신 리더 메시지
+  const top = D.brand_counts[0];
+  const self = D.brand_counts.find(b=>b.is_self) || {count:0};
+  const isRank1 = top.is_self;
+  const runner = isRank1 ? D.brand_counts[1] : null;
+
+  document.getElementById('vc-comp-headline').innerHTML = isRank1
+    ? `크리에이터 협업 1위,<br>하지만 경쟁사가 추격 중입니다 <span class="tip" data-tip="해당 브랜드와 협업한 크리에이터들이 다른 어떤 브랜드와 얼마나 많은 영상을 만들었는지 분석한 결과입니다.">?</span>`
+    : `같은 크리에이터를 두고<br>경쟁사는 더 많이 협업합니다 <span class="tip" data-tip="해당 브랜드와 협업한 크리에이터들이 다른 어떤 브랜드와 얼마나 많은 영상을 만들었는지 분석한 결과입니다.">?</span>`;
+  document.getElementById('vc-comp-sub').textContent = `${B} 크리에이터 ${D.total_creators}명이 동시에 작업하는 브랜드 분석`;
+
+  if (isRank1) {
+    document.getElementById('vc-big-compare').innerHTML =
+      `<div style="text-align:center"><div class="vc-bc-brand" style="color:var(--o)">${B}</div><div class="vc-bc-num orange">${self.count}</div><div class="vc-bc-unit">협업 영상 — 1위</div></div><div class="vc-bc-vs" style="background:#4CAF50">&#10003;</div><div style="text-align:center"><div class="vc-bc-brand">${runner?runner.name:''}</div><div class="vc-bc-num gray">${runner?runner.count:''}</div><div class="vc-bc-unit">2위</div></div>`;
+  } else {
+    document.getElementById('vc-big-compare').innerHTML =
+      `<div style="text-align:right"><div class="vc-bc-brand">${top.name}</div><div class="vc-bc-num orange">${top.count}</div><div class="vc-bc-unit">협업 영상</div></div><div class="vc-bc-vs">VS</div><div><div class="vc-bc-brand" style="color:var(--o)">${B}</div><div class="vc-bc-num gray">${self.count}</div><div class="vc-bc-unit">협업 영상</div></div>`;
+  }
+
+  // Statement
+  const overlapPct = D.total_creators > 0 ? Math.round(D.overlap_top3_count / D.total_creators * 100) : 0;
+  const ol = D.lily_overlap;
+  const olDetail = top3.map(b => `${b} ${ol[b]||0}명`).join(', ');
+  document.getElementById('vc-audience-title').innerHTML = `${B}의 시청자는 누구인가 <span class="tip" data-tip="협업 크리에이터 채널 시청자의 성별·연령 분포를 평균 낸 결과입니다. 채널 규모와 무관하게 동일 비중으로 반영됩니다.">?</span>`;
+
+  if (isRank1) {
+    document.getElementById('vc-statement').innerHTML =
+      `<div class="vc-statement-q">${B}은(는) 현재 크리에이터 협업 <em>1위</em>입니다.<br>하지만 경쟁사도 빠르게 추격 중입니다.</div><div class="vc-statement-sub">${olDetail}이 동일 크리에이터와 협업 중</div>`;
+  } else {
+    document.getElementById('vc-statement').innerHTML =
+      `<div class="vc-statement-q">${B}의 크리에이터 중 <em>${overlapPct}%</em>가<br>이미 경쟁 브랜드와 협업 중입니다.</div><div class="vc-statement-sub">${olDetail}이 동시 협업 감지</div>`;
+  }
+
+  // H-bars
+  const bars = D.brand_counts.slice(0,5);
+  if (!bars.find(b=>b.is_self)) { bars.pop(); bars.push(self); }
+  const barMax = bars[0].count;
+  document.getElementById('vc-hbars').innerHTML = bars.map(b => {
+    const pct = Math.round(b.count/barMax*100);
+    return `<div class="vc-hbar"><div class="vc-hbar-head"><span class="vc-hbar-name" ${b.is_self?'style="color:var(--o)"':''}>${b.name}</span><span class="vc-hbar-val">${b.count}</span></div><div class="vc-hbar-track"><div class="vc-hbar-fill ${b.is_self?'self':'comp'}" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+
+  // Absolute market rank (VC)
+  const vcAbsTop = D.abs_rank.slice(0,5);
+  const vcAbsHasSelf = vcAbsTop.some(b=>b.is_self);
+  const vcAbsItems = vcAbsHasSelf ? vcAbsTop : vcAbsTop.slice(0,4).concat(D.abs_rank.filter(b=>b.is_self).slice(0,1));
+  const vcAbsMax = vcAbsItems[0]?.count || 1;
+  document.getElementById('vc-abs-headline').innerHTML = `뷰티 시장 전체에서<br>${B}의 위치는? <span class="tip" data-tip="뷰티 카테고리 전체 ${D.abs_total_brands}개 브랜드의 크리에이터 협업 영상 수 기준 절대 순위입니다.">?</span>`;
+  document.getElementById('vc-abs-sub').textContent = `${D.abs_total_brands}개 뷰티 브랜드 중 ${D.abs_my_rank}위`;
+  document.getElementById('vc-abs-bars').innerHTML = vcAbsItems.map(b => {
+    const pct = Math.round(b.count / vcAbsMax * 100);
+    return `<div class="vc-hbar"><div class="vc-hbar-head"><span class="vc-hbar-name" ${b.is_self?'style="color:var(--o)"':''}>${b.name}</span><span class="vc-hbar-val">${b.count}건 (${b.rank}위)</span></div><div class="vc-hbar-track"><div class="vc-hbar-fill ${b.is_self?'self':'comp'}" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+
+  // Creators showcase
+  document.getElementById('vc-showcase').innerHTML = D.top_creators.slice(0,3).map(c => {
+    const warn = c.competing_count > 0 ? `<div class="vc-sc-warn">&#9888; ${c.competing_names.slice(0,3).join(', ')}와 동시 협업 중</div>` : '';
+    return `<div class="vc-sc"><div class="vc-sc-top"><img src="${c.thumbnail}" onerror="this.style.background='#ddd';this.src=''"><div><div class="vc-sc-name">${c.name}</div><div class="vc-sc-subs">${c.subscribers_fmt} 구독자</div></div></div><div class="vc-sc-stats"><div class="vc-sc-stat"><div class="vc-sc-stat-val">${c.avg_views_fmt}</div><div class="vc-sc-stat-label">평균 조회수</div></div><div class="vc-sc-stat"><div class="vc-sc-stat-val">${c.engagement_rate}%</div><div class="vc-sc-stat-label">참여율</div></div><div class="vc-sc-stat"><div class="vc-sc-stat-val">+${c.subs_growth}%</div><div class="vc-sc-stat-label">구독자 성장</div></div><div class="vc-sc-stat"><div class="vc-sc-stat-val">${c.lily_videos}건</div><div class="vc-sc-stat-label">${B} 영상</div></div></div>${warn}</div>`;
+  }).join('');
+
+  // Audience pyramid
+  const ageDist = D.age_distribution;
+  const maxAge = Math.max(...ageDist.map(a => Math.max(a.female, a.male)));
+  const pyScale = 260;
+  let pyrHtml = '<div style="text-align:center;font-size:12px;color:#888;margin-bottom:16px"><span style="color:#FFB088">&#9632; 남성</span> &nbsp; <span style="color:var(--o)">&#9632; 여성</span></div>';
+  [...ageDist].reverse().forEach(a => {
+    const fw = Math.max(4, Math.round(a.female / maxAge * pyScale));
+    const mw = Math.max(4, Math.round(a.male / maxAge * pyScale));
+    pyrHtml += `<div class="vc-pyr-row"><span class="vc-pyr-label">${a.label}</span><div class="vc-pyr-bar-l" style="width:${mw}px"></div><div class="vc-pyr-mid"></div><div class="vc-pyr-bar-r" style="width:${fw}px"></div></div>`;
+  });
+  document.getElementById('vc-pyramid').innerHTML = pyrHtml;
+
+  // Insights
+  const topAge = ageDist.reduce((a,b) => a.total > b.total ? a : b);
+  document.getElementById('vc-insights').innerHTML = [
+    {title:`핵심 타겟: 여성 18-34세`, desc:`전체 시청자의 약 ${Math.round(ageDist[1].total+ageDist[2].total)}%를 차지하는 주력 소비층. Z세대~밀레니얼 여성이 핵심 오디언스입니다.`},
+    {title:`성별 비율: 여성 ${D.female_pct}% / 남성 ${D.male_pct}%`, desc:`뷰티 카테고리 특성상 여성 비율이 높으며, 남성 뷰티 크리에이터 협업으로 도달 범위 확장이 가능합니다.`},
+    {title:`최대 연령대: ${topAge.label}세 (${topAge.total}%)`, desc:`이 연령대의 시청자가 가장 많으며, 향후 핵심 소비층으로 성장할 잠재 고객을 확보하고 있습니다.`},
+  ].map(i => `<div class="vc-insight"><div class="vc-insight-title">${i.title}</div><div class="vc-insight-desc">${i.desc}</div></div>`).join('');
+
+  // Oly
+  if (D.oly_latest_score > 0 && D.oly_top_comp_score > 0) {
+    const olyRatio = D.oly_latest_score >= D.oly_top_comp_score
+      ? `${D.oly_top_comp_name}(${D.oly_top_comp_score}) 대비 ${(D.oly_latest_score / D.oly_top_comp_score).toFixed(1)}배 높은 수준`
+      : `${D.oly_top_comp_name}(${D.oly_top_comp_score}) 대비 ${(D.oly_top_comp_score / D.oly_latest_score).toFixed(1)}배 낮은 수준`;
+    document.getElementById('vc-oly-sub').textContent = `브랜드 스코어 ${D.oly_latest_score} — ${olyRatio}`;
+  } else if (D.oly_latest_score > 0) {
+    document.getElementById('vc-oly-sub').textContent = `브랜드 스코어 ${D.oly_latest_score}`;
+  } else {
+    document.getElementById('vc-oly-sub').textContent = '브랜드 스코어 데이터가 아직 집계되지 않았습니다';
+  }
+  document.getElementById('vc-cta-link').href = D.cta_link;
+  olyLineChart('vc-chart-oly');
+  document.getElementById('vc-oly-products').innerHTML = olyProductHtml(D.oly_products.slice(0,4), 'vc');
+}
+</script>
+</body>
+</html>

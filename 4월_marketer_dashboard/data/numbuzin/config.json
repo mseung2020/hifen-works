@@ -1,0 +1,40 @@
+{
+  "brand_name": "넘버즈인",
+  "brand_name_en": "numbuzin",
+  "topic": "뷰티 & 스킨케어",
+  "logo": "logo.jpg",
+  "base_csv": "base_넘버즈인.csv",
+  "competitors_heatmap": [
+    "에뛰드",
+    "메디힐",
+    "이니스프리",
+    "아비브",
+    "바닐라코",
+    "달바",
+    "토니모리"
+  ],
+  "competitors_alert_top3": [
+    "에뛰드",
+    "메디힐",
+    "이니스프리"
+  ],
+  "oly_brand_id_map": {
+    "3766": "넘버즈인",
+    "81": "에뛰드",
+    "107": "메디힐",
+    "63": "이니스프리",
+    "123": "아비브",
+    "314": "바닐라코",
+    "46": "달바",
+    "124": "토니모리"
+  },
+  "oly_chart_brands": [
+    "넘버즈인",
+    "에뛰드",
+    "메디힐",
+    "이니스프리",
+    "달바"
+  ],
+  "oly_product_brand_name": "넘버즈인",
+  "cta_link": "https://ugwanggi.com/"
+}
