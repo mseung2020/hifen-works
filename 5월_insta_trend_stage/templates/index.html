@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram Trend Story</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+            background: #f4f5f7;
+            color: #222;
+        }
+
+        /* ── 탭 ── */
+        .tab-bar {
+            display: flex;
+            gap: 6px;
+            padding: 16px 20px 0;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .tab {
+            padding: 9px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 13px;
+            color: #888;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-bottom: none;
+            user-select: none;
+            transition: background 0.15s;
+        }
+        .tab:hover:not(.active) { background: #f9fafb; color: #444; }
+        .tab.active {
+            background: #fff;
+            color: #E8430A;
+            font-weight: 700;
+            border-color: #e5e7eb;
+            border-bottom-color: #fff;
+            margin-bottom: -1px;
+        }
+
+        /* ── 컨텐츠 ── */
+        .content { padding: 14px 20px; }
+        .loading {
+            text-align: center;
+            padding: 80px 0;
+            color: #bbb;
+            font-size: 15px;
+        }
+
+        /* ── Skeleton ── */
+        @keyframes shimmer {
+            0%   { background-position: -600px 0; }
+            100% { background-position:  600px 0; }
+        }
+        .skel {
+            border-radius: 6px;
+            background: linear-gradient(90deg, #f0f1f3 25%, #e4e5e8 50%, #f0f1f3 75%);
+            background-size: 600px 100%;
+            animation: shimmer 1.4s infinite linear;
+        }
+        .skel-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #fff;
+            border-radius: 12px;
+            padding: 16px 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .skel-label { width: 110px; flex-shrink: 0; padding-right: 12px; }
+        .skel-chart { flex: 1; min-width: 0; }
+        .skel-slope { flex: 3; min-width: 0; padding-left: 14px; }
+
+        /* ── 행 ── */
+        .cluster-row {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        /* 라벨 */
+        .row-label {
+            width: 110px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 12px;
+        }
+        .cluster-num  { font-size: 11px; color: #bbb; margin-bottom: 3px; }
+        .cluster-name { font-size: 13px; font-weight: 700; color: #333; word-break: keep-all; line-height: 1.4; }
+
+        /* 구분선 */
+        .vdiv {
+            width: 1px;
+            background: #f0f1f3;
+            align-self: stretch;
+            flex-shrink: 0;
+            margin: 0 14px;
+        }
+
+        /* 차트 영역 */
+        .chart-section { flex: 1; min-width: 0; }
+        .chart-title {
+            font-size: 11px;
+            color: #bbb;
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+        .chart-wrap { height: 130px; position: relative; }
+
+        /* 기울기 패널 */
+        .slope-section {
+            flex: 3;
+            min-width: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 0;
+        }
+        .pos  { color: #E8430A; }
+        .neg  { color: #4A8FF5; }
+        .zero { color: #ccc; }
+
+        /* 비율 + 진단 패널 */
+        .ratio-panel {
+            padding-left: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            white-space: nowrap;
+        }
+        .ratio-block { display: flex; flex-direction: column; gap: 4px; }
+        .ratio-header { font-size: 11px; color: #bbb; }
+        .ratio-value  { font-size: 20px; font-weight: 700; }
+
+        .trend-badge {
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+        .trend-emergence { background: #9B59B6; }
+        .trend-ignition  { background: #E67E22; }
+        .trend-spreading { background: #E8430A; }
+        .trend-peak      { background: #27AE60; }
+        .trend-declining { background: #4A8FF5; }
+        .trend-na        { background: #d0d3d8; }
+
+        /* 라벨 기준표 */
+        .legend {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            padding: 14px 16px;
+            font-size: 12px;
+            z-index: 100;
+            min-width: 220px;
+        }
+        .legend-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #aaa;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 7px;
+        }
+        .legend-item:last-child { margin-bottom: 0; }
+        .legend-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .legend-desc { color: #888; line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+<div class="tab-bar">
+    {% for cat in categories %}
+    <div class="tab" data-cat="{{ cat }}" onclick="selectTab(this)">{{ cat }}</div>
+    {% endfor %}
+    <div style="margin-left:auto;display:flex;align-items:center;padding-bottom:4px;">
+        <button id="clear-cache-btn" onclick="clearCache()" style="font-size:12px;color:#bbb;background:none;border:1px solid #e5e7eb;border-radius:6px;padding:5px 12px;cursor:pointer;">캐시 초기화</button>
+    </div>
+</div>
+
+<div class="legend">
+    <div class="legend-title">진단 기준표</div>
+    <div class="legend-item">
+        <span class="legend-badge trend-emergence">태동</span>
+        <span class="legend-desc">누적 10건 이하, 또는 최근 1주 3건 이하 & 이전 1주 1건 이하</span>
+    </div>
+    <div class="legend-item">
+        <span class="legend-badge trend-ignition">점화</span>
+        <span class="legend-desc">이전 1주 2건 이하 & 최근 1주 5건 이상, 또는 비율 4.0 초과</span>
+    </div>
+    <div class="legend-item">
+        <span class="legend-badge trend-spreading">확산</span>
+        <span class="legend-desc">비율 1.3 초과</span>
+    </div>
+    <div class="legend-item">
+        <span class="legend-badge trend-peak">정점</span>
+        <span class="legend-desc">비율 0.7 이상 1.3 이하</span>
+    </div>
+    <div class="legend-item">
+        <span class="legend-badge trend-declining">쇠퇴</span>
+        <span class="legend-desc">비율 0.7 미만, 또는 최근 2주 증가량 0</span>
+    </div>
+</div>
+
+<div class="content" id="content">
+    <div class="loading">위 카테고리 탭을 선택하면 데이터를 불러옵니다.</div>
+</div>
+
+<script>
+const charts = {};
+const cache = {};
+
+
+/* 주차별 증가량 비율 및 트렌드 진단 (5단계) */
+function trendAnalysis(cumul) {
+    const n = cumul.length;
+    const total = cumul[n - 1];
+    const w1 = cumul[n - 1] - (n >= 8  ? cumul[n - 8]  : 0); // 최근 1주 증가량
+    const w2 = (n >= 8  ? cumul[n - 8]  : 0) - (n >= 15 ? cumul[n - 15] : 0); // 이전 1주 증가량
+
+    const ratio = w2 > 0 ? w1 / w2 : (w1 > 0 ? Infinity : null);
+
+    let label, cls;
+
+    if (w1 === 0 && w2 === 0) {
+        // 최근 2주 모두 활동 없음
+        if (total > 0) { label = '쇠퇴'; cls = 'trend-declining'; }
+        else           { label = '-';    cls = 'trend-na'; }
+    } else if (total <= 10 || (w1 <= 3 && w2 <= 1)) {
+        // 누적 자체가 매우 작거나 양쪽 모두 미미함
+        label = '태동'; cls = 'trend-emergence';
+    } else if (w2 <= 2 && w1 >= 5) {
+        // 이전엔 거의 없다가 최근 급증
+        label = '점화'; cls = 'trend-ignition';
+    } else if (ratio === Infinity || ratio > 4) {
+        // 4배 이상 급가속
+        label = '점화'; cls = 'trend-ignition';
+    } else if (ratio > 1.3) {
+        label = '확산'; cls = 'trend-spreading';
+    } else if (ratio >= 0.7) {
+        label = '정점'; cls = 'trend-peak';
+    } else {
+        label = '쇠퇴'; cls = 'trend-declining';
+    }
+
+    return { w1, w2, ratio, label, cls };
+}
+
+/* X축 레이블 — 3주전/2주전/1주전/3일전만 표시 (마지막 포인트 = 분석일-3일) */
+function makeXLabels(dates) {
+    const n = dates.length;
+    return dates.map((_, i) => {
+        if (i === 0)      return '3주 전';
+        if (i === 7)      return '2주 전';
+        if (i === 14)     return '1주 전';
+        if (i === n - 1)  return '3일 전';
+        return '';
+    });
+}
+
+function destroyChart(id) {
+    if (charts[id]) { charts[id].destroy(); delete charts[id]; }
+}
+
+function createChart(id, xLabels, data) {
+    destroyChart(id);
+    const ctx = document.getElementById(id).getContext('2d');
+
+    charts[id] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xLabels,
+            datasets: [{
+                data,
+                borderColor: '#E8430A',
+                backgroundColor: (ctx) => {
+                    const grad = ctx.chart.ctx.createLinearGradient(0, 0, 0, 130);
+                    grad.addColorStop(0,   'rgba(232,67,10,0.13)');
+                    grad.addColorStop(1,   'rgba(232,67,10,0.01)');
+                    return grad;
+                },
+                fill: true,
+                tension: 0.35,
+                pointRadius: 0,
+                pointHoverRadius: 4,
+                pointHoverBackgroundColor: '#E8430A',
+                borderWidth: 1.8,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    borderColor: '#e5e7eb',
+                    borderWidth: 1,
+                    titleColor: '#888',
+                    bodyColor: '#222',
+                    titleFont: { size: 11 },
+                    bodyFont: { size: 12, weight: '700' },
+                    padding: 8,
+                    callbacks: {
+                        title: (items) => items[0].label || '',
+                        label: (item) => ` ${item.raw}`,
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    border: { display: false },
+                    ticks: {
+                        font: { size: 10 },
+                        color: '#bbb',
+                        maxRotation: 0,
+                        autoSkip: false,
+                    }
+                },
+                y: {
+                    grid: { color: '#f0f1f3', lineWidth: 1 },
+                    border: { display: false, dash: [3, 3] },
+                    ticks: {
+                        font: { size: 10 },
+                        color: '#bbb',
+                        maxTicksLimit: 4,
+                        padding: 4,
+                    }
+                }
+            }
+        }
+    });
+}
+
+function renderRows(clusters) {
+    const content = document.getElementById('content');
+    content.innerHTML = '';
+
+    clusters.forEach((cluster, idx) => {
+        const hasError = cluster.error || !cluster.daily_snapshots;
+        const row = document.createElement('div');
+        row.className = 'cluster-row';
+
+        if (hasError) {
+            row.innerHTML = `
+                <div class="row-label">
+                    <div class="cluster-num">#${idx + 1}</div>
+                    <div class="cluster-name" style="color:#ddd;">데이터 없음</div>
+                </div>`;
+            content.appendChild(row);
+            return;
+        }
+
+        // 분석일 기준 3일 전까지만 표시
+        const cutoff = new Date(cluster.analysis_date);
+        cutoff.setDate(cutoff.getDate() - 3);
+        const cutoffStr = cutoff.toISOString().slice(0, 10);
+        const snaps   = cluster.daily_snapshots.filter(s => s.publish_date <= cutoffStr);
+        const dates   = snaps.map(s => s.publish_date);
+        const daily   = snaps.map(s => s.post_count);
+        const cumul   = snaps.map(s => s.cumulative_post_count);
+        const xLabels = makeXLabels(dates);
+
+        const trend = trendAnalysis(cumul);
+        const ratioText = trend.ratio === null      ? 'N/A'
+                        : trend.ratio === Infinity  ? '∞'
+                        : `×${trend.ratio.toFixed(2)}`;
+
+        const dId = `c-d-${idx}`;
+        const cId = `c-c-${idx}`;
+
+        row.innerHTML = `
+            <div class="row-label">
+                <div class="cluster-num">#${idx + 1}</div>
+                <div class="cluster-name">${cluster.cluster_name || cluster.cluster_id}</div>
+            </div>
+            <div class="vdiv"></div>
+            <div class="chart-section">
+                <div class="chart-title">일별 포스트 수</div>
+                <div class="chart-wrap"><canvas id="${dId}"></canvas></div>
+            </div>
+            <div class="vdiv"></div>
+            <div class="chart-section">
+                <div class="chart-title">누적 포스트 수</div>
+                <div class="chart-wrap"><canvas id="${cId}"></canvas></div>
+            </div>
+            <div class="vdiv"></div>
+            <div class="slope-section">
+                <div class="ratio-panel">
+                    <div class="ratio-block">
+                        <span class="ratio-header">최근 1주 증가</span>
+                        <span class="ratio-value ${trend.w1 > 0 ? 'pos' : trend.w1 < 0 ? 'neg' : 'zero'}">${trend.w1 > 0 ? '+' : ''}${trend.w1}</span>
+                    </div>
+                    <div class="ratio-block">
+                        <span class="ratio-header">이전 1주 증가</span>
+                        <span class="ratio-value ${trend.w2 > 0 ? 'pos' : trend.w2 < 0 ? 'neg' : 'zero'}">${trend.w2 > 0 ? '+' : ''}${trend.w2}</span>
+                    </div>
+                    <div class="ratio-block">
+                        <span class="ratio-header">증가율 비율</span>
+                        <span class="ratio-value ${trend.ratio !== null && trend.ratio > 1 ? 'pos' : trend.ratio !== null && trend.ratio < 1 ? 'neg' : 'zero'}">${ratioText}</span>
+                    </div>
+                    <div class="trend-badge ${trend.cls}">${trend.label}</div>
+                </div>
+            </div>
+        `;
+        content.appendChild(row);
+
+        requestAnimationFrame(() => {
+            createChart(dId, xLabels, daily);
+            createChart(cId, xLabels, cumul);
+        });
+    });
+}
+
+function renderSkeleton() {
+    const content = document.getElementById('content');
+    content.innerHTML = Array.from({ length: 30 }, (_, i) => `
+        <div class="skel-row">
+            <div class="skel-label">
+                <div class="skel" style="height:10px;width:28px;margin-bottom:8px;"></div>
+                <div class="skel" style="height:14px;width:80px;"></div>
+            </div>
+            <div class="vdiv"></div>
+            <div class="skel-chart" style="padding:0 14px;">
+                <div class="skel" style="height:10px;width:60px;margin:0 auto 8px;"></div>
+                <div class="skel" style="height:110px;border-radius:8px;"></div>
+            </div>
+            <div class="vdiv"></div>
+            <div class="skel-chart" style="padding:0 14px;">
+                <div class="skel" style="height:10px;width:60px;margin:0 auto 8px;"></div>
+                <div class="skel" style="height:110px;border-radius:8px;"></div>
+            </div>
+            <div class="vdiv"></div>
+            <div class="skel-slope">
+                <div class="skel" style="height:10px;width:100px;margin-bottom:14px;"></div>
+                ${[0,1,2].map(() => `
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f4f5f7;">
+                        <div class="skel" style="height:12px;width:60px;"></div>
+                        <div style="display:flex;gap:12px;">
+                            <div class="skel" style="height:13px;width:40px;"></div>
+                            <div class="skel" style="height:13px;width:40px;"></div>
+                        </div>
+                    </div>`).join('')}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function clearCache() {
+    const btn = document.getElementById('clear-cache-btn');
+    btn.textContent = '초기화 중…';
+    btn.disabled = true;
+    await fetch('/api/clear-cache', { method: 'POST' });
+    Object.keys(cache).forEach(k => delete cache[k]);
+    btn.textContent = '캐시 초기화';
+    btn.disabled = false;
+    document.getElementById('content').innerHTML = '<div class="loading">캐시가 초기화됐습니다. 탭을 다시 선택해주세요.</div>';
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+}
+
+async function selectTab(el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+
+    const cat = el.dataset.cat;
+
+    if (cache[cat]) {
+        renderRows(cache[cat]);
+        return;
+    }
+
+    renderSkeleton();
+
+    try {
+        const resp = await fetch(`/api/category/${encodeURIComponent(cat)}`);
+        if (!resp.ok) throw new Error('서버 오류');
+        const data = await resp.json();
+        cache[cat] = data;
+        renderRows(data);
+    } catch (e) {
+        content.innerHTML = `<div class="loading" style="color:#e00;">데이터 로드 실패: ${e.message}</div>`;
+    }
+}
+</script>
+</body>
+</html>

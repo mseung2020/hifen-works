@@ -22,5 +22,6 @@
 - [3월_insta_creator_similar](3월_insta_creator_similar/) — 크리에이터 라벨(유형·주인공·유도행동·분야·무드)을 비교해 유사도를 검증하는 Flask 웹앱
 - [4월_insta_clustering](4월_insta_clustering/) — 인스타 트렌드 클러스터를 4분면 버블차트로 시각화하는 Flask 웹앱
 - [4월_marketer_dashboard](4월_marketer_dashboard/) — 브랜드별 경쟁사·크리에이터·올리브영 데이터를 모은 마케터 컨설팅 대시보드 (Flask + Chart.js)
+- [5월_insta_trend_stage](5월_insta_trend_stage/) — 트렌드 키워드가 생애주기 어느 단계인지 일별 누적 그래프로 진단하는 Flask 대시보드
 
 _(작업 정리 진행 중)_
