@@ -1,0 +1,100 @@
+table,note
+Category_Master,
+YT_brand_bumper_cost_per_day,flat/snapshot/log table (by name)
+YT_brand_video_trend,flat/snapshot/log table (by name)
+YT_bumper_ad_global,
+YT_bumper_cost_per_day,flat/snapshot/log table (by name)
+YT_bumper_cost_per_week,flat/snapshot/log table (by name)
+YT_bumper_cpm_by_industry,
+YT_bumper_crawl_video_list,pipeline/queue table (by name)
+YT_bumper_crawl_waiting_list,pipeline/queue table (by name)
+YT_bumper_on_off,
+YT_country_info,
+YT_en_video_lists,
+YT_ugwanggi_rising_star,
+YT_ugwanggi_shorts_trending,flat/snapshot/log table (by name)
+YT_ugwanggi_trending_insight_daily_action,flat/snapshot/log table (by name)
+YT_ugwanggi_trending_insight_daily_category_and_format,flat/snapshot/log table (by name)
+YT_ugwanggi_trending_insight_daily_chance,flat/snapshot/log table (by name)
+YT_ugwanggi_trending_insight_daily_chance_and_risk_title,flat/snapshot/log table (by name)
+YT_ugwanggi_trending_insight_daily_risk,flat/snapshot/log table (by name)
+YT_ugwanggi_trending_insight_daily_summary,flat/snapshot/log table (by name)
+YT_video_crawling_waiting,pipeline/queue table (by name)
+YT_video_lists_detail,
+YT_video_view_trend,flat/snapshot/log table (by name)
+appointment,
+brand_logo_map,flat/snapshot/log table (by name)
+calendar,
+campaigns,
+followers,
+foreign_channel_lists,
+foreign_video_lists,
+github_member,
+github_member_stat,flat/snapshot/log table (by name)
+github_repository,
+github_summary,
+github_sync_job,
+influencers,
+ingwanggi_top_cache,
+instagram_accounts,
+instagram_brand,
+instagram_brand_exclusion_keyword,
+instagram_brand_matching_track,
+instagram_creator_ranking_llm_usage_log,flat/snapshot/log table (by name)
+instagram_creator_ranking_presets_admin,
+instagram_creator_ranking_presets_admin_v2,
+instagram_creator_ranking_ticket_usages,
+instagram_post_analysis_llm_log,flat/snapshot/log table (by name)
+keywords,
+oliveyoung_brand_top_product_count,
+subs_milestone,
+survey_beta_result,
+temp_instagram_crawl_channel,pipeline/queue table (by name)
+temp_ugwanggi_bumper_da,
+temp_ugwanggi_campaign_da,
+test_kakao_video_topic,
+ugwanggi_ai_survey,
+ugwanggi_amore_campaign,
+ugwanggi_archive_spreadsheet_auth,
+ugwanggi_contact_us,
+ugwanggi_custom_coupon_settings,
+ugwanggi_datalab_admin_memo,
+ugwanggi_delete_survey,
+ugwanggi_express_adslot_price_view_state,flat/snapshot/log table (by name)
+ugwanggi_express_adslot_ugwanggi_pick,
+ugwanggi_express_adslot_user_added_channels,
+ugwanggi_express_brand_campaign_ugwanggi_pick,
+ugwanggi_express_brand_campaign_view_state,flat/snapshot/log table (by name)
+ugwanggi_express_brand_campaigns_ad_type,
+ugwanggi_express_brand_ugwanggi_pick,
+ugwanggi_express_chat_file_upload_quota,
+ugwanggi_express_email_message,
+ugwanggi_express_email_message_admin_check,
+ugwanggi_express_email_template,
+ugwanggi_express_oauth_state_session,flat/snapshot/log table (by name)
+ugwanggi_express_oauth_token,
+ugwanggi_express_request_campaign_view,
+ugwanggi_express_request_chat,
+ugwanggi_express_request_messages,
+ugwanggi_express_ticket_refresh,
+ugwanggi_free_trial_phone,
+ugwanggi_inquiry,
+ugwanggi_keyword_chat_history,flat/snapshot/log table (by name)
+ugwanggi_keyword_request_da,
+ugwanggi_keywords_bench,
+ugwanggi_keywords_comp,
+ugwanggi_keywords_interest,
+ugwanggi_keywords_text,
+ugwanggi_mrr,
+ugwanggi_phone_verification,
+ugwanggi_pricing_survey,
+ugwanggi_report_history,flat/snapshot/log table (by name)
+ugwanggi_search_history,flat/snapshot/log table (by name)
+ugwanggi_server_used,
+ugwanggi_trial_survey,
+ugwanggi_user_search_history,flat/snapshot/log table (by name)
+ugwanggi_youtube_searched_channel,
+ugwanggi_youtube_searched_video,
+users,
+video_title,
+views_trend,flat/snapshot/log table (by name)

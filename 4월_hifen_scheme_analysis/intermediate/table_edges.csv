@@ -1,0 +1,11 @@
+from_table,to_table,key_left,key_right,hit_count,sample_files
+ugwanggi_express_adslots,youtuber_stats,channel_id,channel_id,6,express/views/ad_slot_views.py
+YT_video_lists,youtuber_info,channel_id,channel_id,3,search/utils.py
+YT_bumper_ad_analized,brand_logo,channel_id,channel_id,2,ads/views.py
+YT_bumper_ad,brand_logo,channel_id,channel_id,2,search/utils.py
+brand,youtuber_info,channel_id,channel_id,2,search/utils.py
+brand,brand_logo,brand1,brand_name_kr,2,search/utils.py
+brand,brand_logo,brand2,brand_name_kr,2,search/utils.py
+brand,brand_logo,brand3,brand_name_kr,2,search/utils.py
+YT_bumper_video_trend,YT_bumper_ad,video_id,video_id,1,brand/views.py
+YT_bumper_video_trend,brand_logo,channel_id,channel_id,1,brand/views.py

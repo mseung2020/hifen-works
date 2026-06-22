@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>테마 목업 — 웹 서비스 느낌</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.min.css" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { -webkit-font-smoothing: antialiased; font-family: 'Inter', 'Pretendard Variable', sans-serif; }
+
+.chooser {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.96);
+  backdrop-filter: blur(12px);
+  color: #fff;
+  padding: 10px 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  display: flex; justify-content: center; gap: 22px;
+  border-bottom: 1px solid #262626;
+}
+.chooser a { color: #A3A3A3; text-decoration: none; padding: 4px 10px; border-radius: 4px; transition: all 150ms; }
+.chooser a:hover { background: #262626; color: #fff; }
+.chooser strong { color: #60A5FA; }
+
+/* ═════════════════════════════════════════════════════════════════
+   THEME A · LINEAR-STYLE MARKETING  (dark hero · bold type · glow)
+   ═════════════════════════════════════════════════════════════════ */
+.theme-a {
+  background: #08090B;
+  color: #EAEAEA;
+  font-family: 'Inter', sans-serif;
+  padding: 0 0 120px;
+  position: relative;
+  overflow: hidden;
+}
+.theme-a::before {
+  content: '';
+  position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, rgba(99,102,241,0) 60%);
+  pointer-events: none;
+}
+.theme-a .nav {
+  position: relative; z-index: 2;
+  padding: 22px 48px;
+  display: flex; align-items: center; gap: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.theme-a .brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600; font-size: 15px;
+}
+.theme-a .brand-dot {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: linear-gradient(135deg, #818CF8, #6366F1);
+}
+.theme-a .nav-links { display: flex; gap: 28px; margin-left: 20px; }
+.theme-a .nav-links a { color: #A3A3A3; text-decoration: none; font-size: 13.5px; transition: color 120ms; }
+.theme-a .nav-links a:hover { color: #fff; }
+.theme-a .nav-cta {
+  margin-left: auto; display: flex; gap: 10px; align-items: center;
+}
+.theme-a .btn-ghost {
+  padding: 7px 14px; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+  font-size: 13px; color: #EAEAEA; background: transparent; cursor: pointer;
+}
+.theme-a .btn-primary {
+  padding: 7px 16px; border-radius: 6px; background: #fff; color: #0A0A0A;
+  font-size: 13px; font-weight: 600; border: none; cursor: pointer;
+}
+.theme-a .hero {
+  padding: 120px 48px 80px;
+  text-align: center;
+  position: relative; z-index: 2;
+  max-width: 1100px; margin: 0 auto;
+}
+.theme-a .tagline {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 6px 14px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  font-size: 12.5px; color: #A3A3A3; margin-bottom: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.02em;
+}
+.theme-a .tagline .pulse {
+  width: 6px; height: 6px; border-radius: 50%; background: #4ADE80;
+  box-shadow: 0 0 8px #4ADE80;
+}
+.theme-a .hero h1 {
+  font-size: 88px; line-height: 1; letter-spacing: -0.045em;
+  font-weight: 700; margin: 0 0 24px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #9CA3AF 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.theme-a .hero p {
+  font-size: 20px; color: #A3A3A3; margin: 0 auto 40px; max-width: 600px;
+  line-height: 1.55;
+}
+.theme-a .hero-ctas { display: flex; gap: 12px; justify-content: center; }
+.theme-a .hero-cta-primary {
+  padding: 12px 22px; background: #fff; color: #0A0A0A;
+  border-radius: 8px; font-weight: 600; font-size: 14px; border: none; cursor: pointer;
+}
+.theme-a .hero-cta-ghost {
+  padding: 12px 22px; background: transparent; color: #EAEAEA;
+  border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; font-size: 14px; cursor: pointer;
+}
+.theme-a .stats-row {
+  max-width: 1100px; margin: 80px auto 0; padding: 0 48px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.08);
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.theme-a .stat {
+  background: #0D0E10;
+  padding: 32px 28px;
+}
+.theme-a .stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #6B7280; margin-bottom: 14px;
+}
+.theme-a .stat-num {
+  font-size: 48px; font-weight: 700; letter-spacing: -0.03em; line-height: 1;
+  color: #fff; font-feature-settings: 'tnum';
+}
+.theme-a .stat-delta {
+  margin-top: 14px;
+  display: flex; gap: 8px; font-size: 12.5px; color: #A3A3A3;
+}
+.theme-a .stat-delta .up { color: #4ADE80; }
+.theme-a .stat-delta .dn { color: #F87171; }
+.theme-a .section {
+  max-width: 1100px; margin: 120px auto 0; padding: 0 48px;
+}
+.theme-a .section-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #818CF8; margin-bottom: 14px;
+}
+.theme-a .section h2 {
+  font-size: 40px; font-weight: 600; margin: 0 0 16px;
+  letter-spacing: -0.025em; color: #fff;
+}
+.theme-a .section p.lede { color: #A3A3A3; font-size: 16px; margin: 0 0 48px; max-width: 560px; line-height: 1.55; }
+.theme-a .feature-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.theme-a .feature {
+  padding: 28px; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+  transition: border-color 200ms, transform 200ms;
+  cursor: pointer;
+}
+.theme-a .feature:hover { border-color: rgba(129,140,248,0.4); transform: translateY(-2px); }
+.theme-a .feature-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(129,140,248,0.15); color: #A5B4FC;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px; font-family: 'JetBrains Mono', monospace; font-weight: 600;
+}
+.theme-a .feature h3 { font-size: 17px; font-weight: 600; margin: 0 0 8px; color: #fff; }
+.theme-a .feature p { color: #9CA3AF; font-size: 13.5px; margin: 0; line-height: 1.6; }
+
+/* ═════════════════════════════════════════════════════════════════
+   THEME B · SUPABASE-STYLE DASHBOARD  (sidebar · dense · polished)
+   ═════════════════════════════════════════════════════════════════ */
+.theme-b {
+  background: #FAFAFA;
+  color: #171717;
+  font-family: 'Inter', sans-serif;
+  min-height: 700px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+}
+.theme-b .sidebar {
+  background: #fff;
+  border-right: 1px solid #E5E5E5;
+  padding: 20px 0;
+  height: 100vh; position: sticky; top: 41px;
+  overflow-y: auto;
+}
+.theme-b .sidebar-brand {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid #F5F5F5;
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.theme-b .sidebar-brand .logo {
+  width: 26px; height: 26px; border-radius: 6px;
+  background: #171717;
+  display: grid; place-items: center;
+  color: #fff; font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+}
+.theme-b .sidebar-section {
+  padding: 18px 14px 10px;
+}
+.theme-b .sidebar-label {
+  font-size: 10.5px; font-weight: 500; color: #737373;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0 8px 6px;
+}
+.theme-b .sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 10px; border-radius: 6px;
+  font-size: 13.5px; color: #404040;
+  cursor: pointer; transition: background 120ms;
+  text-decoration: none;
+}
+.theme-b .sidebar-item:hover { background: #F5F5F5; }
+.theme-b .sidebar-item.active { background: #171717; color: #fff; }
+.theme-b .sidebar-item .ico {
+  width: 16px; height: 16px; border-radius: 3px;
+  background: currentColor; opacity: 0.4; flex-shrink: 0;
+}
+.theme-b .sidebar-item.active .ico { opacity: 1; }
+.theme-b .sidebar-item .cnt {
+  margin-left: auto; font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: #A3A3A3;
+}
+.theme-b .sidebar-item.active .cnt { color: rgba(255,255,255,0.6); }
+.theme-b .main { padding: 0; }
+.theme-b .topbar {
+  padding: 10px 28px;
+  border-bottom: 1px solid #E5E5E5;
+  background: #fff;
+  display: flex; align-items: center; gap: 14px;
+  position: sticky; top: 41px; z-index: 5;
+}
+.theme-b .search {
+  flex: 1; max-width: 480px;
+  padding: 7px 14px; border: 1px solid #E5E5E5;
+  border-radius: 6px; font-size: 13px; background: #FAFAFA;
+  font-family: inherit;
+}
+.theme-b .topbar .kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; color: #737373;
+  padding: 2px 6px; border: 1px solid #E5E5E5; border-radius: 3px;
+}
+.theme-b .topbar-actions { display: flex; gap: 8px; margin-left: auto; align-items: center; }
+.theme-b .status-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; color: #525252;
+  padding: 3px 10px; border: 1px solid #E5E5E5; border-radius: 6px;
+}
+.theme-b .status-chip .pulse {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #22C55E;
+}
+.theme-b .avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #F87171, #FB923C);
+}
+.theme-b .content { padding: 32px 36px; }
+.theme-b .page-title {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.theme-b .page-title h1 {
+  font-size: 26px; font-weight: 600; margin: 0; letter-spacing: -0.02em;
+}
+.theme-b .page-title .meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; color: #737373;
+}
+.theme-b .page-subtitle { color: #737373; font-size: 14px; margin: 0 0 28px; max-width: 560px; line-height: 1.6; }
+.theme-b .kpi-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin-bottom: 28px;
+}
+.theme-b .kpi-card {
+  padding: 18px 20px;
+  border: 1px solid #E5E5E5; background: #fff; border-radius: 10px;
+}
+.theme-b .kpi-title {
+  font-size: 12.5px; color: #737373; margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.theme-b .kpi-title .badge-new {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: #22C55E;
+  background: #F0FDF4; padding: 1px 6px; border-radius: 3px;
+  letter-spacing: 0.04em;
+}
+.theme-b .kpi-num {
+  font-size: 30px; font-weight: 600; letter-spacing: -0.025em;
+  font-feature-settings: 'tnum'; line-height: 1;
+}
+.theme-b .kpi-bar {
+  height: 4px; background: #F5F5F5; border-radius: 2px;
+  margin-top: 14px; overflow: hidden; display: flex;
+}
+.theme-b .kpi-bar .seg-ok { background: #22C55E; height: 100%; }
+.theme-b .kpi-bar .seg-bad { background: #EF4444; height: 100%; }
+.theme-b .kpi-foot { font-size: 11.5px; color: #737373; margin-top: 8px; display: flex; gap: 12px; }
+.theme-b .kpi-foot .ok { color: #15803D; }
+.theme-b .kpi-foot .bad { color: #B91C1C; }
+.theme-b .grid-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
+.theme-b .card {
+  background: #fff; border: 1px solid #E5E5E5; border-radius: 10px;
+}
+.theme-b .card-header {
+  padding: 14px 20px; border-bottom: 1px solid #E5E5E5;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.theme-b .card-header h3 { margin: 0; font-size: 14.5px; font-weight: 600; }
+.theme-b .card-header .link {
+  font-size: 12.5px; color: #525252; text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+}
+.theme-b .card-body { padding: 6px 8px; }
+.theme-b .list-row {
+  display: grid; grid-template-columns: 20px 1fr auto auto;
+  gap: 12px; align-items: center;
+  padding: 10px 12px; border-radius: 6px;
+  font-size: 13px;
+}
+.theme-b .list-row:hover { background: #FAFAFA; }
+.theme-b .list-row .ico { width: 8px; height: 8px; border-radius: 50%; }
+.theme-b .list-row .ico.ok { background: #22C55E; }
+.theme-b .list-row .ico.warn { background: #F59E0B; }
+.theme-b .list-row .ico.err { background: #EF4444; }
+.theme-b .list-row .name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px; color: #171717;
+}
+.theme-b .list-row .pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px; color: #737373;
+}
+.theme-b .list-row .arr { color: #A3A3A3; }
+.theme-b .alert {
+  padding: 14px 18px;
+  border: 1px solid #FCA5A5; background: #FEF2F2;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: grid; grid-template-columns: 6px 1fr; gap: 14px;
+}
+.theme-b .alert::before {
+  content: ''; background: #EF4444; border-radius: 3px;
+}
+.theme-b .alert-body { font-size: 13px; }
+.theme-b .alert-title { font-weight: 600; margin-bottom: 2px; }
+.theme-b .alert-desc { color: #525252; line-height: 1.55; }
+.theme-b .alert-action {
+  display: inline-block; margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+  color: #B91C1C; text-decoration: none; border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.theme-b .badge-b {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; padding: 2px 7px; border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.theme-b .badge-b.h { background: #F0FDF4; color: #15803D; }
+.theme-b .badge-b.m { background: #FFFBEB; color: #A16207; }
+.theme-b .badge-b.l { background: #F5F5F5; color: #525252; border: 1px dashed #D4D4D4; }
+
+/* ═════════════════════════════════════════════════════════════════
+   THEME C · STRIPE-DOCS STYLE  (nav + content + toc · product docs)
+   ═════════════════════════════════════════════════════════════════ */
+.theme-c {
+  background: #fff; color: #0A2540;
+  font-family: 'Inter', sans-serif;
+}
+.theme-c .nav {
+  padding: 14px 32px;
+  border-bottom: 1px solid #F0F4F9;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; gap: 24px;
+  position: sticky; top: 41px; z-index: 5;
+}
+.theme-c .nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.theme-c .nav-brand .logo {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: linear-gradient(135deg, #635BFF, #8F87FF);
+}
+.theme-c .nav-links { display: flex; gap: 22px; font-size: 13.5px; }
+.theme-c .nav-links a { color: #425466; text-decoration: none; font-weight: 500; }
+.theme-c .nav-links a.active { color: #635BFF; }
+.theme-c .nav-right { margin-left: auto; display: flex; gap: 12px; align-items: center; }
+.theme-c .nav-search {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; border: 1px solid #E3E8EE; border-radius: 6px;
+  font-size: 12.5px; color: #697386; width: 240px;
+  background: #F7FAFC;
+}
+.theme-c .nav-search .kbd {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  margin-left: auto; color: #697386;
+  border: 1px solid #E3E8EE; padding: 1px 5px; border-radius: 3px;
+}
+.theme-c .wrap {
+  display: grid; grid-template-columns: 240px 1fr 220px;
+  max-width: 1320px; margin: 0 auto; gap: 48px; padding: 32px 32px 120px;
+}
+.theme-c .doc-sidebar { font-size: 13.5px; }
+.theme-c .doc-sidebar-section { margin-bottom: 28px; }
+.theme-c .doc-sidebar h4 {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #697386; margin: 0 0 10px;
+}
+.theme-c .doc-sidebar a {
+  display: block; padding: 5px 10px; color: #425466;
+  text-decoration: none; border-radius: 4px; margin: 1px 0;
+}
+.theme-c .doc-sidebar a:hover { color: #0A2540; }
+.theme-c .doc-sidebar a.active {
+  background: #F7FAFC; color: #635BFF;
+  font-weight: 500; border-left: 2px solid #635BFF; padding-left: 8px;
+}
+.theme-c .doc-main { min-width: 0; }
+.theme-c .crumb {
+  font-size: 12.5px; color: #697386;
+  margin-bottom: 14px; font-family: 'JetBrains Mono', monospace;
+}
+.theme-c .crumb a { color: inherit; text-decoration: none; }
+.theme-c .crumb .sep { color: #C1CFDD; margin: 0 6px; }
+.theme-c .doc-main h1 {
+  font-size: 40px; font-weight: 700; letter-spacing: -0.028em;
+  margin: 0 0 14px; line-height: 1.1;
+}
+.theme-c .doc-main .lede {
+  font-size: 17px; color: #425466; margin: 0 0 32px;
+  line-height: 1.55; max-width: 680px;
+}
+.theme-c .stats-card {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 0; border: 1px solid #E3E8EE;
+  border-radius: 10px; margin: 0 0 40px;
+  overflow: hidden; background: #F7FAFC;
+}
+.theme-c .stat-c {
+  padding: 20px 22px;
+  border-right: 1px solid #E3E8EE;
+  background: #fff;
+}
+.theme-c .stat-c:last-child { border-right: none; }
+.theme-c .stat-c .l { font-size: 12px; color: #697386; font-weight: 500; margin-bottom: 8px; }
+.theme-c .stat-c .v { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+.theme-c .stat-c .s { font-size: 12px; color: #697386; margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+.theme-c .doc-h2 {
+  font-size: 24px; font-weight: 700; margin: 56px 0 10px;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 80px;
+}
+.theme-c .doc-h2 .anchor {
+  color: #C1CFDD; margin-right: 8px; text-decoration: none;
+  font-weight: 400; opacity: 0; transition: opacity 120ms;
+}
+.theme-c .doc-h2:hover .anchor { opacity: 1; }
+.theme-c .doc-main p {
+  font-size: 15px; color: #425466; margin: 0 0 16px; line-height: 1.65; max-width: 680px;
+}
+.theme-c .callout {
+  padding: 16px 20px; border-left: 3px solid #635BFF;
+  background: #F7F5FF;
+  border-radius: 0 8px 8px 0;
+  margin: 20px 0 24px;
+  font-size: 14px; color: #3E3786;
+  display: flex; gap: 14px;
+}
+.theme-c .callout-label {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #635BFF; flex-shrink: 0;
+}
+.theme-c .codeblock {
+  background: #0A2540; color: #A3B6D8;
+  border-radius: 8px; padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  line-height: 1.7;
+  margin: 16px 0 24px;
+  position: relative;
+}
+.theme-c .codeblock .lang {
+  position: absolute; top: 10px; right: 12px;
+  font-size: 10px; color: #697386; text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.theme-c .codeblock .k { color: #F8B4D9; }
+.theme-c .codeblock .s { color: #87DBFF; }
+.theme-c .codeblock .c { color: #697386; }
+.theme-c .info-table {
+  width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+  font-size: 13.5px;
+}
+.theme-c .info-table th {
+  text-align: left; font-weight: 600; color: #0A2540;
+  padding: 10px 12px; border-bottom: 2px solid #E3E8EE;
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.theme-c .info-table td {
+  padding: 12px; border-bottom: 1px solid #F0F4F9;
+  color: #425466;
+}
+.theme-c .info-table td code {
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  color: #0A2540; background: #F7FAFC; padding: 2px 6px; border-radius: 3px;
+}
+.theme-c .badge-dot {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px;
+}
+.theme-c .badge-dot .d {
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.theme-c .badge-dot.ok .d { background: #22C55E; }
+.theme-c .badge-dot.warn .d { background: #F59E0B; }
+.theme-c .toc {
+  position: sticky; top: 110px; font-size: 12.5px;
+  align-self: start;
+}
+.theme-c .toc h4 {
+  font-size: 11px; font-weight: 600; color: #697386;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin: 0 0 12px;
+}
+.theme-c .toc a {
+  display: block; padding: 5px 10px; color: #697386;
+  text-decoration: none; border-left: 2px solid transparent;
+}
+.theme-c .toc a.active { color: #635BFF; border-left-color: #635BFF; }
+.theme-c .toc a:hover { color: #0A2540; }
+
+@media (max-width: 900px) {
+  .theme-a .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .theme-a .feature-grid { grid-template-columns: 1fr; }
+  .theme-a .hero h1 { font-size: 52px; }
+  .theme-b { grid-template-columns: 1fr; }
+  .theme-b .sidebar { display: none; }
+  .theme-b .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .theme-b .grid-2 { grid-template-columns: 1fr; }
+  .theme-c .wrap { grid-template-columns: 1fr; gap: 20px; }
+  .theme-c .doc-sidebar, .theme-c .toc { display: none; }
+  .theme-c .stats-card { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="chooser">
+  <a href="#a"><strong>A</strong> · Linear-Style Landing</a>
+  <a href="#b"><strong>B</strong> · Supabase-Style Dashboard</a>
+  <a href="#c"><strong>C</strong> · Stripe-Docs Style</a>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════════════
+     A · LINEAR-STYLE · 다크 마케팅 랜딩
+     ═════════════════════════════════════════════════════════════════ -->
+<section class="theme-a" id="a">
+  <nav class="nav">
+    <div class="brand"><span class="brand-dot"></span>Atlas</div>
+    <div class="nav-links">
+      <a href="#">서비스 지도</a>
+      <a href="#">테이블</a>
+      <a href="#">관계</a>
+      <a href="#">API</a>
+      <a href="#">품질</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-ghost">문서</button>
+      <button class="btn-primary">Atlas 열기 →</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <span class="tagline"><span class="pulse"></span>Snapshot v2.51.1 · 2026-04-22</span>
+    <h1>유광기의 모든 구조를<br>한 장에 담는다</h1>
+    <p>백엔드 · 프론트엔드 · 데이터베이스를 단일 스냅샷으로 정적 분석한 구조 지도. 재탐색 없이 답하고, AI 학습 사료로도 바로 활용 가능.</p>
+    <div class="hero-ctas">
+      <button class="hero-cta-primary">서비스 지도 보기 →</button>
+      <button class="hero-cta-ghost">재현 스크립트 다운로드</button>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-label">Tables</div>
+      <div class="stat-num">517</div>
+      <div class="stat-delta"><span class="up">↑ 257 used</span><span class="dn">↓ 260 unused</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Endpoints</div>
+      <div class="stat-num">636</div>
+      <div class="stat-delta"><span class="up">↑ 453 called</span><span class="dn">↓ 183 silent</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Services</div>
+      <div class="stat-num">28</div>
+      <div class="stat-delta">14 healthy · 7 watch · 4 abandoned</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Max cluster</div>
+      <div class="stat-num">141</div>
+      <div class="stat-delta">hub · users_ugwanggi</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-eyebrow">What you'll find</div>
+    <h2>한 번의 열람으로<br>구조 전체를 색인한다</h2>
+    <p class="lede">각 뷰는 독립적으로 한 가지 질문에 답합니다. 서비스 맵은 의존 구조를, 테이블 탐색기는 데이터 소유를, 관계 그래프는 연결 구조를, 품질 뷰는 기술 부채를.</p>
+
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="feature-icon">SVC</div>
+        <h3>서비스 지도</h3>
+        <p>28개 앱 간의 import · 공유 테이블 · 크론 의존성을 힘-기반 그래프로. 허브-스포크 구조를 즉시 가시화.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">TBL</div>
+        <h3>테이블 탐색기</h3>
+        <p>517개 테이블을 도메인·소유 앱·고립 여부로 필터. 카드 클릭 시 컬럼·관계·소비 엔드포인트까지 한 화면.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">REL</div>
+        <h3>관계 그래프</h3>
+        <p>196개 FK·JOIN 관계. 개발자 의도(HIGH)와 코드 관찰(MED)을 구분해 실선/점선으로 표현.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">API</div>
+        <h3>API 엔드포인트</h3>
+        <p>프론트에서 호출되는 453개와 침묵하는 183개. 메소드·상태·URL 필터로 즉시 좁혀보기.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">QUA</div>
+        <h3>데이터 품질</h3>
+        <p>유령 모델, NO_MODEL 테이블, 비정규화 핫스팟, 도메인 갭. 각 항목에 "다음 조치" 포함.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">DOC</div>
+        <h3>전제와 한계</h3>
+        <p>폐쇄 세계 전제, 단계별 신뢰도, AI 학습 시 주의. 이 문서가 "보장하는 것과 아닌 것".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════
+     B · SUPABASE-STYLE · 제품 대시보드
+     ═════════════════════════════════════════════════════════════════ -->
+<section class="theme-b" id="b">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">U</div>
+      Ugwanggi Atlas
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Overview</div>
+      <a class="sidebar-item active" href="#"><span class="ico"></span>홈<span class="cnt">·</span></a>
+      <a class="sidebar-item" href="#"><span class="ico"></span>서비스 지도<span class="cnt">28</span></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Inventory</div>
+      <a class="sidebar-item" href="#"><span class="ico"></span>테이블<span class="cnt">517</span></a>
+      <a class="sidebar-item" href="#"><span class="ico"></span>관계<span class="cnt">196</span></a>
+      <a class="sidebar-item" href="#"><span class="ico"></span>API 엔드포인트<span class="cnt">636</span></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Diagnostics</div>
+      <a class="sidebar-item" href="#"><span class="ico"></span>데이터 품질<span class="cnt">6</span></a>
+      <a class="sidebar-item" href="#"><span class="ico"></span>전제와 한계</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <input class="search" placeholder="테이블·앱·URL 검색..." />
+      <span class="kbd">⌘K</span>
+      <div class="topbar-actions">
+        <span class="status-chip"><span class="pulse"></span>snapshot · 2026-04-22</span>
+        <div class="avatar"></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page-title">
+        <h1>개요</h1>
+        <span class="meta">closed-world · v2.51.1</span>
+      </div>
+      <p class="page-subtitle">이 인스턴스는 유광기 SaaS의 단일 시점 정적 분석 결과입니다. 좌측에서 원하는 뷰로 이동해 드릴다운하세요.</p>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">테이블<span class="badge-new">+5</span></div>
+          <div class="kpi-num">517</div>
+          <div class="kpi-bar"><div class="seg-ok" style="width:49.7%"></div><div class="seg-bad" style="width:50.3%"></div></div>
+          <div class="kpi-foot"><span class="ok">● 257 used</span><span class="bad">● 260 unused</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">API 엔드포인트</div>
+          <div class="kpi-num">636</div>
+          <div class="kpi-bar"><div class="seg-ok" style="width:71%"></div><div class="seg-bad" style="width:29%"></div></div>
+          <div class="kpi-foot"><span class="ok">● 453 called</span><span class="bad">● 183 silent</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">서비스</div>
+          <div class="kpi-num">28</div>
+          <div class="kpi-bar"><div class="seg-ok" style="width:50%"></div><div style="background:#F59E0B;width:25%"></div><div class="seg-bad" style="width:25%"></div></div>
+          <div class="kpi-foot"><span class="ok">14 h</span>·<span style="color:#A16207">7 w</span>·<span class="bad">4 a</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">최대 클러스터</div>
+          <div class="kpi-num">141</div>
+          <div class="kpi-bar"><div class="seg-ok" style="width:54.9%"></div></div>
+          <div class="kpi-foot"><span style="font-family:'JetBrains Mono',monospace;font-size:11px">hub · users_ugwanggi</span></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <h3>앱 미사용률 순위</h3>
+            <a href="#" class="link">전체 보기 →</a>
+          </div>
+          <div class="card-body">
+            <div class="list-row"><div class="ico err"></div><span class="name">aichat</span><span class="pct">85.1% unused</span><span class="arr">→</span></div>
+            <div class="list-row"><div class="ico err"></div><span class="name">archive</span><span class="pct">81.8% unused</span><span class="arr">→</span></div>
+            <div class="list-row"><div class="ico warn"></div><span class="name">search</span><span class="pct">48.9% unused</span><span class="arr">→</span></div>
+            <div class="list-row"><div class="ico warn"></div><span class="name">ads</span><span class="pct">47.8% unused</span><span class="arr">→</span></div>
+            <div class="list-row"><div class="ico ok"></div><span class="name">express</span><span class="pct">11.1% unused</span><span class="arr">→</span></div>
+            <div class="list-row"><div class="ico ok"></div><span class="name">instagram_admin</span><span class="pct">7.7% unused</span><span class="arr">→</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>발견된 이슈</h3>
+            <a href="#" class="link">6 항목</a>
+          </div>
+          <div class="card-body" style="padding:14px 16px">
+            <div class="alert">
+              <div></div>
+              <div class="alert-body">
+                <div class="alert-title">유령 모델 2건</div>
+                <div class="alert-desc">Django 코드엔 있지만 DB엔 없는 테이블. 호출 시 runtime error.</div>
+                <a href="#" class="alert-action">품질 뷰에서 보기 →</a>
+              </div>
+            </div>
+            <div style="padding: 12px 4px;">
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
+                <span>NO_MODEL 테이블</span><span class="badge-b m">10</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
+                <span>비정규화 핫스팟 (SEVERE)</span><span class="badge-b l">18</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
+                <span>도메인 갭</span><span class="badge-b m">7</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
+                <span>MULTI_OWNER</span><span class="badge-b l">2</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
+                <span>자기참조</span><span class="badge-b l">1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════════════
+     C · STRIPE-DOCS STYLE · 3-column 제품 문서
+     ═════════════════════════════════════════════════════════════════ -->
+<section class="theme-c" id="c">
+  <nav class="nav">
+    <div class="nav-brand"><span class="logo"></span>Atlas</div>
+    <div class="nav-links">
+      <a href="#" class="active">Overview</a>
+      <a href="#">Services</a>
+      <a href="#">Tables</a>
+      <a href="#">Relations</a>
+      <a href="#">Endpoints</a>
+      <a href="#">Quality</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-search">
+        <span>Search docs</span>
+        <span class="kbd">⌘K</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <aside class="doc-sidebar">
+      <div class="doc-sidebar-section">
+        <h4>시작하기</h4>
+        <a href="#" class="active">개요</a>
+        <a href="#">어떻게 만들어졌나</a>
+        <a href="#">폐쇄 세계 전제</a>
+      </div>
+      <div class="doc-sidebar-section">
+        <h4>탐색</h4>
+        <a href="#">서비스 지도</a>
+        <a href="#">테이블 탐색기</a>
+        <a href="#">관계 그래프</a>
+        <a href="#">API 엔드포인트</a>
+      </div>
+      <div class="doc-sidebar-section">
+        <h4>진단</h4>
+        <a href="#">데이터 품질</a>
+        <a href="#">유령 모델</a>
+        <a href="#">비정규화 핫스팟</a>
+      </div>
+      <div class="doc-sidebar-section">
+        <h4>부록</h4>
+        <a href="#">전제와 한계</a>
+        <a href="#">단계별 신뢰도</a>
+        <a href="#">재현 스크립트</a>
+      </div>
+    </aside>
+
+    <main class="doc-main">
+      <div class="crumb">
+        <a href="#">atlas</a><span class="sep">/</span><a href="#">docs</a><span class="sep">/</span>overview
+      </div>
+      <h1>유광기 서비스 구조 개요</h1>
+      <p class="lede">백엔드 · 프론트엔드 · 데이터베이스 스키마를 2026-04-22 스냅샷 기준으로 정적 분석한 구조 참조서입니다. 모든 수치는 폐쇄 세계 전제 하에서 유효합니다.</p>
+
+      <div class="stats-card">
+        <div class="stat-c"><div class="l">Tables</div><div class="v">517</div><div class="s">257 used / 260 unused</div></div>
+        <div class="stat-c"><div class="l">Endpoints</div><div class="v">636</div><div class="s">453 called / 183 silent</div></div>
+        <div class="stat-c"><div class="l">Services</div><div class="v">28</div><div class="s">h14 · w7 · a4 · i3</div></div>
+        <div class="stat-c"><div class="l">Max cluster</div><div class="v">141</div><div class="s">users_ugwanggi</div></div>
+      </div>
+
+      <h2 id="quick-start" class="doc-h2"><a href="#quick-start" class="anchor">#</a>빠른 시작</h2>
+      <p>Atlas는 단일 HTML 파일로 배포되며 더블클릭만으로 열립니다. 외부 의존은 D3, Pretendard, JetBrains Mono 세 가지 CDN뿐입니다.</p>
+
+      <div class="callout">
+        <span class="callout-label">Tip</span>
+        <div>왼쪽 사이드바로 7개 뷰를 이동하고, 테이블명 또는 앱명을 검색창에 입력해 바로 드릴다운할 수 있습니다.</div>
+      </div>
+
+      <h2 id="concepts" class="doc-h2"><a href="#concepts" class="anchor">#</a>핵심 개념</h2>
+      <p>Atlas는 다음 세 가지 소스를 하나로 결합합니다. 각 뷰는 세 소스 중 관련된 슬라이스를 직접 참조합니다.</p>
+
+      <table class="info-table">
+        <thead>
+          <tr><th>소스</th><th>규모</th><th>상태</th><th>재현</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>백엔드 (Django)</td>
+            <td><code>517 tables · 28 apps</code></td>
+            <td><span class="badge-dot ok"><span class="d"></span>parsed</span></td>
+            <td><code>extract_relations.py</code></td>
+          </tr>
+          <tr>
+            <td>프론트 (Next.js)</td>
+            <td><code>1,629 files · 1,149 calls</code></td>
+            <td><span class="badge-dot ok"><span class="d"></span>scanned</span></td>
+            <td><code>detect_unused_endpoints.py</code></td>
+          </tr>
+          <tr>
+            <td>DB 스키마</td>
+            <td><code>517 rows · hifen</code></td>
+            <td><span class="badge-dot warn"><span class="d"></span>v2.51</span></td>
+            <td><code>hifen_scheme.csv</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="rebuild" class="doc-h2"><a href="#rebuild" class="anchor">#</a>재빌드</h2>
+      <p>스냅샷을 최신으로 갱신하려면 intermediate 디렉토리의 스크립트를 순서대로 실행합니다.</p>
+
+      <div class="codeblock">
+        <span class="lang">bash</span>
+<span class="c"># 1. 재스캔 & 재구성</span>
+python3 intermediate/label_tables.py
+python3 intermediate/extract_relations.py
+python3 intermediate/detect_unused_endpoints.py
+
+<span class="c"># 2. JSON 번들</span>
+python3 intermediate/build_site_data.py
+
+<span class="c"># 3. HTML 다시 빌드</span>
+python3 intermediate/build_html.py
+      </div>
+
+      <p>빌드가 끝나면 <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:#F7FAFC;padding:2px 6px;border-radius:3px">core_materials/index.html</code>을 열어 확인합니다.</p>
+    </main>
+
+    <aside class="toc">
+      <h4>이 페이지에서</h4>
+      <a href="#quick-start">빠른 시작</a>
+      <a href="#concepts" class="active">핵심 개념</a>
+      <a href="#rebuild">재빌드</a>
+    </aside>
+  </div>
+</section>
+
+</body>
+</html>

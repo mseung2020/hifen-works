@@ -1,0 +1,518 @@
+table,usage_final,subcategory,confidence_final,direct_hits,indirect_hits,mention_hits,sample_files,note
+Category_Master,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+SequelizeMeta,UNUSED,EXTERNAL_ETL,HIGH,0,0,0,,known external pipeline table
+YT_ads_yn,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_brand_bumper_cost_per_day,USED,DIRECT,HIGH,1,0,1,brand/models.py,
+YT_brand_bumper_cost_per_day_old,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+YT_brand_video_trend,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_ad,USED,DIRECT,HIGH,3,1,34,ads/models.py | brand/views.py | search/utils.py,
+YT_bumper_ad_analized,USED,DIRECT,HIGH,3,0,7,ads/models.py | ads/views.py,
+YT_bumper_ad_global,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_cost_per_day,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_cost_per_week,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_cpm_by_industry,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_crawl_video_list,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_crawl_waiting_list,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_on_off,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_scene,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+YT_bumper_video_trend,USED,DIRECT,HIGH,3,0,4,ads/models.py | ads/views.py | brand/views.py,
+YT_campaign_video,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_campaign_video_result,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_channel_cate,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_channel_cate_game,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_channel_cost,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_channel_gender_ratio,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_channel_language_count,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_comment,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_comment_analysis,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_comment_scraped_test,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+YT_comment_task_log,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_contact_management,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_country_info,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_crawl_channel_list,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_crawl_video_list,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_en_video_lists,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_hifen_score,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_missing_channel,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_processed_channels,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_processed_keywords,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_product_info,USED,DIRECT,HIGH,1,0,1,youtube_shopping/models.py,
+YT_product_video,USED,DIRECT,HIGH,1,0,1,youtube_shopping/models.py,
+YT_product_video_temp,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+YT_searched_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_shopping_top_product,USED,DIRECT,HIGH,1,0,1,youtube_shopping/models.py,
+YT_shopping_top_product_video,USED,DIRECT,HIGH,1,0,1,youtube_shopping/models.py,
+YT_shorts_view_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_sub_view_trend,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_sub_view_trend_latest,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_subscribers_growth_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_tag_centrality,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_temporary_lists,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_temporary_lists_detail,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_topic_centrality,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_topic_centrality_global,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_topic_difficulty,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_topic_global,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_type_cate,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_ugwanggi_rising_star,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_shorts_trending,USED,DIRECT,HIGH,1,0,3,trends/models.py | trends/utils.py | trends/views.py,
+YT_ugwanggi_trending_insight_daily_action,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_insight_daily_category_and_format,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_insight_daily_chance,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_insight_daily_chance_and_risk_title,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_insight_daily_risk,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_insight_daily_summary,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_keyword,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_keyword_video_ids,USED,DIRECT,HIGH,1,0,1,trends/models.py,
+YT_ugwanggi_trending_sub_keyword,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_ugwanggi_video_trending,USED,DIRECT,HIGH,1,0,3,trends/models.py | trends/utils.py | trends/views.py,
+YT_video_cate,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_category_class,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_category_class_game,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_category_class_game_global,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_category_class_global,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_comments,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_content_class_category_map,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_content_class_temp_video,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_content_class_track,USED,DIRECT,HIGH,1,0,5,youtube/models.py | trends/utils.py | trends/views.py,
+YT_video_crawling_waiting,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_video_format,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_video_lists,USED,DIRECT,HIGH,7,0,51,ugwanggiAPI/cron.py | youtube/models.py | youtube/views.py,
+YT_video_lists_cate,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_lists_detail,USED,DIRECT,HIGH,1,0,3,youtube/models.py | trends/utils.py,
+YT_video_lists_global,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_lists_global_ads,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_lists_partitioned,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_members,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_tag,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_trending,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_video_trending_class,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+YT_video_trending_duration,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_video_trending_sub,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_video_trending_test,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+YT_video_view_trend,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+YT_video_view_trend_2022,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+ages,UNUSED,NOT_A_DB_REF,HIGH,0,0,11,creators_insights/filter_pipeline.py | youtube/utils.py,generic word; all mentions appear outside DB context
+ages_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+appointment,USED,DIRECT,HIGH,1,0,2,admin/models.py | admin/urls.py,
+auth_group,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+auth_group_permissions,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+auth_permission,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+auth_user,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+auth_user_groups,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+auth_user_user_permissions,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+big_topic,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand,USED,DIRECT,HIGH,61,0,1099,ads/system-scene-detection.txt | ads/models.py | ads/system.txt,
+brand_banner,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand_channel_to_filter,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand_extracted,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand_extracted_map,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand_extracted_track,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand_gv_temp,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+brand_logo,USED,DIRECT,HIGH,2,12,533,ads/serializers.py | ads/views.py | instagram_admin/schemas.py,
+brand_logo_map,USED,DIRECT,HIGH,0,0,12,express/views/studio_channel_views.py | express/views/ad_slot_views.py | amore/views.py,AMBIGUOUS→DIRECT via 2 DB-context hits
+brand_shopping_channel,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+brand_temp,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+bumper_keyword,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+calendar,USED,DIRECT,HIGH,0,0,9,ugwanggiAPI/cron.py | oliveyoung/cron.py | oliveyoung/views.py,AMBIGUOUS→DIRECT via 2 DB-context hits
+campaign_request,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+campaigns,USED,DIRECT,HIGH,2,0,60,ads/views.py | express/schemas/brand_campaign_schemas.py | express/views/brand_campaign_request_views.py,
+campaigns_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+camptoinflu,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+clear_channel,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+crooki_email_survey,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+crooki_phone_survey,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+crooki_portfolio,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+crooki_portfolio_category,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+crooki_portfolio_video,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+crooki_user_resume,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+data_mining,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+demography,USED,DIRECT,HIGH,1,0,40,ugwanggiAPI/cron.py | user/urls.py | youtube/models.py,
+demography_250509,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+demography_check,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+django_admin_log,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+django_content_type,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+django_migrations,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+django_session,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+etl_brand_logo,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+etl_control_table,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+filtered_condition_17854,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+followers,USED,DIRECT,HIGH,0,0,129,oliveyoung/views.py | tiktok/models.py | tiktok/utils.py,AMBIGUOUS→DIRECT via 10 DB-context hits
+followers_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+foreign_channel_lists,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+foreign_video_lists,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+genders,UNUSED,NOT_A_DB_REF,HIGH,0,0,11,creators_insights/filter_pipeline.py | youtube/utils.py,generic word; all mentions appear outside DB context
+genders_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+github_member,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+github_member_stat,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+github_repository,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+github_summary,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+github_sync_job,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+hifen_archive,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_archive_group,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_bookmark,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_bookmark_group,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_bookmark_to_group,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_campaign,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_waitinglist,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_yt_bookmark,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_yt_campaign_video,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+hifen_yt_campaign_video_result,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_contact,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_form,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_link_tree,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_mcq_answer,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_question,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_subform,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influ_subform_post,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+influencers,USED,DIRECT,HIGH,0,0,2,ads/system.txt | ads/system-bumper.txt,AMBIGUOUS→DIRECT via 2 DB-context hits
+ingwanggi_brand_report_access,USED,DIRECT,HIGH,1,0,1,brand/models.py,
+ingwanggi_creator_listup_filters,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+ingwanggi_partner_creator_bookmark,USED,DIRECT,HIGH,1,0,1,partner_instagram/models.py,
+ingwanggi_partner_creator_bookmark_folder,USED,DIRECT,HIGH,1,0,1,partner_instagram/models.py,
+ingwanggi_related_account_access,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+ingwanggi_similar_creator_access,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+ingwanggi_top_cache,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_accounts,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_brand,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_brand_exclusion_keyword,USED,DIRECT,HIGH,2,0,2,instagram_admin/models.py | instagram_admin/views.py,
+instagram_brand_matching_map,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_brand_matching_track,USED,DIRECT,HIGH,3,0,3,instagram_admin/views.py,
+instagram_channel,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_channel_stat,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_collaboration,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_crawling_keyword,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_creator_ranking_llm_usage_log,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_creator_ranking_preset_keywords,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_creator_ranking_presets,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_creator_ranking_presets_admin,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_creator_ranking_presets_admin_v2,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_creator_ranking_ticket_usages,USED,DIRECT,HIGH,1,0,2,instagram/models.py | instagram/schemas.py,
+instagram_following_network,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_following_scrape_jobs,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_hashtag,USED,DIRECT,HIGH,2,0,3,instagram_admin/schemas.py | instagram_admin/views.py | instagram/models.py,
+instagram_music,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_oliveyoung_product_batch_metadata,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_oliveyoung_product_match_llm_output,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_oliveyoung_product_post,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+instagram_post,USED,DIRECT,HIGH,3,1,17,instagram_admin/schemas.py | instagram_admin/views.py | instagram/models.py,
+instagram_post_analysis,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_analysis_batch_metadata,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_analysis_keyword,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_analysis_keyword_mapping,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_analysis_llm_input,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_analysis_llm_log,USED,DIRECT,HIGH,5,0,7,instagram_admin/models.py | instagram_admin/views.py,
+instagram_post_analysis_llm_output,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_description,USED,DIRECT,HIGH,2,0,3,instagram_admin/schemas.py | instagram_admin/views.py | instagram/models.py,
+instagram_post_description_old,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+instagram_post_old,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+instagram_post_old2,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_post_stat_old,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+instagram_post_stat_trend,USED,DIRECT,HIGH,3,0,4,instagram_admin/schemas.py | instagram_admin/views.py | instagram/models.py,
+instagram_post_tracking,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_ppl_brand,USED,DIRECT,HIGH,11,0,13,instagram_admin/models.py | instagram_admin/schemas.py | instagram_admin/views.py,
+instagram_ppl_brand_260212,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_ppl_brand_test,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+instagram_reels_proxy,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_sponsoring_brand,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user,USED,DIRECT,HIGH,2,0,9,instagram_admin/models.py | instagram_admin/schemas.py | instagram_admin/views.py,
+instagram_user_analysis,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_categories,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_mood,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_proxy,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_analysis_status,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_analysis_topic,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer1_user_type,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer2_content_function,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer3_topic,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer4_mood,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer5_persona,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer6_audience,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_analysis_v2_layer6_target_country,USED,DIRECT,HIGH,1,0,2,instagram/models.py | instagram/views.py,
+instagram_user_analysis_v2_openai_batch,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_benchmark,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_benchmark_criteria,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_benchmark_criteria_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_benchmark_follower_group,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_benchmark_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_brand_safety,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_external_url,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_recrawling_report,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_recrawling_tier,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_recrawling_tier_stage,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+instagram_user_stat,USED,DIRECT,HIGH,2,0,8,partner_instagram/models.py | partner_instagram/views.py | instagram/models.py,
+instagram_user_stat_trend,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+instagram_user_tag,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+invitation,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+jobposting_application,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+jobposting_application_file,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+jobposting_bookmark,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+keywords,USED,DIRECT,HIGH,3,0,360,ads/models.py | ads/bard-system.txt | ads/system-ad-copies.txt,
+keywords_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+kh_n8n_test,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+lastupdate,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+link_tree_link_block,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+link_tree_video_block,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+monitoring_crawl_video_list,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+monitoring_video_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+naver_weekly_trend_categories,USED,DIRECT,HIGH,1,0,1,search/models.py,
+naver_weekly_trend_rank,USED,DIRECT,HIGH,1,0,1,search/models.py,
+oliveyoung_brand,USED,DIRECT,HIGH,1,0,1,brand/models.py,
+oliveyoung_brand_logo_map,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_brand_score,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_brand_top_product_count,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_channel_filter,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_daily_product_metrics,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_monthly_product_metrics,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_ppl_double_check,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_ppl_double_check_type,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_agg_rank_daily,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_product_evolution,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_extracted3,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_info,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_product_info_map,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_match,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_review,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_product_score,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_product_video,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_product_video2,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_video_removed,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_video_test,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+oliveyoung_product_video_track,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_views,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_product_views2,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_prompt,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_prompt_error,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_realtime_views,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_trend_m,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_trend_m_rank,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_video_data,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_video_lists,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+oliveyoung_video_lists_coupang,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_video_lists_to_filter_manually,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_video_lists_ytt_api,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_weekly_product_metrics,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+oliveyoung_youtube_product_agg_daily,USED,DIRECT,HIGH,1,0,1,oliveyoung/models.py,
+professionality_and_hifenScore,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+recom_code,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+regions,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+regions_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+saved_youtuber_brand_folders,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+scoring,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+stage_video_ids,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+subs_milestone,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+subscribers_demo,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+subscribers_region,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+subscribers_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+survey_beta_result,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+temp_YT_brand_video_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_YT_bumper_ad_analized,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_YT_bumper_video_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_YT_shorts_view_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_YT_video_format,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_YT_video_view_trend,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_backup_display_ad,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_brand,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_brand_logo,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_bumper,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_delete_channel,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_demography,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_instagram_crawl_channel,USED,DIRECT,HIGH,2,0,12,instagram_admin/models.py | instagram_admin/schemas.py | instagram_admin/views.py,
+temp_instagram_crawl_reels,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_instagram_post_stat_sync,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_instagram_user_analysis,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_instagram_user_stat_sync,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_metaad_contents,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_metaad_contents_url,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_metaad_creators,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_metaad_keywords,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_metaad_post_info,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_metaad_video_thumbnails_url,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_oliveyoung_video,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_oliveyoung_video_n8n_test,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+temp_search_channel_id,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_search_video_id,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_ugwanggi_bumper_da,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+temp_ugwanggi_campaign_da,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+temp_ugwanggi_keywords_comp,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_ugwanggi_keywords_search,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_ugwanggi_keywords_text,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_youtuber_info,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_youtuber_info_stat,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+temp_youtuber_stats,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+test_kakao_video_monitoring,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+test_kakao_video_topic,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+tiktok_channel,USED,DIRECT,HIGH,1,0,1,tiktok/models.py,
+tiktok_channel_stat,USED,DIRECT,HIGH,1,0,1,tiktok/models.py,
+tiktok_video,USED,DIRECT,HIGH,1,0,1,tiktok/models.py,
+tiktok_video_stat,USED,DIRECT,HIGH,1,0,1,tiktok/models.py,
+tracked_ad_comment_yt_queries,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_action_tracker,USED,DIRECT,HIGH,1,0,1,user/models.py,
+ugwanggi_ai_blog_video,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+ugwanggi_ai_chat_history,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+ugwanggi_ai_image_history,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+ugwanggi_ai_survey,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+ugwanggi_amore_campaign,USED,DIRECT,HIGH,1,0,1,amore/models.py,
+ugwanggi_archive,USED,DIRECT,HIGH,1,0,1,archive/models.py,
+ugwanggi_archive_group,USED,DIRECT,HIGH,1,0,1,archive/models.py,
+ugwanggi_archive_spreadsheet_auth,USED,DIRECT,HIGH,1,0,1,archive/models.py,
+ugwanggi_archive_spreadsheet_sheet,USED,DIRECT,HIGH,1,0,1,archive/models.py,
+ugwanggi_brand_report_access,USED,DIRECT,HIGH,1,0,1,brand/models.py,
+ugwanggi_brand_saved,USED,DIRECT,HIGH,1,0,1,brand/models.py,
+ugwanggi_bundle,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_cancel_survey,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_channel_demography_info_access,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+ugwanggi_channel_network,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_channel_survey,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+ugwanggi_clipping_campaign,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_clipping_video,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_contact_us,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+ugwanggi_creator_camp_list,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+ugwanggi_creator_listup,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+ugwanggi_creator_listup_ai_chat,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+ugwanggi_creator_listup_filter,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_custom_coupon,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_custom_coupon_settings,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_custom_coupon_settings2,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_custom_discount_coupon,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_custom_payment,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_datalab_admin_memo,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+ugwanggi_delete_survey,USED,DIRECT,HIGH,1,0,1,user/models.py,
+ugwanggi_display_ad,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+ugwanggi_display_ad_campaign,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+ugwanggi_display_ad_campaign_result,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+ugwanggi_docs_history,USED,DIRECT,HIGH,1,0,1,archive/models.py,
+ugwanggi_express_adslot_cc_emails,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_express_adslot_email_read_state,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_adslot_price_view_state,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_adslot_pricing,USED,DIRECT,HIGH,1,0,2,express/models/base.py | express/schemas/ad_slot_schemas.py,
+ugwanggi_express_adslot_ugwanggi_pick,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_adslot_user_added_channels,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_adslots,USED,DIRECT,HIGH,7,0,25,express/models/base.py | express/views/ad_slot_views.py,
+ugwanggi_express_applications,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_applications_admin_check,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_brand_campaign_target_demographics,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_express_brand_campaign_ugwanggi_pick,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_brand_campaign_view_state,USED,DIRECT,HIGH,1,0,3,express/models/brand_campaign.py | express/schemas/brand_campaign_schemas.py,
+ugwanggi_express_brand_campaigns,USED,DIRECT,HIGH,1,0,3,express/models/brand_campaign.py | express/schemas/brand_campaign_schemas.py,
+ugwanggi_express_brand_campaigns_ad_type,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_brand_info,USED,DIRECT,HIGH,1,0,12,express/models/brand_campaign.py | express/schemas/brand_campaign_schemas.py | express/views/brand_campaign_request_views.py,
+ugwanggi_express_brand_ugwanggi_pick,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_chat_file_upload_quota,USED,DIRECT,HIGH,1,0,1,express/models/realtime.py,
+ugwanggi_express_chat_message,USED,DIRECT,HIGH,1,0,1,express/models/realtime.py,
+ugwanggi_express_chat_room,USED,DIRECT,HIGH,1,0,1,express/models/realtime.py,
+ugwanggi_express_chat_room_member,USED,DIRECT,HIGH,1,0,1,express/models/realtime.py,
+ugwanggi_express_email_message,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_email_message_admin_check,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_email_notification_log,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_express_email_template,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_oauth_state_session,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_oauth_token,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_request_campaign_view,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_request_chat,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_request_messages,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_request_status,USED,DIRECT,HIGH,1,0,1,express/models/brand_campaign.py,
+ugwanggi_express_studio_channels,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_studio_info,USED,DIRECT,HIGH,1,0,4,express/models/base.py | express/schemas/brand_campaign_schemas.py | express/views/brand_campaign_request_views.py,
+ugwanggi_express_studio_members,USED,DIRECT,HIGH,1,0,2,express/models/base.py | express/schemas/brand_campaign_schemas.py,
+ugwanggi_express_ticket_paid,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_express_ticket_refresh,USED,DIRECT,HIGH,1,0,1,express/models/base.py,
+ugwanggi_express_users_brand,USED,DIRECT,HIGH,2,0,14,express/models/base.py | express/schemas/brand_campaign_schemas.py | express/views/brand_campaign_request_views.py,
+ugwanggi_free_trial_phone,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_generated_blog,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+ugwanggi_ig_creator_saved,USED,DIRECT,HIGH,1,0,1,instagram/models.py,
+ugwanggi_ingwanggi_waitlist,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_inquiry,USED,DIRECT,HIGH,1,0,1,admin/models.py,
+ugwanggi_instagram_creator_similar_data_access,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_instagram_hashtag_result,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_instagram_hashtag_search,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_kakao_analysis,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+ugwanggi_kakao_video_split,USED,DIRECT,HIGH,1,0,1,aichat/models.py,
+ugwanggi_keyword_chat_history,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keyword_request_da,USED,DIRECT,HIGH,1,0,1,ads/models.py,
+ugwanggi_keywords_bench,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keywords_comp,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keywords_history,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keywords_interest,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keywords_result,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keywords_search,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_keywords_text,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_linked_user,USED,DIRECT,HIGH,1,0,1,user/models.py,
+ugwanggi_meta_ads,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_meta_ads_keywords,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_monitoring_campaign,USED,DIRECT,HIGH,1,0,1,monitoring/models.py,
+ugwanggi_monitoring_entity,USED,DIRECT,HIGH,1,0,1,monitoring/models.py,
+ugwanggi_monitoring_ppl,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_monitoring_result,USED,DIRECT,HIGH,1,0,1,monitoring/models.py,
+ugwanggi_mrr,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_page_usage_duration,USED,DIRECT,HIGH,1,0,1,user/models.py,
+ugwanggi_partner_creator_bookmark,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_creator_bookmark_folder,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_datalab,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_datalab_file,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_datalab_message,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_team,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_team_brand,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_team_link,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partner_team_tag,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_partners,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_payment_card,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_payment_history,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_phone_verification,USED,DIRECT,HIGH,1,0,1,user/models.py,
+ugwanggi_pricing_survey,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+ugwanggi_public_tracked_ad_folder,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_related_keywords,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_report_history,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+ugwanggi_search_history,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_server_used,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_subscription,USED,DIRECT,HIGH,1,0,1,subscribe/models.py,
+ugwanggi_survey,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+ugwanggi_tiktok_search_history,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_tracked_ad,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_tracked_ad_comment,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_tracked_ad_folder,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_tracked_ad_folder_keyword,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_tracked_ad_folder_stat,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_tracked_ad_stat,USED,DIRECT,HIGH,1,0,1,partner/models.py,
+ugwanggi_trial_survey,USED,DIRECT,HIGH,1,0,1,survey/models.py,
+ugwanggi_user_creator_db_request,USED,DIRECT,HIGH,1,0,1,user/models.py,
+ugwanggi_user_metrics_status,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ugwanggi_user_search_history,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_youtube_searched_channel,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_youtube_searched_video,USED,DIRECT,HIGH,1,0,1,search/models.py,
+ugwanggi_youtuber_saved,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+used_group_keywords,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+used_keywords,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+users,USED,DIRECT,HIGH,0,0,154,ads/system.txt | ads/system-bumper.txt | creators_insights/filter_pipeline.py,AMBIGUOUS→DIRECT via 58 DB-context hits
+users_crooki,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+users_hifen,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+users_ugwanggi,USED,DIRECT,HIGH,1,0,25,express/schemas/user_schemas.py | express/schemas/ad_slot_schemas.py | express/schemas/brand_campaign_schemas.py,
+users_ugwanggi_old,UNUSED,ARCHIVE_SUFFIX,HIGH,0,0,0,,name suffix indicates archive/backup/test
+utube_video_info,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+utuber_info,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+utuser_subscriber_views_last30days,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+video_comments,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+video_state,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+video_title,USED,DIRECT,HIGH,0,0,39,archive/views.py | express/views/studio_channel_views.py | oliveyoung/views.py,AMBIGUOUS→DIRECT via 6 DB-context hits
+videoamigo_monthly_views,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+videoamigo_subscribers_evolution,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+views_trend,USED,DIRECT,HIGH,0,0,5,amore/views.py,AMBIGUOUS→DIRECT via 1 DB-context hits
+youtube_video_ads_yn,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtube_video_comment_info,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtube_video_info,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_category_class,USED,DIRECT,HIGH,1,0,1,youtube/models.py,
+youtuber_category_class_251031,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_category_class_260119,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_category_class_test_250807,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_info,USED,DIRECT,HIGH,5,5,36,express/serializers.py | express/views/ad_slot_views.py | youtube/models.py,
+youtuber_info_F_level,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_info_biz,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_info_copy0416,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_info_global,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_info_summary,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+youtuber_stats,USED,DIRECT,HIGH,1,6,39,express/serializers.py | express/utils.py | express/views/ad_slot_views.py,
+yt_channel_state,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ytuser_analysis,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch
+ytuser_saved_analysis,UNUSED,TRULY_UNUSED,HIGH,0,0,0,,no reference found anywhere in branch

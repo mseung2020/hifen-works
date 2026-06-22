@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta name="googlebot" content="noindex, nofollow" />
+  <title>유광기 서비스 구조 지도</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>/*__STYLES__*/</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo">U</div>
+      <div class="brand-text">
+        유광기 Atlas
+        <small>v2.51 · snapshot</small>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" id="top-nav">
+      <div class="sidebar-section">
+        <div class="sidebar-label">개요</div>
+        <a href="#/home" data-view="home" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><path d="M3 13V7l5-4 5 4v6H3z"/><path d="M6 13V9h4v4"/></svg></span>
+          <span>홈</span>
+        </a>
+        <a href="#/services" data-view="services" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="8" cy="12" r="2"/><path d="M6 4h4M5 6l2 4M11 6l-2 4"/></svg></span>
+          <span>서비스 지도</span>
+          <span class="cnt" id="cnt-services">·</span>
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">인벤토리</div>
+        <a href="#/tables" data-view="tables" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M2 7h12M6 3v10"/></svg></span>
+          <span>테이블</span>
+          <span class="cnt" id="cnt-tables">·</span>
+        </a>
+        <a href="#/relations" data-view="relations" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><circle cx="4" cy="8" r="1.6"/><circle cx="12" cy="4" r="1.6"/><circle cx="12" cy="12" r="1.6"/><path d="M5.4 8L11 4.5M5.4 8L11 11.5"/></svg></span>
+          <span>관계 그래프</span>
+          <span class="cnt" id="cnt-relations">·</span>
+        </a>
+        <a href="#/endpoints" data-view="endpoints" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><path d="M2 6l3-3h9v10H5l-3-3z"/><path d="M6 8h5M6 10h3"/></svg></span>
+          <span>API 엔드포인트</span>
+          <span class="cnt" id="cnt-endpoints">·</span>
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">진단</div>
+        <a href="#/quality" data-view="quality" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><path d="M8 2l5 3v3c0 3-2 5-5 6-3-1-5-3-5-6V5l5-3z"/></svg></span>
+          <span>데이터 품질</span>
+          <span class="cnt" id="cnt-quality">·</span>
+        </a>
+        <a href="#/about" data-view="about" class="sidebar-item">
+          <span class="ico"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5v0.01"/></svg></span>
+          <span>전제와 한계</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div>closed-world</div>
+      <div class="mono" id="sidebar-snapshot">· · ·</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="app-topbar">
+      <div class="topbar-search">
+        <span class="ico-s"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3"/></svg></span>
+        <input id="global-search" placeholder="테이블 · 앱 · URL 검색" autocomplete="off" />
+        <span class="kbd">⌘K</span>
+      </div>
+      <div class="topbar-right">
+        <span class="status-chip"><span class="pulse"></span>snapshot · <span id="topbar-snapshot">· · ·</span></span>
+        <span class="version-tag" title="문서 버전">v2.51</span>
+      </div>
+    </header>
+
+    <main class="app">
+      <section id="view-home"       class="view active"></section>
+      <section id="view-services"   class="view"></section>
+      <section id="view-tables"     class="view"></section>
+      <section id="view-relations"  class="view"></section>
+      <section id="view-endpoints"  class="view"></section>
+      <section id="view-quality"    class="view"></section>
+      <section id="view-about"      class="view"></section>
+    </main>
+  </div>
+</div>
+
+<!-- Table detail modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div id="modal-header-content"></div>
+      <button class="close" id="modal-close" title="닫기">&times;</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- Data + libraries -->
+<script>window.SITE_DATA = /*__DATA__*/null;</script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>/*__APP__*/</script>
+</body>
+</html>

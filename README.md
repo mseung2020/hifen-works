@@ -14,5 +14,6 @@
 ### 백엔드 / 코드
 - [3월_coupon_analysis](3월_coupon_analysis/) — 하이픈 백엔드의 쿠폰 코드를 분석해 퍼센티지 할인 도입 개편안과 코드 수정 가이드를 작성
 - [4월_claude_code_analysis](4월_claude_code_analysis/) — Claude Code 소스코드·내부 지침을 분석해 AI 설계 원리와 챗봇 기획 인사이트를 정리한 보고서
+- [4월_hifen_scheme_analysis](4월_hifen_scheme_analysis/) — 하이픈 백엔드·프론트 레포 전체의 DB 스키마·API 사용 현황을 분석해 만든 개발자용 지식백과 HTML
 
 _(작업 정리 진행 중)_
