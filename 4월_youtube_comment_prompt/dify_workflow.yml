@@ -1,0 +1,473 @@
+app:
+  description: ''
+  icon: arrow_forward
+  icon_background: '#FFE4E8'
+  icon_type: emoji
+  mode: workflow
+  name: 명승 - 유튜브 댓글 이상감지 분석기
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openai:0.2.10@7ca552fb9e48caa4deddfdef5aa71c200d06d03c26c2e8bb428b3250101b9cb3
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: http-request
+      id: 1781000000001-source-1775634042117-target
+      source: '1781000000001'
+      sourceHandle: source
+      target: '1775634042117'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1775634042117-source-1775634208057-target
+      selected: false
+      source: '1775634042117'
+      sourceHandle: source
+      target: '1775634208057'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1775634208057-source-1781000000004-target
+      source: '1775634208057'
+      sourceHandle: source
+      target: '1781000000004'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1781000000004-source-1781000000005-target
+      source: '1781000000004'
+      sourceHandle: source
+      target: '1781000000005'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 시작
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          default: ''
+          hint: ''
+          label: channel_id
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: channel_id
+        - default: ''
+          hint: ''
+          label: x_api_key
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: x_api_key
+      height: 135
+      id: '1781000000001'
+      position:
+        x: 20.054560640788054
+        y: 259.2485796366746
+      positionAbsolute:
+        x: 20.054560640788054
+        y: 259.2485796366746
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params: {}
+          mode: chat
+          name: gpt-4o-mini
+          provider: langgenius/openai/openai
+        prompt_template:
+        - id: sys-anomaly-detector-001
+          role: system
+          text: "# YouTube 시청자 분석 검증 및 개선\n\n\n\n당신은 YouTube 채널 시청자 데이터 검증 전문가입니다.\
+            \ 댓글 데이터를 통해 기존 LLM 분석으로 도출된 시청자 데이터(성별/연령대 분포)가 실제와 일치하는지 검증하고, 필요시 개선된\
+            \ 값을 제공해야 합니다.\n\n\n\n## 입력 데이터\n\n\n\n입력은 다음과 같은 JSON 형식으로 제공됩니다:\n\n\
+            \n\n### 1. demography (기존 분석 결과)\n```json\n{\n  \"M13_17\": 숫자, \"F13_17\"\
+            : 숫자,\n  \"M18_24\": 숫자, \"F18_24\": 숫자,\n  \"M25_34\": 숫자, \"F25_34\"\
+            : 숫자,\n  \"M35_44\": 숫자, \"F35_44\": 숫자,\n  \"M45_54\": 숫자, \"F45_54\"\
+            : 숫자,\n  \"M55_64\": 숫자, \"F55_64\": 숫자,\n  \"M65\": 숫자, \"F65\": 숫자\n\
+            }\n```\n예시: `{\"M13_17\": 6, \"F13_17\": 2, \"M18_24\": 20, \"F18_24\"\
+            : 7, ...}`\n\n\n\n### 2. audience_explanation (채널 및 시청자 설명)\n채널의 콘텐츠 특성과\
+            \ 예상 시청자층에 대한 텍스트 설명\n\n\n\n### 3. content_explanation (콘텐츠 설명)\n댓글이 작성된\
+            \ 특정 콘텐츠(영상)에 대한 간단한 설명\n\n\n\n### 4. comments (댓글 데이터)\n```json\n[\n\
+            \  {\n    \"comment_id\": \"댓글 고유 ID\",\n    \"comment_text\": \"댓글 내용\"\
+            ,\n    \"author_name\": \"작성자명\",\n    \"like_count\": 좋아요 수\n  }\n]\n\
+            ```\n\n\n\n## 검증 프로세스\n\n\n\n### 1단계: 댓글 신호 식별 및 카운트\n\n\n댓글 목록 전체를 순서대로\
+            \ 읽으며 각 댓글에 아래 분류를 부여한다. 분류 후 카운트를 집계해 판단에 사용한다.\n\n\n**성별 분류 (댓글당 하나만\
+            \ 부여):**\n- M (남성 신호): 아래 남성 지향 신호 중 하나라도 해당\n- F (여성 신호): 아래 여성 지향 신호\
+            \ 중 하나라도 해당\n- N (중립): 성별 신호 없음\n\n\n**성별 판정 기준 (전체 댓글 수 기준):**\n- M 비율\
+            \ 60% 이상 → 남성 우세\n- F 비율 60% 이상 → 여성 우세\n- 그 외 → 기존 demography 성별 비율 유지\n\
+            \n\n**나이 분류 (댓글당 하나만 부여):**\n- Y (13-24세 신호): 아래 10대/20대 초반 신호 중 하나라도\
+            \ 해당\n- M (25-44세 신호): 아래 직장/결혼/육아 신호 중 하나라도 해당\n- O (45세+ 신호): 아래 중장년\
+            \ 신호 중 하나라도 해당\n- N (나이 신호 없음)\n\n\n**나이 판정 기준:**\n- Y 비율 50% 이상 → 젊은\
+            \ 층 우세 → 콘텐츠 유형 테이블의 집중 구간 상단값 적용\n- O 비율 40% 이상 → 중장년 우세\n- 신호 없거나 혼재\
+            \ → 콘텐츠 유형 테이블 기본값 적용\n\n\n댓글의 comment_text 필드에서 다음과 같은 신호를 찾아 분류한다:\n\
+            \n\n\n**성별 추정 신호**\n- 남성 지향: \"형님\", \"아재\", \"와이프가\", 군대 관련 용어, 스포츠/게임\
+            \ 용어, 기술적 관심사, 전차/무기 관련 용어\n  - 직장 연차 표현 닉네임 (예: \"10년차대기업중소인사\")\n  -\
+            \ 스포츠 비유 칭찬: \"메시도 한 수 접는다\", \"탑급\" 등\n  - 욕설·비속어: \"ㅅㅂ\", \"찐따\" 등 거친\
+            \ 표현\n  - **여성 아이돌/크리에이터 외모 평가**: 워터밤, 비키니, 신체 부위 언급, 외모 순위 (\"~미만 잡\"\
+            , \"1티어는 ~로 정해졌다\")\n    → 댓글 대상(크리에이터)이 여성이더라도 이런 댓글의 작성자는 남성 시청자 신호\n\
+            - 여성 지향: \"언니\", \"오빠\", \"남편이\", 뷰티/패션 관련 용어, 감정적 표현\n\n\n\n**연령대 추정\
+            \ 신호 — 생애주기 기반으로 세분화**\n\n\n13-17세 (강신호):\n- 문장 어미: ~해용, ~마세용, ~래용 등 \"\
+            용\" 어미 계열\n- 업로드 직후 반응: \"n초전\", \"n분전\", \"일찍 왔다\"\n- 학교 직접 언급: 중학교,\
+            \ 고등학교, 수행평가, 야자, 급식\n- 이모지/ㅋㅋㅋ 과다, 번호 자랑 (\"47번째 좋아요\")\n\n\n18-24세:\n\
+            - 대학 생활: 수강신청, MT, 과잠, 학점, 교수님, 과제\n- 군대 관련: 전역, 입대, 현역, 훈련소, 군인\n- 취업\
+            \ 준비 초기: 공시, 취준, 인턴, 자소서\n\n\n25-34세:\n- 직장 초기~중반: 신입, 대리, 야근, 회사생활, 월급날\n\
+            - 결혼 준비/초기: 예비신랑, 예비신부, 신혼, 와이프, 남편\n- 자취/독립: 월세, 전세, 자취방\n\n\n35-44세:\n\
+            - 자녀 어린 시절: \"우리 애\", \"아이들이\", 초등학교 자녀 언급\n- 직장 중간 관리자: 과장, 차장, 팀장, 부장\n\
+            - 내 집 마련: 아파트, 청약, 대출\n\n\n45-54세:\n- 자녀 성인 관련: \"아들이 군대\", \"딸이 취준\"\
+            , 대학생 자녀\n- 건강 관심사: 건강검진, 혈압, 당뇨, 체력\n- 은퇴/노후 준비 시작\n\n\n55세+:\n- 손주 언급\n\
+            - 매우 격식체, 풀어 쓰는 문체\n- \"젊은 친구들이\", \"요즘 애들은\" 등 세대 거리감 표현\n\n\n**콘텐츠 유형별\
+            \ 연령대 프라이어 (content_explanation 기반)**\n\n\n댓글 신호가 약할 때 content_explanation을\
+            \ 참고해 연령대 기본값을 설정한다:\n\n\n| 콘텐츠 유형 | 주요 연령대 |\n|---|---|\n| K-pop 아이돌,\
+            \ 워터밤, 팬덤 | 13-24세 |\n| 게임 (롤, 배그, FPS) | 13-29세 |\n| 주식/코인/투자 | 25-44세\
+            \ |\n| 육아/키즈 콘텐츠 | 25-40세 (부모) |\n| 트로트/뽕짝/7080 음악 | 40세+ |\n| 낚시/골프/등산\
+            \ | 35세+ |\n| 요리/맛집 | 20-45세 |\n| 뉴스/시사/정치 | 30세+ |\n| 운동/헬스/필라테스 | 18-34세\
+            \ |\n\n\n\n**추가 고려사항**\n- like_count가 높은 댓글일수록 더 대표성 있는 시청자층을 반영\n- author_name의\
+            \ 패턴도 참고 (예: 한글/영문 비율)\n\n\n\n### ⚠️ 역신호 함정 — 여성 신호로 오인하기 쉬운 케이스\n\n\n\
+            \n**함정 1: 크리에이터/대상 성별 ≠ 시청자 성별**\n- \"여성으로서 칭찬받아야됨\" — 크리에이터(대상)를 여성으로서\
+            \ 칭찬하는 표현. 댓글 작성자의 성별 선언이 아님\n- \"여성 크리에이터라서 대단하다\" — 동일. 대상이 여성일 뿐, 작성자\
+            \ 성별과 무관\n- 판단 기준: 댓글 작성자 본인이 \"나는 여자다\"고 직접 말한 경우에만 여성 신호로 인정\n\n\n\n\
+            **함정 2: K-pop 여성 아이돌 관련 댓글은 남성 시청자 신호**\n- 여성 아이돌 외모 순위, 워터밤/비키니 반응, \"\
+            ~미만 잡\" 식의 서열 댓글\n- 채널 주제가 K-pop/패션이어도 이런 댓글이 다수면 시청자는 남성 중심\n\n\n\n**함정\
+            \ 3: content_explanation이 audience_explanation보다 우선**\n- content_explanation에\
+            \ \"비키니\", \"워터밤\", \"노출\", \"신체 강조\" 등이 언급되면 → 남성 시청자 비율 우선 상향 검토\n-\
+            \ audience_explanation이 \"여성 시청자 많음\"이라도 해당 영상이 남성 어필 콘텐츠이면 댓글 신호가 더 신뢰성\
+            \ 있음\n\n\n\n### 2단계: 이상 징후 감지\n\n\n**[A] 콘텐츠 유형 기반 이상감지 — 댓글 신호와 무관하게\
+            \ 독립적으로 판단**\n\n\ncontent_explanation과 audience_explanation을 보고, 콘텐츠 유형이\
+            \ 사회적으로 강하게 시사하는 연령대와 demography가 20%p 이상 차이나면 anomaly = 1.\n\n\n| 콘텐츠\
+            \ 유형 | 집중 구간 (정상 범위) | 비핵심 구간 (상한선 — 초과 금지) |\n|---|---|---|\n| K-pop\
+            \ 아이돌, 팬덤, 워터밤 | 13-17: 15~40% / 18-24: 30~50% | 35-44: 5% 이하 / 45+: 2%\
+            \ 이하 |\n| 게임 (롤, 배그, FPS, 모바일게임) | 13-17: **30~65%** / 18-24: 20~40% |\
+            \ 35-44: 5% 이하 / 45-54: 2% 이하 / 55+: 0% |\n| 트로트, 뽕짝, 7080 음악 | 45-54:\
+            \ 30~45% / 55-64: 20~35% | 13-17: 1% 이하 / 18-24: 3% 이하 |\n| 낚시, 골프, 등산\
+            \ | 35-44: 25~40% / 45-54: 25~35% | 13-17: 2% 이하 / 18-24: 5% 이하 |\n| 뉴스,\
+            \ 시사, 정치 | 35-44: 25~35% / 45-54: 20~30% | 13-17: 1% 이하 |\n| 육아, 키즈 콘텐츠\
+            \ | 25-34: 35~50% / 35-44: 20~35% | 13-17: 2% 이하 / 55+: 2% 이하 |\n| 주식,\
+            \ 코인, 부동산 | 25-34: 30~45% / 35-44: 25~35% | 13-17: 1% 이하 / 55+: 3% 이하\
+            \ |\n| 운동, 헬스, 필라테스, 요가 | 18-24: 25~40% / 25-34: 30~40% | 55+: 2% 이하 |\n\
+            \n\n**적용 원칙:**\n- 상한선을 초과하는 구간은 댓글 신호와 무관하게 반드시 0 또는 1로 줄인다\n- 집중 구간은\
+            \ 정상 범위 내에서 댓글 신호 강도에 따라 과감하게 배분한다\n- **극단적인 집중은 오류가 아니다**: 게임 채널에서 13-17이\
+            \ 60%를 넘어도 정상이고, 낚시 채널에서 13-17이 0이어도 정상이다\n- **정규분포(bell curve) 금지**:\
+            \ 18-24를 피크로 만드는 종 모양 분포를 기본값으로 사용하지 않는다\n- 확신이 없을 때는 해당 콘텐츠 유형의 집중 구간\
+            \ 상단값에 가깝게 배분한다\n\n\n**콘텐츠 유형별 정상 분포 형태:**\n- 게임: **우하향 감소형** — 13-17이\
+            \ 가장 높고, 18-24 → 25-34 → 35+ 순으로 감소. 13-17 > 18-24 > 25-34 필수\n- K-pop\
+            \ 아이돌: **13-17, 18-24 양봉형** — 두 구간이 비슷하게 높음, 25+는 급격히 감소\n- 트로트/낚시/골프:\
+            \ **우상향 후 감소형** — 35-44나 45-54에서 피크, 양 끝이 낮음\n- 뉴스/정치: **30-50대 완만한 고원형**\
+            \ — 급격한 피크 없이 30-54가 넓게 분포\n- 육아/키즈: **25-44 집중형** — 25-34, 35-44가 높고\
+            \ 양 끝은 0에 가까움\n\n\n콘텐츠 유형 기반 이상 감지 시 improved_values는 해당 유형의 기대 연령대 구간으로\
+            \ 집중시켜 재분배한다.\n\n\n**[B] 댓글 신호 기반 이상감지**\n\n\n댓글 신호와 demography 간의 불일치를\
+            \ 확인한다:\n- audience_explanation의 설명과 실제 댓글 패턴이 일치하지 않는 경우\n- 콘텐츠 주제가 특정\
+            \ 성별 선호를 시사하지만 실제 댓글은 반대 성별이 우세한 경우\n- 타겟 연령대와 실제 댓글 작성자 연령대가 크게 다른 경우\n\
+            - demography의 분포와 댓글에서 추정되는 분포 간 20%p 이상 차이가 있는 경우\n\n\n**[A]와 [B] 중 하나라도\
+            \ 해당하면 anomaly = 1. 둘 다 해당하면 조정 폭을 더 크게 적용.**\n\n\n\n### 3단계: 결과 생성\n\
+            이상 징후가 감지되면:\n1. 댓글 신호를 기반으로 개선된 분포를 계산\n2. 원본 demography 총합을 유지하면서 재분배\n\
+            3. 조정 폭은 댓글 신호의 강도에 비례:\n   - 신호가 약함 (10개 중 3개 이하): 소폭 조정 (±10~20%)\n\
+            \   - 신호가 보통 (10개 중 4~6개): 중간 조정 (±20~40%)\n   - 신호가 강함 (10개 중 7개 이상):\
+            \ 대폭 조정 (±40~60%), ±30% 제한 해제\n4. **anomaly_reason과 improved_values는 반드시\
+            \ 같은 방향이어야 함 — 수치로 반드시 확인할 것**\n\n\n\n   올바른 예시 (남성 신호 압도적):\n   - 원본:\
+            \ M합계=18, F합계=82 → 개선: M합계=65, F합계=35\n   - anomaly_reason: \"남성 신호 압도적\"\
+            \ → improved_values에서 M합계 > F합계\n\n\n\n   잘못된 예시 (절대 금지):\n   - anomaly_reason:\
+            \ \"남성 신호 압도적\" → improved_values에서 M합계=29, F합계=67 (F가 여전히 많음)\n   - 이유와\
+            \ 숫자가 반대 방향이면 출력 자체가 무효\n\n\n\n## 출력 형식\n```json\n{\n  \"anomaly_detected\"\
+            : 0 또는 1,\n  \"anomaly_reason\": {\n    \"gender\": \"성별 판단 설명. 기존과 동일하면\
+            \ '기존 분석과 일치'라고 명시. 변경이면 어떤 신호로 판단했는지 간결하게 설명.\",\n    \"age\": \"나이대\
+            \ 판단 설명. 기존과 동일하면 '기존 분석과 일치'라고 명시. 변경이면 어떤 신호로 판단했는지 간결하게 설명.\"\n  },\n\
+            \  \"improved_values\": {\n    \"M13_17\": 숫자,\n    \"F13_17\": 숫자,\n\
+            \    \"M18_24\": 숫자,\n    \"F18_24\": 숫자,\n    \"M25_34\": 숫자,\n    \"\
+            F25_34\": 숫자,\n    \"M35_44\": 숫자,\n    \"F35_44\": 숫자,\n    \"M45_54\"\
+            : 숫자,\n    \"F45_54\": 숫자,\n    \"M55_64\": 숫자,\n    \"F55_64\": 숫자,\n\
+            \    \"M65\": 숫자,\n    \"F65\": 숫자\n  }\n}\n```\n\n\n\n## 중요 사항\n- 댓글\
+            \ 샘플이 10개 미만이거나 불충분한 경우 anomaly_detected를 0으로 설정\n- 명확한 불일치만 이상 징후로 판단\
+            \ (미세한 차이는 무시)\n- anomaly_detected가 1일 때만 improved_values 제공\n- improved_values의\
+            \ 전체 합계는 원본 demography 값들의 총합과 정확히 동일하게 유지\n- 댓글의 like_count를 가중치로 활용하여\
+            \ 대표성 있는 의견 우선 반영\n\n\n\n## 예시 사례\n\n\n\n### 입력 예시:\n```\ndemography:\
+            \ {\"M13_17\": 6, \"F13_17\": 2, \"M18_24\": 20, \"F18_24\": 7, \"M25_34\"\
+            : 16, \"F25_34\": 6, \"M35_44\": 14, \"F35_44\": 5, \"M45_54\": 12, \"\
+            F45_54\": 4, \"M55_64\": 4, \"F55_64\": 1, \"M65\": 2, \"F65\": 1}\n\n\
+            \n\naudience_explanation: \"이 채널의 콘텐츠는 주로 게임과 코미디를 다루고 있어...\"\n\n\n\n\
+            comments: [댓글 데이터 배열]\n```\n\n\n\n### 분석 시나리오:\n- 군사/전차 게임 콘텐츠인데 댓글에서\
+            \ 여성 시청자 신호가 발견되는 경우\n- \"사이클링\"이나 \"낚시\" 콘텐츠의 여성 크리에이터지만 댓글이 남성 위주인 경우\n\
+            - 키즈 콘텐츠 크리에이터지만 부모들의 댓글로 성인 시청자임을 알 수 있는 경우\n- 남성 지향으로 추정된 게임 채널이지만 댓글에서\
+            \ 상당한 여성 시청자가 확인되는 경우\n\n\n\n## 출력 전 필수 검산 (순서대로 반드시 수행)\n\n\n**[Step\
+            \ 1] 원본 총합 계산 — 입력된 demography 14개 값을 직접 더한다**\n원본_총합 = M13_17 + F13_17\
+            \ + M18_24 + F18_24 + M25_34 + F25_34 + M35_44 + F35_44 + M45_54 + F45_54\
+            \ + M55_64 + F55_64 + M65 + F65\n\n\n**[Step 2] improved_values 총합 계산\
+            \ — 작성한 14개 값을 직접 더한다**\n개선_총합 = (위와 동일한 14개 키 합산)\n\n\n**[Step 3] 총합\
+            \ 일치 확인**\n- 개선_총합 = 원본_총합 이어야 함\n- 다르면 차이만큼을 집중 구간에 가감해서 반드시 맞춘 후 출력\n\
+            \n\n**[Step 4] 방향 확인**\n- anomaly_reason이 \"남성 우세\" → 개선값 M합계 > F합계. 아니면\
+            \ 수정\n- anomaly_reason이 \"여성 우세\" → 개선값 F합계 > M합계. 아니면 수정\n\n\n**[Step\
+            \ 5] 상한선 위반 확인**\n- 콘텐츠 유형 테이블의 비핵심 구간 상한선을 초과한 항목이 있으면 0 또는 1로 수정하고 Step\
+            \ 3부터 재실행\n\n\nStep 1~5 모두 통과한 경우에만 JSON을 출력한다.\n\n\n\n## 응답 지침\n- 이상\
+            \ 징후 감지는 보수적으로 수행\n- 댓글의 명확한 증거를 바탕으로 개선\n- 신호가 강할수록 조정 폭도 크게 반영 (신호 강도\
+            \ = 조정 폭)"
+        - id: usr-anomaly-detector-001
+          role: user
+          text: '{
+
+
+            "demography":{{#1775634208057.demography#}},
+
+            "audience_explanation":"{{#1775634208057.audience_explanation#}}",
+
+            "content_explanation":"{{#1775634208057.content_explanation#}}",
+
+            "comments":{{#1775634208057.comments_parsed#}}}'
+        selected: false
+        title: 이상감지 LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1781000000004'
+      position:
+        x: 259.90284350399446
+        y: 280.2485796366746
+      positionAbsolute:
+        x: 259.90284350399446
+        y: 280.2485796366746
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1781000000001'
+          - channel_id
+          value_type: string
+          variable: channel_id
+        - value_selector:
+          - '1775634208057'
+          - video_id
+          value_type: string
+          variable: video_id
+        - value_selector:
+          - '1775634208057'
+          - demography_json
+          value_type: object
+          variable: demography_json
+        - value_selector:
+          - '1775634208057'
+          - audience_explanation
+          value_type: string
+          variable: audience_explanation
+        - value_selector:
+          - '1781000000004'
+          - text
+          value_type: string
+          variable: result
+        - value_selector:
+          - '1775634208057'
+          - comments_parsed_json
+          value_type: array[object]
+          variable: comments_parsed
+        selected: false
+        title: 출력
+        type: end
+      height: 218
+      id: '1781000000005'
+      position:
+        x: 259.90284350399446
+        y: 363.41014309337254
+      positionAbsolute:
+        x: 259.90284350399446
+        y: 363.41014309337254
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: x-api-key:{{#1781000000001.x_api_key#}}
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: false
+          retry_interval: 100
+        selected: false
+        ssl_verify: false
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 요청
+        type: http-request
+        url: https://dify-external-api-302683528768.asia-northeast3.run.app/youtube/channels/{{#1781000000001.channel_id#}}/comments
+        variables: []
+      height: 159
+      id: '1775634042117'
+      position:
+        x: 20.054560640788054
+        y: 391.46377270783927
+      positionAbsolute:
+        x: 20.054560640788054
+        y: 391.46377270783927
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import json\nfrom typing import Any, Dict\n\n\ndef main(arg1: str)\
+          \ -> Dict[str, Any]:\n    result = {}\n    # 2) JSON 파싱 에러 방지\n    try:\n\
+          \        data = json.loads(arg1)\n    except (json.JSONDecodeError, TypeError,\
+          \ ValueError):\n        return result\n\n    comments = data.get(\"comments\"\
+          )\n\n    comments_parsed = []\n    for comment in comments:\n        comments_parsed.append(\n\
+          \     {\n        \"comment_id\":comment[\"comment_id\"],\n        \"comment_text\"\
+          :comment[\"text\"],\n        \"author_name\":comment[\"author_name\"],\n\
+          \        \"like_count\":comment[\"like_count\"]})\n\n    content_explanation\
+          \ = comment[\"content_explanation\"]\n    video_id = comment[\"video_id\"\
+          ]\n\n    # 4) 안전하게 값 추출\n    result[\"channel_id\"] = data.get(\"channel_id\"\
+          )\n    result[\"audience_explanation\"] = data.get(\"audience_explanation\"\
+          )\n    result[\"demography\"] =  json.dumps(data.get('demography'))\n  \
+          \  result[\"comments_parsed\"] =  json.dumps(comments_parsed)\n    result[\"\
+          demography_json\"] =  data.get('demography')\n    result[\"comments_parsed_json\"\
+          ] =  comments_parsed\n    result[\"content_explanation\"] = content_explanation\n\
+          \    result[\"video_id\"] = video_id\n\n\n    return result"
+        code_language: python3
+        outputs:
+          audience_explanation:
+            children: null
+            type: string
+          channel_id:
+            children: null
+            type: string
+          comments_parsed:
+            children: null
+            type: string
+          comments_parsed_json:
+            children: null
+            type: array[object]
+          content_explanation:
+            children: null
+            type: string
+          demography:
+            children: null
+            type: string
+          demography_json:
+            children: null
+            type: object
+          video_id:
+            children: null
+            type: string
+        selected: false
+        title: 코드
+        type: code
+        variables:
+        - value_selector:
+          - '1775634042117'
+          - body
+          value_type: string
+          variable: arg1
+      height: 52
+      id: '1775634208057'
+      position:
+        x: 20.054560640788054
+        y: 546.6514827206414
+      positionAbsolute:
+        x: 20.054560640788054
+        y: 546.6514827206414
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 148.78718482836456
+      y: -258.10360561973107
+      zoom: 1.3211054308297867
+  rag_pipeline_variables: []
