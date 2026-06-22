@@ -1,0 +1,1206 @@
+{
+ "report_date": "2026-06-01",
+ "domain": "YouTube 범퍼(인스트림) 광고 시장",
+ "market_scope": "KR ONLY (국내 시장 노출 광고만)",
+ "data_quality": {
+  "effective_day": "2026-06-01",
+  "baseline_cost_days": [
+   "2026-05-19",
+   "2026-05-21",
+   "2026-05-23",
+   "2026-05-24",
+   "2026-05-27",
+   "2026-05-28",
+   "2026-05-29",
+   "2026-05-30"
+  ]
+ },
+ "field_notes": {
+  "cost.*": "일 광고비(단위 미확정; 배율·증감이 핵심)",
+  "creative/ad_story": "그 광고주 대표 광고 제목/장면 — 제품·작품명은 여기서만",
+  "accel_x": "오늘 조회증가속도/직전 평균(baseline≈최근 2주)",
+  "today_per_day": "정상화 1일 신규 조회수"
+ },
+ "task_for_llm": "candidates 만 근거로 마케터 후킹 1줄 헤드라인 10개. 모두 국내(KR) 광고. 브랜드·제품명 노골(입력에 있을 때만, 없으면 궁금증 갭). 순위·최상급은 리스트 1위일 때만. 한 브랜드 1회. 숫자 밖 창작 금지. 한국어 ~40자.",
+ "candidates": {
+  "cost_movers": [
+   {
+    "brand": "원더케이",
+    "today": 92117900000,
+    "baseline": 93917625000,
+    "delta": -1799725000,
+    "delta_pct": -2.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[MV] BTS(방탄소년단) _ DOPE(쩔어)",
+    "ad_story": null
+   },
+   {
+    "brand": "SM엔터테인먼트",
+    "today": 5303550000,
+    "baseline": 4762808750,
+    "delta": 540741250,
+    "delta_pct": 11.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "aespa 에스파 'Supernova' MV",
+    "ad_story": null
+   },
+   {
+    "brand": "삼성전자",
+    "today": 1776970000,
+    "baseline": 1372957500,
+    "delta": 404012500,
+    "delta_pct": 29.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[Bespoke AI 콤보] 한가인이 준비한 통 큰 선물의 정체는? | 삼성전자",
+    "ad_story": null
+   },
+   {
+    "brand": "EVE Online",
+    "today": 11892800000,
+    "baseline": 11497937500,
+    "delta": 394862500,
+    "delta_pct": 3.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "EVE Online | 탐사의 신비",
+    "ad_story": null
+   },
+   {
+    "brand": "메라블",
+    "today": 162172000,
+    "baseline": 531815000,
+    "delta": -369643000,
+    "delta_pct": -70.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "눈밑지방 잡는 '유쎄라블 샷900 아이크림'",
+    "ad_story": null
+   },
+   {
+    "brand": "SBS NOW / SBS 공식 채널",
+    "today": 853806000,
+    "baseline": 554884375,
+    "delta": 298921625,
+    "delta_pct": 54.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[런닝맨] somebody 누군가 나를 좀 말려줘요, 화려한 오프닝 / 'Runningman' Re",
+    "ad_story": null
+   },
+   {
+    "brand": "굿네이버스",
+    "today": 576090000,
+    "baseline": 317027250,
+    "delta": 259062750,
+    "delta_pct": 82.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "저는 무조건 살아야 해요...",
+    "ad_story": null
+   },
+   {
+    "brand": "식약처",
+    "today": 19352900,
+    "baseline": 244131875,
+    "delta": -224778975,
+    "delta_pct": -92.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "공부 망치는 위험한 #스터디윗미",
+    "ad_story": null
+   },
+   {
+    "brand": "코카콜라",
+    "today": 924004000,
+    "baseline": 718117250,
+    "delta": 205886750,
+    "delta_pct": 29.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[#코카콜라] 학교에서도 코-크 타임 15’",
+    "ad_story": null
+   },
+   {
+    "brand": "키움증권",
+    "today": 1293500000,
+    "baseline": 1122033250,
+    "delta": 171466750,
+    "delta_pct": 15.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "ETF, 연금, ISA도 키움증권(6”C)",
+    "ad_story": null
+   },
+   {
+    "brand": "애플(프리롤)",
+    "today": 281283000,
+    "baseline": 127042313,
+    "delta": 154240688,
+    "delta_pct": 121.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "Detectives 3.0 / 15 / KRKR / SK Telecom / 16:9 / YouTub",
+    "ad_story": null
+   },
+   {
+    "brand": "꼬마버스 타요",
+    "today": 333354000,
+    "baseline": 182249000,
+    "delta": 151105000,
+    "delta_pct": 83.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "타요 오프닝송 모음 l 꼬마버스 타요 1기부터 5기까지 모든 노래를 만나 보아요! l 꼬마버스 타요",
+    "ad_story": null
+   },
+   {
+    "brand": "리디에뜨",
+    "today": 329295000,
+    "baseline": 183448878,
+    "delta": 145846122,
+    "delta_pct": 80.0,
+    "base_days": 6,
+    "is_new": false,
+    "creative": "이가 흔들리세요?",
+    "ad_story": null
+   },
+   {
+    "brand": "시그널플래너",
+    "today": 689408000,
+    "baseline": 563359750,
+    "delta": 126048250,
+    "delta_pct": 22.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "보험의 모든걸 담은 보험의 슈퍼앱, 시그널플래너 [15s_walk]",
+    "ad_story": null
+   },
+   {
+    "brand": "멀츠코리아",
+    "today": 1286990000,
+    "baseline": 1182281250,
+    "delta": 104708750,
+    "delta_pct": 9.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[멀츠 에스테틱스] '리프팅, 실시간 시각화 기술로 정확하고 안전하게' 울쎄라피 프라임™ (15s)",
+    "ad_story": null
+   },
+   {
+    "brand": "헨켈",
+    "today": 350946000,
+    "baseline": 247564000,
+    "delta": 103382000,
+    "delta_pct": 42.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "검정색 옷, 색 바램이 고민이라면? 24만 홈세탁 전문가 땡스맘(@thanks_maam) 의 PIC",
+    "ad_story": null
+   },
+   {
+    "brand": "삼쩜삼",
+    "today": 535183000,
+    "baseline": 432686875,
+    "delta": 102496125,
+    "delta_pct": 24.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "삼쩜삼ㅣ5월 환급금, 그동안 잘 숨어계셨나?",
+    "ad_story": null
+   },
+   {
+    "brand": "에어비앤비",
+    "today": 290642000,
+    "baseline": 194833625,
+    "delta": 95808375,
+    "delta_pct": 49.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "아무도 없는 곳으로의 여행",
+    "ad_story": null
+   },
+   {
+    "brand": "토스증권",
+    "today": 261954000,
+    "baseline": 168047763,
+    "delta": 93906238,
+    "delta_pct": 56.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "인류의 호재 (15초) ㅣ 토스증권",
+    "ad_story": null
+   },
+   {
+    "brand": "초록우산 어린이재단",
+    "today": 450467000,
+    "baseline": 543896250,
+    "delta": -93429250,
+    "delta_pct": -17.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[초록우산] 9살 지온이의 멈춰버린 걸음",
+    "ad_story": null
+   },
+   {
+    "brand": "코치",
+    "today": 954327000,
+    "baseline": 861909750,
+    "delta": 92417250,
+    "delta_pct": 11.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "Revive Your Courage_Soyeon_KOR_15S_16x9​",
+    "ad_story": null
+   },
+   {
+    "brand": "agoda",
+    "today": 2797060000,
+    "baseline": 2888918750,
+    "delta": -91858750,
+    "delta_pct": -3.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "아고다 Agoda | 모텔 예약도 Agoda！- 15s Motel",
+    "ad_story": null
+   },
+   {
+    "brand": "클래시스",
+    "today": 150666000,
+    "baseline": 58951330,
+    "delta": 91714670,
+    "delta_pct": 156.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "re:spotlightㅣ리스포트라이트 캠페인 (Shorts)",
+    "ad_story": null
+   },
+   {
+    "brand": "농심",
+    "today": 128223000,
+    "baseline": 218194875,
+    "delta": -89971875,
+    "delta_pct": -41.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "VISIT SEOUL, TASTE NONGSHIM MV(one bite dream | JISOKUR",
+    "ad_story": null
+   },
+   {
+    "brand": "히어로워즈",
+    "today": 5585390000,
+    "baseline": 5671841250,
+    "delta": -86451250,
+    "delta_pct": -2.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "hw_dungeongothic4e_h_en_120",
+    "ad_story": null
+   },
+   {
+    "brand": "인포카",
+    "today": 343860000,
+    "baseline": 260108125,
+    "delta": 83751875,
+    "delta_pct": 32.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "infocar 15s LED EN",
+    "ad_story": "In the world of safe and reliable cars,InfoCar is the name you can trust. Our cutting-edge data analysis and vehicle diagnostics services ensure your "
+   },
+   {
+    "brand": "보테가 베네타",
+    "today": 136937000,
+    "baseline": 54858150,
+    "delta": 82078850,
+    "delta_pct": 150.0,
+    "base_days": 6,
+    "is_new": false,
+    "creative": "Bottega Veneta Summer 2026 Campaign",
+    "ad_story": null
+   },
+   {
+    "brand": "메이플스토리",
+    "today": 583154000,
+    "baseline": 503511875,
+    "delta": 79642125,
+    "delta_pct": 16.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "챌린저스 시즌 3 업데이트",
+    "ad_story": null
+   },
+   {
+    "brand": "LG전자",
+    "today": 607410000,
+    "baseline": 683424250,
+    "delta": -76014250,
+    "delta_pct": -11.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "마침내, 메탈마저 가볍게. LG gram Pro AI 2026",
+    "ad_story": null
+   },
+   {
+    "brand": "넷플릭스",
+    "today": 236887000,
+    "baseline": 162211550,
+    "delta": 74675450,
+    "delta_pct": 46.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "참교육 | 메인 15초 예고편",
+    "ad_story": null
+   },
+   {
+    "brand": "코드잇",
+    "today": 85343300,
+    "baseline": 10721090,
+    "delta": 74622210,
+    "delta_pct": 696.0,
+    "base_days": 6,
+    "is_new": false,
+    "creative": "챗GPT 제대로 써먹고 싶다면 반드시 봐야할 영상",
+    "ad_story": null
+   },
+   {
+    "brand": "하아르",
+    "today": 37251500,
+    "baseline": 110512638,
+    "delta": -73261138,
+    "delta_pct": -66.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "놓치면 없는❌ 50% SALE 곧 종료됩니다!😱",
+    "ad_story": null
+   },
+   {
+    "brand": "페브리즈",
+    "today": 347572000,
+    "baseline": 420121375,
+    "delta": -72549375,
+    "delta_pct": -17.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "페브리즈 실내건조 15s",
+    "ad_story": null
+   },
+   {
+    "brand": "오펠라헬스케어코리아",
+    "today": 576079000,
+    "baseline": 505698500,
+    "delta": 70380500,
+    "delta_pct": 14.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "굿모닝, 둘코락스! (feat. 이수지) | 2025 입쏙 장쓱 배쏵 ver. 15초",
+    "ad_story": null
+   },
+   {
+    "brand": "AHC",
+    "today": 535832000,
+    "baseline": 466525750,
+    "delta": 69306250,
+    "delta_pct": 15.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "T샷으로 정밀케어, AHC T-SHOT 아이크림",
+    "ad_story": null
+   },
+   {
+    "brand": "구글 Ads",
+    "today": 536440000,
+    "baseline": 472037500,
+    "delta": 64402500,
+    "delta_pct": 14.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "Google Ads Demand Gen 2: 15C Landscape Modified",
+    "ad_story": null
+   },
+   {
+    "brand": "SK텔레콤",
+    "today": 18350800,
+    "baseline": 80813763,
+    "delta": -62462963,
+    "delta_pct": -77.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "[SK텔레콤] 무약정 플랜_온앤오프 화보 촬영 현장",
+    "ad_story": null
+   },
+   {
+    "brand": "국경없는의사회",
+    "today": 1031850000,
+    "baseline": 970748750,
+    "delta": 61101250,
+    "delta_pct": 6.0,
+    "base_days": 8,
+    "is_new": false,
+    "creative": "살릴 수 있는 환자를 그냥 보내야 했습니다 - 신경수 활동가",
+    "ad_story": null
+   }
+  ],
+  "view_accel": [
+   {
+    "brand": "안경공장 쇼룸",
+    "title": "얼굴에 딱 맞는 안경테 골라주는 사장님 (ft. 월매출 3억)",
+    "ad_story": null,
+    "today_per_day": 27346,
+    "accel_x": 11.9
+   },
+   {
+    "brand": "지식줄고양",
+    "title": "도전! 이쑤시개 키우기",
+    "ad_story": null,
+    "today_per_day": 32908,
+    "accel_x": 10.9
+   },
+   {
+    "brand": "중소벤처기업부",
+    "title": "#댓글이벤트│역대급 찍었다! 🔥 대한민국 중소기업 수출 근황",
+    "ad_story": null,
+    "today_per_day": 234466,
+    "accel_x": 10.1
+   },
+   {
+    "brand": "문화체육관광부",
+    "title": "🇰🇷전 세계가 지금 한국에 푹 빠졌습니다!",
+    "ad_story": null,
+    "today_per_day": 151076,
+    "accel_x": 8.8
+   },
+   {
+    "brand": "DentalPR",
+    "title": "임플란트 개당 20만원 특가",
+    "ad_story": null,
+    "today_per_day": 27063,
+    "accel_x": 8.1
+   },
+   {
+    "brand": "DentalPR",
+    "title": "임플란트 개당 20만원 특가",
+    "ad_story": null,
+    "today_per_day": 30314,
+    "accel_x": 5.9
+   },
+   {
+    "brand": "방광클리닉",
+    "title": "약만 먹어도 낫지 않던 방광염, 이제는 달라졌어요",
+    "ad_story": null,
+    "today_per_day": 23789,
+    "accel_x": 5.0
+   },
+   {
+    "brand": "잇몸건강연구소",
+    "title": "3년 내내 잇몸건강 1등, 덴티오클린",
+    "ad_story": null,
+    "today_per_day": 12558,
+    "accel_x": 4.6
+   },
+   {
+    "brand": "BNK research Institution",
+    "title": "신고용_0325 꿀토끼2",
+    "ad_story": null,
+    "today_per_day": 21202,
+    "accel_x": 4.5
+   },
+   {
+    "brand": "KMP Co Ltd 케이엠피",
+    "title": "국내 유일 스텍몰드 파렛트 생산 시스템 케이엠",
+    "ad_story": null,
+    "today_per_day": 12269,
+    "accel_x": 4.4
+   },
+   {
+    "brand": "Shoping sale",
+    "title": "스탠드 이동식 높이조절 침대 사이드 테이블",
+    "ad_story": null,
+    "today_per_day": 63353,
+    "accel_x": 4.4
+   },
+   {
+    "brand": "CULTURE_CAPITAL",
+    "title": "인지도 1위, 만족도 1위 컬쳐캐피탈",
+    "ad_story": null,
+    "today_per_day": 12368,
+    "accel_x": 4.3
+   },
+   {
+    "brand": "에스네이처",
+    "title": "0단계 스킨부스팅 화잘먹 #속광탄력미스트",
+    "ad_story": null,
+    "today_per_day": 23034,
+    "accel_x": 4.3
+   },
+   {
+    "brand": "에이피 뷰티",
+    "title": "AP BEAUTY I 자유부인 한가인 X 에이피 뷰티 트리플 샷 세럼",
+    "ad_story": null,
+    "today_per_day": 83556,
+    "accel_x": 4.1
+   },
+   {
+    "brand": "설쌤TV",
+    "title": "[단꿈e] 정승제X설민석 l 초등공부 신의 한 수 (30s)",
+    "ad_story": null,
+    "today_per_day": 31756,
+    "accel_x": 4.0
+   },
+   {
+    "brand": "임플란트 이벤트 모음",
+    "title": "임플란트 해드려요",
+    "ad_story": null,
+    "today_per_day": 22620,
+    "accel_x": 3.6
+   },
+   {
+    "brand": "KB차차차",
+    "title": "중고차 구매 고민 중인데, 너무 바빠 집에서 편하게 받고 싶으세요?ㅣ차차차 전용차",
+    "ad_story": null,
+    "today_per_day": 33666,
+    "accel_x": 3.5
+   },
+   {
+    "brand": "구글 Ads",
+    "title": "Google AILandscape Measure KR ko 15s 1191 V2 ",
+    "ad_story": null,
+    "today_per_day": 30564,
+    "accel_x": 2.6
+   },
+   {
+    "brand": "이중턱 삭제시킨 사람들 모임",
+    "title": "99.8 % 가 모르는 사실!!",
+    "ad_story": null,
+    "today_per_day": 55025,
+    "accel_x": 2.5
+   },
+   {
+    "brand": "꿀팁왔슈_P",
+    "title": "아니 나라에서 대출금 40%나 줄여주고 있었다는디 이걸 아직도 몰랐슈~?",
+    "ad_story": null,
+    "today_per_day": 11502,
+    "accel_x": 2.4
+   },
+   {
+    "brand": "알로요가",
+    "title": "PAID MEDIA 23 YOUTUBE SP26 WOMENS CORE 15S ST",
+    "ad_story": null,
+    "today_per_day": 25698,
+    "accel_x": 2.4
+   },
+   {
+    "brand": "라로슈포제",
+    "title": "모공¹⁾, 피지²⁾, 피부결 개선 #에빠끌라세럼",
+    "ad_story": null,
+    "today_per_day": 36898,
+    "accel_x": 2.4
+   },
+   {
+    "brand": "이슬롭게, 천이슬",
+    "title": "#브러쉬계의 에르메스",
+    "ad_story": null,
+    "today_per_day": 14642,
+    "accel_x": 2.3
+   },
+   {
+    "brand": "중앙선거관리위원회",
+    "title": "[챌린지 9편] 중앙선관위 #캐치캐치편",
+    "ad_story": null,
+    "today_per_day": 97826,
+    "accel_x": 2.3
+   },
+   {
+    "brand": "굿네이버스",
+    "title": "학예회 때 학부모님들 다 오셨는데...",
+    "ad_story": null,
+    "today_per_day": 24706,
+    "accel_x": 2.2
+   }
+  ],
+  "top_exposed": [
+   {
+    "brand": "헤이딜러",
+    "title": "heydealer eye (30s)",
+    "today_per_day": 1305556
+   },
+   {
+    "brand": "헤이딜러",
+    "title": "heydealer eye (15s)",
+    "today_per_day": 956547
+   },
+   {
+    "brand": "NH농협은행",
+    "title": "🎁댓글 이벤트🎁 [NH농협은행 X 박지훈] 1%까지 더한다, 100% 은행이 되기",
+    "today_per_day": 770872
+   },
+   {
+    "brand": "토스증권",
+    "title": "인류의 호재 (15초) ㅣ 토스증권",
+    "today_per_day": 724139
+   },
+   {
+    "brand": "넷플릭스",
+    "title": "참교육 | 메인 15초 예고편",
+    "today_per_day": 711170
+   },
+   {
+    "brand": "김프로KIMPRO",
+    "title": "좋은 것만 주고 싶어🥰",
+    "today_per_day": 621842
+   },
+   {
+    "brand": "맘스터치",
+    "title": "매콤꾸덕 NEW 🔥핫치즈밤🧀 출시",
+    "today_per_day": 597058
+   },
+   {
+    "brand": "맘스터치",
+    "title": "매콤꾸덕 NEW 🔥핫치즈밤🧀 출시",
+    "today_per_day": 582457
+   },
+   {
+    "brand": "삼성",
+    "title": "[갤럭시 S26] 이 룩을 찾아보세요 - 하객룩 편 | 삼성전자",
+    "today_per_day": 579452
+   },
+   {
+    "brand": "보건복지부",
+    "title": "기초연금 탈락하셨다고요? 이제는 방문 없이 신청됩니다!📝",
+    "today_per_day": 546596
+   }
+  ],
+  "industry_cpm": [
+   {
+    "industry": "게임",
+    "bumper": 14007,
+    "average": 14983,
+    "vtr": 0.5093
+   },
+   {
+    "industry": "교육 & 커리어",
+    "bumper": 12307,
+    "average": 12262,
+    "vtr": 0.4201
+   },
+   {
+    "industry": "IT & 전자기기",
+    "bumper": 11998,
+    "average": 11005,
+    "vtr": 0.4263
+   },
+   {
+    "industry": "경제 & 경영",
+    "bumper": 10998,
+    "average": 9875,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "금융 & 보험",
+    "bumper": 10998,
+    "average": 9875,
+    "vtr": 0.5366
+   },
+   {
+    "industry": "에너지 & 환경",
+    "bumper": 10998,
+    "average": 9875,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "주식 & 투자",
+    "bumper": 10998,
+    "average": 9875,
+    "vtr": 0.5366
+   },
+   {
+    "industry": "엔터테인먼트",
+    "bumper": 10361,
+    "average": 10111,
+    "vtr": 0.5126
+   },
+   {
+    "industry": "부동산 & 건설",
+    "bumper": 10179,
+    "average": 9034,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "자동차",
+    "bumper": 10179,
+    "average": 9034,
+    "vtr": 0.5
+   },
+   {
+    "industry": "레저 & 스포츠",
+    "bumper": 10179,
+    "average": 7184,
+    "vtr": 0.5081
+   },
+   {
+    "industry": "피트니스 & 다이어트",
+    "bumper": 9126,
+    "average": 8088,
+    "vtr": 0.5103
+   },
+   {
+    "industry": "정부기관",
+    "bumper": 9126,
+    "average": 8088,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "모든 광고",
+    "bumper": 9126,
+    "average": 8088,
+    "vtr": 0.5
+   },
+   {
+    "industry": "기타산업",
+    "bumper": 9126,
+    "average": 8088,
+    "vtr": 0.5
+   },
+   {
+    "industry": "리빙 & 인테리어",
+    "bumper": 8361,
+    "average": 7791,
+    "vtr": 0.5012
+   },
+   {
+    "industry": "쇼핑 & 유통",
+    "bumper": 8307,
+    "average": 7184,
+    "vtr": 0.6181
+   },
+   {
+    "industry": "패션 & 의류",
+    "bumper": 8307,
+    "average": 7184,
+    "vtr": 0.6181
+   },
+   {
+    "industry": "결혼 & 육아",
+    "bumper": 7361,
+    "average": 7791,
+    "vtr": 0.5012
+   },
+   {
+    "industry": "뷰티 & 메이크업",
+    "bumper": 7361,
+    "average": 6224,
+    "vtr": 0.6181
+   },
+   {
+    "industry": "음식 & 음료",
+    "bumper": 7361,
+    "average": 6224,
+    "vtr": 0.34
+   },
+   {
+    "industry": "취미 & 공예 & 디자인",
+    "bumper": 7361,
+    "average": 6224,
+    "vtr": 0.5
+   },
+   {
+    "industry": "의료 & 건강",
+    "bumper": 7106,
+    "average": 6703,
+    "vtr": 0.5103
+   },
+   {
+    "industry": "국제 & 비영리 단체",
+    "bumper": 6710,
+    "average": 6710,
+    "vtr": 0.4713
+   },
+   {
+    "industry": "동물 (펫)",
+    "bumper": 6435,
+    "average": 5312,
+    "vtr": 0.5
+   },
+   {
+    "industry": "여행",
+    "bumper": 5907,
+    "average": 5858,
+    "vtr": 0.5997
+   }
+  ],
+  "category_rollup": [
+   {
+    "tag": "entertainment",
+    "n_videos": 779,
+    "total_today_views": 29583,
+    "n_accelerating": 193
+   },
+   {
+    "tag": "sports",
+    "n_videos": 268,
+    "total_today_views": 20622,
+    "n_accelerating": 61
+   },
+   {
+    "tag": "technology",
+    "n_videos": 612,
+    "total_today_views": 13719,
+    "n_accelerating": 162
+   },
+   {
+    "tag": "automotive",
+    "n_videos": 515,
+    "total_today_views": 12221,
+    "n_accelerating": 117
+   },
+   {
+    "tag": "fashion",
+    "n_videos": 545,
+    "total_today_views": 7183,
+    "n_accelerating": 156
+   },
+   {
+    "tag": "advertising",
+    "n_videos": 273,
+    "total_today_views": 6631,
+    "n_accelerating": 72
+   },
+   {
+    "tag": "gaming",
+    "n_videos": 219,
+    "total_today_views": 5619,
+    "n_accelerating": 73
+   },
+   {
+    "tag": "athletics",
+    "n_videos": 7,
+    "total_today_views": 5076,
+    "n_accelerating": 2
+   },
+   {
+    "tag": "consumer electronics",
+    "n_videos": 79,
+    "total_today_views": 5046,
+    "n_accelerating": 20
+   },
+   {
+    "tag": "luxury vehicle",
+    "n_videos": 19,
+    "total_today_views": 5025,
+    "n_accelerating": 3
+   },
+   {
+    "tag": "graphic design",
+    "n_videos": 239,
+    "total_today_views": 4494,
+    "n_accelerating": 84
+   },
+   {
+    "tag": "education",
+    "n_videos": 316,
+    "total_today_views": 4078,
+    "n_accelerating": 82
+   },
+   {
+    "tag": "video games",
+    "n_videos": 45,
+    "total_today_views": 3990,
+    "n_accelerating": 11
+   },
+   {
+    "tag": "cosmetics",
+    "n_videos": 325,
+    "total_today_views": 3830,
+    "n_accelerating": 110
+   },
+   {
+    "tag": "food",
+    "n_videos": 583,
+    "total_today_views": 3815,
+    "n_accelerating": 151
+   },
+   {
+    "tag": "film production",
+    "n_videos": 15,
+    "total_today_views": 3496,
+    "n_accelerating": 5
+   },
+   {
+    "tag": "perfume",
+    "n_videos": 17,
+    "total_today_views": 3390,
+    "n_accelerating": 2
+   },
+   {
+    "tag": "music",
+    "n_videos": 249,
+    "total_today_views": 3368,
+    "n_accelerating": 64
+   },
+   {
+    "tag": "mobile devices",
+    "n_videos": 88,
+    "total_today_views": 3205,
+    "n_accelerating": 23
+   },
+   {
+    "tag": "beauty",
+    "n_videos": 389,
+    "total_today_views": 3173,
+    "n_accelerating": 107
+   }
+  ],
+  "spotlight": [],
+  "brand_spend_rollup": [
+   {
+    "brand": "원더케이",
+    "today_total": 92117900000,
+    "baseline_total": 93917625000,
+    "sample_creative": "[MV] BTS(방탄소년단) _ DOPE(쩔어)"
+   },
+   {
+    "brand": "EVE Online",
+    "today_total": 11892800000,
+    "baseline_total": 11497937500,
+    "sample_creative": "EVE Online | 탐사의 신비"
+   },
+   {
+    "brand": "하이브",
+    "today_total": 8185960000,
+    "baseline_total": 8153847500,
+    "sample_creative": "ILLIT (아일릿) ‘Magnetic’ Official MV"
+   },
+   {
+    "brand": "디올",
+    "today_total": 5643380000,
+    "baseline_total": 5668427500,
+    "sample_creative": "THE NEW MISS DIOR ESSENCE"
+   },
+   {
+    "brand": "히어로워즈",
+    "today_total": 5585390000,
+    "baseline_total": 5671841250,
+    "sample_creative": "hw_dungeongothic4e_h_en_120"
+   },
+   {
+    "brand": "SM엔터테인먼트",
+    "today_total": 5303550000,
+    "baseline_total": 4762808750,
+    "sample_creative": "aespa 에스파 'Supernova' MV"
+   },
+   {
+    "brand": "agoda",
+    "today_total": 2797060000,
+    "baseline_total": 2888918750,
+    "sample_creative": "아고다 Agoda | 모텔 예약도 Agoda！- 15s Motel"
+   },
+   {
+    "brand": "Canva Korea",
+    "today_total": 2013010000,
+    "baseline_total": 1955535000,
+    "sample_creative": "캔바 — 뭐든지 해낸다, 예쁘게"
+   },
+   {
+    "brand": "삼성전자",
+    "today_total": 1776970000,
+    "baseline_total": 1372957500,
+    "sample_creative": "[Bespoke AI 콤보] 한가인이 준비한 통 큰 선물의 정체는? | 삼성전자"
+   },
+   {
+    "brand": "프레플리",
+    "today_total": 1679120000,
+    "baseline_total": 1632283750,
+    "sample_creative": "So... Preply 🩷 | Better Duo | Preply"
+   },
+   {
+    "brand": "키움증권",
+    "today_total": 1293500000,
+    "baseline_total": 1122033250,
+    "sample_creative": "ETF, 연금, ISA도 키움증권(6”C)"
+   }
+  ],
+  "campaign_flow_daily": [
+   {
+    "dt": "2026-06-01",
+    "started": 381,
+    "ended": 822
+   },
+   {
+    "dt": "2026-05-31",
+    "started": 456,
+    "ended": 1031
+   },
+   {
+    "dt": "2026-05-30",
+    "started": 40,
+    "ended": 32
+   },
+   {
+    "dt": "2026-05-29",
+    "started": 619,
+    "ended": 848
+   },
+   {
+    "dt": "2026-05-28",
+    "started": 384,
+    "ended": 203
+   },
+   {
+    "dt": "2026-05-27",
+    "started": 194,
+    "ended": 0
+   },
+   {
+    "dt": "2026-05-26",
+    "started": 296,
+    "ended": 129
+   },
+   {
+    "dt": "2026-05-25",
+    "started": 264,
+    "ended": 724
+   },
+   {
+    "dt": "2026-05-24",
+    "started": 427,
+    "ended": 395
+   },
+   {
+    "dt": "2026-05-23",
+    "started": 316,
+    "ended": 513
+   },
+   {
+    "dt": "2026-05-22",
+    "started": 292,
+    "ended": 0
+   },
+   {
+    "dt": "2026-05-21",
+    "started": 449,
+    "ended": 578
+   },
+   {
+    "dt": "2026-05-20",
+    "started": 346,
+    "ended": 120
+   },
+   {
+    "dt": "2026-05-19",
+    "started": 211,
+    "ended": 0
+   },
+   {
+    "dt": "2026-05-18",
+    "started": 196,
+    "ended": 61
+   }
+  ],
+  "campaign_started_brands_3d": [
+   {
+    "brand": "(미상)",
+    "n": 197,
+    "sample_creative": "강원 양양에서 즐기는 압도적인 하이엔드 관광코스 더스탠드 온 하조베이❣"
+   },
+   {
+    "brand": "최저가 확인단 ",
+    "n": 18,
+    "sample_creative": "손목, 손가락 통증 '관절보궁' 이 싹- 없애드립니다. 본사 단독 이벤트 진행 중"
+   },
+   {
+    "brand": "탈모의 모든것",
+    "n": 12,
+    "sample_creative": "탈모특화 신소재 '트리코닉스'"
+   },
+   {
+    "brand": "Healthy person",
+    "n": 12,
+    "sample_creative": "고혈압 1분 지식"
+   },
+   {
+    "brand": "oisunna",
+    "n": 9,
+    "sample_creative": "유리 크랙 복구 세트"
+   },
+   {
+    "brand": "할인템들 다모아",
+    "n": 8,
+    "sample_creative": "샤르드 멜라필크림마스크"
+   },
+   {
+    "brand": "에스더포뮬러",
+    "n": 8,
+    "sample_creative": "[블프 한정] 100원에 쏩니다, 에스더몰 전국민 블랙프라이데이"
+   },
+   {
+    "brand": "전국 최고가 견적비교",
+    "n": 7,
+    "sample_creative": "kb셀카 1분 무료 견적 비교 확인하세요"
+   },
+   {
+    "brand": "삼성전자",
+    "n": 7,
+    "sample_creative": "[Bespoke AI 콤보] 한가인이 준비한 통 큰 선물의 정체는? | 삼성전자"
+   },
+   {
+    "brand": "틱장애한의사",
+    "n": 7,
+    "sample_creative": "성인틱 치료, 아동틱보다 유리한 이유 5가지"
+   },
+   {
+    "brand": "방광클리닉",
+    "n": 7,
+    "sample_creative": "방광염이 재발한다면"
+   },
+   {
+    "brand": "금연엔노담",
+    "n": 6,
+    "sample_creative": "[시작하자 금연 PT] 흡연부스 편 (15s)"
+   }
+  ],
+  "campaign_ended_brands_3d": [
+   {
+    "brand": "(미상)",
+    "n": 274
+   },
+   {
+    "brand": "조달청TV",
+    "n": 16
+   },
+   {
+    "brand": "최저가 확인단 ",
+    "n": 16
+   },
+   {
+    "brand": "웰라쥬",
+    "n": 13
+   },
+   {
+    "brand": "유니클로 코리아",
+    "n": 11
+   },
+   {
+    "brand": "에이비성형외과",
+    "n": 10
+   },
+   {
+    "brand": "강원특별자치도선거관리위원회",
+    "n": 10
+   },
+   {
+    "brand": "산업통상자원부",
+    "n": 9
+   },
+   {
+    "brand": "할인템들 다모아",
+    "n": 9
+   },
+   {
+    "brand": "탈모의 모든것",
+    "n": 9
+   }
+  ]
+ }
+}

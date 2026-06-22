@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>오늘의 광고시장 헤드라인 (국내)</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.min.css" rel="stylesheet" />
+<style>
+:root{
+  --orange:#FF5A1F;--orange-50:#FFF1EB;--indigo:#4F46E5;--indigo-50:#EEF2FF;
+  --bg:#F6F7F9;--surface:#FFFFFF;--text:#16181D;--text2:#454953;--muted:#878D99;
+  --line:#ECEEF1;--up:#E8442B;--up-bg:#FFEDE9;--down:#2563EB;--down-bg:#E8F0FE;--neu:#6B7280;--neu-bg:#F1F3F5;
+  --shadow:0 1px 2px rgba(16,18,29,.04),0 8px 24px rgba(16,18,29,.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.45}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.nav{background:var(--surface);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:26px;height:60px}
+.logo{font-size:20px;font-weight:800;color:var(--orange);letter-spacing:-.02em}
+.nav a.mn{font-size:14px;font-weight:600;color:var(--text2)}.nav a.mn:hover{color:var(--text)}
+.nav .sp{flex:1}.nav .chip{font-size:11px;font-weight:800;color:#fff;background:var(--orange);border-radius:5px;padding:2px 6px}
+.phead{padding:34px 0 22px}
+.phead .kick{font-size:13px;font-weight:800;color:var(--orange)}
+.phead .titlerow{display:flex;align-items:flex-end}
+.phead h1{font-size:28px;font-weight:800;letter-spacing:-.02em;margin:7px 0 0}
+.phead .date{font-size:14px;color:var(--muted);font-weight:600;margin-left:auto}
+.ai{display:flex;gap:9px;align-items:flex-start;background:var(--indigo-50);border-radius:13px;padding:13px 16px;margin-top:16px;font-size:14px;color:#3730A3;max-width:800px}
+.ai b{font-weight:800}
+.grid{display:flex;gap:26px;align-items:flex-start;padding-bottom:70px}
+.main{flex:1;min-width:0}.side{flex:0 0 318px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin-bottom:15px}
+.feed{padding:4px 24px}
+.ed{display:flex;gap:17px;padding:20px 0;border-bottom:1px solid var(--line)}
+.ed:last-child{border-bottom:0}
+.ed .num{flex:0 0 auto;width:22px;font-size:18px;font-weight:800;color:var(--orange);padding-top:3px}
+.thumb{flex:0 0 auto;width:150px;height:84px;border-radius:11px;overflow:hidden;background:#0c0c0c;position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb.noimg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;text-align:center;line-height:1.3}
+.body{flex:1;min-width:0}
+.body .title{font-size:18px;font-weight:800;letter-spacing:-.015em;line-height:1.34}
+.body .sub{color:var(--text2);font-size:13.5px;margin-top:5px}
+.row{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap}
+.evt{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--text2);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:5px 12px;cursor:pointer;transition:border-color .15s,color .15s}.evt:hover{border-color:var(--orange);color:var(--orange)}
+.w{padding:17px 17px 7px}
+.wh{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.wh .ic{font-size:15px}.wh h3{font-size:14.5px;font-weight:800}.wh .mo{margin-left:auto;font-size:12px;color:var(--muted);font-weight:700}
+.li{display:flex;align-items:center;gap:9px;padding:9px 2px;border-top:1px solid var(--line)}
+.li .rn{flex:0 0 16px;text-align:center;font-size:13px;font-weight:800;color:var(--muted)}
+.li .nm{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.li .ig-btn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;transition:opacity .15s;text-decoration:none}
+.li .ig-btn:hover{opacity:.8}
+.li .ig-btn svg{width:13px;height:13px;fill:#fff}
+.li .yt-btn{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:#FF0000;color:#fff;transition:opacity .15s;text-decoration:none}
+.li .yt-btn:hover{opacity:.8}
+.li .yt-btn svg{width:13px;height:13px;fill:#fff}
+.li .vl{font-size:12px;font-weight:800}.li .vl.up{color:var(--up)}.li .vl.down{color:var(--down)}.li .vl.neu{color:var(--text2)}
+.footnote{padding:38px 0 0;color:var(--muted);font-size:12px;text-align:center}
+/* tabs */
+.tabs{display:flex;gap:8px;margin:20px 0 0}
+.tab{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--text2);cursor:pointer;transition:all .15s}
+.tab:hover{border-color:var(--orange);color:var(--orange)}
+.tab.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.tab .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.7}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(16,18,29,.55);backdrop-filter:blur(2px);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.show{opacity:1;pointer-events:auto}
+.modal{background:#fff;border-radius:20px;width:560px;max-width:calc(100vw - 40px);overflow:hidden;box-shadow:0 8px 48px rgba(16,18,29,.18);display:flex;flex-direction:column;max-height:calc(100vh - 60px);transform:translateY(12px);transition:transform .25s}
+.overlay.show .modal{transform:translateY(0)}
+.modal-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 8px;flex-shrink:0}
+.modal-kicker{font-size:11px;font-weight:800;color:var(--orange);letter-spacing:.06em}
+.modal-close{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;color:var(--muted);line-height:1}
+.modal-close:hover{background:var(--bg)}
+.modal-slides-wrap{overflow:hidden;flex:1;min-height:0}
+.modal-slides{display:flex;transition:transform .3s cubic-bezier(.4,0,.2,1);will-change:transform;height:100%}
+.modal-slide{min-width:100%;display:flex;flex-direction:column;overflow-y:auto}
+.slide-thumb-wrap{width:100%;height:196px;background:#0c0c0c;position:relative;overflow:hidden;flex-shrink:0}
+.slide-thumb-wrap .slide-thumb{width:100%;height:100%;object-fit:cover;display:block}
+.slide-thumb-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px}
+.slide-cover-body{padding:16px 20px 14px;display:flex;flex-direction:column;gap:7px}
+.slide-tab-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:800;padding:3px 10px;border-radius:6px;align-self:flex-start}
+.slide-num{font-size:12px;font-weight:800;color:var(--orange)}
+.slide-title{font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1.38}
+.slide-sub{font-size:13px;color:var(--text2);line-height:1.5}
+.slide-locked{position:relative;overflow:hidden;min-height:280px;background:#0f1117}
+.slide-locked-preview{padding:20px;filter:blur(5px);user-select:none;pointer-events:none}
+.preview-content{display:flex;flex-direction:column;gap:10px}
+.preview-row{display:flex;align-items:center;gap:10px}
+.preview-label{font-size:12px;font-weight:700;color:#9CA3AF;width:90px;flex-shrink:0}
+.preview-bar-wrap{flex:1;background:#1F2937;border-radius:4px;height:8px;overflow:hidden}
+.preview-bar{height:100%;border-radius:4px}
+.preview-val{font-size:12px;font-weight:800;color:#F9FAFB;width:52px;text-align:right;flex-shrink:0}
+.preview-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.preview-tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;background:#1F2937;color:#9CA3AF}
+.preview-divider{height:1px;background:#1F2937;margin:4px 0}
+.preview-gate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(to bottom,rgba(15,17,23,0) 0%,rgba(15,17,23,.88) 32%,rgba(15,17,23,.97) 100%)}
+.gate-icon{font-size:24px}
+.slide-locked-title{font-size:15px;font-weight:800;color:#F9FAFB}
+.gate-badge{display:inline-flex;align-items:center;gap:6px;background:#FF5A1F;color:#fff;font-size:12px;font-weight:800;padding:5px 13px;border-radius:999px}
+.gate-desc{font-size:13px;color:#D1D5DB;font-weight:600;text-align:center;line-height:1.5;max-width:260px}
+.modal-dots{display:flex;justify-content:center;align-items:center;gap:5px;padding:8px 0 4px;flex-shrink:0}
+.modal-dot{width:6px;height:6px;border-radius:3px;background:var(--line);transition:width .2s,background .2s}
+.modal-dot.active{width:18px;background:var(--orange)}
+.modal-nav-footer{display:flex;align-items:center;gap:8px;padding:6px 16px 18px;flex-shrink:0}
+.btn-close-modal{font-size:13px;font-weight:700;color:var(--text2);background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 16px;cursor:pointer;transition:border-color .15s}
+.btn-close-modal:hover{border-color:var(--muted)}
+.modal-nav-arrows{display:flex;align-items:center;gap:6px;margin-left:auto}
+.btn-arrow{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,color .15s}
+.btn-arrow:hover:not(:disabled){border-color:var(--orange);color:var(--orange)}
+.btn-arrow:disabled{opacity:.3;cursor:default}
+.modal-page-info{font-size:12px;font-weight:700;color:var(--muted);min-width:32px;text-align:center}
+</style></head>
+<body>
+<div class="nav"><div class="wrap">
+  <span class="logo">유광기</span>
+  <a class="mn">유튜브 도구</a><a class="mn">인스타그램 도구 <span class="chip">NEW</span></a>
+  <a class="mn">유광기 EXPRESS</a><a class="mn">가격 안내</a><span class="sp"></span><a class="mn">소식 및 문의</a>
+</div></div>
+<div class="wrap">
+  <div class="phead">
+    <div class="titlerow"><div><div class="kick">DAILY · AI HEADLINES</div>
+      <h1>🔥 오늘의 광고시장 헤드라인 10선</h1></div><span class="date">2026.06.01 (월)</span></div>
+    <div class="ai" id="ai-summary"><span>✨</span><div id="ai-text"><b>AI 요약</b> · 아정당이 459개 광고로 1.1억뷰를 집행하며 인스트림 압도적 1위에 올랐고, 구독자 466명 채널이 849만뷰를 기록한 알파무드향수의 ratio 이상치가 주목받았습니다. 스픽의 평균 6.9배 효율과 두근두근타운의 쇼츠 4개 전략이 돋보입니다.</div></div>
+    <div class="tabs">
+      <button class="tab" onclick="switchTab('yt-ppl')"><span class="dot"></span>유튜브 PPL</button>
+      <button class="tab active" onclick="switchTab('instream')"><span class="dot"></span>인스트림 광고</button>
+      <button class="tab" onclick="switchTab('insta-ppl')"><span class="dot"></span>인스타그램 PPL</button>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="main">
+      <div id="panel-instream"><div class="card"><div class="feed" id="feed-instream"></div></div></div>
+      <div id="panel-yt-ppl" style="display:none"><div class="card"><div class="feed" id="feed-ppl"></div></div></div>
+      <div id="panel-insta-ppl" style="display:none"><div class="card"><div class="feed" id="feed-insta"></div></div></div>
+    </div>
+    <div class="side">
+      <div class="card"><div class="w"><div class="wh" id="wh1"></div><div id="wd1"></div></div></div>
+      <div class="card"><div class="w"><div class="wh" id="wh2"></div><div id="wd2"></div></div></div>
+      <div class="card"><div class="w"><div class="wh" id="wh3"></div><div id="wd3"></div></div></div>
+    </div>
+  </div>
+  <div class="footnote">광고 시장 · 데이터 = 2026-06-01 기준 test.db 실제값 · 헤드라인 AI 생성 후 수치 검증 완료</div>
+</div>
+
+<!-- modal -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-topbar">
+      <div class="modal-kicker">DAILY · AI HEADLINES</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-slides-wrap">
+      <div class="modal-slides" id="modal-slides"></div>
+    </div>
+    <div class="modal-dots" id="modal-dots">
+      <span class="modal-dot active"></span>
+      <span class="modal-dot"></span>
+      <span class="modal-dot"></span>
+      <span class="modal-dot"></span>
+      <span class="modal-dot"></span>
+    </div>
+    <div class="modal-nav-footer">
+      <button class="btn-close-modal" onclick="closeModal()">닫기</button>
+      <div class="modal-nav-arrows">
+        <button class="btn-arrow" id="modal-prev" onclick="modalPrev()">←</button>
+        <span class="modal-page-info" id="modal-page-info">1 / 5</span>
+        <button class="btn-arrow" id="modal-next" onclick="modalNext()">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 헤드라인 데이터 ───────────────────────────────────────────────────
+
+const HL_instream = [
+  {n:1,title:"아정당, 광고 459개로 1.1억뷰 융단폭격",sub:"누적 1억 1천만뷰 — 단일 브랜드 인스트림 집행 압도적 1위",id:"fll5ItofMlQ"},
+  {n:2,title:"구독자 466명 채널이 849만뷰…알파무드 향수 ssul의 정체",sub:"ratio_views 18,229배 — 인스트림 이상치 단독 1위",id:"GNDGUDNHmZc"},
+  {n:3,title:"스픽, 평균 ratio 6.9에 최고 1082배…영어앱이 만든 바이럴 괴물",sub:"AI 영어 학습 앱의 인스트림 효율, 업종 평균을 압도",id:"vcZEsuX42qg"},
+  {n:4,title:"광고 단 10개로 4954만뷰…농협목우촌 소시지 ASMR의 효율",sub:"\"구운마늘 프랑크 asmr\" — 10개 집행으로 5천만뷰 근접",id:"pxqCTRsVJtE"},
+  {n:5,title:"구독자 33명인데 202만뷰…일루미엘 스팟패치가 터졌다",sub:"ratio_views 4,417배 — 극소 채널에서의 광고 집행",id:"DsiuTo5d7k4"},
+  {n:6,title:"광고 4개·평균 38초로 2266만뷰…두근두근타운의 쇼츠 한방",sub:"짧고 굵게, 4개 광고 소재로 2,266만뷰 달성",id:"iHKHe25Dbrw"},
+  {n:7,title:"보일러를 구독한다고? 경동나비엔 \"OTT보다 싸다\"",sub:"\"OTT 구독료보다 싸다는 보일러 구독\" 캠페인",id:"tBe4yjjiMsk"},
+  {n:8,title:"평균 22분짜리 광고로 승부…리드볼트의 롱폼 도박",sub:"avg_duration 1,378초 — 인스트림 장편 광고 집행",id:"lrnVhHFr9qE"},
+  {n:9,title:"삼성, 광고 476개 집행하고도 최고 143배 바이럴까지",sub:"대규모 집행 + 고효율 동시 달성 — 유이한 케이스",id:"Xh_tmY_CxBE"},
+  {n:10,title:"발냄새 3초컷 영상이 570만뷰…리디에뜨가 노린 후킹",sub:"\"지독한 발냄새 3초만에 없애는 비법\" 34초 쇼츠",id:"TTS2Di2XXOg"},
+];
+
+const HL_ppl = [
+  {n:1,title:"구독자 1570명 채널에 아비브 PPL, 뷰는 63만…뷰율 161배",sub:"구독자 대비 161배 뷰 — 소형 채널 PPL 효율 최고치",id:"E6nWrFzliQE"},
+  {n:2,title:"35초짜리 쇼츠 하나로 구독자의 161배 터졌다",sub:"같은 아비브 영상, 다른 각도 — 길이보다 내용이 결정",id:"E6nWrFzliQE"},
+  {n:3,title:"구독자 5.2만 채널이 쿠팡플레이 업고 '뷰율 8배' 사칭퀸",sub:"드라마 \"트리거\" PPL — 구독자 51,900 · 뷰 68만",id:"ESJcuJuA8JY"},
+  {n:4,title:"컬러그램 PPL, 구독자 1800명인데 12만뷰…뷰율 67배의 미스터리",sub:"\"가을 기다렸잖아\" 29초 쇼츠 · 컬러그램 립 협찬",id:"H_94ASGEAHM"},
+  {n:5,title:"향수 미니어처 다 뿌리는 미주, 구독자 1.8만에 36만뷰 터졌다",sub:"러블리즈 미주 향수 미니어처 언박싱 PPL",id:"3qggzUYg6Gg"},
+  {n:6,title:"아무로 나미에 영상에 웬 VPN?…서프샤크·Saily 멀티 협찬의 정체",sub:"Entertainment 영상에 VPN 브랜드 2개 동시 협찬",id:"cmRukC0eAbg"},
+  {n:7,title:"\"엄마 나 샤넬 이겼어…다이소로\" 달바 PPL 28만뷰",sub:"구독자 38,900 · 달바 립 협찬 · 반전 후킹 제목",id:"2EH2q13x6_4"},
+  {n:8,title:"강아지 영상에 구전녹용 PPL?…펫 채널의 의외의 광고주",sub:"Pets 채널 · 구전녹용 협찬 · 구독자 21.9만 · 48만뷰",id:"i_0jDehRt7A"},
+  {n:9,title:"22초 교복세탁 쇼츠에 다우니, 구독자 1.1만의 21만뷰 한 방",sub:"\"#교복세탁 #다우니\" 22초 쇼츠 · 구독자 11,300",id:"_QuCa2PcZoo"},
+  {n:10,title:"김혜수 '트리거' 디즈니플러스 PPL, 42초 클립으로 51만뷰",sub:"\"쓰레기 변태 남친 잘못 만난 김혜수의 최후 #트리거\"",id:"O9frRNR9ZEQ"},
+];
+
+const HL_insta = [
+  {n:1,title:"팔로워 2만 오크베리, 561만뷰·6.7만 공유 폭발…그 비결은?",sub:"팔로워 19,975 · 뷰 561만 · repost 67,000 · 릴스 1편",pid:"DYmZTsMBGu4",noimg:"🫐",bg:"linear-gradient(135deg,#6366F1,#8B5CF6)"},
+  {n:2,title:"팔로워 1977명 김치 계정이 128만뷰…아르뫼김치에 무슨 일이?",sub:"팔로워 1,977 · 뷰 128만 — 초소형 계정 PPL 역대급",pid:"DYny6N7zQtL",noimg:"🥬",bg:"linear-gradient(135deg,#10B981,#059669)"},
+  {n:3,title:"손흥민도 이걸 올렸다…1433만 팔로워가 택한 PPL 정체는?",sub:"팔로워 14,330,125 · 뷰 113만 · 공식 PPL",pid:"DYnf3LhqygK",noimg:"⚽",bg:"linear-gradient(135deg,#EF4444,#DC2626)"},
+  {n:4,title:"구자철 1편에 66만 좋아요…제주 KFC가 노린 한 방?",sub:"팔로워 63,074 · 좋아요 667,885 · 제주 KFC 협찬",pid:"DY0xpU_zh-Y",noimg:"⚽",bg:"linear-gradient(135deg,#F59E0B,#D97706)"},
+  {n:5,title:"팔로워 1만 진수네, 강아지 영상 하나로 216만뷰 찍었다",sub:"팔로워 10,494 · 뷰 2,158,472 · 릴스 단독",pid:"DYwi6LkzIRI",noimg:"🐶",bg:"linear-gradient(135deg,#F97316,#EA580C)"},
+  {n:6,title:"좋아요 단 3개에 543만뷰…풍이 PPL의 기이한 숫자들",sub:"에어독 공식 엠버서더 · 뷰 5,438,635 · 좋아요 3개",pid:"DY1hWlyBBnP",noimg:"🐕",bg:"linear-gradient(135deg,#14B8A6,#0D9488)"},
+  {n:7,title:"팔로워 6208명 계정이 두 편 연속 백만뷰…김형준의 정체?",sub:"팔로워 6,208 · 2편 합산 354만뷰",pid:"DYgUaU2J7rh",noimg:"👤",bg:"linear-gradient(135deg,#6366F1,#4F46E5)"},
+  {n:8,title:"레노버, 인스타에만 PPL 4편 몰아쳤다…노트북 광고의 새 전장?",sub:"레노버 공식 계정 · 4편 집행 · 116만~65만뷰",pid:"DYsKi88RpeI",noimg:"💻",bg:"linear-gradient(135deg,#374151,#1F2937)"},
+  {n:9,title:"다이빙 크리에이터의 272만뷰…수중 영상에 숨은 협찬은?",sub:"팔로워 67,570 · 뷰 2,723,643 · 수중 촬영 릴스",pid:"DYn88lpyJtZ",noimg:"🤿",bg:"linear-gradient(135deg,#0EA5E9,#0284C7)"},
+  {n:10,title:"김형준 부부 공구 직전, 팔로워의 20배 뷰를 쓸어담은 릴스",sub:"팔로워 123,596 · 뷰 639,946 · \"첫공구 이불 진행중\"",pid:"DYuQthyT4mO",noimg:"🛌",bg:"linear-gradient(135deg,#EC4899,#DB2777)"},
+];
+
+// ── 사이드 위젯 데이터 ────────────────────────────────────────────────
+
+const WIDGETS = {
+  instream: {
+    w1:{ic:'⚡',title:'범퍼 뷰 TOP',mo:'≤6초 · 누적 조회수',        rows:[['신신제약','73만뷰','UC08xTfd_HeIbiXIHX4DXaJQ'],['맥도날드','10.7만뷰','UCyar0OYt0LoPzkkWcQAo6OA'],['마리끌레르 코리아','2.7만뷰','UCYIxlZxTQvixNihWV31-fqA'],['GOLDEN BLUE 골든블루','1.1만뷰','UC9df9IwsEt84PKQZ-ZiRZLA'],['팝마트코리아','3,800','UCdpeN8LUQJlDDbRZQTWJBmA']]},
+    w2:{ic:'🚫',title:'논스킵 뷰 TOP',mo:'7~20초 · 누적 조회수',        rows:[['디즈니플러스','671만뷰','UC3IED80qDRz9Jmc76EJW8vg'],['신신제약','465만뷰','UC08xTfd_HeIbiXIHX4DXaJQ'],['쉬인','177만뷰','UCvB_SnmhWpzs-Ht_t-2nJ-A'],['토스증권','158만뷰','UCUj6rrhMTR9pipbAWBAMvUQ'],['메가MGC커피','144만뷰','UCt-BApVtJGrvF5pCgbiNVeg']]},
+    w3:{ic:'▶️',title:'스킵 뷰 TOP',mo:'21초+ · 누적 조회수',        rows:[['아정당','1.07억뷰','UCSSkHIU1-nL_FeCjeZ_Xtvg'],['삼성','9,662만뷰','UC4DQd04bg-36nfm-P_4uEbg'],['미닉스','6,559만뷰','UCj2xeKmlkaRvsAXndCqohrQ'],['농협목우촌','4,809만뷰','UC_IKIoeQoqOxqlKqg7ccVew'],['로보락','3,940만뷰','UCejeuL7B6s8UpsNaYWWzeEQ']]},
+  },
+  'yt-ppl': {
+    w1:{ic:'⚡',title:'쇼츠 PPL 뷰 TOP',mo:'≤60초 · 누적 조회수',        rows:[['아비브','63.1만뷰','UCfIoeCmzOOJbRdrrGK47gCw'],['디즈니플러스','51만뷰','UC3IED80qDRz9Jmc76EJW8vg'],['컬러그램','12만뷰','UC5nwC7uJAj17yG2Tr0Fkp7w'],['메가MGC커피','7만뷰','UCkU8PYCXmQO4JHVYK_DeN6w'],['렌튼','6.8만뷰',null]]},
+    w2:{ic:'🎬',title:'롱폼 PPL 뷰 TOP',mo:'>60초 · 누적 조회수',        rows:[['하이트진로','180만뷰','UCfqVrM2cvwxG3-EvxbsN0KQ'],['켈로그','129만뷰','UCfqVrM2cvwxG3-EvxbsN0KQ'],['쿠팡플레이','105만뷰','UCGnDGdZ3TWTuUJEz5QTDjvQ'],['소니코리아','87만뷰','UCw3MdFWb-4kdjtx-Y19I3hw'],['인터넷민족','80.3만뷰','UCy1fruN1Tl636SMmyp4x48g']]},
+    w3:{ic:'🔢',title:'PPL 집행 횟수 TOP',mo:'brand1 기준 · 누적 집행 횟수',        rows:[['위메이드','7편','UCyKAvt_zv_ifyQAeK4qGukg'],['코스노리','6편','UCFs-NkRyApPGO8KrB6WxaGw'],['벤큐','6편','UCziJ1h6M8hsVgze5iwnwmsg'],['VT','6편','UCyjRMccX3QiwS2trMDCE8FQ'],['아정당','6편','UCbhLtszstrripqpZyTtpEDQ']]},
+  },
+  'insta-ppl': {
+    w1:{ic:'📸',title:'릴스 뷰 TOP',mo:'최근 1주',instaLink:true,
+        rows:[['namhee_psd','543만뷰'],['jc_koo13','444만뷰'],['lenovo','303만뷰'],['yojeummwohagosani','252만뷰'],['jinsoobongu','222만뷰']]},
+    w2:{ic:'❤️',title:'좋아요 TOP',mo:'최근 1주',instaLink:true,
+        rows:[['i.2.n.8','91.7만'],['jc_koo13','66.7만'],['jinsoobongu','13만'],['bighit_music','11.4만'],['jaeseopapercraft','10.3만']]},
+    w3:{ic:'🔁',title:'공유(repost) TOP',mo:'최근 1주',instaLink:true,
+        rows:[['namhee_psd','1.7만'],['allday_project','7,360'],['hi_jerin','3,470'],['sbskpop_official','2,485'],['whatsong_kr','2,184']]},
+  },
+};
+
+// ── AI 요약 텍스트 ───────────────────────────────────────────────────
+
+const AI_SUMMARY = {
+  instream: '<b>AI 요약</b> · 아정당이 459개 광고로 1.1억뷰를 집행하며 인스트림 압도적 1위에 올랐고, 구독자 466명 채널이 849만뷰를 기록한 알파무드향수의 ratio 이상치가 주목받았습니다. 스픽의 평균 6.9배 효율과 두근두근타운의 쇼츠 4개 전략이 돋보입니다.',
+  'yt-ppl': '<b>AI 요약</b> · 구독자 1,570명 채널의 아비브 PPL이 ratio 161배를 기록하며 소형 채널 PPL 효율 최고치를 달성했습니다. 달바·컬러그램 뷰티 브랜드와 쿠팡플레이·디즈니플러스 플랫폼의 크리에이터 협찬이 활발히 집행됐습니다.',
+  'insta-ppl': '<b>AI 요약</b> · 팔로워 2만의 오크베리가 561만뷰·6.7만 공유로 이번 주 최고 인스타 PPL을 기록했습니다. 손흥민·구자철 스포츠 스타의 PPL과 팔로워 1,977명 아르뫼김치의 128만뷰 반전이 눈에 띄었습니다.',
+};
+
+// ── 렌더링 ────────────────────────────────────────────────────────────
+
+const thumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+const instaThumb = pid => `images/posts/${pid}.jpg`;
+
+function renderFeed(containerId, data, tabId) {
+  document.getElementById(containerId).innerHTML = data.map((h, idx) => `
+    <div class="ed">
+      <div class="num">${h.n}</div>
+      ${h.id
+        ? `<div class="thumb"><img src="${thumb(h.id)}" loading="lazy" alt=""></div>`
+        : h.pid
+          ? `<div class="thumb"><img src="${instaThumb(h.pid)}" loading="lazy" alt="" onerror="this.parentElement.className='thumb noimg';this.parentElement.style.background='${h.bg||'linear-gradient(135deg,#7C3AED,#4F46E5)'}';this.parentElement.innerHTML='${h.noimg||''}';"></div>`
+          : `<div class="thumb noimg" style="background:${h.bg||'linear-gradient(135deg,#7C3AED,#4F46E5)'}">${h.noimg||''}</div>`
+      }
+      <div class="body">
+        <div class="title">${h.title}</div>
+        <div class="sub">${h.sub}</div>
+        <div class="row"><span class="evt" onclick="openModal('${tabId}',${idx})">자세히 보기 →</span></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderWidgets(tab) {
+  const w = WIDGETS[tab];
+  ['w1','w2','w3'].forEach((k,i) => {
+    const n = i+1;
+    document.getElementById(`wh${n}`).innerHTML =
+      `<span class="ic">${w[k].ic}</span><h3>${w[k].title}</h3><span class="mo">${w[k].mo}</span>`;
+    const igSvg = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+    const ytSvg = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+    document.getElementById(`wd${n}`).innerHTML =
+      w[k].rows.filter(r=>r[0]).map((r,j) =>
+        `<div class="li"><span class="rn">${j+1}</span><span class="nm">${r[0]}</span>${w[k].instaLink ? `<a class="ig-btn" href="https://www.instagram.com/${r[0]}/" target="_blank" title="@${r[0]}">${igSvg}</a>` : ''}${w[k].ytLink && r[2] ? `<a class="yt-btn" href="${w[k].ytVideo ? `https://www.youtube.com/watch?v=${r[2]}` : `https://www.youtube.com/channel/${r[2]}`}" target="_blank" title="${r[0]}">${ytSvg}</a>` : ''}<span class="vl up">${r[1]}</span></div>`
+      ).join('');
+  });
+}
+
+// ── 탭 전환 ──────────────────────────────────────────────────────────
+
+const TABS = ['yt-ppl','instream','insta-ppl'];
+function switchTab(id) {
+  TABS.forEach(t => {
+    document.getElementById('panel-'+t).style.display = t===id ? '' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('onclick').includes("'"+id+"'"));
+  });
+  renderWidgets(id);
+  document.getElementById('ai-text').innerHTML = AI_SUMMARY[id];
+}
+
+// ── 모달 ─────────────────────────────────────────────────────────────
+
+const TAB_LABELS = {'instream':'인스트림 광고','yt-ppl':'유튜브 PPL','insta-ppl':'인스타그램 PPL'};
+const TAB_COLORS = {'instream':'#4F46E5','yt-ppl':'#DC2626','insta-ppl':'#7C3AED'};
+const PAGE_THEMES = [
+  {icon:'📊',title:'배경 분석',desc:'이 광고·콘텐츠가 주목받는 시장 맥락과 브랜드 포지션을 분석합니다',
+   bars:[['시장 점유율','72%','#E8442B','상위 8%'],['브랜드 인지도','58%','#4F46E5','중상위'],['광고 경쟁도','41%','#F59E0B','보통']],
+   tags:['시장 맥락','브랜드 히스토리','경쟁사 현황']},
+  {icon:'🔢',title:'심층 데이터',desc:'조회수·효율·집행 지표를 경쟁사 대비 수치로 비교 분석합니다',
+   bars:[['조회 효율','85%','#10B981','최상위'],['집행 규모','64%','#4F46E5','대형'],['비용 효율','77%','#F59E0B','우수']],
+   tags:['조회수 추이','CPM 비교','집행 패턴']},
+  {icon:'💡',title:'마케터 인사이트',desc:'이 데이터에서 마케터가 지금 당장 써야 할 전략적 시사점입니다',
+   bars:[['핵심 발견','90%','#7C3AED','3가지'],['적용 난이도','35%','#10B981','쉬움'],['기대 효과','80%','#E8442B','높음']],
+   tags:['전략 시사점','벤치마크','기회 포착']},
+  {icon:'🎯',title:'액션 플랜',desc:'현재 시장 상황에서 우리 브랜드가 취해야 할 다음 액션 3가지',
+   bars:[['즉시 실행','100%','#10B981','3개'],['단기 과제','66%','#F59E0B','2개'],['장기 전략','40%','#4F46E5','1개']],
+   tags:['A/B 테스트안','예산 배분','타이밍']},
+];
+
+let modalPage = 0;
+let modalH = null;
+let modalTab = null;
+
+function openModal(tabId, idx) {
+  const src = {instream: HL_instream,'yt-ppl': HL_ppl,'insta-ppl': HL_insta};
+  modalH = src[tabId][idx];
+  modalTab = tabId;
+  modalPage = 0;
+
+  // 표지 (page 1)
+  const h = modalH;
+  const thumbHtml = h.id
+    ? `<img class="slide-thumb" src="${thumb(h.id)}" alt="">`
+    : h.pid
+    ? `<img class="slide-thumb" src="${instaThumb(h.pid)}" alt="" onerror="this.style.display='none';document.getElementById('stf-${idx}').style.display='flex'"><div id="stf-${idx}" class="slide-thumb-fallback" style="display:none;background:${h.bg||'linear-gradient(135deg,#7C3AED,#4F46E5)'}">${h.noimg||''}</div>`
+    : `<div class="slide-thumb-fallback" style="background:${h.bg||'linear-gradient(135deg,#7C3AED,#4F46E5)'}">${h.noimg||''}</div>`;
+
+  const cover = `<div class="modal-slide">
+    <div class="slide-thumb-wrap">${thumbHtml}</div>
+    <div class="slide-cover-body">
+      <span class="slide-tab-badge" style="background:${TAB_COLORS[tabId]}18;color:${TAB_COLORS[tabId]}">${TAB_LABELS[tabId]}</span>
+      <div class="slide-num">No. ${h.n}</div>
+      <div class="slide-title">${h.title}</div>
+      <div class="slide-sub">${h.sub}</div>
+    </div>
+  </div>`;
+
+  // 잠긴 페이지 2~5
+  const locked = PAGE_THEMES.map(t => `<div class="modal-slide">
+    <div class="slide-locked">
+      <div class="slide-locked-preview"><div class="preview-content">
+        ${t.bars.map(b=>`<div class="preview-row">
+          <span class="preview-label">${b[0]}</span>
+          <div class="preview-bar-wrap"><div class="preview-bar" style="width:${b[1]};background:${b[2]}"></div></div>
+          <span class="preview-val" style="color:${b[2]}">${b[3]}</span>
+        </div>`).join('')}
+        <div class="preview-divider"></div>
+        <div class="preview-tags">${t.tags.map(g=>`<span class="preview-tag">${g}</span>`).join('')}</div>
+      </div></div>
+      <div class="preview-gate">
+        <div class="gate-icon">${t.icon}</div>
+        <div class="slide-locked-title">${t.title}</div>
+        <div class="gate-badge">Team · Partner 플랜 전용</div>
+        <div class="gate-desc">${t.desc}</div>
+      </div>
+    </div>
+  </div>`).join('');
+
+  document.getElementById('modal-slides').innerHTML = cover + locked;
+  updateModalNav();
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateModalNav() {
+  document.getElementById('modal-slides').style.transform = `translateX(-${modalPage * 100}%)`;
+  document.getElementById('modal-page-info').textContent = `${modalPage + 1} / 5`;
+  document.getElementById('modal-prev').disabled = modalPage === 0;
+  document.getElementById('modal-next').disabled = modalPage === 4;
+  document.querySelectorAll('.modal-dot').forEach((d, i) => d.classList.toggle('active', i === modalPage));
+}
+
+function modalPrev() { if (modalPage > 0) { modalPage--; updateModalNav(); } }
+function modalNext() { if (modalPage < 4) { modalPage++; updateModalNav(); } }
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowLeft') modalPrev();
+  if (e.key === 'ArrowRight') modalNext();
+});
+
+// ── 초기 렌더 ────────────────────────────────────────────────────────
+
+renderFeed('feed-instream', HL_instream, 'instream');
+renderFeed('feed-ppl', HL_ppl, 'yt-ppl');
+renderFeed('feed-insta', HL_insta, 'insta-ppl');
+renderWidgets('instream');
+</script>
+</body></html>

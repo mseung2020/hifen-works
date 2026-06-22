@@ -1,0 +1,1604 @@
+{
+ "report_date": "2026-06-02",
+ "domain": "YouTube 범퍼(인스트림) 광고 시장",
+ "market_scope": "KR + GLOBAL (행별 market 필드 참조)",
+ "field_notes": {
+  "cost.*": "일 광고비. 단위 미확정(배율·증감이 핵심).",
+  "baseline": "2026-06-02 직전 최대 13일 중 데이터 존재일 평균(크롤누락일 자동 제외)",
+  "accel_x": "오늘 일일 조회증가속도 / 평소 평균속도. 1.0=평소, >1=가속",
+  "today_views": "오늘 하루 신규 조회수(누적값의 일증가분)",
+  "vtr": "시청완료율"
+ },
+ "task_for_llm": "아래 candidates 만 근거로, 마케터를 후킹하는 1줄 어그로 헤드라인 5개. 어떤 사건이 놀라운지·어떻게 엮을지·앵글은 직접 판단. 서로 다른 신호에서 5개 권장. 제공 숫자 밖 수치 창작 금지(표현 과장은 허용). 한국어, 공백포함 ~40자.",
+ "candidates": {
+  "cost_movers": [
+   {
+    "brand": "(미상)",
+    "today": 158049000000,
+    "baseline": 451664910900,
+    "delta": -293615910900,
+    "delta_pct": -65.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "원더케이",
+    "today": 32387100000,
+    "baseline": 78206450900,
+    "delta": -45819350900,
+    "delta_pct": -59.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "League of Legends",
+    "today": 31818800000,
+    "baseline": 58442367760,
+    "delta": -26623567760,
+    "delta_pct": -46.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "ClickUp",
+    "today": 6838370000,
+    "baseline": 23159330820,
+    "delta": -16320960820,
+    "delta_pct": -70.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "BABYMONSTER",
+    "today": 13466800000,
+    "baseline": 27576898220,
+    "delta": -14110098220,
+    "delta_pct": -51.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 4804400000,
+    "baseline": 12945641791,
+    "delta": -8141241791,
+    "delta_pct": -63.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 7713970000,
+    "baseline": 15814371850,
+    "delta": -8100401850,
+    "delta_pct": -51.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Grammarly",
+    "today": 755499,
+    "baseline": 5892352118,
+    "delta": -5891596619,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "EVE Online",
+    "today": 3781790000,
+    "baseline": 9601110260,
+    "delta": -5819320260,
+    "delta_pct": -61.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "하이브",
+    "today": 1168850000,
+    "baseline": 6646036030,
+    "delta": -5477186030,
+    "delta_pct": -82.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "VALORANT - Global",
+    "today": 3515660000,
+    "baseline": 7716729060,
+    "delta": -4201069060,
+    "delta_pct": -54.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 4441430000,
+    "baseline": 8491511073,
+    "delta": -4050081073,
+    "delta_pct": -48.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 427480000,
+    "baseline": 3736548828,
+    "delta": -3309068828,
+    "delta_pct": -89.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 12068300,
+    "baseline": 3184874897,
+    "delta": -3172806597,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 3787210000,
+    "baseline": 6881118891,
+    "delta": -3093908891,
+    "delta_pct": -45.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "히어로워즈",
+    "today": 1773340000,
+    "baseline": 4683466590,
+    "delta": -2910126590,
+    "delta_pct": -62.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "? Moments of World of Warships ",
+    "today": 3993750000,
+    "baseline": 6752761430,
+    "delta": -2759011430,
+    "delta_pct": -41.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 494374000,
+    "baseline": 2996444345,
+    "delta": -2502070345,
+    "delta_pct": -84.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Netflix Global",
+    "today": 1976620000,
+    "baseline": 4405018429,
+    "delta": -2428398429,
+    "delta_pct": -55.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "SM엔터테인먼트",
+    "today": 1885370000,
+    "baseline": 4071153446,
+    "delta": -2185783446,
+    "delta_pct": -54.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "XG",
+    "today": 1453140000,
+    "baseline": 3600961213,
+    "delta": -2147821213,
+    "delta_pct": -60.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Illumination",
+    "today": 150876,
+    "baseline": 2114245270,
+    "delta": -2114094394,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "디올",
+    "today": 2827170000,
+    "baseline": 4858822380,
+    "delta": -2031652380,
+    "delta_pct": -42.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "agoda",
+    "today": 422817000,
+    "baseline": 2322063800,
+    "delta": -1899246800,
+    "delta_pct": -82.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Samsung Global",
+    "today": 794759,
+    "baseline": 1798601867,
+    "delta": -1797807108,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Albion Online",
+    "today": 514665000,
+    "baseline": 2189271243,
+    "delta": -1674606243,
+    "delta_pct": -76.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 136802,
+    "baseline": 1622830773,
+    "delta": -1622693971,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 125481000,
+    "baseline": 1458068958,
+    "delta": -1332587958,
+    "delta_pct": -91.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 216028,
+    "baseline": 1332658381,
+    "delta": -1332442353,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 7736470,
+    "baseline": 1320509297,
+    "delta": -1312772827,
+    "delta_pct": -99.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "프레플리",
+    "today": 3288370,
+    "baseline": 1315110584,
+    "delta": -1311822214,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 197107000,
+    "baseline": 1478898671,
+    "delta": -1281791671,
+    "delta_pct": -87.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 111909,
+    "baseline": 1256777669,
+    "delta": -1256665760,
+    "delta_pct": -100.0,
+    "base_days": 7,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 790226000,
+    "baseline": 1899509362,
+    "delta": -1109283362,
+    "delta_pct": -58.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 660289,
+    "baseline": 1106750531,
+    "delta": -1106090242,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 145113,
+    "baseline": 1051120122,
+    "delta": -1050975009,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 4287850000,
+    "baseline": 3285564278,
+    "delta": 1002285722,
+    "delta_pct": 31.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 386977000,
+    "baseline": 1361127618,
+    "delta": -974150618,
+    "delta_pct": -72.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 191057,
+    "baseline": 925571546,
+    "delta": -925380489,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 257173,
+    "baseline": 906172888,
+    "delta": -905915715,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "메가스터디",
+    "today": 248870,
+    "baseline": 896569771,
+    "delta": -896320901,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "키움증권",
+    "today": 72598400,
+    "baseline": 946344340,
+    "delta": -873745940,
+    "delta_pct": -92.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Canva Korea",
+    "today": 908913000,
+    "baseline": 1686432240,
+    "delta": -777519240,
+    "delta_pct": -46.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "Paramount Pictures",
+    "today": 321962000,
+    "baseline": 1067012201,
+    "delta": -745050201,
+    "delta_pct": -70.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "뽀로로(Pororo)",
+    "today": 5382110,
+    "baseline": 739155539,
+    "delta": -733773429,
+    "delta_pct": -99.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "멀츠코리아",
+    "today": 266138000,
+    "baseline": 989466470,
+    "delta": -723328470,
+    "delta_pct": -73.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 365219,
+    "baseline": 681204150,
+    "delta": -680838931,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 338121,
+    "baseline": 662052041,
+    "delta": -661713920,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "(미상)",
+    "today": 531381000,
+    "baseline": 1181465909,
+    "delta": -650084909,
+    "delta_pct": -55.0,
+    "base_days": 10,
+    "is_new": false
+   },
+   {
+    "brand": "On",
+    "today": 462707,
+    "baseline": 620721684,
+    "delta": -620258977,
+    "delta_pct": -100.0,
+    "base_days": 10,
+    "is_new": false
+   }
+  ],
+  "view_accel": [
+   {
+    "brand": "샤넬",
+    "title": "Take your CHANCE – CHANEL Fragrance",
+    "category": "perfume,cosmetics,fashion,luxury goods.",
+    "market": "KR",
+    "today_per_day": 30242,
+    "baseline_per_day": 3730,
+    "accel_x": 8.1
+   },
+   {
+    "brand": "Vultr",
+    "title": "What can do you with Vultr in 60 seconds",
+    "category": "food,technology,home appliances,kitchen gadgets",
+    "market": null,
+    "today_per_day": 68226,
+    "baseline_per_day": 12696,
+    "accel_x": 5.4
+   },
+   {
+    "brand": "War Thunder",
+    "title": "60 VO LT NOBONUS EN",
+    "category": "Gaming,Military,Online Games",
+    "market": null,
+    "today_per_day": 26017,
+    "baseline_per_day": 5902,
+    "accel_x": 4.4
+   },
+   {
+    "brand": "TikTok for Business Europe",
+    "title": "TikTok is for SMBs - Get Found | TikTok ",
+    "category": "Advertising,Food & Beverage,Social Media Marketing",
+    "market": null,
+    "today_per_day": 42088,
+    "baseline_per_day": 15436,
+    "accel_x": 2.7
+   },
+   {
+    "brand": "VALORANT",
+    "title": "VAL EP6223 AGRO23 Gekko Cinematic Cutdow",
+    "category": "gaming,entertainment,multimedia,animation,graphic design.",
+    "market": null,
+    "today_per_day": 47320,
+    "baseline_per_day": 19211,
+    "accel_x": 2.5
+   },
+   {
+    "brand": "iHerb",
+    "title": "iHerb. The Place to Shop for Wellness.",
+    "category": "Health and wellness,e-commerce.",
+    "market": null,
+    "today_per_day": 37090,
+    "baseline_per_day": 17140,
+    "accel_x": 2.2
+   },
+   {
+    "brand": "TikTok For Business",
+    "title": "Small Wins: Business Resource Center",
+    "category": "social media,e-commerce,small business,marketing",
+    "market": null,
+    "today_per_day": 71556,
+    "baseline_per_day": 33743,
+    "accel_x": 2.1
+   },
+   {
+    "brand": "Garmin",
+    "title": "Garmin MARQ® (Gen 2) – the quest for exc",
+    "category": "Advertising,Photography,Fashion,Technology,Accessories",
+    "market": null,
+    "today_per_day": 31114,
+    "baseline_per_day": 14564,
+    "accel_x": 2.1
+   },
+   {
+    "brand": "JpTrendmicro",
+    "title": "【スマホにウイルスバスター入ってる？】動画配信サービスを楽しむあなたにウイルスバ",
+    "category": "technology,cybersecurity,telecommunications",
+    "market": null,
+    "today_per_day": 20120,
+    "baseline_per_day": 9576,
+    "accel_x": 2.1
+   },
+   {
+    "brand": "TikTok for Business Europe",
+    "title": "TikTok is for SMBs - Be Yourself | TikTo",
+    "category": "Social media advertising,digital marketing.",
+    "market": null,
+    "today_per_day": 102607,
+    "baseline_per_day": 50383,
+    "accel_x": 2.0
+   },
+   {
+    "brand": "Thinkmate",
+    "title": "Thinkmate Server, Storage, and Workstati",
+    "category": "IT Services,Technology",
+    "market": null,
+    "today_per_day": 52493,
+    "baseline_per_day": 26212,
+    "accel_x": 2.0
+   },
+   {
+    "brand": "KIOTITRACTOR",
+    "title": "KIOTI Tractor: Dig Good Deeds",
+    "category": "Agriculture,Transportation,Construction Equipment",
+    "market": null,
+    "today_per_day": 95050,
+    "baseline_per_day": 49007,
+    "accel_x": 1.9
+   },
+   {
+    "brand": "Microsoft Rewards",
+    "title": "Microsoft Rewards + Roblox",
+    "category": "Technology,Digital Entertainment",
+    "market": null,
+    "today_per_day": 60114,
+    "baseline_per_day": 33144,
+    "accel_x": 1.8
+   },
+   {
+    "brand": "NULL",
+    "title": "24시간 통화, 전국 꽃배달 진짜 1위 배칠수꽃배달",
+    "category": "Advertising,Art & Design,Floral Industry",
+    "market": null,
+    "today_per_day": 82058,
+    "baseline_per_day": 45003,
+    "accel_x": 1.8
+   },
+   {
+    "brand": "Gisada Switzerland",
+    "title": "GisadaAmbassador20sec",
+    "category": "fashion,cosmetics,fragrance,restaurant.",
+    "market": null,
+    "today_per_day": 56374,
+    "baseline_per_day": 31402,
+    "accel_x": 1.8
+   },
+   {
+    "brand": "JpTrendmicro",
+    "title": "あなたのスマホのボディーガード！ウイルスバスター モバイル（iOS）",
+    "category": "Technology,Mobile Security",
+    "market": null,
+    "today_per_day": 112932,
+    "baseline_per_day": 67682,
+    "accel_x": 1.7
+   },
+   {
+    "brand": "OfficialHillsPet",
+    "title": "Hill’s Science Diet: Science Did That",
+    "category": "Pet Supplies,Pet Food.",
+    "market": null,
+    "today_per_day": 743857,
+    "baseline_per_day": 450815,
+    "accel_x": 1.7
+   },
+   {
+    "brand": "Daz 3D",
+    "title": "Test the Limits with Daz 3D",
+    "category": "Sports gear,3D modeling software,graphic design software,computer wallpaper,cosmetics",
+    "market": null,
+    "today_per_day": 21126,
+    "baseline_per_day": 12800,
+    "accel_x": 1.7
+   },
+   {
+    "brand": "Daz 3D",
+    "title": "Discover the Possibilities With Daz 3D",
+    "category": "Computer Animation,Graphics Software,Multimedia Software,3D Modeling,Graphic Design",
+    "market": null,
+    "today_per_day": 39261,
+    "baseline_per_day": 25599,
+    "accel_x": 1.5
+   },
+   {
+    "brand": "YouTube",
+    "title": "YouTube BRD MIX 1mon NonStopEntertainmen",
+    "category": "Electronic device,communication device,mobile device,new media,media",
+    "market": null,
+    "today_per_day": 147480,
+    "baseline_per_day": 103795,
+    "accel_x": 1.4
+   },
+   {
+    "brand": "株式会社大塚商会",
+    "title": "企業CM　DX・経営者編　15秒｜大塚商会",
+    "category": "Education,Office Furniture,Branding,Media,Communication",
+    "market": null,
+    "today_per_day": 83365,
+    "baseline_per_day": 58803,
+    "accel_x": 1.4
+   },
+   {
+    "brand": "Vrbo Partners",
+    "title": "Become a Vrbo host and help guests vacat",
+    "category": "Travel,Real Estate,Hospitality",
+    "market": null,
+    "today_per_day": 38059,
+    "baseline_per_day": 28150,
+    "accel_x": 1.4
+   },
+   {
+    "brand": "KIOTITRACTOR",
+    "title": "KIOTI Tractor: Dig Perspective",
+    "category": "Agriculture,Machinery,Vehicles",
+    "market": null,
+    "today_per_day": 109241,
+    "baseline_per_day": 78478,
+    "accel_x": 1.4
+   },
+   {
+    "brand": "NULL",
+    "title": "KJ Ignite 06 16x9 NoSupers",
+    "category": "automotive advertising,graphic design,branding,vehicle accessory,promotional merchandise",
+    "market": null,
+    "today_per_day": 137472,
+    "baseline_per_day": 97499,
+    "accel_x": 1.4
+   },
+   {
+    "brand": "AC PRO",
+    "title": "A/C Pro - Anyone Can Be a Pro, With A/C ",
+    "category": "Automotive,Sports,Lifestyle",
+    "market": null,
+    "today_per_day": 102701,
+    "baseline_per_day": 77220,
+    "accel_x": 1.3
+   },
+   {
+    "brand": "EVE Online",
+    "title": "EVE X Apple",
+    "category": "video games,technology,entertainment",
+    "market": null,
+    "today_per_day": 298532,
+    "baseline_per_day": 237287,
+    "accel_x": 1.3
+   },
+   {
+    "brand": "Lingopie",
+    "title": "f01 im001 is001 pd01 pdes05 ca01 cas 01 ",
+    "category": "language learning software,animation software,educational software.",
+    "market": null,
+    "today_per_day": 94413,
+    "baseline_per_day": 73106,
+    "accel_x": 1.3
+   },
+   {
+    "brand": "Full Sail University",
+    "title": "Build the Future | Full Sail University",
+    "category": "Education,Media & Entertainment.",
+    "market": null,
+    "today_per_day": 69764,
+    "baseline_per_day": 54890,
+    "accel_x": 1.3
+   },
+   {
+    "brand": "株式会社大塚商会",
+    "title": "企業CM　DX・従業員編-２　15秒｜大塚商会",
+    "category": "Retail,Office Supplies,Food & Beverage,Education,Convenience Stores",
+    "market": null,
+    "today_per_day": 45162,
+    "baseline_per_day": 36223,
+    "accel_x": 1.2
+   },
+   {
+    "brand": "JPRSpress",
+    "title": "JPRS CM：「サーバー証明書も解説」篇（セリフ付き）",
+    "category": "apparel,graphic design,animation,art supplies.",
+    "market": null,
+    "today_per_day": 46163,
+    "baseline_per_day": 37643,
+    "accel_x": 1.2
+   },
+   {
+    "brand": "Venom Steel",
+    "title": "Venom Steel Backyard",
+    "category": "industrial safety,work gloves,personal protective equipment (PPE)",
+    "market": null,
+    "today_per_day": 67422,
+    "baseline_per_day": 57735,
+    "accel_x": 1.2
+   },
+   {
+    "brand": "Lucid Software",
+    "title": "Lucidchart Intelligent Diagramming VO NE",
+    "category": "Software,Graphics,Multimedia,Business,Online Advertising",
+    "market": null,
+    "today_per_day": 32415,
+    "baseline_per_day": 26656,
+    "accel_x": 1.2
+   },
+   {
+    "brand": "Vrbo Partners",
+    "title": "US Big Bear Host Non Greeting 30s",
+    "category": "Travel and hospitality,vacation rentals",
+    "market": null,
+    "today_per_day": 24813,
+    "baseline_per_day": 22557,
+    "accel_x": 1.1
+   },
+   {
+    "brand": "Travel Texas",
+    "title": "Get Your Own “Go Big or Go Home” Trip to",
+    "category": "Tourism,Travel,Adventure.",
+    "market": null,
+    "today_per_day": 41113,
+    "baseline_per_day": 35827,
+    "accel_x": 1.1
+   },
+   {
+    "brand": "War Thunder",
+    "title": "60 VO LT NOBONUS EN",
+    "category": "Action game,military simulation,vehicle combat,online multiplayer,war game",
+    "market": null,
+    "today_per_day": 208206,
+    "baseline_per_day": 181959,
+    "accel_x": 1.1
+   },
+   {
+    "brand": "Vrbo Partners",
+    "title": "Get the guests who stay longer and spend",
+    "category": "Vacation rentals,tourism,online booking platforms.",
+    "market": null,
+    "today_per_day": 24115,
+    "baseline_per_day": 24493,
+    "accel_x": 1.0
+   },
+   {
+    "brand": "株式会社大塚商会",
+    "title": "企業CM　DX・従業員編-１　15秒｜大塚商会",
+    "category": "Office furniture and supplies,Technology services,Business support and services",
+    "market": null,
+    "today_per_day": 37163,
+    "baseline_per_day": 37232,
+    "accel_x": 1.0
+   },
+   {
+    "brand": "The Home Depot",
+    "title": "Meet the kind of people who are in our p",
+    "category": "Home improvement,retail,construction,DIY,home decor.",
+    "market": null,
+    "today_per_day": 78986,
+    "baseline_per_day": 80411,
+    "accel_x": 1.0
+   },
+   {
+    "brand": "Sandy Hook Promise",
+    "title": "Stop Assault Weapons Sales Mark V1",
+    "category": "social advocacy,gun control,non-profit",
+    "market": null,
+    "today_per_day": 48725,
+    "baseline_per_day": 46926,
+    "accel_x": 1.0
+   },
+   {
+    "brand": "Clouding.io",
+    "title": "Crear un Servidor Cloud nunca ha sido ta",
+    "category": "Cloud computing,Software development,Graphic design,Technology",
+    "market": null,
+    "today_per_day": 56709,
+    "baseline_per_day": 62727,
+    "accel_x": 0.9
+   },
+   {
+    "brand": "Polaris Off Road",
+    "title": "The Ultimate Farm & Ranch Partner (:15) ",
+    "category": "off-road vehicles,agriculture,transportation",
+    "market": null,
+    "today_per_day": 20634,
+    "baseline_per_day": 24457,
+    "accel_x": 0.8
+   },
+   {
+    "brand": "東和薬品株式会社",
+    "title": "東和品質　「製剤工夫」篇",
+    "category": "pharmaceutical,health and wellness",
+    "market": null,
+    "today_per_day": 57534,
+    "baseline_per_day": 122213,
+    "accel_x": 0.5
+   },
+   {
+    "brand": "Biogen",
+    "title": "Vumerity® (diroximel fumarate) Ad #1",
+    "category": "Biotech,online advertising",
+    "market": null,
+    "today_per_day": 29172,
+    "baseline_per_day": 63475,
+    "accel_x": 0.5
+   },
+   {
+    "brand": "OfficialHillsPet",
+    "title": "Hill’s Science Diet: Science Did That",
+    "category": "Pet Care,Veterinary Products,Animal Health,Pet Food,Pet Medicine",
+    "market": null,
+    "today_per_day": 167411,
+    "baseline_per_day": 423138,
+    "accel_x": 0.4
+   },
+   {
+    "brand": "KaoJapan",
+    "title": "花王 コーポレート もったいなインタビュー ペットボトルさん篇 30秒 CM",
+    "category": "Beverages,Transportation,Infrastructure",
+    "market": null,
+    "today_per_day": 40242,
+    "baseline_per_day": 116989,
+    "accel_x": 0.3
+   },
+   {
+    "brand": "Vrbo Partners",
+    "title": "Book guests who stay longer and spend mo",
+    "category": "Hospitality,Vacation Rentals,Leisure",
+    "market": null,
+    "today_per_day": 29950,
+    "baseline_per_day": 160951,
+    "accel_x": 0.2
+   }
+  ],
+  "top_exposed": [
+   {
+    "brand": "OfficialHillsPet",
+    "title": "Hill’s Science Diet: Science Did That",
+    "category": "Pet Supplies,Pet Food.",
+    "market": null,
+    "today_views": 743857
+   },
+   {
+    "brand": "JpTrendmicro",
+    "title": "あなたのスマホのボディーガード！ウイルスバスター モバイル（iOS）",
+    "category": "Technology,Mobile Security",
+    "market": null,
+    "today_views": 338795
+   },
+   {
+    "brand": "EVE Online",
+    "title": "EVE X Apple",
+    "category": "video games,technology,entertainment",
+    "market": null,
+    "today_views": 298532
+   },
+   {
+    "brand": "War Thunder",
+    "title": "60 VO LT NOBONUS EN",
+    "category": "Action game,military simulation,vehicle combat,online multiplayer,war game",
+    "market": null,
+    "today_views": 208206
+   },
+   {
+    "brand": "OfficialHillsPet",
+    "title": "Hill’s Science Diet: Science Did That",
+    "category": "Pet Care,Veterinary Products,Animal Health,Pet Food,Pet Medicine",
+    "market": null,
+    "today_views": 167411
+   },
+   {
+    "brand": "YouTube",
+    "title": "YouTube BRD MIX 1mon NonStopEntertainmen",
+    "category": "Electronic device,communication device,mobile device,new media,media",
+    "market": null,
+    "today_views": 147480
+   },
+   {
+    "brand": "NULL",
+    "title": "KJ Ignite 06 16x9 NoSupers",
+    "category": "automotive advertising,graphic design,branding,vehicle accessory,promotional merchandise",
+    "market": null,
+    "today_views": 137472
+   },
+   {
+    "brand": "KIOTITRACTOR",
+    "title": "KIOTI Tractor: Dig Perspective",
+    "category": "Agriculture,Machinery,Vehicles",
+    "market": null,
+    "today_views": 109241
+   },
+   {
+    "brand": "AC PRO",
+    "title": "A/C Pro - Anyone Can Be a Pro, With A/C ",
+    "category": "Automotive,Sports,Lifestyle",
+    "market": null,
+    "today_views": 102701
+   },
+   {
+    "brand": "TikTok for Business Europe",
+    "title": "TikTok is for SMBs - Be Yourself | TikTo",
+    "category": "Social media advertising,digital marketing.",
+    "market": null,
+    "today_views": 102607
+   },
+   {
+    "brand": "KIOTITRACTOR",
+    "title": "KIOTI Tractor: Dig Good Deeds",
+    "category": "Agriculture,Transportation,Construction Equipment",
+    "market": null,
+    "today_views": 95050
+   },
+   {
+    "brand": "Lingopie",
+    "title": "f01 im001 is001 pd01 pdes05 ca01 cas 01 ",
+    "category": "language learning software,animation software,educational software.",
+    "market": null,
+    "today_views": 94413
+   },
+   {
+    "brand": "株式会社大塚商会",
+    "title": "企業CM　DX・経営者編　15秒｜大塚商会",
+    "category": "Education,Office Furniture,Branding,Media,Communication",
+    "market": null,
+    "today_views": 83365
+   },
+   {
+    "brand": "NULL",
+    "title": "24시간 통화, 전국 꽃배달 진짜 1위 배칠수꽃배달",
+    "category": "Advertising,Art & Design,Floral Industry",
+    "market": null,
+    "today_views": 82058
+   },
+   {
+    "brand": "The Home Depot",
+    "title": "Meet the kind of people who are in our p",
+    "category": "Home improvement,retail,construction,DIY,home decor.",
+    "market": null,
+    "today_views": 78986
+   },
+   {
+    "brand": "TikTok For Business",
+    "title": "Small Wins: Business Resource Center",
+    "category": "social media,e-commerce,small business,marketing",
+    "market": null,
+    "today_views": 71556
+   },
+   {
+    "brand": "Full Sail University",
+    "title": "Build the Future | Full Sail University",
+    "category": "Education,Media & Entertainment.",
+    "market": null,
+    "today_views": 69764
+   },
+   {
+    "brand": "Vultr",
+    "title": "What can do you with Vultr in 60 seconds",
+    "category": "food,technology,home appliances,kitchen gadgets",
+    "market": null,
+    "today_views": 68226
+   },
+   {
+    "brand": "Venom Steel",
+    "title": "Venom Steel Backyard",
+    "category": "industrial safety,work gloves,personal protective equipment (PPE)",
+    "market": null,
+    "today_views": 67422
+   },
+   {
+    "brand": "Microsoft Rewards",
+    "title": "Microsoft Rewards + Roblox",
+    "category": "Technology,Digital Entertainment",
+    "market": null,
+    "today_views": 60114
+   },
+   {
+    "brand": "東和薬品株式会社",
+    "title": "東和品質　「製剤工夫」篇",
+    "category": "pharmaceutical,health and wellness",
+    "market": null,
+    "today_views": 57534
+   },
+   {
+    "brand": "Clouding.io",
+    "title": "Crear un Servidor Cloud nunca ha sido ta",
+    "category": "Cloud computing,Software development,Graphic design,Technology",
+    "market": null,
+    "today_views": 56709
+   },
+   {
+    "brand": "Gisada Switzerland",
+    "title": "GisadaAmbassador20sec",
+    "category": "fashion,cosmetics,fragrance,restaurant.",
+    "market": null,
+    "today_views": 56374
+   },
+   {
+    "brand": "Thinkmate",
+    "title": "Thinkmate Server, Storage, and Workstati",
+    "category": "IT Services,Technology",
+    "market": null,
+    "today_views": 52493
+   },
+   {
+    "brand": "Sandy Hook Promise",
+    "title": "Stop Assault Weapons Sales Mark V1",
+    "category": "social advocacy,gun control,non-profit",
+    "market": null,
+    "today_views": 48725
+   },
+   {
+    "brand": "VALORANT",
+    "title": "VAL EP6223 AGRO23 Gekko Cinematic Cutdow",
+    "category": "gaming,entertainment,multimedia,animation,graphic design.",
+    "market": null,
+    "today_views": 47320
+   },
+   {
+    "brand": "JPRSpress",
+    "title": "JPRS CM：「サーバー証明書も解説」篇（セリフ付き）",
+    "category": "apparel,graphic design,animation,art supplies.",
+    "market": null,
+    "today_views": 46163
+   },
+   {
+    "brand": "株式会社大塚商会",
+    "title": "企業CM　DX・従業員編-２　15秒｜大塚商会",
+    "category": "Retail,Office Supplies,Food & Beverage,Education,Convenience Stores",
+    "market": null,
+    "today_views": 45162
+   },
+   {
+    "brand": "TikTok for Business Europe",
+    "title": "TikTok is for SMBs - Get Found | TikTok ",
+    "category": "Advertising,Food & Beverage,Social Media Marketing",
+    "market": null,
+    "today_views": 42088
+   },
+   {
+    "brand": "Travel Texas",
+    "title": "Get Your Own “Go Big or Go Home” Trip to",
+    "category": "Tourism,Travel,Adventure.",
+    "market": null,
+    "today_views": 41113
+   }
+  ],
+  "industry_cpm": [
+   {
+    "industry": "게임",
+    "bumper": 14007,
+    "skippable": 13798,
+    "non_skippable": 16279,
+    "average": 14983,
+    "vtr": 0.5093
+   },
+   {
+    "industry": "교육 & 커리어",
+    "bumper": 12307,
+    "skippable": 11435,
+    "non_skippable": 13179,
+    "average": 12262,
+    "vtr": 0.4201
+   },
+   {
+    "industry": "IT & 전자기기",
+    "bumper": 11998,
+    "skippable": 10126,
+    "non_skippable": 13870,
+    "average": 11005,
+    "vtr": 0.4263
+   },
+   {
+    "industry": "경제 & 경영",
+    "bumper": 10998,
+    "skippable": 9126,
+    "non_skippable": 12870,
+    "average": 9875,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "금융 & 보험",
+    "bumper": 10998,
+    "skippable": 9126,
+    "non_skippable": 12870,
+    "average": 9875,
+    "vtr": 0.5366
+   },
+   {
+    "industry": "에너지 & 환경",
+    "bumper": 10998,
+    "skippable": 9126,
+    "non_skippable": 12870,
+    "average": 9875,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "주식 & 투자",
+    "bumper": 10998,
+    "skippable": 9126,
+    "non_skippable": 12870,
+    "average": 9875,
+    "vtr": 0.5366
+   },
+   {
+    "industry": "엔터테인먼트",
+    "bumper": 10361,
+    "skippable": 9498,
+    "non_skippable": 11126,
+    "average": 10111,
+    "vtr": 0.5126
+   },
+   {
+    "industry": "부동산 & 건설",
+    "bumper": 10179,
+    "skippable": 8307,
+    "non_skippable": 11943,
+    "average": 9034,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "자동차",
+    "bumper": 10179,
+    "skippable": 8307,
+    "non_skippable": 11943,
+    "average": 9034,
+    "vtr": 0.5
+   },
+   {
+    "industry": "레저 & 스포츠",
+    "bumper": 10179,
+    "skippable": 9937,
+    "non_skippable": 11179,
+    "average": 7184,
+    "vtr": 0.5081
+   },
+   {
+    "industry": "피트니스 & 다이어트",
+    "bumper": 9126,
+    "skippable": 7361,
+    "non_skippable": 10998,
+    "average": 8088,
+    "vtr": 0.5103
+   },
+   {
+    "industry": "정부기관",
+    "bumper": 9126,
+    "skippable": 7361,
+    "non_skippable": 10998,
+    "average": 8088,
+    "vtr": 0.3894
+   },
+   {
+    "industry": "모든 광고",
+    "bumper": 9126,
+    "skippable": 7361,
+    "non_skippable": 10998,
+    "average": 8088,
+    "vtr": 0.5
+   },
+   {
+    "industry": "기타산업",
+    "bumper": 9126,
+    "skippable": 7361,
+    "non_skippable": 10998,
+    "average": 8088,
+    "vtr": 0.5
+   },
+   {
+    "industry": "리빙 & 인테리어",
+    "bumper": 8361,
+    "skippable": 7498,
+    "non_skippable": 9126,
+    "average": 7791,
+    "vtr": 0.5012
+   },
+   {
+    "industry": "쇼핑 & 유통",
+    "bumper": 8307,
+    "skippable": 6435,
+    "non_skippable": 10179,
+    "average": 7184,
+    "vtr": 0.6181
+   },
+   {
+    "industry": "패션 & 의류",
+    "bumper": 8307,
+    "skippable": 6435,
+    "non_skippable": 10179,
+    "average": 7184,
+    "vtr": 0.6181
+   },
+   {
+    "industry": "결혼 & 육아",
+    "bumper": 7361,
+    "skippable": 6943,
+    "non_skippable": 9126,
+    "average": 7791,
+    "vtr": 0.5012
+   },
+   {
+    "industry": "뷰티 & 메이크업",
+    "bumper": 7361,
+    "skippable": 5498,
+    "non_skippable": 9126,
+    "average": 6224,
+    "vtr": 0.6181
+   },
+   {
+    "industry": "음식 & 음료",
+    "bumper": 7361,
+    "skippable": 5498,
+    "non_skippable": 9126,
+    "average": 6224,
+    "vtr": 0.34
+   },
+   {
+    "industry": "취미 & 공예 & 디자인",
+    "bumper": 7361,
+    "skippable": 5498,
+    "non_skippable": 9126,
+    "average": 6224,
+    "vtr": 0.5
+   },
+   {
+    "industry": "의료 & 건강",
+    "bumper": 7106,
+    "skippable": 6361,
+    "non_skippable": 7798,
+    "average": 6703,
+    "vtr": 0.5103
+   },
+   {
+    "industry": "국제 & 비영리 단체",
+    "bumper": 6710,
+    "skippable": 5312,
+    "non_skippable": 7710,
+    "average": 6710,
+    "vtr": 0.4713
+   },
+   {
+    "industry": "동물 (펫)",
+    "bumper": 6435,
+    "skippable": 4563,
+    "non_skippable": 8307,
+    "average": 5312,
+    "vtr": 0.5
+   },
+   {
+    "industry": "여행",
+    "bumper": 5907,
+    "skippable": 5435,
+    "non_skippable": 6179,
+    "average": 5858,
+    "vtr": 0.5997
+   }
+  ],
+  "category_rollup": [
+   {
+    "category": "Pet Supplies,Pet Food.",
+    "n_videos": 1,
+    "total_today_views": 743857,
+    "n_accelerating": 1
+   },
+   {
+    "category": "video games,technology,entertainment",
+    "n_videos": 1,
+    "total_today_views": 298532,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Action game,military simulation,vehicle combat,online multiplayer,war game",
+    "n_videos": 1,
+    "total_today_views": 208206,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Pet Care,Veterinary Products,Animal Health,Pet Food,Pet Medicine",
+    "n_videos": 1,
+    "total_today_views": 167411,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Electronic device,communication device,mobile device,new media,media",
+    "n_videos": 1,
+    "total_today_views": 147480,
+    "n_accelerating": 0
+   },
+   {
+    "category": "automotive advertising,graphic design,branding,vehicle accessory,promotional merchandise",
+    "n_videos": 1,
+    "total_today_views": 137472,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Technology,Mobile Security",
+    "n_videos": 1,
+    "total_today_views": 112932,
+    "n_accelerating": 1
+   },
+   {
+    "category": "Agriculture,Machinery,Vehicles",
+    "n_videos": 1,
+    "total_today_views": 109241,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Automotive,Sports,Lifestyle",
+    "n_videos": 1,
+    "total_today_views": 102701,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Social media advertising,digital marketing.",
+    "n_videos": 1,
+    "total_today_views": 102607,
+    "n_accelerating": 1
+   },
+   {
+    "category": "Agriculture,Transportation,Construction Equipment",
+    "n_videos": 1,
+    "total_today_views": 95050,
+    "n_accelerating": 1
+   },
+   {
+    "category": "language learning software,animation software,educational software.",
+    "n_videos": 1,
+    "total_today_views": 94413,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Education,Office Furniture,Branding,Media,Communication",
+    "n_videos": 1,
+    "total_today_views": 83365,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Advertising,Art & Design,Floral Industry",
+    "n_videos": 1,
+    "total_today_views": 82058,
+    "n_accelerating": 1
+   },
+   {
+    "category": "Home improvement,retail,construction,DIY,home decor.",
+    "n_videos": 1,
+    "total_today_views": 78986,
+    "n_accelerating": 0
+   },
+   {
+    "category": "social media,e-commerce,small business,marketing",
+    "n_videos": 1,
+    "total_today_views": 71556,
+    "n_accelerating": 1
+   },
+   {
+    "category": "Education,Media & Entertainment.",
+    "n_videos": 1,
+    "total_today_views": 69764,
+    "n_accelerating": 0
+   },
+   {
+    "category": "food,technology,home appliances,kitchen gadgets",
+    "n_videos": 1,
+    "total_today_views": 68226,
+    "n_accelerating": 1
+   },
+   {
+    "category": "industrial safety,work gloves,personal protective equipment (PPE)",
+    "n_videos": 1,
+    "total_today_views": 67422,
+    "n_accelerating": 0
+   },
+   {
+    "category": "Technology,Digital Entertainment",
+    "n_videos": 1,
+    "total_today_views": 60114,
+    "n_accelerating": 1
+   },
+   {
+    "category": "pharmaceutical,health and wellness",
+    "n_videos": 2,
+    "total_today_views": 57540,
+    "n_accelerating": 1
+   },
+   {
+    "category": "Cloud computing,Software development,Graphic design,Technology",
+    "n_videos": 1,
+    "total_today_views": 56709,
+    "n_accelerating": 0
+   },
+   {
+    "category": "fashion,cosmetics,fragrance,restaurant.",
+    "n_videos": 1,
+    "total_today_views": 56374,
+    "n_accelerating": 1
+   },
+   {
+    "category": "IT Services,Technology",
+    "n_videos": 1,
+    "total_today_views": 52493,
+    "n_accelerating": 1
+   }
+  ],
+  "brand_spend_rollup": [
+   {
+    "brand": "(미상)",
+    "today_total": 205199432210,
+    "baseline_total": 559696640776
+   },
+   {
+    "brand": "원더케이",
+    "today_total": 32387100000,
+    "baseline_total": 78206450900
+   },
+   {
+    "brand": "League of Legends",
+    "today_total": 31818800000,
+    "baseline_total": 58442367760
+   },
+   {
+    "brand": "BABYMONSTER",
+    "today_total": 13466800000,
+    "baseline_total": 27576898220
+   },
+   {
+    "brand": "ClickUp",
+    "today_total": 6838370000,
+    "baseline_total": 23159330820
+   },
+   {
+    "brand": "? Moments of World of Warships ",
+    "today_total": 3993750000,
+    "baseline_total": 6752761430
+   },
+   {
+    "brand": "EVE Online",
+    "today_total": 3781790000,
+    "baseline_total": 9601110260
+   },
+   {
+    "brand": "VALORANT - Global",
+    "today_total": 3515660000,
+    "baseline_total": 7716729060
+   },
+   {
+    "brand": "JYP",
+    "today_total": 3512000000,
+    "baseline_total": 3157674015
+   },
+   {
+    "brand": "디올",
+    "today_total": 2827170000,
+    "baseline_total": 4858822380
+   },
+   {
+    "brand": "Netflix Global",
+    "today_total": 1976620000,
+    "baseline_total": 4405018429
+   },
+   {
+    "brand": "SM엔터테인먼트",
+    "today_total": 1885370000,
+    "baseline_total": 4071153446
+   },
+   {
+    "brand": "War Thunder",
+    "today_total": 1775880000,
+    "baseline_total": 1993970959
+   },
+   {
+    "brand": "히어로워즈",
+    "today_total": 1773340000,
+    "baseline_total": 4683466590
+   },
+   {
+    "brand": "XG",
+    "today_total": 1453140000,
+    "baseline_total": 3600961213
+   },
+   {
+    "brand": "하이브",
+    "today_total": 1168850000,
+    "baseline_total": 6646036030
+   },
+   {
+    "brand": "Levi's®",
+    "today_total": 914014000,
+    "baseline_total": 815204707
+   },
+   {
+    "brand": "Canva Korea",
+    "today_total": 908913000,
+    "baseline_total": 1686432240
+   },
+   {
+    "brand": "Mindvalley ",
+    "today_total": 848482000,
+    "baseline_total": 626707766
+   },
+   {
+    "brand": "Domestika",
+    "today_total": 833631000,
+    "baseline_total": 934992231
+   },
+   {
+    "brand": "삼성전자",
+    "today_total": 705930000,
+    "baseline_total": 1196087560
+   },
+   {
+    "brand": "Google Workspace",
+    "today_total": 604759000,
+    "baseline_total": 543035833
+   },
+   {
+    "brand": "국경없는의사회",
+    "today_total": 531283000,
+    "baseline_total": 854798700
+   },
+   {
+    "brand": "구글 Ads",
+    "today_total": 515891000,
+    "baseline_total": 431885098
+   },
+   {
+    "brand": "Albion Online",
+    "today_total": 514665000,
+    "baseline_total": 2189271243
+   },
+   {
+    "brand": "iHerb",
+    "today_total": 487872000,
+    "baseline_total": 603854897
+   },
+   {
+    "brand": "굿네이버스",
+    "today_total": 487059000,
+    "baseline_total": 303067700
+   },
+   {
+    "brand": "오펠라헬스케어코리아",
+    "today_total": 467581000,
+    "baseline_total": 456658610
+   },
+   {
+    "brand": "코카콜라",
+    "today_total": 436203000,
+    "baseline_total": 640560650
+   },
+   {
+    "brand": "agoda",
+    "today_total": 422817000,
+    "baseline_total": 2322063800
+   }
+  ],
+  "campaign_flow_daily": [
+   {
+    "dt": 
