@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hifen API 가이드</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --orange:#FF6B2C;--orange-h:#E55A1E;--orange-bg:#FFF3EE;
+  --gray-100:#F2F3F5;--gray-200:#E5E7EB;--gray-300:#D1D5DB;
+  --gray-400:#9CA3AF;--gray-500:#6B7280;--gray-700:#374151;--gray-900:#111827;
+  --white:#FFFFFF;--blue:#3B82F6;
+  --shadow:0 1px 4px rgba(0,0,0,0.07),0 2px 10px rgba(0,0,0,0.05);--r:10px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',sans-serif;background:var(--gray-100);color:var(--gray-900);font-size:13px;line-height:1.5;}
+.wiki-main{padding:14px;display:flex;flex-direction:column;gap:12px;}
+.top-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch;}
+.panel{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;}
+.panel-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--gray-200);}
+.panel-title{font-size:13px;font-weight:600;color:var(--gray-700);display:flex;align-items:center;gap:8px;}
+.badge{font-size:11px;font-weight:600;background:var(--orange-bg);color:var(--orange);padding:2px 7px;border-radius:20px;}
+.badge-blue{background:#EFF6FF;color:var(--blue);}
+.badge-green{background:#F0FDF4;color:#16A34A;}
+.badge-purple{background:#F5F3FF;color:#7C3AED;}
+.hint{font-size:11px;color:var(--gray-400);}
+.nav-btn{width:26px;height:26px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:5px;cursor:pointer;font-size:18px;font-weight:300;display:flex;align-items:center;justify-content:center;color:var(--gray-700);line-height:1;padding:0;transition:background .15s;}
+.nav-btn:hover:not(:disabled){background:var(--gray-200);}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+/* ── DIAGRAMS ── */
+.diag-wrap{padding:14px;background:var(--gray-100);overflow-y:auto;min-height:420px;}
+.screen{display:none;flex-direction:column;gap:10px;}
+.screen.active{display:flex;}
+.screen-title{font-size:11px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.d-grid{display:grid;gap:10px;}
+.d-grid-2{grid-template-columns:1fr 1fr;}
+.d-grid-3{grid-template-columns:1fr 1fr 1fr;}
+
+/* Clickable block */
+.d-block{background:var(--white);border:2px solid var(--gray-200);border-radius:8px;padding:13px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative;}
+.d-block:hover{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,44,.08);}
+.d-block.selected{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,107,44,.1);}
+.d-block-name{position:absolute;top:8px;right:8px;font-size:9px;font-weight:700;color:var(--orange);background:var(--orange-bg);padding:2px 6px;border-radius:3px;opacity:0;transition:opacity .15s;}
+.d-block:hover .d-block-name,.d-block.selected .d-block-name{opacity:1;}
+.d-block-title{font-size:12px;font-weight:700;color:var(--gray-900);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.d-ep{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-family:'SF Mono','Fira Code',monospace;padding:2px 7px;border-radius:3px;margin-bottom:3px;}
+.d-ep.get{background:#DCFCE7;color:#15803D;}.d-ep.post{background:#DBEAFE;color:#1D4ED8;}
+.d-ep.put{background:#FEF3C7;color:#D97706;}.d-ep.del{background:#FEE2E2;color:#DC2626;}
+.d-field{display:flex;align-items:center;gap:6px;background:var(--gray-100);border-radius:4px;padding:5px 8px;font-size:11px;color:var(--gray-500);margin-bottom:3px;}
+.d-field-icon{font-size:10px;}
+.d-divider{border:none;border-top:1px dashed var(--gray-200);margin:8px 0;}
+.d-desc{font-size:10.5px;color:var(--gray-500);line-height:1.55;}
+.d-btn{display:inline-block;background:var(--orange);color:white;border-radius:4px;padding:5px 12px;font-size:10.5px;font-weight:600;margin-top:4px;}
+.d-btn-ghost{display:inline-block;border:1.5px solid var(--gray-300);color:var(--gray-600);border-radius:4px;padding:4px 12px;font-size:10.5px;margin-top:4px;margin-left:4px;}
+.d-tier{display:flex;flex-direction:column;gap:4px;}
+.d-tier-row{padding:5px 10px;border-radius:4px;font-size:11px;font-weight:600;text-align:center;}
+.d-card-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--gray-100);border-radius:5px;margin-bottom:5px;font-size:11px;}
+.d-tag{font-size:9px;background:var(--orange-bg);color:var(--orange);padding:1px 5px;border-radius:3px;font-weight:600;}
+.d-tag-blue{font-size:9px;background:#EFF6FF;color:var(--blue);padding:1px 5px;border-radius:3px;}
+.d-flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.d-flow-step{background:var(--gray-100);border-radius:4px;padding:4px 8px;font-size:10px;color:var(--gray-700);}
+.d-flow-arrow{color:var(--gray-300);font-size:12px;}
+.d-wallet{text-align:center;padding:12px;background:linear-gradient(135deg,var(--orange),#FF9152);border-radius:7px;color:white;margin-bottom:8px;}
+.d-wallet-num{font-size:22px;font-weight:800;letter-spacing:-1px;}
+.d-wallet-label{font-size:10px;opacity:.85;}
+
+/* ── RIGHT PANEL ── */
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;color:var(--gray-400);gap:8px;}
+.empty-icon{width:48px;height:48px;border:2px dashed var(--gray-300);border-radius:8px;}
+.comp-header-area{padding:14px 16px 12px;border-bottom:1px solid var(--gray-200);}
+.comp-name{font-size:15px;font-weight:700;color:var(--gray-900);}
+.comp-desc{font-size:12px;color:var(--gray-500);margin-top:3px;line-height:1.6;}
+.comp-meta{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+.repo-chip{display:inline-flex;align-items:center;gap:5px;background:var(--gray-100);border:1px solid var(--gray-200);border-radius:5px;padding:3px 9px;font-size:11px;color:var(--gray-700);}
+.dot-orange{width:6px;height:6px;border-radius:50%;background:var(--orange);}
+.dot-blue{width:6px;height:6px;border-radius:50%;background:var(--blue);}
+.dtabs{display:flex;border-bottom:1px solid var(--gray-200);padding:0 16px;}
+.dtab{padding:10px 14px;font-size:12px;font-weight:500;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;transition:color .15s,border-color .15s;}
+.dtab:hover{color:var(--orange);}
+.dtab.on{color:var(--orange);border-bottom-color:var(--orange);font-weight:600;}
+.tcontent{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.tcontent.on{display:flex;}
+.tbody{padding:14px 16px 16px;overflow-y:auto;flex:1;}
+.info-sec{margin-bottom:16px;}
+.info-lbl{font-size:10.5px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.file-path{font-family:'SF Mono','Fira Code','Consolas',monospace;font-size:11px;color:var(--blue);background:#EFF6FF;padding:2px 6px;border-radius:3px;display:inline-block;margin-bottom:3px;}
+.ep{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:4px;font-size:11px;font-family:'SF Mono','Fira Code',monospace;margin-bottom:4px;}
+.ep-desc{font-size:11px;color:var(--gray-400);margin:0 0 8px 2px;}
+.get{background:#DCFCE7;color:#15803D;}.post{background:#DBEAFE;color:#1D4ED8;}
+.put{background:#FEF3C7;color:#D97706;}.del{background:#FEE2E2;color:#DC2626;}
+.code-wrap{border-radius:7px;overflow:hidden;margin-top:6px;}
+.code-file-bar{background:#282C34;color:#ABB2BF;font-size:10px;font-family:monospace;padding:6px 12px;display:flex;justify-content:space-between;align-items:center;}
+.code-wrap pre{margin:0;}
+.code-wrap pre code{border-radius:0!important;font-size:11px!important;max-height:420px;overflow-y:auto;display:block;}
+.schema-tbl{width:100%;border-collapse:collapse;font-size:11px;}
+.schema-tbl th{text-align:left;padding:6px 10px;background:var(--gray-100);color:var(--gray-500);font-weight:600;border-bottom:1px solid var(--gray-200);}
+.schema-tbl td{padding:6px 10px;border-bottom:1px solid var(--gray-200);color:var(--gray-700);}
+.schema-tbl tr:last-child td{border-bottom:none;}
+.t-badge{font-family:monospace;font-size:10px;background:#EFF6FF;color:var(--blue);padding:1px 5px;border-radius:3px;}
+.pk-badge{font-size:9px;background:#FEF3C7;color:#D97706;padding:1px 5px;border-radius:3px;margin-left:4px;}
+
+/* ── CHATBOT ── */
+.chat-body{display:flex;flex-direction:column;height:440px;}
+.chat-msgs{flex:1;padding:12px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
+.msg{max-width:72%;padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.55;}
+.msg.bot{background:var(--gray-100);color:var(--gray-700);align-self:flex-start;border-bottom-left-radius:2px;}
+.msg.user{background:var(--orange);color:white;align-self:flex-end;border-bottom-right-radius:2px;}
+.chat-input-row{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--gray-200);}
+.chat-input{flex:1;padding:8px 12px;border:1px solid var(--gray-200);border-radius:6px;font-size:12px;font-family:inherit;outline:none;transition:border-color .15s;}
+.chat-input:focus{border-color:var(--orange);}
+.chat-send{padding:8px 16px;background:var(--orange);color:white;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.chat-send:hover{background:var(--orange-h);}
+</style>
+</head>
+<body>
+<main class="wiki-main">
+<div class="top-row">
+
+<!-- ── LEFT ── -->
+<div class="panel">
+  <div class="panel-header">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="panel-title">API 가이드</div>
+      <span class="badge" id="catBadge"></span>
+      <span id="screenTitle" style="font-size:12px;color:var(--gray-500);"></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:4px;">
+      <button class="nav-btn" id="prevBtn" onclick="prevScr()" disabled>‹</button>
+      <span id="navLabel" style="font-size:11px;color:var(--gray-500);min-width:38px;text-align:center;"></span>
+      <button class="nav-btn" id="nextBtn" onclick="nextScr()">›</button>
+    </div>
+  </div>
+  <div class="diag-wrap" id="diagWrap">
+
+    <!-- ═══ 1-1 인증 ═══ -->
+    <div class="screen active" id="scr-0">
+      <div class="screen-title">로그인 · 토큰</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('auth_login')">
+          <div class="d-block-name">auth_login</div>
+          <div class="d-block-title">📧 이메일 로그인</div>
+          <div class="d-field"><span class="d-field-icon">✉</span>이메일</div>
+          <div class="d-field"><span class="d-field-icon">🔒</span>비밀번호</div>
+          <div class="d-btn">로그인</div>
+          <hr class="d-divider">
+          <span class="d-ep post">POST /user/login</span><br>
+          <span class="d-ep get">GET /user/isLogged</span><br>
+          <span class="d-ep get">GET /user/logout</span>
+        </div>
+        <div class="d-block" onclick="showComp('auth_google')">
+          <div class="d-block-name">auth_google</div>
+          <div class="d-block-title">🔑 구글 OAuth</div>
+          <div class="d-desc">Google OAuth2 토큰으로 로그인. 신규 유저면 자동 회원가입, 기존 유저면 로그인 처리.</div>
+          <div class="d-btn" style="background:#4285F4;margin-top:10px;">Google로 계속하기</div>
+          <hr class="d-divider">
+          <span class="d-ep post">POST /user/google-login</span>
+        </div>
+      </div>
+      <div class="d-block" onclick="showComp('auth_token')">
+        <div class="d-block-name">auth_token</div>
+        <div class="d-block-title">🎫 JWT 토큰 관리</div>
+        <div class="d-grid d-grid-3" style="margin-top:4px;">
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--gray-400);margin-bottom:4px;">ACCESS TOKEN</div>
+            <div class="d-desc">짧은 유효기간. API 요청 헤더에 포함.</div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--gray-400);margin-bottom:4px;">REFRESH TOKEN</div>
+            <div class="d-desc">Access token 만료 시 재발급 요청에 사용.</div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:600;color:var(--gray-400);margin-bottom:4px;">ACTIVE TOKEN</div>
+            <div class="d-desc">DB 저장. 중복 로그인 방지용.</div>
+          </div>
+        </div>
+        <hr class="d-divider">
+        <span class="d-ep post">POST /user/refresh-token</span>
+        <span class="d-ep post" style="margin-left:4px;">POST /user/verify-token</span>
+      </div>
+    </div>
+
+    <!-- ═══ 1-2 회원가입 ═══ -->
+    <div class="screen" id="scr-1">
+      <div class="screen-title">이메일 인증 · 전화번호</div>
+      <div class="d-block" onclick="showComp('user_register')">
+        <div class="d-block-name">user_register</div>
+        <div class="d-block-title">📝 회원가입 플로우</div>
+        <div class="d-flow">
+          <div class="d-flow-step">① 정보 입력<br><small>email · password · username</small></div>
+          <div class="d-flow-arrow">→</div>
+          <div class="d-flow-step">② 인증 메일 발송</div>
+          <div class="d-flow-arrow">→</div>
+          <div class="d-flow-step">③ 이메일 링크 클릭<br><small>임시 비밀번호로 확인</small></div>
+          <div class="d-flow-arrow">→</div>
+          <div class="d-flow-step">④ 가입 완료</div>
+        </div>
+        <hr class="d-divider">
+        <span class="d-ep post">POST /user/register</span>
+        <span class="d-ep post" style="margin-left:4px;">POST /user/send-confirmation-email</span>
+        <span class="d-ep post" style="margin-left:4px;">POST /user/email-confirmation</span>
+      </div>
+      <div class="d-block" onclick="showComp('user_phone')">
+        <div class="d-block-name">user_phone</div>
+        <div class="d-block-title">📱 전화번호 인증</div>
+        <div class="d-field">010-0000-0000</div>
+        <div class="d-flow" style="margin-top:8px;">
+          <div class="d-flow-step">번호 등록</div>
+          <div class="d-flow-arrow">→</div>
+          <div class="d-flow-step">SMS 코드 발송</div>
+          <div class="d-flow-arrow">→</div>
+          <div class="d-flow-step">코드 확인 · 완료</div>
+        </div>
+        <hr class="d-divider">
+        <span class="d-ep post">POST /user/register-phone-number</span>
+        <span class="d-ep post" style="margin-left:4px;">POST /user/check-phone-number-code</span>
+        <span class="d-ep post" style="margin-left:4px;">POST /user/validate-phone-number</span>
+      </div>
+    </div>
+
+    <!-- ═══ 1-3 계정관리 ═══ -->
+    <div class="screen" id="scr-2">
+      <div class="screen-title">프로필 · 비밀번호 · 탈퇴</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('user_profile')">
+          <div class="d-block-name">user_profile</div>
+          <div class="d-block-title">👤 프로필 수정</div>
+          <div class="d-field">username</div>
+          <div class="d-field" style="opacity:.5;">email (변경 불가)</div>
+          <div class="d-btn">저장</div>
+          <hr class="d-divider">
+          <span class="d-ep put">PUT /user/update</span>
+        </div>
+        <div class="d-block" onclick="showComp('user_password')">
+          <div class="d-block-name">user_password</div>
+          <div class="d-block-title">🔒 비밀번호 변경</div>
+          <div class="d-desc" style="margin-bottom:8px;"><b>로그인 상태</b><br>현재 PW → 새 PW 직접 변경</div>
+          <div class="d-desc"><b>비로그인</b><br>이메일로 변경 링크 발송</div>
+          <hr class="d-divider">
+          <span class="d-ep put">PUT /user/change-password-logged</span><br>
+          <span class="d-ep post">POST /user/change-password-email</span><br>
+          <span class="d-ep post">POST /user/change-password</span>
+        </div>
+      </div>
+      <div class="d-block" onclick="showComp('user_delete')" style="border-color:#FEE2E2;">
+        <div class="d-block-name" style="background:#FEE2E2;color:#DC2626;">user_delete</div>
+        <div class="d-block-title" style="color:#DC2626;">⚠️ 계정 삭제</div>
+        <div class="d-desc">계정 삭제 시 구독·결제 정보 포함 모든 데이터 삭제. 복구 불가.</div>
+        <hr class="d-divider">
+        <span class="d-ep del">DELETE /user/delete-account</span>
+      </div>
+    </div>
+
+    <!-- ═══ 1-4 권한 ═══ -->
+    <div class="screen" id="scr-3">
+      <div class="screen-title">권한 체계 · 계정 연동</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('user_permissions')">
+          <div class="d-block-name">user_permissions</div>
+          <div class="d-block-title">🛡️ 권한 계층</div>
+          <div class="d-tier">
+            <div class="d-tier-row" style="background:#1E293B;color:white;">admin</div>
+            <div class="d-tier-row" style="background:#7C3AED;color:white;">partner / partner-sub</div>
+            <div class="d-tier-row" style="background:#2563EB;color:white;">team / team-sub</div>
+            <div class="d-tier-row" style="background:var(--orange);color:white;">pro / pro-sub · premium · creator</div>
+            <div class="d-tier-row" style="background:#6B7280;color:white;">basic · trial</div>
+            <div class="d-tier-row" style="background:var(--gray-200);color:var(--gray-600);">free</div>
+          </div>
+        </div>
+        <div class="d-block" onclick="showComp('user_link')">
+          <div class="d-block-name">user_link</div>
+          <div class="d-block-title">🔗 계정 연동 (팀)</div>
+          <div class="d-desc" style="margin-bottom:8px;">팀 구독 시 sub-account 연결. 추가 유저는 동일 플랜 권한 공유.</div>
+          <div class="d-card-item">user@team.com <span class="d-tag">연동됨</span></div>
+          <div class="d-card-item">member@team.com <span class="d-tag">연동됨</span></div>
+          <hr class="d-divider">
+          <span class="d-ep post">POST /user/link-user</span><br>
+          <span class="d-ep get">GET /user/link-user-list</span><br>
+          <span class="d-ep del">DELETE /user/link-user</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 2-1 결제수단 ═══ -->
+    <div class="screen" id="scr-4">
+      <div class="screen-title">카드 등록 · 관리</div>
+      <div class="d-block" onclick="showComp('payment_card')">
+        <div class="d-block-name">payment_card</div>
+        <div class="d-block-title">💳 결제 카드 관리</div>
+        <div class="d-card-item">💳 Visa ···· 1234 <span class="d-tag">기본</span></div>
+        <div class="d-card-item">💳 Mastercard ···· 5678 <span class="d-tag-blue">보조</span></div>
+        <div style="margin-top:8px;display:flex;gap:6px;">
+          <div class="d-btn">+ 카드 추가</div>
+          <div class="d-btn-ghost">삭제</div>
+          <div class="d-btn-ghost">기본 변경</div>
+        </div>
+        <hr class="d-divider">
+        <span class="d-ep get">GET /subscribe/payment-card</span><br>
+        <span class="d-ep post">POST /subscribe/payment-card</span><br>
+        <span class="d-ep del">DELETE /subscribe/payment-card</span><br>
+        <span class="d-ep put">PUT /subscribe/change-card</span>
+      </div>
+    </div>
+
+    <!-- ═══ 2-2 결제처리 ═══ -->
+    <div class="screen" id="scr-5">
+      <div class="screen-title">결제 실행 · 내역 · 환불</div>
+      <div class="d-grid d-grid-2">
+        <div>
+          <div class="d-block" onclick="showComp('payment_process')" style="margin-bottom:10px;">
+            <div class="d-block-name">payment_process</div>
+            <div class="d-block-title">💰 결제 실행 (Iamport)</div>
+            <div class="d-flow">
+              <div class="d-flow-step">쿠폰 검증</div>
+              <div class="d-flow-arrow">→</div>
+              <div class="d-flow-step">금액 계산</div>
+              <div class="d-flow-arrow">→</div>
+              <div class="d-flow-step">Iamport 결제</div>
+              <div class="d-flow-arrow">→</div>
+              <div class="d-flow-step">구독 생성</div>
+            </div>
+            <hr class="d-divider">
+            <span class="d-ep post">POST /subscribe/first-payment</span><br>
+            <span class="d-ep post">POST /subscribe/calculate-price</span>
+          </div>
+          <div class="d-block" onclick="showComp('payment_refund')">
+            <div class="d-block-name">payment_refund</div>
+            <div class="d-block-title" style="color:#DC2626;">↩ 환불 (Admin)</div>
+            <div class="d-desc">관리자 전용. Iamport를 통해 환불 처리.</div>
+            <hr class="d-divider">
+            <span class="d-ep post">POST /subscribe/refund</span>
+          </div>
+        </div>
+        <div class="d-block" onclick="showComp('payment_history')">
+          <div class="d-block-name">payment_history</div>
+          <div class="d-block-title">📋 결제 내역</div>
+          <div class="d-card-item"><div><div style="font-size:11px;font-weight:600;">Pro 월간 구독</div><div style="font-size:10px;color:var(--gray-400);">2025-06-01</div></div><div style="color:var(--orange);font-weight:600;">29,000원</div></div>
+          <div class="d-card-item"><div><div style="font-size:11px;font-weight:600;">크레딧 10개 구매</div><div style="font-size:10px;color:var(--gray-400);">2025-05-15</div></div><div style="color:var(--orange);font-weight:600;">20,000원</div></div>
+          <div class="d-card-item"><div><div style="font-size:11px;font-weight:600;">Pro 월간 구독</div><div style="font-size:10px;color:var(--gray-400);">2025-05-01</div></div><div style="color:var(--orange);font-weight:600;">29,000원</div></div>
+          <hr class="d-divider">
+          <span class="d-ep get">GET /subscribe/payment-history</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 3-1 구독플랜 ═══ -->
+    <div class="screen" id="scr-6">
+      <div class="screen-title">플랜 조회 · 가격 계산 · 무료 체험</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('subscribe_plan')">
+          <div class="d-block-name">subscribe_plan</div>
+          <div class="d-block-title">📦 구독 정보 조회</div>
+          <div class="d-card-item">플랜 <span style="font-weight:600;">Pro</span></div>
+          <div class="d-card-item">결제 주기 <span style="font-weight:600;">월간</span></div>
+          <div class="d-card-item">다음 결제 <span style="font-weight:600;">2025-07-01</span></div>
+          <div class="d-card-item">상태 <span class="d-tag">활성</span></div>
+          <hr class="d-divider">
+          <span class="d-ep get">GET /subscribe/subscription</span><br>
+          <span class="d-ep post">POST /subscribe/calculate-price</span><br>
+          <span class="d-ep post">POST /subscribe/calculate-upgrade-price</span>
+        </div>
+        <div class="d-block" onclick="showComp('subscribe_free_trial')">
+          <div class="d-block-name">subscribe_free_trial</div>
+          <div class="d-block-title">🎁 무료 체험</div>
+          <div class="d-desc">결제 없이 trial 플랜 시작. 기간 만료 시 free로 전환. 1회만 사용 가능.</div>
+          <div class="d-btn" style="margin-top:12px;">무료 체험 시작하기</div>
+          <hr class="d-divider">
+          <span class="d-ep post">POST /subscribe/start-free-trial</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 3-2 구독관리 ═══ -->
+    <div class="screen" id="scr-7">
+      <div class="screen-title">플랜 변경 · 구독 취소</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('subscribe_change')">
+          <div class="d-block-name">subscribe_change</div>
+          <div class="d-block-title">🔄 플랜 변경</div>
+          <div class="d-flow">
+            <div class="d-flow-step">업그레이드 가격 계산</div>
+            <div class="d-flow-arrow">→</div>
+            <div class="d-flow-step">차액 즉시 결제</div>
+            <div class="d-flow-arrow">→</div>
+            <div class="d-flow-step">플랜 변경 완료</div>
+          </div>
+          <hr class="d-divider">
+          <span class="d-ep post">POST /subscribe/change-plan</span><br>
+          <span class="d-ep post">POST /subscribe/calculate-upgrade-price</span>
+        </div>
+        <div class="d-block" onclick="showComp('subscribe_cancel')">
+          <div class="d-block-name">subscribe_cancel</div>
+          <div class="d-block-title" style="color:#DC2626;">✕ 구독 취소</div>
+          <div class="d-desc" style="margin-bottom:8px;">취소 사유 설문 포함. 취소 후 만료일까지 서비스 이용 가능.</div>
+          <div style="background:#FEF2F2;border-radius:5px;padding:8px;font-size:10.5px;color:#991B1B;">
+            취소 사유: 기능 부족 / 비용 부담 / 타 서비스 / 미사용
+          </div>
+          <hr class="d-divider">
+          <span class="d-ep del">DELETE /subscribe/cancel</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 4-1 크레딧 ═══ -->
+    <div class="screen" id="scr-8">
+      <div class="screen-title">크레딧 잔여 · 충전 · 차감</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('credits_info')">
+          <div class="d-block-name">credits_info</div>
+          <div class="d-block-title">💎 크레딧 현황</div>
+          <div class="d-wallet">
+            <div class="d-wallet-num">24</div>
+            <div class="d-wallet-label">무료 크레딧</div>
+          </div>
+          <div class="d-wallet" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8);">
+            <div class="d-wallet-num">10</div>
+            <div class="d-wallet-label">유료 크레딧</div>
+          </div>
+          <hr class="d-divider">
+          <span class="d-ep get">GET /user/credits-left</span><br>
+          <span class="d-ep post">POST /user/decrease-credits</span>
+        </div>
+        <div class="d-block" onclick="showComp('credits_buy')">
+          <div class="d-block-name">credits_buy</div>
+          <div class="d-block-title">🛒 크레딧 구매</div>
+          <div class="d-desc" style="margin-bottom:10px;">1 크레딧 = 2,000원. 유료 구독자만 구매 가능. Iamport 결제.</div>
+          <div class="d-card-item">5 크레딧 <span style="font-weight:600;color:var(--orange);">10,000원</span></div>
+          <div class="d-card-item">10 크레딧 <span style="font-weight:600;color:var(--orange);">20,000원</span></div>
+          <div class="d-card-item">30 크레딧 <span style="font-weight:600;color:var(--orange);">60,000원</span></div>
+          <hr class="d-divider">
+          <span class="d-ep post">POST /subscribe/buy-credits</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 4-2 쿠폰 ═══ -->
+    <div class="screen" id="scr-9">
+      <div class="screen-title">쿠폰 적용 · 관리 (Admin)</div>
+      <div class="d-grid d-grid-2">
+        <div class="d-block" onclick="showComp('coupon_check')">
+          <div class="d-block-name">coupon_check</div>
+          <div class="d-block-title">🎟 쿠폰 적용</div>
+          <div class="d-field">쿠폰 코드 입력</div>
+          <div class="d-flow" style="margin-top:8px;">
+            <div class="d-flow-step">코드 검증</div>
+            <div class="d-flow-arrow">→</div>
+            <div class="d-flow-step">할인율 확인</div>
+            <div class="d-flow-arrow">→</div>
+            <div class="d-flow-step">결제 시 적용</div>
+          </div>
+          <hr class="d-divider">
+          <span class="d-ep get">GET /subscribe/check-custom-coupon/{code}</span>
+        </div>
+        <div class="d-block" onclick="showComp('coupon_admin')">
+          <div class="d-block-name">coupon_admin</div>
+          <div class="d-block-title">⚙️ 쿠폰 관리 (Admin)</div>
+          <div class="d-card-item">SUMMER25 <span class="d-tag">25% · 3개월</span></div>
+          <div class="d-card-item">WELCOME50 <span class="d-tag">50% · 1개월</span></div>
+          <div class="d-card-item">ANNUAL20 <span class="d-tag">20% · 12개월</span></div>
+          <hr class="d-divider">
+          <span class="d-ep get">GET /subscribe/custom-coupon</span><br>
+          <span class="d-ep post">POST /subscribe/custom-coupon</span><br>
+          <span class="d-ep del">DELETE /subscribe/custom-coupon</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /diag-wrap -->
+</div><!-- /left panel -->
+
+<!-- ── RIGHT ── -->
+<div class="panel" id="rightPanel" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div id="emptyState" class="empty-state">
+    <div class="empty-icon"></div>
+    <div style="font-size:13px;color:var(--gray-400);">블록을 클릭하면 API 상세 정보가 표시됩니다</div>
+    <div style="font-size:11px;color:var(--gray-300);margin-top:2px;">프론트엔드 · 백엔드 · 데이터</div>
+  </div>
+  <div id="compDetail" style="display:none;flex:1;overflow:hidden;flex-direction:column;">
+    <div class="comp-header-area">
+      <div class="comp-name" id="cName"></div>
+      <div class="comp-desc" id="cDesc"></div>
+      <div class="comp-meta" id="cMeta"></div>
+    </div>
+    <div class="dtabs">
+      <div class="dtab on" onclick="switchTab('fe',this)">프론트엔드</div>
+      <div class="dtab" onclick="switchTab('be',this)">백엔드</div>
+      <div class="dtab" onclick="switchTab('data',this)">데이터</div>
+    </div>
+    <div class="tcontent on" id="tc-fe"><div class="tbody">
+      <div class="info-sec"><div class="info-lbl">레포지토리</div><div id="fe-repo"></div></div>
+      <div class="info-sec"><div class="info-lbl">핵심 파일</div><div id="fe-files"></div></div>
+      <div class="info-sec"><div class="info-lbl">코드</div>
+        <div class="code-wrap"><div class="code-file-bar"><span id="fe-cfile"></span><span style="opacity:.5;">TypeScript · React</span></div>
+        <pre><code class="language-typescript" id="fe-code"></code></pre></div>
+      </div>
+    </div></div>
+    <div class="tcontent" id="tc-be"><div class="tbody">
+      <div class="info-sec"><div class="info-lbl">API 엔드포인트</div><div id="be-eps"></div></div>
+      <div class="info-sec"><div class="info-lbl">레포지토리</div><div id="be-repo"></div></div>
+      <div class="info-sec"><div class="info-lbl">핵심 파일</div><div id="be-files"></div></div>
+      <div class="info-sec"><div class="info-lbl">코드</div>
+        <div class="code-wrap"><div class="code-file-bar"><span id="be-cfile"></span><span style="opacity:.5;">Python · Django REST</span></div>
+        <pre><code class="language-python" id="be-code"></code></pre></div>
+      </div>
+    </div></div>
+    <div class="tcontent" id="tc-data"><div class="tbody">
+      <div class="info-sec"><div class="info-lbl">관련 테이블</div><div id="data-tables"></div></div>
+      <div class="info-sec"><div class="info-lbl">스키마</div><div id="data-schema"></div></div>
+      <div class="info-sec"><div class="info-lbl">주요 쿼리</div>
+        <div class="code-wrap"><div class="code-file-bar"><span id="data-qfile"></span><span style="opacity:.5;">SQL</span></div>
+        <pre><code class="language-sql" id="data-query"></code></pre></div>
+      </div>
+    </div></div>
+  </div>
+</div>
+</div><!-- /top-row -->
+
+<!-- ── CHATBOT ── -->
+<div class="panel">
+  <div class="panel-header">
+    <div class="panel-title">하이픈 챗봇 <span class="badge badge-blue">Beta</span></div>
+    <span class="hint">API 관련 질문에 답변합니다</span>
+  </div>
+  <div class="chat-body">
+    <div class="chat-msgs" id="chatMsgs">
+      <div class="msg bot">안녕하세요! 사용자 관리, 결제, 구독, 크레딧·쿠폰 관련 API 궁금한 점을 질문해주세요.</div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatIn" placeholder="예: 쿠폰 적용 후 결제는 어떤 API를 사용하나요?"
+        onkeydown="if(event.key==='Enter'&&!event.isComposing){event.preventDefault();sendChat();}">
+      <button type="button" class="chat-send" onclick="sendChat()">전송</button>
+    </div>
+  </div>
+</div>
+
+</main>
+<script>
+const SCREENS = [
+  { id:0, cat:'사용자 관리', title:'인증' },
+  { id:1, cat:'사용자 관리', title:'회원가입' },
+  { id:2, cat:'사용자 관리', title:'계정 관리' },
+  { id:3, cat:'사용자 관리', title:'권한 체계' },
+  { id:4, cat:'결제', title:'결제 수단' },
+  { id:5, cat:'결제', title:'결제 처리' },
+  { id:6, cat:'구독', title:'구독 플랜' },
+  { id:7, cat:'구독', title:'구독 관리' },
+  { id:8, cat:'크레딧·쿠폰', title:'크레딧' },
+  { id:9, cat:'크레딧·쿠폰', title:'쿠폰' },
+];
+const CAT_COLORS = { '사용자 관리':'', '결제':'badge-blue', '구독':'badge-green', '크레딧·쿠폰':'badge-purple' };
+
+let currentIdx = 0;
+let currentComp = null;
+
+function showScreen(idx) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('scr-' + idx).classList.add('active');
+  currentIdx = idx;
+  const s = SCREENS[idx];
+  const badge = document.getElementById('catBadge');
+  badge.textContent = s.cat;
+  badge.className = 'badge ' + (CAT_COLORS[s.cat] || '');
+  document.getElementById('screenTitle').textContent = s.title;
+  document.getElementById('navLabel').textContent = (idx+1) + ' / ' + SCREENS.length;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === SCREENS.length - 1;
+  document.getElementById('emptyState').style.display = '';
+  document.getElementById('compDetail').style.display = 'none';
+  document.querySelectorAll('.d-block').forEach(b => b.classList.remove('selected'));
+  currentComp = null;
+}
+function prevScr() { if(currentIdx > 0) showScreen(currentIdx-1); }
+function nextScr() { if(currentIdx < SCREENS.length-1) showScreen(currentIdx+1); }
+
+document.addEventListener('keydown', e => {
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowLeft') prevScr();
+  if(e.key==='ArrowRight') nextScr();
+});
+
+function switchTab(name, el) {
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tcontent').forEach(t=>t.classList.remove('on'));
+  if(el) el.classList.add('on');
+  document.getElementById('tc-'+name).classList.add('on');
+}
+
+function showComp(id) {
+  const c = COMPS[id];
+  if(!c) return;
+  currentComp = id;
+  document.querySelectorAll('.d-block').forEach(b => {
+    b.classList.toggle('selected', b.getAttribute('onclick')===`showComp('${id}')`);
+  });
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('compDetail').style.display = 'flex';
+  document.getElementById('cName').textContent = c.name;
+  document.getElementById('cDesc').textContent = c.desc;
+  document.getElementById('cMeta').innerHTML = c.repos.map((r,i)=>
+    `<div class="repo-chip"><div class="${i===0?'dot-orange':'dot-blue'}"></div>${r}</div>`
+  ).join('');
+  document.getElementById('fe-repo').innerHTML = `<div class="repo-chip"><div class="dot-orange"></div>${c.fe.repo}</div>`;
+  document.getElementById('fe-files').innerHTML = c.fe.files.map(f=>`<div class="file-path">${f}</div>`).join('');
+  document.getElementById('fe-cfile').textContent = c.fe.cfile;
+  document.getElementById('fe-code').textContent = c.fe.code;
+  document.getElementById('be-eps').innerHTML = c.be.eps.map(e=>
+    `<div class="ep ${e.m.toLowerCase()}">${e.m} ${e.path}</div><div class="ep-desc">${e.desc}</div>`
+  ).join('');
+  document.getElementById('be-repo').innerHTML = `<div class="repo-chip"><div class="dot-orange"></div>${c.be.repo}</div>`;
+  document.getElementById('be-files').innerHTML = c.be.files.map(f=>`<div class="file-path">${f}</div>`).join('');
+  document.getElementById('be-cfile').textContent = c.be.cfile;
+  document.getElementById('be-code').textContent = c.be.code;
+  document.getElementById('data-tables').innerHTML = c.data.tables.map(t=>
+    `<div class="repo-chip"><div class="dot-orange"></div>${t}</div>`
+  ).join('');
+  document.getElementById('data-schema').innerHTML = `<table class="schema-tbl"><thead><tr><th>컬럼</th><th>타입</th><th>설명</th></tr></thead><tbody>${
+    c.data.schema.map(s=>`<tr><td>${s.col}${s.pk?'<span class="pk-badge">PK</span>':''}</td><td><span class="t-badge">${s.type}</span></td><td>${s.desc}</td></tr>`).join('')
+  }</tbody></table>`;
+  document.getElementById('data-qfile').textContent = c.data.qfile;
+  document.getElementById('data-query').textContent = c.data.query;
+  switchTab('fe', document.querySelector('.dtab'));
+  document.querySelectorAll('pre code').forEach(el=>{ delete el.dataset.highlighted; hljs.highlightElement(el); });
+}
+
+// chatbot
+const BOT = {
+  로그인:`<code>POST /user/login</code> 에 email·password를 보내면 access_token과 refresh_token을 반환합니다. 구글 로그인은 <code>POST /user/google-login</code>을 사용합니다.`,
+  토큰:`access_token 만료 시 <code>POST /user/refresh-token</code>으로 재발급합니다. <code>ugwanggiAPI/user/views.py</code>의 <code>CustomTokenRefreshView</code>가 담당합니다.`,
+  쿠폰:`<code>GET /subscribe/check-custom-coupon/{code}</code>로 유효성 확인 후 결제 시 coupon 파라미터로 전달합니다. 쿠폰 모델: <code>ugwanggi_custom_coupon</code>`,
+  크레딧:`무료 크레딧: <code>user.credits</code>, 유료 크레딧: <code>user.paid_credits</code>. 차감은 <code>POST /user/decrease-credits</code>, 충전은 <code>POST /subscribe/buy-credits</code> (1크레딧=2,000원).`,
+  구독:`현재 구독 조회: <code>GET /subscribe/subscription</code>. 취소: <code>DELETE /subscribe/cancel</code>. 플랜 변경: <code>POST /subscribe/change-plan</code>.`,
+  결제:`첫 결제는 <code>POST /subscribe/first-payment</code>로 Iamport를 통해 처리됩니다. 결제 내역: <code>GET /subscribe/payment-history</code>, 환불(Admin): <code>POST /subscribe/refund</code>.`,
+  default:`좀 더 구체적인 기능이나 API명을 알려주시면 정확히 안내해 드릴게요.`,
+};
+function sendChat() {
+  const input = document.getElementById('chatIn');
+  const text = input.value.trim();
+  if(!text) return;
+  const msgs = document.getElementById('chatMsgs');
+  const u = document.createElement('div'); u.className='msg user'; u.textContent=text; msgs.appendChild(u);
+  input.value=''; msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    const b = document.createElement('div'); b.className='msg bot';
+    let ans = BOT.default;
+    if(text.includes('로그인')||text.includes('login')) ans=BOT.로그인;
+    else if(text.includes('토큰')||text.includes('token')) ans=BOT.토큰;
+    else if(text.includes('쿠폰')||text.includes('coupon')) ans=BOT.쿠폰;
+    else if(text.includes('크레딧')||text.includes('credit')) ans=BOT.크레딧;
+    else if(text.includes('구독')||text.includes('subscribe')) ans=BOT.구독;
+    else if(text.includes('결제')||text.includes('payment')) ans=BOT.결제;
+    b.innerHTML=ans; msgs.appendChild(b); msgs.scrollTop=msgs.scrollHeight;
+  }, 500);
+}
+
+// ── COMPS ──
+const COMPS = {
+auth_login:{
+  name:'이메일 로그인 · 로그아웃',
+  desc:'이메일/비밀번호로 JWT 토큰 발급. isLogged로 현재 로그인 상태 확인.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js','src/store/userStore.js'],cfile:'src/service/user.js',
+  code:`export const logIn = async (email, password) => {
+  const response = await api.post(\`\${api_url}/user/login\`, { email, password });
+  return response.data; // { access, refresh, user_info }
+};
+
+export const logOut = async () => {
+  await api.get(\`\${api_url}/user/logout\`);
+};
+
+export const getUserInfo = async (access) => {
+  const response = await api.get(\`\${api_url}/user/isLogged\`, {
+    headers: { Authorization: \`Bearer \${access}\` }
+  });
+  return response.data;
+};`},
+  be:{eps:[
+    {m:'POST',path:'/user/login',desc:'이메일+비밀번호로 access/refresh 토큰 발급'},
+    {m:'GET', path:'/user/logout',desc:'서버 측 토큰 무효화'},
+    {m:'GET', path:'/user/isLogged',desc:'현재 토큰으로 유저 정보 반환'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → CustomTokenObtainPairView','user/views.py → LogoutView','user/views.py → IsLoggedView'],cfile:'user/views.py',
+  code:`class CustomTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            user = User.objects.get(email=request.data['email'])
+            user.active_token = response.data['access']
+            user.save()
+        return response
+
+class IsLoggedView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        user = request.user
+        return Response({
+            'email': user.email,
+            'status': user.status,
+            'credits': user.credits,
+            'paid_credits': user.paid_credits,
+        })`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'user_id',type:'AutoField',pk:true,desc:'유저 PK'},
+    {col:'email',type:'EmailField',pk:false,desc:'로그인 이메일 (unique)'},
+    {col:'active_token',type:'CharField',pk:false,desc:'현재 유효한 JWT — 중복 로그인 방지'},
+    {col:'status',type:'CharField',pk:false,desc:'free·trial·basic·pro·team·partner·admin'},
+    {col:'sns',type:'CharField',pk:false,desc:'normal·google'},
+  ],qfile:'user/views.py',query:`-- 로그인 성공 시 active_token 갱신
+UPDATE users_ugwanggi
+SET active_token = :new_access_token
+WHERE email = :email;`}
+},
+
+auth_google:{
+  name:'구글 OAuth 로그인',
+  desc:'Google OAuth2 access token으로 로그인. 신규 유저는 자동 가입 처리.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js'],cfile:'src/service/user.js',
+  code:`export const googleLogin = async (googleAccessToken) => {
+  const response = await api.post(\`\${api_url}/user/google-login\`, {
+    access_token: googleAccessToken
+  });
+  return response.data; // { access, refresh, is_new_user }
+};`},
+  be:{eps:[{m:'POST',path:'/user/google-login',desc:'구글 토큰 검증 후 JWT 발급 또는 자동 회원가입'}],
+  repo:'ugwanggiAPI',files:['user/views.py → GoogleLoginView'],cfile:'user/views.py',
+  code:`class GoogleLoginView(APIView):
+    def post(self, request):
+        google_token = request.data.get('access_token')
+        # Google API로 토큰 검증
+        user_info = verify_google_token(google_token)
+        email = user_info['email']
+
+        user, created = User.objects.get_or_create(
+            email=email,
+            defaults={'sns': 'google', 'google_token': google_token}
+        )
+        # JWT 발급
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+            'is_new_user': created
+        })`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'google_token',type:'CharField',pk:false,desc:'구글 OAuth access token'},
+    {col:'google_refresh',type:'CharField',pk:false,desc:'구글 OAuth refresh token'},
+    {col:'sns',type:'CharField',pk:false,desc:"'google' 으로 저장"},
+  ],qfile:'user/views.py',query:`SELECT * FROM users_ugwanggi WHERE email = :email AND sns = 'google';`}
+},
+
+auth_token:{
+  name:'JWT 토큰 관리',
+  desc:'access token 재발급 및 유효성 검증. active_token을 DB에 저장해 중복 로그인을 방지.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js','src/utils/tokenUtils.js'],cfile:'src/service/user.js',
+  code:`export const refreshToken = async (refresh) => {
+  const response = await api.post(\`\${api_url}/user/refresh-token\`, { refresh });
+  return response.data; // { access }
+};
+
+export const verifyToken = async (token) => {
+  const response = await api.post(\`\${api_url}/user/verify-token\`, { token });
+  return response.data;
+};`},
+  be:{eps:[
+    {m:'POST',path:'/user/refresh-token',desc:'refresh token으로 새 access token 발급'},
+    {m:'POST',path:'/user/verify-token',desc:'토큰 유효성 검증'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → CustomTokenRefreshView','user/views.py → TokenVerifyView'],cfile:'user/views.py',
+  code:`class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        if response.status_code == 200:
+            # active_token도 갱신
+            token = AccessToken(response.data['access'])
+            user = User.objects.get(user_id=token['user_id'])
+            user.active_token = response.data['access']
+            user.save()
+        return response`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'active_token',type:'CharField',pk:false,desc:'DB 저장 중인 현재 유효 토큰'},
+  ],qfile:'user/views.py',query:`UPDATE users_ugwanggi SET active_token = :token WHERE user_id = :id;`}
+},
+
+user_register:{
+  name:'회원가입 & 이메일 인증',
+  desc:'이메일 입력 → 인증 메일 발송 → 링크 클릭으로 가입 완료하는 3단계 플로우.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js','src/pages/auth/RegisterPage.jsx'],cfile:'src/service/user.js',
+  code:`export const registerUserInfo = async ({ email, password, username }) => {
+  await api.post(\`\${api_url}/user/register\`, { email, password, username });
+};
+
+export const sendConfirmationMail = async (email, username) => {
+  await api.post(\`\${api_url}/user/send-confirmation-email\`, { email, username });
+};
+
+export const getEmailConfirmation = async (password_temp) => {
+  // 이메일 링크의 임시 비밀번호로 인증
+  await api.post(\`\${api_url}/user/email-confirmation\`, { password_temp });
+};`},
+  be:{eps:[
+    {m:'POST',path:'/user/register',desc:'유저 계정 생성 (inactive 상태)'},
+    {m:'POST',path:'/user/send-confirmation-email',desc:'이메일 인증 링크 발송'},
+    {m:'POST',path:'/user/email-confirmation',desc:'임시 비밀번호로 이메일 인증 완료'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → RegisterView','user/views.py → SendConfirmationEmailView','user/views.py → EmailConfirmationView'],cfile:'user/views.py',
+  code:`class RegisterView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+        username = request.data.get('username')
+        user = User.objects.create_user(
+            email=email, password=password,
+            username=username, is_active=False
+        )
+        return Response({'message': 'registered'}, status=201)
+
+class EmailConfirmationView(APIView):
+    def post(self, request):
+        password_temp = request.data.get('password_temp')
+        user = User.objects.get(password_temp=password_temp)
+        user.is_active = True
+        user.password_temp = None
+        user.save()
+        return Response({'message': 'confirmed'})`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'email',type:'EmailField',pk:false,desc:'가입 이메일 (unique)'},
+    {col:'is_active',type:'BooleanField',pk:false,desc:'이메일 인증 완료 여부'},
+    {col:'password_temp',type:'CharField',pk:false,desc:'이메일 인증용 임시 비밀번호'},
+    {col:'status',type:'CharField',pk:false,desc:"가입 시 'free'로 설정"},
+  ],qfile:'user/views.py',query:`-- 이메일 인증 완료
+UPDATE users_ugwanggi
+SET is_active = TRUE, password_temp = NULL
+WHERE password_temp = :temp_password;`}
+},
+
+user_phone:{
+  name:'전화번호 인증',
+  desc:'SMS 인증 코드 발송 후 코드 확인으로 전화번호 등록.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js'],cfile:'src/service/user.js',
+  code:`export const registerPhoneNumber = async (phone) => {
+  await api.post(\`\${api_url}/user/register-phone-number\`, { phone });
+};
+
+export const checkPhoneCode = async (code) => {
+  await api.post(\`\${api_url}/user/check-phone-number-code\`, { code });
+};
+
+export const validatePhoneNumber = async (phone) => {
+  const res = await api.post(\`\${api_url}/user/validate-phone-number\`, { phone });
+  return res.data; // { is_valid: bool }
+};`},
+  be:{eps:[
+    {m:'POST',path:'/user/register-phone-number',desc:'전화번호 등록 및 SMS 인증 코드 발송'},
+    {m:'POST',path:'/user/check-phone-number-code',desc:'SMS 코드 확인'},
+    {m:'POST',path:'/user/validate-phone-number',desc:'전화번호 중복 여부 확인'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → RegisterPhoneNumberView','user/views.py → CheckPhoneNumberCodeView'],cfile:'user/views.py',
+  code:`class RegisterPhoneNumberView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        phone = request.data.get('phone')
+        code = generate_sms_code()
+        send_sms(phone, code)
+        request.user.phone = phone
+        request.user.phone_verification_code = code
+        request.user.phone_is_verified = False
+        request.user.save()
+        return Response({'message': 'SMS sent'})`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'phone',type:'CharField',pk:false,desc:'전화번호'},
+    {col:'phone_verification_code',type:'CharField',pk:false,desc:'SMS 인증 코드'},
+    {col:'phone_is_verified',type:'BooleanField',pk:false,desc:'인증 완료 여부'},
+  ],qfile:'user/views.py',query:`UPDATE users_ugwanggi
+SET phone_is_verified = TRUE, phone_verification_code = NULL
+WHERE user_id = :user_id AND phone_verification_code = :code;`}
+},
+
+user_profile:{
+  name:'프로필 수정',
+  desc:'로그인된 유저의 username 등 기본 정보를 수정.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js','src/pages/settings/ProfilePage.jsx'],cfile:'src/service/user.js',
+  code:`export const updateUserInfo = async (form) => {
+  // form: { username, profile_image, ... }
+  const response = await api.put(\`\${api_url}/user/update\`, form);
+  return response.data;
+};`},
+  be:{eps:[{m:'PUT',path:'/user/update',desc:'유저 프로필 정보 수정'}],
+  repo:'ugwanggiAPI',files:['user/views.py → UserUpdateView'],cfile:'user/views.py',
+  code:`class UserUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self, request):
+        user = request.user
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=400)`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'username',type:'CharField',pk:false,desc:'표시 이름'},
+    {col:'profile_image',type:'ImageField',pk:false,desc:'프로필 이미지'},
+  ],qfile:'user/views.py',query:`UPDATE users_ugwanggi SET username = :name WHERE user_id = :id;`}
+},
+
+user_password:{
+  name:'비밀번호 변경',
+  desc:'로그인 상태면 직접 변경, 비로그인 시 이메일 링크로 변경.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js'],cfile:'src/service/user.js',
+  code:`// 로그인 상태
+export const changePasswordLogged = async (password, new_password) => {
+  await api.put(\`\${api_url}/user/change-password-logged\`, { password, new_password });
+};
+
+// 비로그인 — 이메일로 링크 발송
+export const sendChangePasswordEmail = async (email) => {
+  await api.post(\`\${api_url}/user/change-password-email\`, { email });
+};
+
+// 링크 클릭 후 새 비밀번호 설정
+export const changePassword = async (token, new_password) => {
+  await api.post(\`\${api_url}/user/change-password\`, { token, new_password });
+};`},
+  be:{eps:[
+    {m:'PUT', path:'/user/change-password-logged',desc:'현재 PW 확인 후 새 PW로 변경'},
+    {m:'POST',path:'/user/change-password-email', desc:'비밀번호 변경 링크 이메일 발송'},
+    {m:'POST',path:'/user/change-password',        desc:'링크의 토큰으로 새 PW 설정'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → ChangePasswordLoggedView','user/views.py → SendChangePasswordEmailView'],cfile:'user/views.py',
+  code:`class ChangePasswordLoggedView(APIView):
+    permission_classes = [IsAuthenticated]
+    def put(self, request):
+        user = request.user
+        if not user.check_password(request.data.get('password')):
+            return Response({'error': '현재 비밀번호가 틀립니다'}, status=400)
+        user.set_password(request.data.get('new_password'))
+        user.save()
+        return Response({'message': 'changed'})`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'password',type:'CharField',pk:false,desc:'bcrypt 해시 비밀번호'},
+  ],qfile:'user/views.py',query:`UPDATE users_ugwanggi SET password = :hashed WHERE user_id = :id;`}
+},
+
+user_delete:{
+  name:'계정 삭제',
+  desc:'모든 구독·결제 데이터 포함 계정 완전 삭제. 복구 불가.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js'],cfile:'src/service/user.js',
+  code:`export const deleteAccount = async ({ password }) => {
+  await api.delete(\`\${api_url}/user/delete-account\`, { data: { password } });
+};`},
+  be:{eps:[{m:'DELETE',path:'/user/delete-account',desc:'비밀번호 확인 후 계정 및 관련 데이터 삭제'}],
+  repo:'ugwanggiAPI',files:['user/views.py → DeleteAccountView'],cfile:'user/views.py',
+  code:`class DeleteAccountView(APIView):
+    permission_classes = [IsAuthenticated]
+    def delete(self, request):
+        user = request.user
+        if not user.check_password(request.data.get('password')):
+            return Response({'error': '비밀번호가 틀립니다'}, status=400)
+        # 구독, 결제 내역 등 cascade 삭제
+        user.delete()
+        return Response(status=204)`},
+  data:{tables:['users_ugwanggi','ugwanggi_subscription','ugwanggi_payment_history'],schema:[
+    {col:'user_id',type:'AutoField',pk:true,desc:'삭제 시 관련 테이블 cascade'},
+  ],qfile:'user/views.py',query:`DELETE FROM users_ugwanggi WHERE user_id = :id;
+-- CASCADE: subscription, payment_history, coupon 등 연관 데이터 자동 삭제`}
+},
+
+user_permissions:{
+  name:'권한 체계 (Permission Classes)',
+  desc:'user.status 값으로 API 접근 권한을 제어. 각 뷰에 permission_classes로 지정.',
+  repos:['ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/hooks/useUserStatus.js'],cfile:'src/hooks/useUserStatus.js',
+  code:`export const useUserStatus = () => {
+  const { user } = useUserStore();
+  return {
+    isFree:    user?.status === 'free',
+    isTrial:   user?.status === 'trial',
+    isPremium: ['pro','basic','team','creator','premium','partner'].includes(user?.status),
+    isTeam:    ['team','team-sub','partner','partner-sub','admin'].includes(user?.status),
+    isAdmin:   user?.status === 'admin',
+  };
+};`},
+  be:{eps:[],repo:'ugwanggiAPI',files:['ugwanggiAPI/permissions.py'],cfile:'ugwanggiAPI/permissions.py',
+  code:`class IsAdmin(BasePermission):
+    def has_permission(self, req, view):
+        return req.user.status == 'admin'
+
+class IsPremium(BasePermission):
+    ALLOWED = {'pro','pro-sub','premium','creator','basic','team','team-sub','partner','partner-sub','admin','trial'}
+    def has_permission(self, req, view):
+        return req.user.status in self.ALLOWED
+
+class IsTeam(BasePermission):
+    ALLOWED = {'team','team-sub','partner','partner-sub','admin'}
+    def has_permission(self, req, view):
+        return req.user.status in self.ALLOWED
+
+class IsPartner(BasePermission):
+    ALLOWED = {'partner','partner-sub','admin'}
+    def has_permission(self, req, view):
+        return req.user.status in self.ALLOWED`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'status',type:'CharField',pk:false,desc:'free·trial·basic·pro·pro-sub·premium·creator·team·team-sub·partner·partner-sub·admin'},
+    {col:'status_ugwanggi',type:'CharField',pk:false,desc:'유광기 플랫폼 전용 status'},
+    {col:'status_ingwanggi',type:'CharField',pk:false,desc:'인광기 플랫폼 전용 status'},
+  ],qfile:'ugwanggiAPI/permissions.py',query:`SELECT status FROM users_ugwanggi WHERE user_id = :id;
+-- 뷰에서 permission_classes = [IsPremium] 형태로 사용`}
+},
+
+user_link:{
+  name:'계정 연동 (팀 구독)',
+  desc:'팀 구독 플랜에서 sub-account를 연결해 동일 권한 공유.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const linkUser = async (email) => {
+  await api.post(\`\${api_url}/user/link-user\`, { email });
+};
+
+export const getLinkedUsers = async () => {
+  const res = await api.get(\`\${api_url}/user/link-user\`);
+  return res.data;
+};
+
+export const deleteLinkedUser = async (linked_user_id) => {
+  await api.delete(\`\${api_url}/user/link-user\`, { data: { linked_user_id } });
+};`},
+  be:{eps:[
+    {m:'POST',  path:'/user/link-user',     desc:'이메일로 유저 연동 추가'},
+    {m:'GET',   path:'/user/link-user-list',desc:'연동된 유저 목록 조회'},
+    {m:'DELETE',path:'/user/link-user',     desc:'연동 해제'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → LinkUserView','user/views.py → LinkUserListView'],cfile:'user/views.py',
+  code:`class LinkUserView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        email = request.data.get('email')
+        target = User.objects.get(email=email)
+        LinkedUser.objects.create(
+            main_user=request.user,
+            linked_user=target
+        )
+        target.status = request.user.status + '-sub'
+        target.save()
+        return Response({'message': 'linked'})`},
+  data:{tables:['users_ugwanggi','linked_users'],schema:[
+    {col:'id',type:'AutoField',pk:true,desc:'연동 관계 PK'},
+    {col:'main_user_id',type:'FK',pk:false,desc:'메인 계정 (팀장)'},
+    {col:'linked_user_id',type:'FK',pk:false,desc:'연동된 sub 계정'},
+  ],qfile:'user/views.py',query:`SELECT u.email, u.status FROM linked_users l
+JOIN users_ugwanggi u ON u.user_id = l.linked_user_id
+WHERE l.main_user_id = :main_user_id;`}
+},
+
+payment_card:{
+  name:'결제 카드 관리',
+  desc:'Iamport customer_uid 기반으로 카드를 등록·삭제·기본 카드 변경.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const getPaymentCardList = async () => {
+  const res = await api.get(\`\${api_url}/subscribe/payment-card\`);
+  return res.data; // [{ payment_card_id, card_number, card_network, bank, last_used }]
+};
+
+export const addPaymentCard = async ({ card_number, expiry, birth, pwd_2digit }) => {
+  await api.post(\`\${api_url}/subscribe/payment-card\`, { card_number, expiry, birth, pwd_2digit });
+};
+
+export const deletePaymentCard = async (payment_card_id) => {
+  await api.delete(\`\${api_url}/subscribe/payment-card\`, { data: { payment_card_id } });
+};
+
+export const changeCard = async ({ payment_card_id }) => {
+  await api.put(\`\${api_url}/subscribe/change-card\`, { payment_card_id });
+};`},
+  be:{eps:[
+    {m:'GET',   path:'/subscribe/payment-card',desc:'등록된 카드 목록 조회'},
+    {m:'POST',  path:'/subscribe/payment-card',desc:'새 카드 등록 (Iamport customer_uid 발급)'},
+    {m:'DELETE',path:'/subscribe/payment-card',desc:'카드 삭제'},
+    {m:'PUT',   path:'/subscribe/change-card', desc:'기본 결제 카드 변경'},
+  ],repo:'ugwanggiAPI',files:['subscribe/views.py → PaymentCardView','subscribe/views.py → ChangeCardView'],cfile:'subscribe/views.py',
+  code:`class PaymentCardView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        # Iamport로 카드 등록 → customer_uid 발급
+        customer_uid = f"card_{request.user.user_id}_{uuid4().hex[:8]}"
+        iamport_register_card(customer_uid, request.data)
+        PaymentCard.objects.create(
+            user_id=request.user,
+            customer_uid=customer_uid,
+            card_number=request.data['card_number'][-4:],
+            card_network=get_card_network(request.data['card_number']),
+        )
+        return Response({'message': 'card registered'})`},
+  data:{tables:['ugwanggi_payment_card'],schema:[
+    {col:'payment_card_id',type:'AutoField',pk:true,desc:'카드 PK'},
+    {col:'user_id',type:'FK',pk:false,desc:'유저 FK'},
+    {col:'customer_uid',type:'CharField',pk:false,desc:'Iamport 고객 UID — 정기 결제용 키'},
+    {col:'card_number',type:'CharField',pk:false,desc:'카드 끝 4자리'},
+    {col:'card_network',type:'CharField',pk:false,desc:'visa·mastercard·etc'},
+    {col:'last_used',type:'BooleanField',pk:false,desc:'기본 결제 카드 여부'},
+  ],qfile:'subscribe/views.py',query:`SELECT * FROM ugwanggi_payment_card
+WHERE user_id = :user_id
+ORDER BY last_used DESC, payment_card_id DESC;`}
+},
+
+payment_process:{
+  name:'결제 실행 (first-payment)',
+  desc:'신규 구독 첫 결제. Iamport로 실제 카드 청구 후 구독 레코드 생성.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/payment.js'],cfile:'src/service/payment.js',
+  code:`export const payForRegistration = async ({
+  interval,          // 'month' | 'year'
+  youtube_plan,      // 'basic' | 'pro' | 'team'
+  instagram_plan,
+  coupon,            // 쿠폰 코드 (optional)
+  payment_card_id,   // 저장된 카드 사용 시
+  additional_user,   // 팀 추가 유저 수
+}) => {
+  const res = await api.post(\`\${api_url}/subscribe/first-payment\`, {
+    interval, youtube_plan, instagram_plan,
+    coupon, payment_card_id, additional_user
+  });
+  return res.data;
+};
+
+export const getPrice = async ({ interval, youtube_plan, coupon }) => {
+  const res = await api.post(\`\${api_url}/subscribe/calculate-price\`, { interval, youtube_plan, coupon });
+  return res.data; // { amount, discount, final_amount }
+};`},
+  be:{eps:[
+    {m:'POST',path:'/subscribe/first-payment',   desc:'첫 결제 실행 + 구독 생성 (Iamport)'},
+    {m:'POST',path:'/subscribe/calculate-price', desc:'플랜·쿠폰 기반 가격 계산'},
+  ],repo:'ugwanggiAPI',files:['subscribe/views.py → FirstPaymentView','subscribe/views.py → CalculatePriceView'],cfile:'subscribe/views.py',
+  code:`class FirstPaymentView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @transaction.atomic
+    def post(self, request):
+        plan = request.data.get('youtube_plan')
+        interval = request.data.get('interval')
+        coupon_code = request.data.get('coupon')
+
+        # 1. 쿠폰 검증 & 가격 계산
+        amount, discount = apply_coupon(plan, interval, coupon_code)
+
+        # 2. Iamport 결제 요청
+        card = PaymentCard.objects.get(pk=request.data['payment_card_id'])
+        iamport_result = iamport_pay(card.customer_uid, amount)
+
+        if not iamport_result['success']:
+            return Response({'error': iamport_result['fail_reason']}, status=400)
+
+        # 3. 결제 내역 저장
+        PaymentHistory.objects.create(user_id=request.user, amount=amount, ...)
+
+        # 4. 구독 생성 & 유저 status 업데이트
+        Subscription.objects.create(user_id=request.user, plan=plan, ...)
+        request.user.status = plan
+        request.user.save()
+
+        return Response({'message': 'success'})`},
+  data:{tables:['ugwanggi_payment_history','ugwanggi_subscription','users_ugwanggi'],schema:[
+    {col:'payment_id',type:'BigAutoField',pk:true,desc:'결제 PK'},
+    {col:'merchant_uid',type:'CharField',pk:false,desc:'자체 생성 주문번호'},
+    {col:'imp_uid',type:'CharField',pk:false,desc:'Iamport 결제 고유번호'},
+    {col:'amount',type:'IntegerField',pk:false,desc:'실 결제 금액 (원)'},
+    {col:'success',type:'BooleanField',pk:false,desc:'결제 성공 여부'},
+    {col:'type',type:'CharField',pk:false,desc:"'subscription'·'credits'"},
+  ],qfile:'subscribe/views.py',query:`INSERT INTO ugwanggi_payment_history
+  (user_id, merchant_uid, imp_uid, amount, success, plan, type, date)
+VALUES (:user_id, :merchant, :imp, :amount, TRUE, :plan, 'subscription', NOW());`}
+},
+
+payment_history:{
+  name:'결제 내역 조회',
+  desc:'로그인 유저의 모든 결제 기록을 최신순으로 반환.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const getPaymentHistory = async () => {
+  const res = await api.get(\`\${api_url}/subscribe/payment-history\`);
+  return res.data; // [{ payment_id, amount, date, plan, type, receipt_url, success }]
+};`},
+  be:{eps:[{m:'GET',path:'/subscribe/payment-history',desc:'유저 결제 내역 전체 조회'}],
+  repo:'ugwanggiAPI',files:['subscribe/views.py → PaymentHistoryView'],cfile:'subscribe/views.py',
+  code:`class PaymentHistoryView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        history = PaymentHistory.objects.filter(
+            user_id=request.user
+        ).order_by('-date')
+        return Response(PaymentHistorySerializer(history, many=True).data)`},
+  data:{tables:['ugwanggi_payment_history'],schema:[
+    {col:'payment_id',type:'BigAutoField',pk:true,desc:'결제 PK'},
+    {col:'amount',type:'IntegerField',pk:false,desc:'결제 금액'},
+    {col:'date',type:'DateTimeField',pk:false,desc:'결제 일시'},
+    {col:'plan',type:'CharField',pk:false,desc:'결제한 플랜'},
+    {col:'type',type:'CharField',pk:false,desc:"'subscription'·'credits'"},
+    {col:'receipt_url',type:'TextField',pk:false,desc:'영수증 URL'},
+    {col:'credit_card',type:'CharField',pk:false,desc:'카드 끝 4자리'},
+  ],qfile:'subscribe/views.py',query:`SELECT * FROM ugwanggi_payment_history
+WHERE user_id = :user_id
+ORDER BY date DESC;`}
+},
+
+payment_refund:{
+  name:'환불 처리 (Admin)',
+  desc:'관리자가 결제 ID를 지정해 Iamport를 통해 환불 처리.',
+  repos:['ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/admin.js'],cfile:'src/service/admin.js',
+  code:`export const refundPayment = async ({ payment_id, reason }) => {
+  await api.post(\`\${api_url}/subscribe/refund\`, { payment_id, reason });
+};`},
+  be:{eps:[{m:'POST',path:'/subscribe/refund',desc:'결제 환불 (IsAdmin 권한 필요)'}],
+  repo:'ugwanggiAPI',files:['subscribe/views.py → RefundView'],cfile:'subscribe/views.py',
+  code:`class RefundView(APIView):
+    permission_classes = [IsAdmin]
+    def post(self, request):
+        payment = PaymentHistory.objects.get(pk=request.data['payment_id'])
+        # Iamport 환불 요청
+        iamport_refund(payment.imp_uid, payment.amount)
+        payment.success = False
+        payment.save()
+        # 구독 취소 처리
+        Subscription.objects.filter(user_id=payment.user_id).update(canceled=True)
+        return Response({'message': 'refunded'})`},
+  data:{tables:['ugwanggi_payment_history','ugwanggi_subscription'],schema:[
+    {col:'imp_uid',type:'CharField',pk:false,desc:'Iamport 환불 시 필요한 고유번호'},
+    {col:'success',type:'BooleanField',pk:false,desc:'환불 후 FALSE로 변경'},
+  ],qfile:'subscribe/views.py',query:`UPDATE ugwanggi_payment_history SET success = FALSE WHERE payment_id = :id;
+UPDATE ugwanggi_subscription SET canceled = TRUE WHERE user_id = :user_id;`}
+},
+
+subscribe_plan:{
+  name:'구독 정보 조회 & 가격 계산',
+  desc:'현재 구독 상태 조회, 플랜별 가격 계산, 업그레이드 금액 산출.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const getSubscription = async () => {
+  const res = await api.get(\`\${api_url}/subscribe/subscription\`);
+  return res.data;
+  // { plan, interval, next_payment, canceled, additional_user, free_month_left }
+};
+
+export const calculatePrice = async ({ interval, youtube_plan, coupon, additional_user }) => {
+  const res = await api.post(\`\${api_url}/subscribe/calculate-price\`, {
+    interval, youtube_plan, coupon, additional_user
+  });
+  return res.data; // { original, discount, final_amount }
+};`},
+  be:{eps:[
+    {m:'GET', path:'/subscribe/subscription',              desc:'현재 구독 정보 조회'},
+    {m:'POST',path:'/subscribe/calculate-price',           desc:'플랜+쿠폰 기반 결제 금액 계산'},
+    {m:'POST',path:'/subscribe/calculate-upgrade-price',   desc:'업그레이드 시 차액 계산'},
+  ],repo:'ugwanggiAPI',files:['subscribe/views.py → SubscriptionView','subscribe/views.py → CalculatePriceView'],cfile:'subscribe/views.py',
+  code:`class SubscriptionView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        sub = Subscription.objects.filter(
+            user_id=request.user,
+            canceled=False
+        ).order_by('-subscription_date').first()
+        return Response(SubscriptionSerializer(sub).data)`},
+  data:{tables:['ugwanggi_subscription'],schema:[
+    {col:'subscription_id',type:'AutoField',pk:true,desc:'구독 PK'},
+    {col:'plan',type:'CharField',pk:false,desc:'basic·pro·team'},
+    {col:'amount',type:'IntegerField',pk:false,desc:'월/연 결제 금액'},
+    {col:'next_payment',type:'DateField',pk:false,desc:'다음 결제일'},
+    {col:'canceled',type:'BooleanField',pk:false,desc:'취소 여부'},
+    {col:'free_month_left',type:'IntegerField',pk:false,desc:'무료 제공 잔여 개월'},
+    {col:'discount_percent',type:'IntegerField',pk:false,desc:'할인율 (%)'},
+  ],qfile:'subscribe/views.py',query:`SELECT * FROM ugwanggi_subscription
+WHERE user_id = :user_id AND canceled = FALSE
+ORDER BY subscription_date DESC LIMIT 1;`}
+},
+
+subscribe_free_trial:{
+  name:'무료 체험 시작',
+  desc:'결제 없이 trial 상태로 서비스 체험. 만료 후 자동으로 free 전환. 1인당 1회.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const startFreeTrialSubscription = async () => {
+  const res = await api.post(\`\${api_url}/subscribe/start-free-trial\`);
+  return res.data;
+};`},
+  be:{eps:[{m:'POST',path:'/subscribe/start-free-trial',desc:'trial 구독 생성 (결제 없음)'}],
+  repo:'ugwanggiAPI',files:['subscribe/views.py → StartFreeTrialView'],cfile:'subscribe/views.py',
+  code:`class StartFreeTrialView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        user = request.user
+        # 이미 trial 경험 여부 확인
+        if Subscription.objects.filter(user_id=user, type='free trial').exists():
+            return Response({'error': '이미 무료 체험을 사용했습니다'}, status=400)
+
+        trial_end = date.today() + timedelta(days=14)
+        Subscription.objects.create(
+            user_id=user, type='free trial',
+            plan='pro', subscription_end=trial_end
+        )
+        user.status = 'trial'
+        user.save()
+        return Response({'trial_end': trial_end})`},
+  data:{tables:['ugwanggi_subscription','users_ugwanggi'],schema:[
+    {col:'type',type:'CharField',pk:false,desc:"'free trial'·'paid'·'team'"},
+    {col:'subscription_end',type:'DateField',pk:false,desc:'무료 체험 종료일'},
+  ],qfile:'subscribe/views.py',query:`INSERT INTO ugwanggi_subscription (user_id, type, plan, subscription_end)
+VALUES (:user_id, 'free trial', 'pro', :end_date);
+UPDATE users_ugwanggi SET status = 'trial' WHERE user_id = :user_id;`}
+},
+
+subscribe_change:{
+  name:'구독 플랜 변경',
+  desc:'현재 구독에서 다른 플랜으로 업/다운그레이드. 업그레이드 시 차액 즉시 결제.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/payment.js'],cfile:'src/service/payment.js',
+  code:`export const changeSubscriptionPlan = async ({ interval, youtube_plan, additional_user }) => {
+  const res = await api.post(\`\${api_url}/subscribe/change-plan\`, {
+    interval, youtube_plan, additional_user
+  });
+  return res.data;
+};
+
+export const getUpgradePrice = async ({ interval, youtube_plan, additional_user }) => {
+  const res = await api.post(\`\${api_url}/subscribe/calculate-upgrade-price\`, {
+    interval, youtube_plan, additional_user
+  });
+  return res.data; // { upgrade_amount }
+};`},
+  be:{eps:[
+    {m:'POST',path:'/subscribe/change-plan',               desc:'플랜 변경 및 차액 결제'},
+    {m:'POST',path:'/subscribe/calculate-upgrade-price',   desc:'업그레이드 차액 계산'},
+  ],repo:'ugwanggiAPI',files:['subscribe/views.py → ChangePlanView'],cfile:'subscribe/views.py',
+  code:`class ChangePlanView(APIView):
+    permission_classes = [IsAuthenticated]
+    @transaction.atomic
+    def post(self, request):
+        new_plan = request.data.get('youtube_plan')
+        current_sub = Subscription.objects.get(user_id=request.user, canceled=False)
+
+        # 업그레이드면 차액 즉시 결제
+        if is_upgrade(current_sub.plan, new_plan):
+            diff = calculate_prorated_amount(current_sub, new_plan)
+            iamport_pay(get_customer_uid(request.user), diff)
+
+        current_sub.plan = new_plan
+        current_sub.save()
+        request.user.status = new_plan
+        request.user.save()
+        return Response({'new_plan': new_plan})`},
+  data:{tables:['ugwanggi_subscription','ugwanggi_payment_history'],schema:[
+    {col:'plan',type:'CharField',pk:false,desc:'변경 후 플랜명'},
+    {col:'can_upgrade',type:'BooleanField',pk:false,desc:'업그레이드 가능 여부 플래그'},
+  ],qfile:'subscribe/views.py',query:`UPDATE ugwanggi_subscription SET plan = :new_plan WHERE subscription_id = :id;`}
+},
+
+subscribe_cancel:{
+  name:'구독 취소',
+  desc:'취소 사유 설문 제출 후 구독 취소. 만료일까지 서비스 이용 가능.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const cancelSubscription = async ({ survey, input, subscription_id }) => {
+  // survey: 'function'|'expensive'|'another_service'|'no_use'
+  await api.delete(\`\${api_url}/subscribe/cancel\`, {
+    data: { survey, input, subscription_id }
+  });
+};`},
+  be:{eps:[{m:'DELETE',path:'/subscribe/cancel',desc:'구독 취소 + 취소 사유 저장'}],
+  repo:'ugwanggiAPI',files:['subscribe/views.py → CancelSubsciptionView'],cfile:'subscribe/views.py',
+  code:`class CancelSubsciptionView(APIView):
+    permission_classes = [IsAuthenticated]
+    def delete(self, request):
+        sub = Subscription.objects.get(pk=request.data['subscription_id'])
+        sub.canceled = True
+        sub.save()
+        # 취소 사유 저장
+        CancelSurvey.objects.create(
+            user_id=request.user,
+            reason=request.data.get('survey'),
+            detail=request.data.get('input')
+        )
+        return Response({'cancel_date': sub.subscription_end})`},
+  data:{tables:['ugwanggi_subscription','ugwanggi_cancel_survey'],schema:[
+    {col:'canceled',type:'BooleanField',pk:false,desc:'취소 처리 여부'},
+    {col:'subscription_end',type:'DateField',pk:false,desc:'서비스 이용 가능 마지막 날'},
+    {col:'reason',type:'CharField',pk:false,desc:'function·expensive·another_service·no_use'},
+  ],qfile:'subscribe/views.py',query:`UPDATE ugwanggi_subscription SET canceled = TRUE WHERE subscription_id = :id;
+INSERT INTO ugwanggi_cancel_survey (user_id, reason, detail) VALUES (:uid, :reason, :detail);`}
+},
+
+credits_info:{
+  name:'크레딧 현황 & 차감',
+  desc:'무료/유료 크레딧 잔여 조회 및 기능 사용 시 크레딧 차감.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/user.js'],cfile:'src/service/user.js',
+  code:`export const getCreditsLeft = async () => {
+  const res = await api.get(\`\${api_url}/user/credits-left\`);
+  return res.data; // { credits: 24, paid_credits: 10 }
+};
+
+export const decreaseCredits = async ({ amount, feature }) => {
+  // 무료 크레딧 먼저 차감, 부족 시 유료 크레딧 사용
+  await api.post(\`\${api_url}/user/decrease-credits\`, { amount, feature });
+};`},
+  be:{eps:[
+    {m:'GET', path:'/user/credits-left',   desc:'현재 무료+유료 크레딧 잔여량 조회'},
+    {m:'POST',path:'/user/decrease-credits',desc:'크레딧 차감 (무료 먼저, 부족 시 유료)'},
+  ],repo:'ugwanggiAPI',files:['user/views.py → CreditsLeftView','user/views.py → DecreaseCreditsView'],cfile:'user/views.py',
+  code:`class DecreaseCreditsView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        user = request.user
+        amount = request.data.get('amount', 1)
+
+        if user.credits >= amount:
+            user.credits -= amount
+        elif user.credits + user.paid_credits >= amount:
+            # 무료 소진 후 유료에서 차감
+            remaining = amount - user.credits
+            user.credits = 0
+            user.paid_credits -= remaining
+        else:
+            return Response({'error': '크레딧이 부족합니다'}, status=400)
+
+        user.save()
+        return Response({'credits': user.credits, 'paid_credits': user.paid_credits})`},
+  data:{tables:['users_ugwanggi'],schema:[
+    {col:'credits',type:'IntegerField',pk:false,desc:'무료 크레딧 잔여량'},
+    {col:'paid_credits',type:'IntegerField',pk:false,desc:'유료 크레딧 잔여량'},
+  ],qfile:'user/views.py',query:`UPDATE users_ugwanggi
+SET credits = GREATEST(0, credits - :amount),
+    paid_credits = GREATEST(0, paid_credits - GREATEST(0, :amount - credits))
+WHERE user_id = :user_id;`}
+},
+
+credits_buy:{
+  name:'크레딧 구매',
+  desc:'유료 구독자만 가능. 1크레딧 = 2,000원. Iamport로 결제 후 paid_credits 증가.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/payment.js'],cfile:'src/service/payment.js',
+  code:`export const buyCredits = async ({ amount, payment_card_id }) => {
+  // amount: 구매할 크레딧 수
+  const res = await api.post(\`\${api_url}/subscribe/buy-credits\`, {
+    amount,           // 크레딧 개수
+    payment_card_id   // 결제 카드
+  });
+  return res.data;
+};`},
+  be:{eps:[{m:'POST',path:'/subscribe/buy-credits',desc:'크레딧 구매 결제 (1크레딧=2,000원)'}],
+  repo:'ugwanggiAPI',files:['subscribe/views.py → BuyCreditsView'],cfile:'subscribe/views.py',
+  code:`class BuyCreditsView(APIView):
+    permission_classes = [IsPremium]  # 유료 구독자만
+    def post(self, request):
+        credit_count = request.data.get('amount')
+        price_per_credit = 2000
+        total_amount = credit_count * price_per_credit
+
+        card = PaymentCard.objects.get(pk=request.data['payment_card_id'])
+        result = iamport_pay(card.customer_uid, total_amount)
+
+        if not result['success']:
+            return Response({'error': result['fail_reason']}, status=400)
+
+        request.user.paid_credits += credit_count
+        request.user.save()
+
+        PaymentHistory.objects.create(
+            user_id=request.user, amount=total_amount, type='credits'
+        )
+        return Response({'paid_credits': request.user.paid_credits})`},
+  data:{tables:['users_ugwanggi','ugwanggi_payment_history'],schema:[
+    {col:'paid_credits',type:'IntegerField',pk:false,desc:'구매로 증가하는 유료 크레딧'},
+    {col:'type',type:'CharField',pk:false,desc:"PaymentHistory.type = 'credits'"},
+  ],qfile:'subscribe/views.py',query:`UPDATE users_ugwanggi SET paid_credits = paid_credits + :count WHERE user_id = :id;
+INSERT INTO ugwanggi_payment_history (user_id, amount, type) VALUES (:uid, :total, 'credits');`}
+},
+
+coupon_check:{
+  name:'쿠폰 조회 & 적용',
+  desc:'쿠폰 코드 유효성 검증. 결제 시 coupon 파라미터로 자동 적용.',
+  repos:['ugwanggiNext','ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/subscription.js'],cfile:'src/service/subscription.js',
+  code:`export const checkCustomCoupon = async (couponCode) => {
+  const res = await api.get(
+    \`\${api_url}/subscribe/check-custom-coupon/\${couponCode}\`
+  );
+  return res.data;
+  // { valid: true, discount_percent: 25, payment_number: 3, plan: 'pro' }
+};`},
+  be:{eps:[{m:'GET',path:'/subscribe/check-custom-coupon/{code}',desc:'쿠폰 유효성·혜택 조회'}],
+  repo:'ugwanggiAPI',files:['subscribe/views.py → CheckCustomCouponView'],cfile:'subscribe/views.py',
+  code:`class CheckCustomCouponView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, coupon_code):
+        try:
+            coupon = CustomCoupon.objects.get(
+                coupon=coupon_code,
+                used=False,
+                expiration_date__gte=date.today()
+            )
+            settings = coupon.settings_id
+            return Response({
+                'valid': True,
+                'discount_percent': settings.percentage,
+                'payment_number': settings.payment_number,
+                'monthly': settings.monthly,
+                'yearly': settings.yearly,
+            })
+        except CustomCoupon.DoesNotExist:
+            return Response({'valid': False, 'error': '유효하지 않은 쿠폰'}, status=404)`},
+  data:{tables:['ugwanggi_custom_coupon','ugwanggi_custom_coupon_settings2'],schema:[
+    {col:'coupon_id',type:'AutoField',pk:true,desc:'쿠폰 PK'},
+    {col:'coupon',type:'CharField',pk:false,desc:'쿠폰 코드 (unique)'},
+    {col:'used',type:'BooleanField',pk:false,desc:'사용 여부'},
+    {col:'expiration_date',type:'DateField',pk:false,desc:'만료일'},
+    {col:'percentage',type:'IntegerField',pk:false,desc:'할인율 (%)'},
+    {col:'payment_number',type:'IntegerField',pk:false,desc:'할인 적용 결제 횟수'},
+  ],qfile:'subscribe/views.py',query:`SELECT c.*, s.percentage, s.payment_number, s.monthly, s.yearly
+FROM ugwanggi_custom_coupon c
+JOIN ugwanggi_custom_coupon_settings2 s ON s.settings_id = c.settings_id
+WHERE c.coupon = :code AND c.used = FALSE AND c.expiration_date >= CURDATE();`}
+},
+
+coupon_admin:{
+  name:'쿠폰 관리 (Admin)',
+  desc:'관리자가 쿠폰 세팅 생성 후 개별 쿠폰 코드를 발급·삭제.',
+  repos:['ugwanggiAPI'],
+  fe:{repo:'ugwanggiNext',files:['src/service/admin.js'],cfile:'src/service/admin.js',
+  code:`// 쿠폰 세팅 생성
+export const createCouponSettings = async ({ name, percentage, payment_number, monthly, yearly, basic, team }) => {
+  await api.post(\`\${api_url}/subscribe/custom-coupon-settings\`, { name, percentage, payment_number, monthly, yearly });
+};
+
+// 쿠폰 코드 발급
+export const createCoupon = async ({ settings_id, expiration_date, count }) => {
+  await api.post(\`\${api_url}/subscribe/custom-coupon\`, { settings_id, expiration_date, count });
+};
+
+// 쿠폰 목록 조회
+export const getCoupons = async () => {
+  const res = await api.get(\`\${api_url}/subscribe/custom-coupon\`);
+  return res.data;
+};`},
+  be:{eps:[
+    {m:'GET',   path:'/subscribe/custom-coupon',          desc:'쿠폰 목록 조회 (Admin)'},
+    {m:'POST',  path:'/subscribe/custom-coupon',          desc:'쿠폰 코드 일괄 발급 (Admin)'},
+    {m:'DELETE',path:'/subscribe/custom-coupon',          desc:'쿠폰 삭제 (Admin)'},
+    {m:'GET',   path:'/subscribe/custom-coupon-settings', desc:'쿠폰 세팅 목록 (Admin)'},
+    {m:'POST',  path:'/subscribe/custom-coupon-settings', desc:'쿠폰 세팅 생성 (Admin)'},
+  ],repo:'ugwanggiAPI',files:['subscribe/views.py → CustomCouponView','subscribe/views.py → CustomCouponSettingsView'],cfile:'subscribe/views.py',
+  code:`class CustomCouponView(APIView):
+    permission_classes = [IsAdmin]
+    def post(self, request):
+        settings = CustomCouponSettings2.objects.get(pk=request.data['settings_id'])
+        count = request.data.get('count', 1)
+        expiry = request.data.get('expiration_date')
+        coupons = []
+        for _ in range(count):
+            code = generate_unique_code()  # 예: "SUMMER-AB3X9"
+            coupons.append(CustomCoupon(
+                coupon=code, settings_id=settings,
+                expiration_date=expiry, used=False
+            ))
+        CustomCoupon.objects.bulk_create(coupons)
+        return Response({'created': count})`},
+  data:{tables:['ugwanggi_custom_coupon','ugwanggi_custom_coupon_settings2'],schema:[
+    {col:'settings_id',type:'AutoField',pk:true,desc:'세팅 PK'},
+    {col:'name',type:'CharField',pk:false,desc:'세팅 이름 (예: 여름 프로모션)'},
+    {col:'percentage',type:'IntegerField',pk:false,desc:'할인율'},
+    {col:'payment_number',type:'IntegerField',pk:false,desc:'할인 적용 결제 횟수'},
+    {col:'monthly',type:'BooleanField',pk:false,desc:'월간 결제에 적용 가능'},
+    {col:'yearly',type:'BooleanField',pk:false,desc:'연간 결제에 적용 가능'},
+    {col:'basic',type:'BooleanField',pk:false,desc:'basic 플랜에 적용 가능'},
+    {col:'team',type:'BooleanField',pk:false,desc:'team 플랜에 적용 가능'},
+  ],qfile:'subscribe/views.py',query:`SELECT c.coupon, c.used, c.expiration_date, s.percentage, s.payment_number
+FROM ugwanggi_custom_coupon c
+JOIN ugwanggi_custom_coupon_settings2 s ON s.settings_id = c.settings_id
+ORDER BY c.coupon_id DESC;`}
+},
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  hljs.highlightAll();
+  showScreen(0);
+});
+</script>
+</body>
+</html>
