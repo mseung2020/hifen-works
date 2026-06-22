@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>종이비행기 분석기</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff; color: #222; padding: 24px 36px;
+        }
+
+        /* ── Page header ──────────────────────────────────── */
+        .page-header {
+            display: flex; align-items: flex-start; justify-content: space-between;
+        }
+        .page-title-line { display: flex; align-items: center; gap: 8px; }
+        h1 { font-size: 22px; font-weight: 800; color: #111; }
+        h1 span { color: #F97316; }
+        .hint { font-size: 12px; color: #bbb; }
+        .sub { font-size: 12px; color: #ccc; margin-top: 4px; }
+
+        /* ── Legend ───────────────────────────────────────── */
+        .legend { display: flex; align-items: center; gap: 16px; padding-top: 3px; }
+        .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #666; white-space: nowrap; }
+        .l-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+
+        /* ── Tabs ─────────────────────────────────────────── */
+        .theme-tabs {
+            display: flex; border-bottom: 1.5px solid #eee;
+            flex-wrap: wrap; margin: 14px 0 0;
+        }
+        .theme-tabs button {
+            border: none; background: transparent;
+            padding: 9px 20px; font-size: 13px; font-weight: 600;
+            color: #bbb; cursor: pointer;
+            border-bottom: 2.5px solid transparent; margin-bottom: -1.5px;
+            transition: color .15s;
+        }
+        .theme-tabs button.active { color: #F97316; border-bottom-color: #F97316; }
+
+        /* ── Controls ─────────────────────────────────────── */
+        .controls {
+            display: flex; align-items: center; gap: 18px;
+            margin: 14px 0 6px; padding: 11px 16px;
+            border: 1px solid #eee; border-radius: 10px; background: #fafafa;
+            flex-wrap: wrap;
+        }
+        .ctrl-group { display: flex; align-items: center; gap: 8px; }
+        .ctrl-group label { font-size: 12px; font-weight: 600; color: #666; }
+        .toggle { display: inline-flex; border: 1.5px solid #F97316; border-radius: 7px; overflow: hidden; }
+        .toggle button {
+            border: none; background: #fff; color: #F97316;
+            padding: 6px 12px; font-size: 12px; font-weight: 600; cursor: pointer;
+        }
+        .toggle button.active { background: #F97316; color: #fff; }
+        .log-btn {
+            border: 1.5px solid #e5e7eb; background: #fff; color: #9ca3af;
+            padding: 6px 10px; font-size: 11px; font-weight: 600; cursor: pointer; border-radius: 7px;
+        }
+        .log-btn.active { border-color: #F97316; color: #F97316; background: #fff7f0; }
+        .meta { font-size: 11px; color: #bbb; flex-basis: 100%; margin-top: 2px; }
+
+        /* ── N (cluster count) slider ─────────────────────── */
+        .n-group { gap: 10px; }
+        .n-slider {
+            -webkit-appearance: none; appearance: none;
+            width: 160px; height: 4px; border-radius: 999px;
+            background: #ffe4cc; outline: none; cursor: pointer;
+        }
+        .n-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #F97316; border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(249,115,22,.45);
+            cursor: pointer;
+        }
+        .n-slider::-moz-range-thumb {
+            width: 14px; height: 14px; border-radius: 50%;
+            background: #F97316; border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(249,115,22,.45);
+            cursor: pointer;
+        }
+        .n-readout {
+            font-size: 12px; font-weight: 700; color: #F97316;
+            font-variant-numeric: tabular-nums; min-width: 48px;
+        }
+        .n-readout span { display: inline-block; min-width: 18px; text-align: right; }
+
+        /* ── Chart — grid layout ──────────────────────────── */
+        /*
+          col 1: 64px  (y-axis area)
+          col 2: 1fr   (plot)
+          row 1: 64px  (top: TL label | note | TR label)
+          row 2: 1fr   (y-axis + plot)
+          row 3: 72px  (bottom: BL label | x-label | BR label)
+        */
+        .chart-wrap {
+            display: grid;
+            grid-template-columns: 64px 1fr;
+            grid-template-rows: 64px 1fr 72px;
+            height: 790px;
+            margin-top: 6px;
+            position: relative;
+        }
+
+        /* top row — spans both columns */
+        .chart-top-row {
+            grid-column: 1 / 3; grid-row: 1;
+            display: flex; align-items: flex-end;
+            padding: 0 0 10px 64px; /* left-align labels with plot */
+        }
+        .chart-note-wrap { flex: 1; text-align: center; padding: 0 12px; }
+        .chart-note { font-size: 12px; color: #d1d5db; }
+
+        /* y-axis column */
+        .chart-y-axis {
+            grid-column: 1; grid-row: 2;
+            display: flex; flex-direction: column;
+            justify-content: space-between; align-items: flex-end;
+            padding: 0 10px 0 0;
+        }
+        .y-edge { font-size: 11px; font-weight: 700; color: #d1d5db; }
+        .y-label-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .y-label {
+            font-size: 11px; color: #d1d5db; font-weight: 500; white-space: nowrap;
+            writing-mode: vertical-rl; transform: rotate(180deg);
+        }
+
+        /* plot */
+        .chart-inner {
+            grid-column: 2; grid-row: 2;
+            position: relative; overflow: visible;
+        }
+        .grid-svg {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%; pointer-events: none;
+        }
+
+        /* bottom row — spans both columns */
+        .chart-bot-row {
+            grid-column: 1 / 3; grid-row: 3;
+            display: flex; align-items: flex-start;
+            padding: 10px 0 0 64px;
+        }
+        .x-label-wrap { flex: 1; text-align: center; }
+        .x-label { font-size: 12px; color: #d1d5db; }
+
+        /* ── Quadrant labels ──────────────────────────────── */
+        .ql { display: flex; flex-direction: column; gap: 5px; flex: 0 0 auto; }
+        .ql.right { align-items: flex-end; }
+        .ql.right .q-pill { align-self: flex-end; }
+
+        .q-desc { font-size: 11px; font-weight: 600; white-space: nowrap; }
+        .q-desc.tl { color: #3b82f6; opacity: .72; }
+        .q-desc.tr { color: #F97316; opacity: .78; }
+        .q-desc.bl { color: #9ca3af; opacity: .85; }
+        .q-desc.br { color: #ef4444; opacity: .72; }
+
+        .q-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 12px; font-weight: 700; white-space: nowrap;
+            padding: 5px 12px 5px 9px; border-radius: 999px;
+            box-shadow: 0 1px 5px -1px rgba(0,0,0,.08);
+        }
+        .q-pill::before {
+            content: ''; display: block; width: 6px; height: 6px;
+            border-radius: 50%; flex: 0 0 auto; background: currentColor;
+        }
+        .q-pill.tl { color: #3b82f6; background: #eff6ff; border: 1.5px solid rgba(59,130,246,.26); }
+        .q-pill.tr { color: #F97316; background: #fff7ed; border: 1.5px solid rgba(249,115,22,.28); }
+        .q-pill.bl { color: #9ca3af; background: #f9fafb; border: 1.5px solid rgba(156,163,175,.26); }
+        .q-pill.br { color: #ef4444; background: #fef2f2; border: 1.5px solid rgba(239,68,68,.26); }
+
+        /* ── X-axis tick labels (overflow below plot) ────── */
+        .tick-label {
+            position: absolute; font-size: 10px; color: #d1d5db; pointer-events: none;
+        }
+        .tick-label.x { transform: translateX(-50%); top: calc(100% + 4px); }
+        /* No Y tick labels — only 높음/낮음 edge labels */
+
+        /* ── Bubbles ──────────────────────────────────────── */
+        .bubbles { position: absolute; inset: 0; }
+
+        .bubble {
+            position: absolute; border-radius: 50%;
+            transform: translate(-50%, -50%); cursor: pointer;
+            --hue: 220; --sat: 78%; --lit: 64%; --alpha: .50;
+            transition:
+                width .55s cubic-bezier(.2,.9,.25,1.15),
+                height .55s cubic-bezier(.2,.9,.25,1.15),
+                opacity .4s ease, filter .4s ease;
+            will-change: width, height;
+        }
+        .bubble .skin {
+            position: absolute; inset: 0; border-radius: 50%;
+            background: hsla(var(--hue), var(--sat), var(--lit), var(--alpha));
+            transition: box-shadow .35s ease;
+        }
+        .bubble .title {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 11px; font-weight: 700; text-align: center;
+            color: hsl(var(--hue), var(--sat), 24%);
+            pointer-events: none;
+            transition: opacity .25s ease, transform .4s ease;
+            width: 80%; line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .bubble .keywords {
+            position: absolute; inset: 0; border-radius: 50%;
+            opacity: 0; pointer-events: none; transition: opacity .35s ease .1s;
+        }
+        .bubble .kw {
+            position: absolute; left: 50%; top: 50%; border-radius: 50%;
+            background: hsl(var(--hue), var(--sat), 88%);
+            color: hsl(var(--hue), var(--sat), 24%);
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; font-weight: 700; padding: 4px;
+            line-height: 1.1; white-space: nowrap; overflow: hidden;
+            transform: translate(-50%, -50%);
+            transition: transform .5s cubic-bezier(.2,.9,.3,1.2); will-change: transform;
+        }
+        .bubbles.hovering .bubble:not(.is-hover) { opacity: .14; filter: saturate(.35) blur(.4px); }
+        .bubble.is-hover { z-index: 50; }
+        .bubble.is-hover .skin { box-shadow: 0 0 0 8px hsla(var(--hue), var(--sat), 58%, .16); }
+        .bubble.is-hover .title { opacity: 0; transform: translate(-50%,-50%) scale(.85); }
+        .bubble.is-hover .keywords { opacity: 1; }
+
+        @keyframes float-a { 0%,100%{translate:0 0}50%{translate:0 -6px} }
+        @keyframes float-b { 0%,100%{translate:0 0}50%{translate:3px 5px} }
+        @keyframes float-c { 0%,100%{translate:0 0}50%{translate:-4px 3px} }
+        .kw.f-a { animation: float-a 3.4s ease-in-out infinite; }
+        .kw.f-b { animation: float-b 4.1s ease-in-out infinite; }
+        .kw.f-c { animation: float-c 3.7s ease-in-out infinite; }
+
+        .bubble .head-badge {
+            position: absolute; left: 50%; top: -14px;
+            transform: translateX(-50%) translateY(-8px);
+            padding: 5px 12px; color: #fff;
+            background: hsl(var(--hue), var(--sat), 28%);
+            font-size: 11px; font-weight: 700; border-radius: 999px;
+            white-space: nowrap; opacity: 0;
+            transition: opacity .3s ease, transform .4s cubic-bezier(.2,.9,.3,1.2);
+            pointer-events: none; box-shadow: 0 3px 12px rgba(0,0,0,.18); z-index: 2;
+        }
+        .bubble .head-badge::after {
+            content: ''; position: absolute; left: 50%; bottom: -5px;
+            transform: translateX(-50%) rotate(45deg); width: 8px; height: 8px;
+            background: hsl(var(--hue), var(--sat), 28%);
+        }
+        .bubble.is-hover .head-badge { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* ── Leader line ──────────────────────────────────── */
+        .leader-svg {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 150; opacity: 0; transition: opacity .25s ease;
+        }
+        .leader-svg.show { opacity: 1; }
+
+        /* ── Callout card ─────────────────────────────────── */
+        .callout {
+            position: absolute; width: 340px;
+            background: #fff; border-radius: 18px;
+            box-shadow: 0 20px 48px -10px rgba(0,0,0,.22), 0 4px 16px rgba(0,0,0,.08);
+            border: 1px solid rgba(0,0,0,.07);
+            opacity: 0; pointer-events: none;
+            transform: scale(.92) translateY(8px);
+            transform-origin: var(--ox,50%) var(--oy,50%);
+            transition: opacity .26s ease, transform .3s cubic-bezier(.2,.9,.3,1.25);
+            z-index: 200; overflow: hidden;
+        }
+        .callout.show { opacity: 1; transform: scale(1) translateY(0); pointer-events: auto; }
+
+        /* callout header */
+        .c-header {
+            padding: 14px 18px 15px;
+            background: var(--band-bg, #fafafa);
+        }
+        .c-topic-lbl {
+            font-size: 11px; font-weight: 700;
+            color: var(--c-color, #F97316);
+            margin-bottom: 8px;
+        }
+        .c-header-main { display: flex; align-items: center; gap: 8px; }
+        .c-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto;
+            background: var(--c-color, #F97316);
+        }
+        .c-name {
+            font-size: 18px; font-weight: 800; color: #111;
+            flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        .c-badge {
+            flex: 0 0 auto; padding: 5px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 700; color: #fff;
+            background: var(--c-color, #F97316);
+        }
+
+        /* sub-keyword section */
+        .c-section { padding: 14px 18px 0; }
+        .c-section-lbl {
+            font-size: 12px; font-weight: 700; color: #444;
+            margin-bottom: 8px;
+        }
+        .c-kw-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .c-kw-tag {
+            padding: 4px 10px; border-radius: 999px;
+            background: var(--band-bg, #fff7ed);
+            color: var(--c-color, #F97316);
+            font-size: 11px; font-weight: 700; white-space: nowrap;
+        }
+
+        /* stats 2x2 grid */
+        .c-stats-grid {
+            padding: 14px 18px 0;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .c-stat-cell {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 11px 14px; border-radius: 10px;
+            background: #f5f5f5;
+        }
+        .s-lbl { font-size: 12px; font-weight: 600; color: #6b7280; }
+        .s-val { font-size: 14px; font-weight: 800; color: #111; font-variant-numeric: tabular-nums; }
+
+        /* rates */
+        .c-rates {
+            padding: 14px 18px 4px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .rate {
+            display: flex; justify-content: space-between; align-items: baseline;
+            font-size: 13px;
+        }
+        .rate .rl { color: #111; font-weight: 700; }
+        .rate .rv {
+            color: var(--c-color, #F97316);
+            font-weight: 800; font-variant-numeric: tabular-nums;
+        }
+
+        /* thumbs */
+        .c-thumbs { padding: 14px 18px 0; border-top: 1px solid #f0f0f0; margin-top: 12px; }
+        .c-thumbs-lbl {
+            font-size: 13px; font-weight: 800; color: #111;
+            margin-bottom: 10px;
+        }
+        .c-thumbs-row { display: flex; gap: 8px; }
+        .c-thumb {
+            flex: 1 1 0; min-width: 0; text-decoration: none; color: inherit;
+            border-radius: 10px; overflow: hidden;
+            pointer-events: auto; cursor: pointer;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        .c-thumb:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+        }
+        .thumb-img {
+            display: block; width: 100%; aspect-ratio: 1/1; object-fit: cover;
+            border-radius: 10px;
+            background: repeating-linear-gradient(45deg,#f4f4f4,#f4f4f4 5px,#e8e8e8 5px,#e8e8e8 10px);
+        }
+        .thumb-img.loaded { background: #f4f4f4; }
+        .thumb-meta { padding: 7px 2px 2px; text-align: center; }
+        .thumb-pid {
+            font-size: 11px; color: #111; font-weight: 700;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+        .thumb-dm {
+            font-size: 11px; font-weight: 700;
+            color: var(--c-color, #F97316);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* CTA footer */
+        .c-footer { padding: 16px 18px 18px; }
+        .c-insta-btn {
+            display: block; width: 100%; padding: 13px;
+            background: var(--c-color, #F97316); color: #fff;
+            text-align: center; border-radius: 999px;
+            font-size: 13px; font-weight: 700; text-decoration: none;
+            transition: opacity .2s;
+        }
+        .c-insta-btn:hover { opacity: .9; }
+
+        /* ── Empty / Loading ──────────────────────────────── */
+        .empty-state {
+            width: 100%; height: 640px; margin-top: 10px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 8px;
+            border: 1px dashed #ddd; border-radius: 10px; background: #fafafa;
+        }
+        .empty-state .emoji { font-size: 32px; }
+        .empty-state .msg { font-size: 15px; color: #666; font-weight: 600; }
+
+        .meta.loading {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #F97316 !important; font-weight: 600; font-size: 11px;
+            animation: lpulse 1.4s ease-in-out infinite;
+        }
+        .meta.loading .spinner {
+            width: 13px; height: 13px; border: 2px solid #ffe4cc; border-top-color: #F97316;
+            border-radius: 50%; animation: spin .7s linear infinite; flex: 0 0 auto;
+        }
+        .meta.loading .dots::after { content:''; display:inline-block; animation:dots 1.2s steps(4,end) infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes lpulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+        @keyframes dots { 0%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} 100%{content:''} }
+
+        .loading-overlay {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 14px;
+            background: rgba(255,255,255,.75); backdrop-filter: blur(2px);
+            z-index: 500; opacity: 0; pointer-events: none; transition: opacity .25s ease;
+        }
+        .loading-overlay.show { opacity: 1; pointer-events: auto; }
+        .loading-overlay .big-spinner {
+            width: 42px; height: 42px; border: 3.5px solid #ffe4cc; border-top-color: #F97316;
+            border-radius: 50%; animation: spin .8s linear infinite;
+        }
+        .loading-overlay .big-text { font-size: 14px; font-weight: 700; color: #F97316; animation: lpulse 1.4s ease-in-out infinite; }
+    </style>
+</head>
+<body>
+
+<div class="page-header">
+    <div>
+        <div class="page-title-line">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h1>종이비행기 <span>분석기</span></h1>
+            <span class="hint">*버블을 마우스에 올려보세요!</span>
+        </div>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><span class="l-dot" style="background:#3b82f6"></span>떠오르는 중</div>
+        <div class="legend-item"><span class="l-dot" style="background:#F97316"></span>가장 인기</div>
+        <div class="legend-item"><span class="l-dot" style="background:#ef4444"></span>흔해지는 중</div>
+        <div class="legend-item"><span class="l-dot" style="background:#9ca3af"></span>식는 중</div>
+    </div>
+</div>
+
+<div class="theme-tabs" id="theme-tabs"></div>
+
+<div class="controls">
+    <div class="ctrl-group">
+        <label>X축</label>
+        <div class="toggle" id="x-toggle">
+            <button data-mode="dm">DM 점유율</button>
+            <button data-mode="post" class="active">POST 점유율</button>
+        </div>
+        <button class="log-btn active" id="x-log">Log</button>
+    </div>
+    <div class="ctrl-group">
+        <label>Y축</label>
+        <div class="toggle" id="y-toggle">
+            <button data-mode="view">DM / 조회</button>
+            <button data-mode="like" class="active">DM / 좋아요</button>
+        </div>
+        <button class="log-btn active" id="y-log">Log</button>
+    </div>
+    <div class="ctrl-group n-group">
+        <label>클러스터</label>
+        <input type="range" id="n-slider" class="n-slider" min="20" max="20" value="20" step="1">
+        <span class="n-readout"><span id="n-val">-</span> / <span id="n-max">-</span></span>
+    </div>
+    <span class="meta" id="meta"></span>
+</div>
+
+<!-- ── Chart grid ─────────────────────────────────────────── -->
+<div class="chart-wrap" id="chart-wrap">
+
+    <!-- Row 1: TL label | 경계선 note | TR label -->
+    <div class="chart-top-row">
+        <div class="ql">
+            <div class="q-desc tl">낮은 점유율 · 높은 DM 효율</div>
+            <div class="q-pill tl">숨은 보석</div>
+        </div>
+        <div class="chart-note-wrap">
+            <span class="chart-note">경계선은 현재 차트에 표시된 클러스터의 X·Y 중앙값입니다.</span>
+        </div>
+        <div class="ql right">
+            <div class="q-desc tr">높은 점유율 · 높은 DM 효율</div>
+            <div class="q-pill tr">확실한 인기템</div>
+        </div>
+    </div>
+
+    <!-- Row 2 Col 1: Y axis -->
+    <div class="chart-y-axis">
+        <div class="y-edge">높음</div>
+        <div class="y-label-wrap">
+            <div class="y-label" id="y-axis-label">반응률 (DM/조회)</div>
+        </div>
+        <div class="y-edge">낮음</div>
+    </div>
+
+    <!-- Row 2 Col 2: Plot -->
+    <div class="chart-inner" id="chart-inner">
+        <svg class="grid-svg" id="grid"></svg>
+        <div class="bubbles" id="bubbles"></div>
+        <svg class="leader-svg" id="leader-svg"></svg>
+
+        <!-- Callout card -->
+        <div class="callout" id="callout">
+            <!-- Header: AI 라벨 + 이름 + 뱃지 -->
+            <div class="c-header" id="c-header">
+                <div class="c-topic-lbl">AI가 발견한 트렌드 주제</div>
+                <div class="c-header-main">
+                    <span class="c-dot"></span>
+                    <span class="c-name" id="c-name"></span>
+                    <span class="c-badge" id="c-badge"></span>
+                </div>
+            </div>
+            <!-- 서브 키워드 -->
+            <div class="c-section">
+                <div class="c-section-lbl">연결된 서브 키워드</div>
+                <div class="c-kw-tags" id="c-kw-tags"></div>
+            </div>
+            <!-- 통계 2x2 -->
+            <div class="c-stats-grid">
+                <div class="c-stat-cell"><span class="s-lbl">POST</span><span class="s-val" id="c-post">-</span></div>
+                <div class="c-stat-cell"><span class="s-lbl">DM</span><span class="s-val" id="c-dm">-</span></div>
+                <div class="c-stat-cell"><span class="s-lbl">조회수</span><span class="s-val" id="c-views">-</span></div>
+                <div class="c-stat-cell"><span class="s-lbl">좋아요</span><span class="s-val" id="c-likes">-</span></div>
+            </div>
+            <!-- 비율 -->
+            <div class="c-rates">
+                <div class="rate"><span class="rl">DM / 조회수</span><span class="rv" id="c-dpv">-</span></div>
+                <div class="rate"><span class="rl">DM / 좋아요</span><span class="rv" id="c-dpl">-</span></div>
+                <div class="rate"><span class="rl">DM 점유율</span><span class="rv" id="c-dshare">-</span></div>
+                <div class="rate"><span class="rl">POST 점유율</span><span class="rv" id="c-pshare">-</span></div>
+            </div>
+            <!-- TOP 3 -->
+            <div class="c-thumbs">
+                <div class="c-thumbs-lbl">TOP 3 (DM 기준)</div>
+                <div class="c-thumbs-row" id="c-thumbs-row"></div>
+            </div>
+            <!-- Footer: 인스타 바로가기 버튼 -->
+            <div class="c-footer">
+                <a class="c-insta-btn" id="c-insta-btn" href="#" target="_blank" rel="noopener">상세 분석 자세히 보기 →</a>
+            </div>
+        </div>
+
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="big-spinner"></div>
+            <div class="big-text">불러오는 중</div>
+        </div>
+    </div>
+
+    <!-- Row 3: BL label | X axis label | BR label -->
+    <div class="chart-bot-row">
+        <div class="ql">
+            <div class="q-pill bl">쇠퇴기</div>
+            <div class="q-desc bl">낮은 점유율 · 낮은 DM 효율</div>
+        </div>
+        <div class="x-label-wrap">
+            <span class="x-label" id="x-axis-label">전체 DM 중 차지하는 비율 (%)</span>
+        </div>
+        <div class="ql right">
+            <div class="q-pill br">포화 상태</div>
+            <div class="q-desc br">높은 점유율 · 낮은 DM 효율</div>
+        </div>
+    </div>
+</div>
+
+<div id="empty-state" class="empty-state" style="display:none;">
+    <div class="emoji">📭</div>
+    <div class="msg" id="empty-msg">데이터가 없습니다</div>
+</div>
+
+<script>
+// ── Quadrant config ────────────────────────────────────────────────────────
+const QUADS = {
+    TL: { label: '숨은 보석',    legend: '떠오르는 중', hue: 220, sat: 78, lit: 64, alpha: .50, color: '#3b82f6', bandBg: '#dbeafe' },
+    TR: { label: '확실한 인기템', legend: '가장 인기',   hue: 25,  sat: 95, lit: 60, alpha: .50, color: '#F97316', bandBg: '#FFEDD5' },
+    BL: { label: '쇠퇴기',       legend: '식는 중',     hue: 0,   sat: 0,  lit: 70, alpha: .42, color: '#9ca3af', bandBg: '#e5e7eb' },
+    BR: { label: '포화 상태',    legend: '흔해지는 중',  hue: 0,   sat: 85, lit: 66, alpha: .48, color: '#ef4444', bandBg: '#fee2e2' },
+};
+
+function getQuad(xVal, yVal, xMed, yMed) {
+    const hx = xVal >= xMed, hy = yVal >= yMed;
+    if (!hx &&  hy) return 'TL';
+    if ( hx &&  hy) return 'TR';
+    if (!hx && !hy) return 'BL';
+    return 'BR';
+}
+
+// ── State ──────────────────────────────────────────────────────────────────
+let currentData = null, xMode = 'post', yMode = 'like', xLog = true, yLog = true, currentTopic = '';
+let nMax = 20;
+const N_MIN = 20;
+
+const metaEl      = document.getElementById('meta');
+const chartWrap   = document.getElementById('chart-wrap');
+const bubblesEl   = document.getElementById('bubbles');
+const gridEl      = document.getElementById('grid');
+const chartInner  = document.getElementById('chart-inner');
+const callout     = document.getElementById('callout');
+const leaderSvg   = document.getElementById('leader-svg');
+
+// ── Formatters ─────────────────────────────────────────────────────────────
+function fmtStat(n) {
+    if (n >= 100000000) return (n / 100000000).toFixed(1) + '억';
+    if (n >= 100000)    return (n / 10000).toFixed(0) + '만';
+    return n.toLocaleString();
+}
+function median(arr) {
+    if (!arr.length) return 0;
+    const s = [...arr].sort((a,b) => a-b), m = Math.floor(s.length/2);
+    return s.length % 2 ? s[m] : (s[m-1]+s[m])/2;
+}
+function makeScale(min, max, isLog, px) {
+    if (isLog) {
+        const lMin = Math.log10(Math.max(min, 1e-9)), lMax = Math.log10(Math.max(max, min*1.01, 1e-8));
+        return v => ((Math.log10(Math.max(v,1e-9)) - lMin) / (lMax - lMin)) * px;
+    }
+    return v => ((v - min) / (max - min)) * px;
+}
+function niceTicks(min, max, isLog, count=5) {
+    if (isLog) {
+        const lo = Math.floor(Math.log10(Math.max(min,1e-9))), hi = Math.ceil(Math.log10(Math.max(max,min*1.01)));
+        const t = []; for (let p=lo; p<=hi; p++) t.push(Math.pow(10,p));
+        return t.filter(v => v>=min && v<=max);
+    }
+    const step = (max-min)/count, mag = Math.pow(10, Math.floor(Math.log10(step))), norm = step/mag;
+    const ns = (norm<1.5?1:norm<3?2:norm<7?5:10)*mag;
+    const t = []; for (let v=Math.ceil(min/ns)*ns; v<=max+1e-9; v+=ns) t.push(v);
+    return t;
+}
+function fmtTick(v) {
+    if (v===0) return '0';
+    if (v>=10) return v.toFixed(0);
+    if (v>=1)  return v.toFixed(1);
+    if (v>=.1) return v.toFixed(2);
+    return v.toFixed(3);
+}
+
+// ── Circle packing ─────────────────────────────────────────────────────────
+function mulberry32(seed) {
+    return function() {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ t>>>15, t|1); t ^= t + Math.imul(t ^ t>>>7, t|61);
+        return ((t ^ t>>>14) >>> 0) / 4294967296;
+    };
+}
+function hashStr(s) {
+    let h = 2166136261;
+    for (let i=0; i<s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+    return h>>>0;
+}
+function packCircles(sizes, rand, gap=.012) {
+    const placed=[], ordered=sizes.map((r,i)=>({r,i})).sort((a,b)=>b.r-a.r), out=new Array(sizes.length);
+    for (const {r,i} of ordered) {
+        const mc=1-r-gap; let best=null;
+        for (let a=0; a<400; a++) {
+            const ang=rand()*Math.PI*2, rr=Math.sqrt(rand())*mc;
+            const px=Math.cos(ang)*rr, py=Math.sin(ang)*rr;
+            let ok=true;
+            for (const p of placed) if (Math.hypot(px-p.x,py-p.y)<r+p.r+gap){ok=false;break;}
+            if (ok){best={x:px,y:py};break;}
+        }
+        if (!best){const a=rand()*Math.PI*2,rr=rand()*Math.max(0,mc);best={x:Math.cos(a)*rr,y:Math.sin(a)*rr};}
+        placed.push({x:best.x,y:best.y,r}); out[i]={rx:best.x,ry:best.y};
+    }
+    return out;
+}
+function placeKw(wrap, words, R, seedKey) {
+    if (!words.length) return;
+    const rand = mulberry32(hashStr(seedKey||words.join('|')));
+    const sizes = words.map((_,i) => Math.max(.14, (.34-(i/Math.max(1,words.length-1))*.16)*(.85+rand()*.3)));
+    const pos = packCircles(sizes, rand);
+    words.forEach((w,i) => {
+        const kw = document.createElement('div');
+        kw.className = 'kw ' + ['f-a','f-b','f-c'][i%3];
+        kw.textContent = w; kw.style.animationDelay = (i*.17)+'s';
+        kw.dataset.rx = pos[i].rx; kw.dataset.ry = pos[i].ry;
+        const d = sizes[i]*R*2;
+        kw.style.width = d+'px'; kw.style.height = d+'px';
+        kw.style.fontSize = Math.max(9, Math.min(15, d*.2))+'px';
+        wrap.appendChild(kw);
+    });
+    posKwStatic(wrap, R);
+}
+function posKwStatic(wrap, R) {
+    if (R==null){const p=wrap.parentElement;if(!p)return;R=p.offsetWidth/2;}
+    wrap.querySelectorAll('.kw').forEach(kw => {
+        kw.style.left = (50+parseFloat(kw.dataset.rx)*50)+'%';
+        kw.style.top  = (50+parseFloat(kw.dataset.ry)*50)+'%';
+    });
+}
+
+// ── Loading ────────────────────────────────────────────────────────────────
+function setLoading(on) {
+    const ov = document.getElementById('loading-overlay');
+    if (on) {
+        metaEl.classList.add('loading');
+        metaEl.innerHTML = `<span class="spinner"></span><span>불러오는 중<span class="dots"></span></span>`;
+        ov.classList.add('show');
+    } else { metaEl.classList.remove('loading'); ov.classList.remove('show'); }
+}
+
+// ── Topics / fetch ─────────────────────────────────────────────────────────
+async function loadTopics() {
+    const { topics } = await fetch('/api/topics').then(r=>r.json());
+    const tabs = document.getElementById('theme-tabs');
+    tabs.innerHTML = '';
+    topics.forEach((t,i) => {
+        const btn = document.createElement('button');
+        btn.textContent = t; btn.dataset.topic = t;
+        if (i===0) { btn.classList.add('active'); currentTopic = t; }
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('active')) return;
+            tabs.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active'); currentTopic = t; fetchData();
+        });
+        tabs.appendChild(btn);
+    });
+}
+async function fetchData() {
+    setLoading(true);
+    try { currentData = await fetch(`/api/cluster?topic=${encodeURIComponent(currentTopic)}`).then(r=>r.json()); }
+    finally { setLoading(false); }
+    syncNSlider();
+    render();
+}
+
+function syncNSlider() {
+    const total = (currentData && currentData.clusters) ? currentData.clusters.length : 0;
+    const slider = document.getElementById('n-slider');
+    const nMaxEl = document.getElementById('n-max');
+    const nValEl = document.getElementById('n-val');
+    const min = Math.min(N_MIN, total);
+    slider.min = min;
+    slider.max = total;
+    if (nMax > total || nMax < min) nMax = total;
+    slider.value = nMax;
+    nMaxEl.textContent = total;
+    nValEl.textContent = nMax;
+    slider.disabled = total <= min;
+}
+
+// ── Controls wiring ────────────────────────────────────────────────────────
+document.querySelectorAll('#x-toggle button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#x-toggle button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); xMode = b.dataset.mode; render();
+}));
+document.querySelectorAll('#y-toggle button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#y-toggle button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); yMode = b.dataset.mode; render();
+}));
+document.getElementById('x-log').addEventListener('click', e => { xLog=!xLog; e.currentTarget.classList.toggle('active',xLog); render(); });
+document.getElementById('y-log').addEventListener('click', e => { yLog=!yLog; e.currentTarget.classList.toggle('active',yLog); render(); });
+document.getElementById('n-slider').addEventListener('input', e => {
+    nMax = parseInt(e.target.value, 10);
+    document.getElementById('n-val').textContent = nMax;
+    render();
+});
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function showEmpty(show) {
+    document.getElementById('empty-state').style.display = show ? 'flex' : 'none';
+    chartWrap.style.display = show ? 'none' : 'grid';
+}
+
+function render() {
+    if (!currentData || !currentData.available) {
+        showEmpty(true); document.getElementById('empty-msg').textContent='데이터가 없습니다'; return;
+    }
+    showEmpty(false);
+    const allCs = currentData.clusters;
+    const cs = allCs.slice(0, nMax);
+    if (!cs.length) { bubblesEl.innerHTML=''; gridEl.innerHTML=''; return; }
+
+    const xKey = xMode==='dm' ? 'dm_share' : 'post_share';
+    const yKey = yMode==='view' ? 'dm_per_view' : 'dm_per_like';
+
+    // update axis labels
+    document.getElementById('y-axis-label').textContent = yMode==='view' ? '반응률 (DM/조회)' : '반응률 (DM/좋아요)';
+    document.getElementById('x-axis-label').textContent = xMode==='dm' ? '전체 DM 중 차지하는 비율 (%)' : '전체 POST 중 차지하는 비율 (%)';
+
+    const xs = cs.map(c => c[xKey]*100), ys = cs.map(c => c[yKey]*100);
+    const xsP = xs.filter(v=>v>0), ysP = ys.filter(v=>v>0);
+    const xMin = xLog ? (xsP.length ? Math.min(...xsP)/1.5 : 1e-3) : 0;
+    const yMin = yLog ? (ysP.length ? Math.min(...ysP)/1.5 : 1e-3) : 0;
+    const xMax = Math.max(...xs)*1.15, yMax = Math.max(...ys)*1.2;
+
+    const {width:W, height:H} = chartInner.getBoundingClientRect();
+    const xScale = makeScale(xMin, xMax, xLog, W);
+    const yScale = makeScale(yMin, yMax, yLog, H);
+    const xMed = median(xs), yMed = median(ys);
+
+    drawGrid(W, H, xMin, xMax, yMin, yMax, xScale, yScale, xMed, yMed);
+    layoutBubbles(cs, xKey, yKey, xScale, yScale, W, H, xMed, yMed);
+
+    const dateStr = currentData.analysis_date ? ` · ${currentData.analysis_date}` : '';
+    metaEl.textContent = `[${currentData.topic}] 클러스터 ${cs.length}/${allCs.length}개 · POST ${currentData.total_posts.toLocaleString()} · DM ${currentData.total_dm.toLocaleString()}${dateStr}`;
+}
+
+function drawGrid(W, H, xMin, xMax, yMin, yMax, xScale, yScale, xMed, yMed) {
+    gridEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    const mx = xScale(xMed), my = H - yScale(yMed);
+    let svg = '';
+
+    // quadrant bg (very subtle)
+    svg += `<rect x="0"  y="0"  width="${mx}"   height="${my}"   fill="rgba(59,130,246,.030)"/>`;
+    svg += `<rect x="${mx}" y="0"  width="${W-mx}" height="${my}"   fill="rgba(249,115,22,.032)"/>`;
+    svg += `<rect x="0"  y="${my}" width="${mx}"   height="${H-my}" fill="rgba(156,163,175,.022)"/>`;
+    svg += `<rect x="${mx}" y="${my}" width="${W-mx}" height="${H-my}" fill="rgba(239,68,68,.028)"/>`;
+
+    // frame
+    svg += `<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#e8e8e8" stroke-width="1"/>`;
+
+    // x-axis grid lines + tick labels (no y-axis ticks — only 높음/낮음)
+    chartInner.querySelectorAll('.tick-label').forEach(n=>n.remove());
+    niceTicks(xMin, xMax, xLog).forEach(t => {
+        const gx = xScale(t);
+        if (gx < 1 || gx > W-1) return;
+        svg += `<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#f0f0f0" stroke-width="1"/>`;
+        const lab = document.createElement('div');
+        lab.className = 'tick-label x'; lab.style.left = gx+'px';
+        lab.textContent = fmtTick(t)+'%';
+        chartInner.appendChild(lab);
+    });
+    // subtle horizontal grid lines (no labels)
+    niceTicks(yMin, yMax, yLog).forEach(t => {
+        const gy = H - yScale(t);
+        if (gy < 1 || gy > H-1) return;
+        svg += `<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#f0f0f0" stroke-width="1"/>`;
+    });
+
+    // median lines (orange dashed)
+    svg += `<line x1="${mx}" y1="0" x2="${mx}" y2="${H}" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6 5" opacity=".55"/>`;
+    svg += `<line x1="0" y1="${my}" x2="${W}" y2="${my}" stroke="#F97316" stroke-width="1.5" stroke-dasharray="6 5" opacity=".55"/>`;
+
+    gridEl.innerHTML = svg;
+}
+
+function layoutBubbles(cs, xKey, yKey, xScale, yScale, W, H, xMed, yMed) {
+    const maxDm = Math.max(...cs.map(c=>c.total_dm));
+    bubblesEl.innerHTML = '';
+
+    cs.forEach((c,i) => {
+        const xVal = c[xKey]*100, yVal = c[yKey]*100;
+        const px = xScale(xVal), py = H - yScale(yVal);
+        const baseR = 18 + 55*Math.sqrt(c.total_dm/maxDm);
+
+        const qKey = getQuad(xVal, yVal, xMed, yMed);
+        const q = QUADS[qKey];
+        c._quad = qKey;
+
+        const el = document.createElement('div');
+        el.className = 'bubble';
+        el.style.left = px+'px'; el.style.top = py+'px';
+        el.style.width = (baseR*2)+'px'; el.style.height = (baseR*2)+'px';
+        el.dataset.baseR = baseR;
+
+        el.style.setProperty('--hue', q.hue);
+        el.style.setProperty('--sat', q.sat+'%');
+        el.style.setProperty('--lit', q.lit+'%');
+        el.style.setProperty('--alpha', q.alpha);
+
+        const margin = 14;
+        const hoverR = Math.max(baseR*1.8, Math.min(220,
+            Math.max(baseR*1.2, Math.min(220, px-margin, W-px-margin, py-margin, H-py-margin))
+        ));
+        el.dataset.hoverR = hoverR;
+
+        const skin = document.createElement('div'); skin.className = 'skin'; el.appendChild(skin);
+
+        const title = document.createElement('div'); title.className = 'title';
+        title.textContent = c.label; el.appendChild(title);
+
+        const badge = document.createElement('div'); badge.className = 'head-badge';
+        badge.textContent = c.label; el.appendChild(badge);
+
+        const words = (c.keywords && c.keywords.length) ? c.keywords : [c.label];
+        if (words.length) {
+            const kw = document.createElement('div'); kw.className = 'keywords';
+            placeKw(kw, words, hoverR, c.label+'|'+i); el.appendChild(kw);
+        }
+
+        bindBubble(el, c);
+        bubblesEl.appendChild(el);
+    });
+}
+
+// ── Callout ────────────────────────────────────────────────────────────────
+function showCallout(el, c) {
+    const q = QUADS[c._quad];
+    callout.style.setProperty('--c-color', q.color);
+    callout.style.setProperty('--band-bg', q.bandBg);
+
+    document.getElementById('c-name').textContent = c.label;
+    document.getElementById('c-badge').textContent = q.legend;
+
+    // 서브 키워드 태그 (현재 클러스터의 sub_keyword 목록)
+    const kwBox = document.getElementById('c-kw-tags');
+    kwBox.innerHTML = '';
+    (c.keywords || []).slice(0, 8).forEach(w => {
+        const t = document.createElement('span');
+        t.className = 'c-kw-tag'; t.textContent = w;
+        kwBox.appendChild(t);
+    });
+
+    document.getElementById('c-post').textContent  = c.post_count.toLocaleString();
+    document.getElementById('c-views').textContent = fmtStat(c.total_views);
+    document.getElementById('c-dm').textContent    = fmtStat(c.total_dm);
+    document.getElementById('c-likes').textContent = fmtStat(c.total_likes);
+
+    document.getElementById('c-dpv').textContent    = (c.dm_per_view*100).toFixed(3)+'%';
+    document.getElementById('c-dpl').textContent    = (c.dm_per_like*100).toFixed(2)+'%';
+    document.getElementById('c-dshare').textContent = (c.dm_share*100).toFixed(2)+'%';
+    document.getElementById('c-pshare').textContent = (c.post_share*100).toFixed(2)+'%';
+
+    // insta button → first top post
+    const instaBtn = document.getElementById('c-insta-btn');
+    instaBtn.href = (c.top_posts && c.top_posts.length) ? c.top_posts[0].url : 'https://www.instagram.com/';
+
+    // thumbs
+    const row = document.getElementById('c-thumbs-row');
+    row.innerHTML = '';
+    (c.top_posts || []).slice(0, 3).forEach(p => {
+        const a = document.createElement('a');
+        a.className = 'c-thumb'; a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
+        const img = document.createElement('img');
+        img.className = 'thumb-img'; img.loading = 'lazy'; img.alt = p.post_id;
+        img.src = `/thumb/${encodeURIComponent(p.post_id)}`;
+        img.addEventListener('load', () => img.classList.add('loaded'));
+        img.addEventListener('error', () => { img.classList.add('failed'); img.removeAttribute('src'); });
+        const m = document.createElement('div'); m.className = 'thumb-meta';
+        const pid = document.createElement('div'); pid.className = 'thumb-pid'; pid.textContent = '@' + p.post_id;
+        m.appendChild(pid); a.appendChild(img); a.appendChild(m); row.appendChild(a);
+    });
+
+    // position
+    callout.classList.remove('show'); callout.style.visibility = 'hidden';
+    callout.style.left = '0'; callout.style.top = '0';
+    const cw = callout.offsetWidth, ch = callout.offsetHeight;
+    const bx = parseFloat(el.style.left), by = parseFloat(el.style.top);
+    const R = parseFloat(el.dataset.hoverR), gap = 22;
+    const {width:W, height:H} = chartInner.getBoundingClientRect();
+
+    const cands = {
+        right:  {side:'right',  cx:bx+R+gap,       cy:by-ch/2},
+        left:   {side:'left',   cx:bx-R-gap-cw,    cy:by-ch/2},
+        bottom: {side:'bottom', cx:bx-cw/2,        cy:by+R+gap},
+        top:    {side:'top',    cx:bx-cw/2,        cy:by-R-gap-ch},
+    };
+    const order = [...(bx>W/2?['left','right']:['right','left']), ...(by<H/2?['bottom','top']:['top','bottom'])];
+    let chosen = null;
+    for (const s of order) {
+        const cd = cands[s];
+        const isH = s==='right'||s==='left';
+        if (isH ? (cd.cx>=4 && cd.cx+cw<=W-4) : (cd.cy>=4 && cd.cy+ch<=H-4)) { chosen=cd; break; }
+    }
+    if (!chosen) chosen = cands[order[0]];
+    chosen.cx = Math.max(4, Math.min(W-cw-4, chosen.cx));
+    chosen.cy = Math.max(4, Math.min(H-ch-4, chosen.cy));
+
+    const origins = {right:['0%','50%'],left:['100%','50%'],bottom:['50%','0%'],top:['50%','100%']};
+    callout.style.setProperty('--ox', origins[chosen.side][0]);
+    callout.style.setProperty('--oy', origins[chosen.side][1]);
+    callout.style.left = chosen.cx+'px'; callout.style.top = chosen.cy+'px';
+    callout.style.visibility = 'visible';
+
+    const anchor = {
+        right:  {x:chosen.cx,         y:chosen.cy+ch/2},
+        left:   {x:chosen.cx+cw,      y:chosen.cy+ch/2},
+        bottom: {x:chosen.cx+cw/2,    y:chosen.cy},
+        top:    {x:chosen.cx+cw/2,    y:chosen.cy+ch},
+    }[chosen.side];
+    const ang = Math.atan2(anchor.y-by, anchor.x-bx);
+    const ex = bx+Math.cos(ang)*R, ey = by+Math.sin(ang)*R;
+
+    leaderSvg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    leaderSvg.innerHTML = `
+        <line x1="${ex.toFixed(1)}" y1="${ey.toFixed(1)}"
+              x2="${anchor.x.toFixed(1)}" y2="${anchor.y.toFixed(1)}"
+              stroke="${q.color}" stroke-width="1.5" stroke-dasharray="4 4"
+              opacity=".65" stroke-linecap="round"/>
+        <circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="3.5" fill="${q.color}"/>
+        <circle cx="${anchor.x.toFixed(1)}" cy="${anchor.y.toFixed(1)}" r="2.5" fill="${q.color}" opacity=".7"/>`;
+
+    requestAnimationFrame(() => { callout.classList.add('show'); leaderSvg.classList.add('show'); });
+}
+
+function hideCallout() { callout.classList.remove('show'); leaderSvg.classList.remove('show'); }
+
+let _active=null, _ht=null;
+function scheduleHide(el) {
+    if (_ht) clearTimeout(_ht);
+    _ht = setTimeout(() => { if (el) collapseBubble(el); hideCallout(); _active=null; }, 160);
+}
+function cancelHide() { if (_ht) { clearTimeout(_ht); _ht=null; } }
+function collapseBubble(el) {
+    const r = parseFloat(el.dataset.baseR);
+    bubblesEl.classList.remove('hovering'); el.classList.remove('is-hover');
+    el.style.width=(r*2)+'px'; el.style.height=(r*2)+'px';
+    el.querySelectorAll('.kw').forEach(kw => { kw.style.transform='translate(-50%,-50%)'; });
+}
+
+callout.addEventListener('mouseenter', cancelHide);
+callout.addEventListener('mouseleave', () => scheduleHide(_active));
+
+function bindBubble(el, c) {
+    const baseR=parseFloat(el.dataset.baseR), hoverR=parseFloat(el.dataset.hoverR);
+    el.addEventListener('mouseenter', () => {
+        cancelHide();
+        if (_active && _active!==el) collapseBubble(_active);
+        _active=el; bubblesEl.classList.add('hovering'); el.classList.add('is-hover');
+        el.style.width=(hoverR*2)+'px'; el.style.height=(hoverR*2)+'px';
+        requestAnimationFrame(() => { const kw=el.querySelector('.keywords'); if(kw) posKwStatic(kw); showCallout(el,c); });
+    });
+    el.addEventListener('mousemove', ev => {
+        if (!el.classList.contains('is-hover')) return;
+        const rect=el.getBoundingClientRect(), R=rect.width/2;
+        const mx=ev.clientX-rect.left, my=ev.clientY-rect.top;
+        el.querySelectorAll('.kw').forEach(kw => {
+            const hx=R+parseFloat(kw.dataset.rx)*R, hy=R+parseFloat(kw.dataset.ry)*R;
+            const dx=hx-mx, dy=hy-my, dist=Math.hypot(dx,dy), range=R*.55;
+            if (dist<range && dist>.1) {
+                const s=(1-dist/range)*30;
+                kw.style.transform=`translate(calc(-50% + ${(dx/dist)*s}px),calc(-50% + ${(dy/dist)*s}px))`;
+            } else kw.style.transform='translate(-50%,-50%)';
+        });
+    });
+    el.addEventListener('mouseleave', () => scheduleHide(el));
+}
+
+let _rt;
+window.addEventListener('resize', () => { clearTimeout(_rt); _rt=setTimeout(()=>{if(currentData)render();},120); });
+
+// ── Mouse wheel → cluster count ────────────────────────────────────────────
+chartWrap.addEventListener('wheel', e => {
+    if (!currentData || !currentData.clusters) return;
+    e.preventDefault();
+    const slider = document.getElementById('n-slider');
+    const total = currentData.clusters.length;
+    const min = parseInt(slider.min, 10);
+    const step = e.deltaY > 0 ? -1 : 1;
+    nMax = Math.max(min, Math.min(total, nMax + step));
+    slider.value = nMax;
+    document.getElementById('n-val').textContent = nMax;
+    render();
+}, { passive: false });
+
+async function init() { await loadTopics(); await fetchData(); }
+init();
+</script>
+</body>
+</html>
