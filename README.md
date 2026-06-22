@@ -19,5 +19,6 @@
 
 ### 데이터 분석
 - [3월_insta_drop_filter](3월_insta_drop_filter/) — 인스타 광고성 게시물을 걸러내는 최적 필터 조건을 recall/drop rate로 탐색하는 FastAPI 대시보드
+- [3월_insta_creator_similar](3월_insta_creator_similar/) — 크리에이터 라벨(유형·주인공·유도행동·분야·무드)을 비교해 유사도를 검증하는 Flask 웹앱
 
 _(작업 정리 진행 중)_

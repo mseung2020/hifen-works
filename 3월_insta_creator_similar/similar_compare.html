@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>유사 크리에이터 3버전 비교</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f0f0f5;
+      color: #1d1d1f;
+      min-height: 100vh;
+    }
+
+    /* ── 상단 고정 헤더 ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e0e0e5;
+      padding: 14px 24px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 700;
+      white-space: nowrap;
+      color: #1d1d1f;
+    }
+
+    .header input[type="text"] {
+      border: 1.5px solid #e0e0e5;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      outline: none;
+      width: 160px;
+      transition: border-color 0.15s;
+    }
+
+    .header input[type="text"]:focus { border-color: #0071e3; }
+
+    .page-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-control label { font-size: 13px; color: #6e6e73; }
+
+    .page-control input[type="number"] {
+      border: 1.5px solid #e0e0e5;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 14px;
+      outline: none;
+      width: 64px;
+      text-align: center;
+      transition: border-color 0.15s;
+    }
+
+    .page-control input[type="number"]:focus { border-color: #0071e3; }
+
+    .sample-control {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sample-control label { font-size: 13px; color: #6e6e73; }
+
+    .sample-control input[type="number"] {
+      border: 1.5px solid #e0e0e5;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 14px;
+      outline: none;
+      width: 64px;
+      text-align: center;
+    }
+
+    .btn-fetch {
+      padding: 9px 20px;
+      background: #0071e3;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-fetch:hover { background: #0077ed; }
+    .btn-fetch:disabled { background: #aeaeb2; cursor: default; }
+
+    .btn-reshuffle {
+      padding: 9px 16px;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      border: 1.5px solid #e0e0e5;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-reshuffle:hover { background: #e8e8ed; }
+    .btn-reshuffle:disabled { background: #f5f5f7; color: #aeaeb2; cursor: default; }
+
+    /* ── 오버랩 요약 ── */
+    .overlap-bar {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e5;
+      padding: 10px 24px;
+    }
+
+    .overlap-inner {
+      max-width: 1800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .overlap-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .overlap-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .overlap-all { background: #8b5cf6; }
+    .overlap-ab  { background: #3b82f6; }
+    .overlap-ac  { background: #10b981; }
+    .overlap-bc  { background: #f59e0b; }
+    .overlap-uniq { background: #e5e7eb; }
+
+    /* ── 3컬럼 그리드 ── */
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 20px 16px;
+      align-items: start;
+    }
+
+    .col {
+      padding: 0 8px;
+    }
+
+    .col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .col-title {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .col-v0 .col-title { color: #0071e3; }
+    .col-v1 .col-title { color: #7c3aed; }
+    .col-v2 .col-title { color: #059669; }
+
+    .col-select {
+      border: 1.5px solid #e0e0e5;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      cursor: pointer;
+      background: #f5f5f7;
+      transition: border-color 0.15s;
+    }
+
+    .col-v0 .col-select { color: #0071e3; border-color: #bfdbfe; background: #eff6ff; }
+    .col-v1 .col-select { color: #7c3aed; border-color: #ddd6fe; background: #f5f3ff; }
+    .col-v2 .col-select { color: #059669; border-color: #a7f3d0; background: #ecfdf5; }
+    .col-select:focus { border-color: #0071e3; }
+
+    .col-stats {
+      font-size: 12px;
+      color: #6e6e73;
+      text-align: right;
+    }
+
+    .col-stats strong {
+      font-weight: 700;
+      color: #1d1d1f;
+    }
+
+    /* ── 크리에이터 카드 ── */
+    .creator-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+      transition: box-shadow 0.15s, transform 0.1s;
+      border: 2px solid transparent;
+    }
+
+    .creator-card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transform: translateY(-1px);
+    }
+
+    .creator-card.overlap-all-3 { border-color: #8b5cf6; }
+    .creator-card.overlap-2     { border-color: #3b82f6; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .profile-pic {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #f0f0f5;
+    }
+
+    .profile-pic-fallback {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e0e0e5, #c0c0c8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      color: #6e6e73;
+    }
+
+    .card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-username {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-userid {
+      font-size: 11px;
+      color: #6e6e73;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 1px;
+    }
+
+    .card-userid a {
+      color: #0071e3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .card-userid a:hover { text-decoration: underline; }
+
+    .card-followers {
+      font-size: 11px;
+      color: #6e6e73;
+      margin-top: 2px;
+    }
+
+    .card-followers strong {
+      font-weight: 600;
+      color: #1d1d1f;
+    }
+
+    .overlap-badge {
+      flex-shrink: 0;
+      padding: 3px 7px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .badge-all3 { background: #ede9fe; color: #6d28d9; }
+    .badge-2    { background: #dbeafe; color: #1d4ed8; }
+
+    /* 태그 영역 */
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .tag-topic   { background: #dbeafe; color: #1d4ed8; }
+    .tag-mood    { background: #d1fae5; color: #065f46; }
+    .tag-func    { background: #fef3c7; color: #92400e; }
+    .tag-persona { background: #ede9fe; color: #6d28d9; }
+
+    /* 지표 */
+    .card-metrics {
+      display: flex;
+      gap: 10px;
+      font-size: 11px;
+      color: #6e6e73;
+      margin-bottom: 8px;
+    }
+
+    .metric strong {
+      color: #1d1d1f;
+      font-weight: 600;
+    }
+
+    /* 브랜드 로고 */
+    .brand-logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .brand-logo-wrap {
+      position: relative;
+    }
+
+    .brand-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #f0f0f5;
+      border: 1px solid #e0e0e5;
+    }
+
+    .brand-logo-fallback {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e8e8ed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      color: #6e6e73;
+      font-weight: 600;
+      border: 1px solid #d8d8dd;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0 2px;
+    }
+
+    /* 임베드 이미지 */
+    .embed-image-wrap {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f0f0f5;
+      margin-bottom: 10px;
+    }
+
+    .embed-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .embed-image-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #c0c0c8;
+      font-size: 32px;
+    }
+
+    /* 상태 */
+    .col-loading, .col-error, .col-empty {
+      text-align: center;
+      padding: 48px 16px;
+      color: #aeaeb2;
+      font-size: 14px;
+    }
+
+    .col-error { color: #ef4444; }
+
+    .spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid #e0e0e5;
+      border-top-color: #0071e3;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .rank-badge {
+      font-size: 10px;
+      color: #aeaeb2;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ── 기준 유저 패널 ── */
+    .ref-panel {
+      max-width: 1800px;
+      margin: 16px auto 0;
+      padding: 0 24px;
+    }
+
+    .ref-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .ref-embed {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #f0f0f5;
+    }
+
+    .ref-embed-placeholder {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      background: #f0f0f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .ref-profile-pic {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #f0f0f5;
+      border: 2px solid #e0e0e5;
+    }
+
+    .ref-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ref-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #6e6e73;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .ref-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .ref-userid {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .ref-insta-link {
+      font-size: 12px;
+      color: #0071e3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .ref-insta-link:hover { text-decoration: underline; }
+
+    .ref-meta {
+      font-size: 12px;
+      color: #6e6e73;
+      margin-bottom: 8px;
+    }
+
+    .ref-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 상단 고정 헤더 -->
+<div class="header">
+  <div class="header-row">
+    <h1>유사 크리에이터 비교</h1>
+    <input type="text" id="userIdInput" placeholder="user_id (예: sexyhonga)" value="sexyhonga" />
+    <div class="page-control">
+      <label>page</label>
+      <input type="number" id="pageInput" value="1" min="1" />
+    </div>
+    <div class="sample-control">
+      <label>샘플</label>
+      <input type="number" id="sampleInput" value="20" min="1" max="80" />
+    </div>
+    <button class="btn-fetch" id="btnFetch" onclick="fetchAll()">불러오기</button>
+  </div>
+</div>
+
+
+<!-- 기준 유저 패널 -->
+<div class="ref-panel" id="refPanel" style="display:none">
+  <div id="refCard"></div>
+</div>
+
+<!-- 3컬럼 -->
+<div class="columns">
+  <div class="col col-v0" id="col0">
+    <div class="col-header">
+      <select class="col-select" id="select0" onchange="onColChange(0)"></select>
+      <div class="col-stats" id="stats0">-</div>
+    </div>
+    <div id="cards0"><div class="col-empty">user_id를 입력하고 불러오기를 눌러주세요</div></div>
+  </div>
+  <div class="col col-v1" id="col1">
+    <div class="col-header">
+      <select class="col-select" id="select1" onchange="onColChange(1)"></select>
+      <div class="col-stats" id="stats1">-</div>
+    </div>
+    <div id="cards1"><div class="col-empty">user_id를 입력하고 불러오기를 눌러주세요</div></div>
+  </div>
+  <div class="col col-v2" id="col2">
+    <div class="col-header">
+      <select class="col-select" id="select2" onchange="onColChange(2)"></select>
+      <div class="col-stats" id="stats2">-</div>
+    </div>
+    <div id="cards2"><div class="col-empty">user_id를 입력하고 불러오기를 눌러주세요</div></div>
+  </div>
+</div>
+
+<script>
+// ── 서버 추가는 여기에만 ──────────────────────────────
+const APIS = [
+  { label: "v8000", url: "http://172.30.1.81:8000/instagram/similar-creators-v2" },
+  { label: "v8001", url: "http://172.30.1.81:8001/instagram/similar-creators-v2" },
+  { label: "v8002", url: "http://172.30.1.81:8002/instagram/similar-creators-v2" },
+  { label: "v8003", url: "http://172.30.1.81:8003/instagram/similar-creators-v2" },
+];
+// ─────────────────────────────────────────────────────
+
+const TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoyNjQwMjk4NTk3LCJpYXQiOjE3NzYyOTg1OTcsImp0aSI6IjcxZDY1NzkzZmU0YjQzODFiZjAzOTA1MzY0MzI5MGJlIiwidXNlcl9pZCI6MjA0Njl9.4G0ruqt_Xg4R_qua_7q71iez4tkOdaqLuf2IFCKXSrU";
+
+// 각 컬럼이 어떤 API 인덱스를 보여줄지 (기본: 0,1,2)
+let colAssignment = [0, 1, 2];
+
+// API 인덱스 → 캐시된 응답
+let cache = {};
+
+// 드롭다운 초기화
+function initSelects() {
+  [0, 1, 2].forEach(col => {
+    const sel = document.getElementById(`select${col}`);
+    sel.innerHTML = APIS.map((a, i) =>
+      `<option value="${i}" ${i === colAssignment[col] ? "selected" : ""}>${a.label}</option>`
+    ).join("");
+  });
+}
+
+// 컬럼 서버 변경 시 → 캐시 있으면 바로 렌더, 없으면 fetch
+async function onColChange(col) {
+  const apiIdx = parseInt(document.getElementById(`select${col}`).value);
+  colAssignment[col] = apiIdx;
+
+  if (cache[apiIdx] !== undefined) {
+    renderCol(col);
+  } else {
+    await fetchCol(col);
+  }
+}
+
+async function fetchCol(col) {
+  const userId = document.getElementById("userIdInput").value.trim();
+  const page   = parseInt(document.getElementById("pageInput").value) || 1;
+  if (!userId) return;
+
+  const apiIdx = colAssignment[col];
+  const { url } = APIS[apiIdx];
+
+  document.getElementById(`stats${col}`).textContent = "-";
+  document.getElementById(`cards${col}`).innerHTML =
+    `<div class="col-loading"><div class="spinner"></div><br>불러오는 중...</div>`;
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
+  try {
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": TOKEN },
+      body: JSON.stringify({ user_id: userId, page }),
+      signal: controller.signal,
+    });
+    cache[apiIdx] = await r.json();
+  } catch (err) {
+    cache[apiIdx] = { error: err.name === "AbortError" ? "타임아웃 (10초 초과)" : err.message };
+  } finally {
+    clearTimeout(timer);
+  }
+  renderCol(col);
+}
+
+async function fetchAll() {
+  const userId = document.getElementById("userIdInput").value.trim();
+  const page   = parseInt(document.getElementById("pageInput").value) || 1;
+  if (!userId) { alert("user_id를 입력해주세요."); return; }
+
+  const btn = document.getElementById("btnFetch");
+  btn.disabled = true;
+  cache = {};
+
+  [0, 1, 2].forEach(i => {
+    document.getElementById(`stats${i}`).textContent = "-";
+    document.getElementById(`cards${i}`).innerHTML =
+      `<div class="col-loading"><div class="spinner"></div><br>불러오는 중...</div>`;
+  });
+
+  // 선택된 API 인덱스 중 중복 제거 후 병렬 fetch
+  const uniqueIdxs = [...new Set(colAssignment)];
+  await Promise.all(uniqueIdxs.map(apiIdx => {
+    const { url } = APIS[apiIdx];
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10000);
+    return fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": TOKEN },
+      body: JSON.stringify({ user_id: userId, page }),
+      signal: controller.signal,
+    })
+    .then(r => r.json())
+    .then(data => { cache[apiIdx] = data; })
+    .catch(err => {
+      cache[apiIdx] = { error: err.name === "AbortError" ? "타임아웃 (10초 초과)" : err.message };
+    })
+    .finally(() => clearTimeout(timer));
+  }));
+
+  // 기준 유저 렌더
+  const userId2 = document.getElementById("userIdInput").value.trim();
+  const refSource = Object.values(cache).find(d => d && !d.error && d.filters_applied);
+  renderRefUser(userId2, refSource ? refSource.filters_applied : null);
+
+  [0, 1, 2].forEach(col => renderCol(col));
+  btn.disabled = false;
+}
+
+function renderCol(col) {
+  const sampleN  = parseInt(document.getElementById("sampleInput").value) || 20;
+  const apiIdx   = colAssignment[col];
+  const data     = cache[apiIdx];
+
+  if (!data) return;
+  if (data.error) {
+    document.getElementById(`stats${col}`).textContent = "연결 실패";
+    document.getElementById(`cards${col}`).innerHTML =
+      `<div class="col-error">오류: ${data.error}</div>`;
+    return;
+  }
+
+  const sample  = (data.results || []).slice(0, sampleN);
+  const total   = data.total ?? (data.results || []).length;
+  document.getElementById(`stats${col}`).innerHTML =
+    `전체 <strong>${total}</strong>명 중 <strong>${sample.length}</strong>개 표시`;
+
+  // 오버랩: 다른 두 컬럼의 샘플 set
+  const otherSets = [0, 1, 2]
+    .filter(c => c !== col)
+    .map(c => {
+      const d = cache[colAssignment[c]];
+      return new Set(d && !d.error ? (d.results || []).slice(0, sampleN).map(r => r.user_id) : []);
+    });
+
+  renderCards(col, sample, otherSets);
+}
+
+function renderCards(colIdx, creators, otherSets) {
+  const container = document.getElementById(`cards${colIdx}`);
+  if (!creators.length) {
+    container.innerHTML = `<div class="col-empty">결과가 없습니다</div>`;
+    return;
+  }
+
+  const html = creators.map((c, idx) => {
+    const inOther = otherSets.filter(s => s.has(c.user_id)).length;
+
+    const overlapClass = inOther === 2 ? "overlap-all-3" : inOther === 1 ? "overlap-2" : "";
+    const overlapBadge = inOther === 2
+      ? `<span class="overlap-badge badge-all3">3버전 공통</span>`
+      : inOther === 1
+      ? `<span class="overlap-badge badge-2">2버전 공통</span>`
+      : "";
+
+    const embedUrl = `https://storage.googleapis.com/instagram_user_classification/${encodeURIComponent(c.user_id)}.jpeg`;
+    const embedImg = `
+      <div class="embed-image-wrap">
+        <img class="embed-image" src="${embedUrl}" alt=""
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="embed-image-placeholder" style="display:none">🖼</div>
+      </div>`;
+
+    const profileImg = c.profile_picture_url
+      ? `<img class="profile-pic" src="${c.profile_picture_url}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        + `<div class="profile-pic-fallback" style="display:none">👤</div>`
+      : `<div class="profile-pic-fallback">👤</div>`;
+
+    const followers = c.followers != null ? formatNum(c.followers) : "-";
+    const eng = c.engagement_pct_last_10_org_feed != null
+      ? `eng <strong>${c.engagement_pct_last_10_org_feed.toFixed(1)}%</strong>` : "";
+    const views = c.avg_views_last_10_org_reel != null
+      ? `릴스 <strong>${formatNum(Math.round(c.avg_views_last_10_org_reel))}</strong>` : "";
+
+    const topicTags = (c.topic || []).map(t => `<span class="tag tag-topic">${t}</span>`).join("");
+    const moodTags  = (c.mood  || []).map(m => `<span class="tag tag-mood">${m}</span>`).join("");
+    const funcTags  = (c.content_function || []).map(f => `<span class="tag tag-func">${f}</span>`).join("");
+    const personaTag = c.persona ? `<span class="tag tag-persona">${c.persona}</span>` : "";
+
+    const brandLogos = (c.brands || []).slice(0, 8).map(b => {
+      const initial = (b.brand_name || "?").slice(0, 2);
+      return b.brand_logo
+        ? `<div class="brand-logo-wrap" title="${b.brand_name}">
+             <img class="brand-logo" src="${b.brand_logo}" alt="${b.brand_name}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+             <div class="brand-logo-fallback" style="display:none">${initial}</div>
+           </div>`
+        : `<div class="brand-logo-fallback" title="${b.brand_name}">${initial}</div>`;
+    }).join("");
+
+    return `
+    <div class="creator-card ${overlapClass}">
+      ${embedImg}
+      <div class="card-top">
+        ${profileImg}
+        <div class="card-info">
+          <div class="card-username">${escHtml(c.username || c.user_id)}</div>
+          <div class="card-userid">
+            <span>@${escHtml(c.user_id)}</span>
+            <a href="https://www.instagram.com/${encodeURIComponent(c.user_id)}/" target="_blank">↗</a>
+          </div>
+          <div class="card-followers">팔로워 <strong>${followers}</strong>${c.user_type ? ` · ${c.user_type}` : ""}</div>
+        </div>
+        ${overlapBadge}
+        <div class="rank-badge">#${idx + 1}</div>
+      </div>
+      ${eng || views ? `<div class="card-metrics">${eng ? `<span class="metric">${eng}</span>` : ""}${views ? `<span class="metric">${views}</span>` : ""}</div>` : ""}
+      <div class="card-tags">${topicTags}${moodTags}${funcTags}${personaTag}</div>
+      ${brandLogos ? `<div class="brand-logos">${brandLogos}</div>` : ""}
+    </div>`;
+  }).join("");
+
+  container.innerHTML = html;
+}
+
+function computeAndRenderOverlap(sets) {
+  const [s0, s1, s2] = sets;
+  if (!s0.size && !s1.size && !s2.size) return;
+
+  const all3  = [...s0].filter(id => s1.has(id) && s2.has(id)).length;
+  const ab    = [...s0].filter(id => s1.has(id) && !s2.has(id)).length;
+  const ac    = [...s0].filter(id => s2.has(id) && !s1.has(id)).length;
+  const bc    = [...s1].filter(id => s2.has(id) && !s0.has(id)).length;
+  const only0 = [...s0].filter(id => !s1.has(id) && !s2.has(id)).length;
+  const only1 = [...s1].filter(id => !s0.has(id) && !s2.has(id)).length;
+  const only2 = [...s2].filter(id => !s0.has(id) && !s1.has(id)).length;
+
+  document.getElementById("overlapInner").innerHTML = `
+    <div class="overlap-item"><div class="overlap-dot overlap-all"></div><span>3버전 공통 <strong>${all3}</strong></span></div>
+    <div class="overlap-item"><div class="overlap-dot overlap-ab"></div><span>8000+8001만 <strong>${ab}</strong></span></div>
+    <div class="overlap-item"><div class="overlap-dot overlap-ac"></div><span>8000+8002만 <strong>${ac}</strong></span></div>
+    <div class="overlap-item"><div class="overlap-dot overlap-bc"></div><span>8001+8002만 <strong>${bc}</strong></span></div>
+    <div class="overlap-item" style="margin-left:10px"><span style="color:#6e6e73">단독 — 8000: <strong>${only0}</strong> · 8001: <strong>${only1}</strong> · 8002: <strong>${only2}</strong></span></div>
+  `;
+  document.getElementById("overlapBar").style.display = "block";
+}
+
+function renderRefUser(userId, filters) {
+  const panel = document.getElementById("refPanel");
+  const card  = document.getElementById("refCard");
+  if (!filters) { panel.style.display = "none"; return; }
+
+  const f = filters;
+  const profileUrl = `https://storage.googleapis.com/instagram-profile-picture/${encodeURIComponent(userId)}-profile-picture.jpg`;
+  const embedUrl   = `https://storage.googleapis.com/instagram_user_classification/${encodeURIComponent(userId)}.jpeg`;
+
+  const followerRange = f.followers ? `${formatNum(f.followers[0])} ~ ${formatNum(f.followers[1])}` : "-";
+  const userType  = (f.include_user_type || []).join(", ");
+  const persona   = (f.include_persona_or || []).join(", ");
+
+  const topicTags   = (f.include_topic_or || f.include_topic_and || []).map(t => `<span class="tag tag-topic">${t}</span>`).join("");
+  const moodTags    = (f.include_mood_or  || f.include_mood_and  || []).map(m => `<span class="tag tag-mood">${m}</span>`).join("");
+  const funcTags    = (f.include_content_function_or || f.include_content_function_and || []).map(fn => `<span class="tag tag-func">${fn}</span>`).join("");
+  const personaTag  = persona ? `<span class="tag tag-persona">${persona}</span>` : "";
+
+  card.innerHTML = `
+    <div class="ref-card">
+      <img class="ref-embed" src="${embedUrl}" alt=""
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="ref-embed-placeholder" style="display:none">🖼</div>
+      <img class="ref-profile-pic" src="${profileUrl}" alt=""
+        onerror="this.style.display='none'">
+      <div class="ref-body">
+        <div class="ref-title">기준 크리에이터</div>
+        <div class="ref-name-row">
+          <span class="ref-userid">@${escHtml(userId)}</span>
+          <a class="ref-insta-link" href="https://www.instagram.com/${encodeURIComponent(userId)}/" target="_blank">인스타 보기 ↗</a>
+        </div>
+        <div class="ref-meta">${userType}${followerRange !== "-" ? ` · 팔로워 ${followerRange}` : ""}</div>
+      </div>
+    </div>`;
+
+  panel.style.display = "block";
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function formatNum(n) {
+  if (n >= 10000) return (n / 10000).toFixed(1).replace(/\.0$/, "") + "만";
+  if (n >= 1000)  return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  return String(n);
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+// 초기화
+initSelects();
+
+// Enter 키
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) fetchAll();
+});
+</script>
+</body>
+</html>
