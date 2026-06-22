@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>브랜드 라벨 리포트</title>
+<style>
+body{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial;
+    background:#f6f8fb;
+    margin:40px;
+    color:#333;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.summary{
+    display:flex;
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+    flex:1;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card h2{
+    margin:0;
+    font-size:28px;
+}
+
+.card p{
+    margin:5px 0 0 0;
+    color:#777;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+thead{
+    background:#f0f3f8;
+}
+
+th, td{
+    padding:12px 14px;
+    text-align:left;
+}
+
+th{
+    font-weight:600;
+}
+
+tr:nth-child(even){
+    background:#fafafa;
+}
+
+.badge{
+    display:inline-block;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.new{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+.old{
+    background:#eceff1;
+    color:#607d8b;
+}
+
+.right{
+    text-align:right;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>브랜드 라벨 리포트</h1>
+
+<div class="summary">
+    <div class="card">
+        <h2>91</h2>
+        <p>총 라벨 수</p>
+    </div>
+
+    <div class="card">
+        <h2>14</h2>
+        <p>신규 브랜드 수</p>
+    </div>
+
+    <div class="card">
+        <h2>20</h2>
+        <p>최다 라벨 브랜드 (쿠자)</p>
+    </div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>브랜드</th>
+<th class="right">라벨건수</th>
+<th>신규여부</th>
+</tr>
+</thead>
+
+<tbody>
+<tr><td>계근상</td><td class="right">12</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>KB국민은행</td><td class="right">1</td><td><span class="badge old">기존</span></td></tr>
+<tr><td>엑소프록실</td><td class="right">1</td><td><span class="badge old">기존</span></td></tr>
+<tr><td>디퍼</td><td class="right">8</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>떠기다방</td><td class="right">9</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>쿠자</td><td class="right">20</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>오미베리</td><td class="right">1</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>지노큐어</td><td class="right">7</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>모던국밥</td><td class="right">1</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>슈퍼크리스피</td><td class="right">6</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>글로우비</td><td class="right">11</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>할머니의부뚜막</td><td class="right">2</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>나노네추럴</td><td class="right">1</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>디얼</td><td class="right">1</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>으뜸스시</td><td class="right">5</td><td><span class="badge new">신규</span></td></tr>
+<tr><td>삼국지 전략판</td><td class="right">1</td><td><span class="badge old">기존</span></td></tr>
+<tr><td>데일리어니언</td><td class="right">1</td><td><span class="badge old">기존</span></td></tr>
+<tr><td>휴럼</td><td class="right">1</td><td><span class="badge old">기존</span></td></tr>
+<tr><td>동아오츠카</td><td class="right">1</td><td><span class="badge old">기존</span></td></tr>
+<tr><td>크리스프파워</td><td class="right">1</td><td><span class="badge new">신규</span></td></tr>
+</tbody>
+
+</table>
+
+</div>
+
+</body>
+</html>

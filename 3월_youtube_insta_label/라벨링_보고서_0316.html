@@ -1,0 +1,2967 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>라벨링 업무 보고서 - 2026.03.16</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap');
+  
+  :root {
+    --bg: #0f1117;
+    --bg2: #16191f;
+    --bg3: #1e2130;
+    --card: #1a1d27;
+    --border: #2a2d3e;
+    --accent1: #6c63ff;
+    --accent2: #48cfad;
+    --accent3: #f7b731;
+    --accent4: #fc5c65;
+    --text: #e8eaf0;
+    --text2: #9ba3bc;
+    --text3: #5f6680;
+    --success: #48cfad;
+    --fail: #fc5c65;
+    --noise: #6c63ff;
+    --exclude: #f7b731;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-left h1 {
+    font-size: 26px; font-weight: 700; letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #fff 0%, var(--accent1) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header-left p { color: var(--text2); font-size: 14px; margin-top: 4px; }
+  .date-badge {
+    background: var(--accent1); color: #fff;
+    padding: 8px 20px; border-radius: 20px;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+  }
+
+  /* Container */
+  .container { max-width: 1400px; margin: 0 auto; padding: 36px 40px; }
+
+  /* Section title */
+  .section-title {
+    font-size: 18px; font-weight: 700; color: #fff;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-title .subtitle {
+    font-size: 13px; font-weight: 400; color: var(--text2); margin-left: 4px;
+  }
+
+  .section { margin-bottom: 48px; }
+
+  /* Stats grid */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px 24px;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .stat-card::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    right: 0; height: 3px;
+  }
+  .stat-card.c1::before { background: var(--accent1); }
+  .stat-card.c2::before { background: var(--success); }
+  .stat-card.c3::before { background: var(--accent3); }
+  .stat-card.c4::before { background: var(--fail); }
+  .stat-card .label { font-size: 12px; color: var(--text2); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+  .stat-card .value { font-size: 36px; font-weight: 700; margin-top: 8px; line-height: 1; }
+  .stat-card .unit { font-size: 16px; font-weight: 400; color: var(--text2); margin-left: 4px; }
+  .stat-card.c1 .value { color: var(--accent1); }
+  .stat-card.c2 .value { color: var(--success); }
+  .stat-card.c3 .value { color: var(--accent3); }
+  .stat-card.c4 .value { color: var(--fail); }
+  .stat-card .sub { font-size: 12px; color: var(--text3); margin-top: 8px; }
+
+  /* Table */
+  .table-wrapper { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    background: var(--bg3); color: var(--text2);
+    font-weight: 600; font-size: 11px; letter-spacing: 0.8px;
+    text-transform: uppercase; padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid rgba(42,45,62,0.5); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(108,99,255,0.06); }
+  tbody td { padding: 11px 16px; color: var(--text); vertical-align: middle; }
+  tbody td.brand { font-weight: 600; color: #fff; }
+  tbody td.num { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  tbody td.link a {
+    color: var(--accent1); text-decoration: none; font-size: 12px;
+    display: inline-block; max-width: 320px; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  tbody td.link a:hover { text-decoration: underline; }
+  tbody td.title-cell { max-width: 360px; }
+  .title-text { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .note-tag {
+    display: inline-block; font-size: 11px;
+    background: rgba(108,99,255,0.15); color: var(--accent1);
+    padding: 2px 8px; border-radius: 6px; margin-top: 4px;
+    white-space: nowrap; max-width: 200px; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  }
+  .badge-new { background: rgba(72,207,173,0.15); color: var(--success); }
+  .badge-overseas { background: rgba(247,183,49,0.15); color: var(--accent3); }
+
+  .result-tag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .result-exclude { background: rgba(247,183,49,0.15); color: var(--accent3); }
+
+  /* 탭 */
+  .tab-nav { display: flex; gap: 4px; margin-bottom: 20px; }
+  .tab-btn {
+    padding: 8px 20px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text2); cursor: pointer;
+    font-size: 13px; font-weight: 600; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--accent1); color: #fff; border-color: var(--accent1); }
+  .tab-btn:hover:not(.active) { background: var(--bg3); color: var(--text); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* 두 컬럼 섹션 */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* 노이즈 채널 리스트 */
+  .channel-list { list-style: none; }
+  .channel-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid rgba(42,45,62,0.5);
+  }
+  .channel-item:last-child { border-bottom: none; }
+  .channel-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent1), var(--noise));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .channel-name { font-weight: 600; font-size: 14px; }
+  .channel-id { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+  /* 실패 목록 (유광기) */
+  .fail-item {
+    background: rgba(252,92,101,0.05); border: 1px solid rgba(252,92,101,0.12);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;
+  }
+  .fail-item .fail-title { font-size: 13px; font-weight: 500; margin-bottom: 8px; }
+  .fail-item .fail-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .fail-item a { color: var(--accent1); font-size: 12px; text-decoration: none; }
+  .fail-item a:hover { text-decoration: underline; }
+
+  /* 정리 박스 */
+  .summary-box {
+    background: linear-gradient(135deg, rgba(108,99,255,0.1) 0%, rgba(72,207,173,0.05) 100%);
+    border: 1px solid rgba(108,99,255,0.2);
+    border-radius: 14px; padding: 24px 28px;
+    margin-bottom: 32px;
+  }
+  .summary-box h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+  .summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(108,99,255,0.1); font-size: 14px; }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .s-label { color: var(--text2); }
+  .summary-row .s-val { font-weight: 700; color: #fff; }
+  .s-val.green { color: var(--success); }
+  .s-val.purple { color: var(--accent1); }
+  .s-val.yellow { color: var(--accent3); }
+  .s-val.red { color: var(--fail); }
+
+  /* 페이지 구분선 */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* footer */
+  .footer { text-align: center; color: var(--text3); font-size: 12px; padding: 32px 0 20px; }
+
+  /* search bar */
+  .search-bar {
+    display: flex; gap: 8px; margin-bottom: 16px;
+  }
+  .search-input {
+    background: var(--bg3); border: 1px solid var(--border);
+    color: var(--text); padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-family: inherit; width: 280px;
+    outline: none;
+  }
+  .search-input:focus { border-color: var(--accent1); }
+
+  /* 정렬 화살표 */
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>📋 라벨링 업무 보고서</h1>
+    <p>유광기 · 인광기 · 2026년 3월 16일 기준</p>
+  </div>
+  <div class="date-badge">2026. 03. 16</div>
+</div>
+
+<div class="container">
+
+  <!-- 유광기 섹션 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="dot" style="background: var(--accent1);"></span>
+      유광기 라벨링 보고서
+      <span class="subtitle">0312 기준</span>
+    </div>
+
+    <!-- 주요 지표 -->
+    <div class="stats-grid">
+      <div class="stat-card c1">
+        <div class="label">총 라벨링 횟수</div>
+        <div class="value">200<span class="unit">건</span></div>
+        <div class="sub">유광기 전체 라벨 성공</div>
+      </div>
+      <div class="stat-card c2">
+        <div class="label">신규 브랜드</div>
+        <div class="value">54<span class="unit">개</span></div>
+        <div class="sub">이번 회차 신규 등록</div>
+      </div>
+      <div class="stat-card c3">
+        <div class="label">브랜드 수</div>
+        <div class="value">137<span class="unit">개</span></div>
+        <div class="sub">라벨 성공 브랜드 종류</div>
+      </div>
+      <div class="stat-card c4">
+        <div class="label">노이즈 채널</div>
+        <div class="value">4<span class="unit">개</span></div>
+        <div class="sub">필터링 필요 채널</div>
+      </div>
+    </div>
+
+    <!-- 탭 -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('yk-success','yk')">✅ 라벨 성공 (137개)</button>
+      <button class="tab-btn" onclick="switchTab('yk-noise','yk')">🔇 노이즈 채널 (4개)</button>
+    </div>
+
+    <div id="yk-success" class="tab-content active">
+      <div class="search-bar">
+        <input class="search-input" type="text" placeholder="브랜드 검색..." oninput="filterTable('yk-success-table', this.value)">
+      </div>
+      <div class="table-wrapper">
+        <table id="yk-success-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>브랜드</th>
+              <th class="num">횟수</th>
+              <th>신규</th>
+              <th class="title-cell">영상 제목</th>
+              <th>링크</th>
+              <th>해외</th>
+              <th>채널명</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--text3)">1</td>
+              <td class="brand">카카오엔터테인먼트</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="아웅다웅하면서도 고민보다 GO하는 4형제의 여행 마지막 날｜풍향고2 EP.5 헝가리 부다페스트">아웅다웅하면서도 고민보다 GO하는 4형제의 여행 마지막 날｜풍향고2 EP.5 헝가리 부다페스트</span><span class="note-tag">뜬뜬 추정</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=ofI-or9dE8Y" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px">칠성레이블</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">2</td>
+              <td class="brand">넥슨</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="엄마와 재혼할 남자를 본 순간.. 온몸이 얼어붙었습니다">엄마와 재혼할 남자를 본 순간.. 온몸이 얼어붙었습니다</span><span class="note-tag">ai생성 영상</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=vzC1yIgEnXU" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px">백운기의 정어리TV</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">3</td>
+              <td class="brand">아임프롬</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="코스트코에서 사진 찍어 월 3천 버는 58세">코스트코에서 사진 찍어 월 3천 버는 58세</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=I2ig4_h4Miw" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px">0.1통 라이더</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">4</td>
+              <td class="brand">샤오마라</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="4천만 원 빌려간 친구.. 1년 뒤 장례식장에서 받은 봉투 하나">4천만 원 빌려간 친구.. 1년 뒤 장례식장에서 받은 봉투 하나</span><span class="note-tag">ai생성 영상</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=5jtCToy0Ur8" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px">대한전통명장 청명법사 </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">5</td>
+              <td class="brand">프라미스 슈올즈</td>
+              <td class="num" style="color:var(--accent1)">6</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="손자를 버리고 재혼한 며느리가 25년 만에 찾아온 이유">손자를 버리고 재혼한 며느리가 25년 만에 찾아온 이유</span><span class="note-tag">ai생성 영상</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=fpPDuSSmPS0" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">6</td>
+              <td class="brand">카카오페이</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="엄마와 이혼한 새아빠에게 결국 무릎을 꿇었습니다">엄마와 이혼한 새아빠에게 결국 무릎을 꿇었습니다</span><span class="note-tag">ai생성 영상</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=k8lKzNj7bnQ" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">7</td>
+              <td class="brand">리니지M</td>
+              <td class="num" style="color:var(--accent1)">6</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="일당백] 노벨상은 누구에게 주어지는가? 1시간에 정리하는 흥미로운 노벨 경제학상 역사">일당백] 노벨상은 누구에게 주어지는가? 1시간에 정리하는 흥미로운 노벨 경제학상 역사</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=WclokWSk-1w" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">8</td>
+              <td class="brand">유제이티 올라이드</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="애니메이션 놀이동산! 미국 픽사 본사를 가보았습니다! ">애니메이션 놀이동산! 미국 픽사 본사를 가보았습니다! </span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=ZI_UbF4S5mo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">9</td>
+              <td class="brand">JBL</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="설날 용돈 20만 원 드렸더니 시어머니가 봉투를 집어던진 이유">설날 용돈 20만 원 드렸더니 시어머니가 봉투를 집어던진 이유</span><span class="note-tag">ai생성 영상</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=eyPOnRUUeTM" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">10</td>
+              <td class="brand">리니지 클래식</td>
+              <td class="num" style="color:var(--accent1)">29</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="치즈 토스트의 황제를 모셔봤습니다">치즈 토스트의 황제를 모셔봤습니다</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=NLfBD3IiRt4" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">11</td>
+              <td class="brand">SEGA Korea</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="견생 첫 가위컷">견생 첫 가위컷</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=6kyGGsmBASw" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">12</td>
+              <td class="brand">아정당</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="배그 신스킨 오우너">배그 신스킨 오우너</span><span class="note-tag">배그 추정 / 광고 표시X</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=qV4AFOioY6w" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">13</td>
+              <td class="brand">blip</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="&quot;표만 빨아먹으려다가&quot; ·· 난리 나니까 이제 와서 TK통합 추진?">&quot;표만 빨아먹으려다가&quot; ·· 난리 나니까 이제 와서 TK통합 추진?</span><span class="note-tag">자사 제품 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=pL1YdeF0ONI" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">14</td>
+              <td class="brand">샘표</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="케이팝에서 이런 가사가 나올 줄이야… : i-dle (아이들) - Mono">케이팝에서 이런 가사가 나올 줄이야… : i-dle (아이들) - Mono</span><span class="note-tag">뮤비</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=tk-wzK-JIVA" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">15</td>
+              <td class="brand">매경출판</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="명절에 꼭 해보세요~ &quot;쫄깃 새콤달콤 무우&quot;">명절에 꼭 해보세요~ &quot;쫄깃 새콤달콤 무우&quot;</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=YbmdCqlLX_Y" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">16</td>
+              <td class="brand">라비드</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="딸아이 신혼집 사줬는데 예비사돈 한마디에 파혼시킨 이유">딸아이 신혼집 사줬는데 예비사돈 한마디에 파혼시킨 이유</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=eBUTsVOhTW4" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">17</td>
+              <td class="brand">게임거래소 로켓아이템땡스</td>
+              <td class="num" style="color:var(--accent1)">5</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="10년 만에 알게 된 아빠의 거짓말 #감동사연">10년 만에 알게 된 아빠의 거짓말 #감동사연</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=2nE-1kAzf6U" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">18</td>
+              <td class="brand">크랙 Crack</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="내일 삼성전자, SK하이닉스 팔아야할까?">내일 삼성전자, SK하이닉스 팔아야할까?</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=t_M9k9IvBJw" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">19</td>
+              <td class="brand">농심</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="리액션이 맛있는 이 남자...ㅎㅎ">리액션이 맛있는 이 남자...ㅎㅎ</span><span class="note-tag">배그 추정 / 광고 표시X </span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=bCSAS3YYuvY" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">20</td>
+              <td class="brand">지그재그</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="월 매출 2천만 원 미만이면 로열티 0원! 대기업 출신 대표가 만든 고기집 프랜차이즈의 정체">월 매출 2천만 원 미만이면 로열티 0원! 대기업 출신 대표가 만든 고기집 프랜차이즈의 정체</span><span class="note-tag">기와집숯불갈비 추정</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=Bda-y_cExKQ" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">21</td>
+              <td class="brand">전통숙성 황실김치찜</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[D+357] 아빠와 취미활동하고 친구와 놀고 하루를 만끽하는 하루 ">[D+357] 아빠와 취미활동하고 친구와 놀고 하루를 만끽하는 하루 </span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=ygKdYWvBcsE" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">22</td>
+              <td class="brand">닥터놀로지</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="So I Tried BEDWARS 2..">So I Tried BEDWARS 2..</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=xHOkk_8uVRU" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">23</td>
+              <td class="brand">테무</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="간단하면서 임펙트 있는북한 아내 픽! 베트남 쌀국수!">간단하면서 임펙트 있는북한 아내 픽! 베트남 쌀국수!</span><span class="note-tag">공구</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=zKqljAhUp0w" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">24</td>
+              <td class="brand">마지시모 올리브오일</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="Top Tech Voices- Sustainable Tech: Innovations for a Greener Planet">Top Tech Voices- Sustainable Tech: Innovations for a Greener Planet</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=RnNg10scO48" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">25</td>
+              <td class="brand">니콘 코리아</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="미국에서 불가능했던 치과치료를 받고 감동한 미국인">미국에서 불가능했던 치과치료를 받고 감동한 미국인</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=eD2zaXRszeA" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">26</td>
+              <td class="brand">테일러팜스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="매점가요2 오픈 알람⏰듣고 ALD1 부와아앙💨 달려갑니데이비드~!">매점가요2 오픈 알람⏰듣고 ALD1 부와아앙💨 달려갑니데이비드~!</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=R1Nbo6ZfBEA" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">27</td>
+              <td class="brand">airalo</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="혼밥 이렇게 드세요. 돈 모으기 가장 쉽습니다.">혼밥 이렇게 드세요. 돈 모으기 가장 쉽습니다.</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=GhDSn2qY36E" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">28</td>
+              <td class="brand">룡룡마라도원</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="슬랙스에도 찰떡 🖤2026 봄 운동화추천✔️비율살리는 치트키">슬랙스에도 찰떡 🖤2026 봄 운동화추천✔️비율살리는 치트키</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=hWj-YQZhwYY" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">29</td>
+              <td class="brand">동광수산</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[3월 3일 화요일 한국시황] 역대 1위 하락폭! -452pt | 삼전, 하닉 시간외 -12% | 미-이란 사태 증권사별 시나리오 | 중동사태 대처방법!">[3월 3일 화요일 한국시황] 역대 1위 하락폭! -452pt | 삼전, 하닉 시간외 -12% | 미-이란 사태 증권사별 시나리오 | 중동사태 ...</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=jhuX6AGf2bI" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">30</td>
+              <td class="brand">모에솔트</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="이특, 신동.. 너희 이 정도였어?🔥슈주 골프 듀오의 뻐꾸기 습격">이특, 신동.. 너희 이 정도였어?🔥슈주 골프 듀오의 뻐꾸기 습격</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=L9bt_t59j2k" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">31</td>
+              <td class="brand">풍년보감</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="수익만 3조 찍어버린, 영화가 떴따..! 제작진만 4000명, 신+요괴+인간만 2억 개 캐릭터 ㄷㄷ 신이 잘 못 만들어서 악의 기운을 타고난 아이가 전쟁의 신이 되는 ≪너자 2≫">수익만 3조 찍어버린, 영화가 떴따..! 제작진만 4000명, 신+요괴+인간만 2억 개 캐릭터 ㄷㄷ 신이 잘 못 만들어서 악의 기운을 타고난 아...</span><span class="note-tag">영화 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=4g8jGsE7eH4" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">32</td>
+              <td class="brand">인터넷 비교원</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="아마추어드라이버연습 꼭 해보세요!">아마추어드라이버연습 꼭 해보세요!</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=XwZW0dx2IRQ" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">33</td>
+              <td class="brand">메리츠증권</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="사람 몰래 행동하는 AI 오픈클로, 어디까지 가능할까? ">사람 몰래 행동하는 AI 오픈클로, 어디까지 가능할까? </span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=HbYF0EkAvAo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">34</td>
+              <td class="brand">카스</td>
+              <td class="num" style="color:var(--accent1)">6</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="이런 영화가 있을 줄 몰랐습니다. 故김새론 배우 마지막 영화 ≪우리는 매일매일≫">이런 영화가 있을 줄 몰랐습니다. 故김새론 배우 마지막 영화 ≪우리는 매일매일≫</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=EmOoGgX00fE" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">35</td>
+              <td class="brand">어노브</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="대형 유튜버한테 초대받은 김동현">대형 유튜버한테 초대받은 김동현</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=USEpWu5ivi0" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">36</td>
+              <td class="brand">삼첩분식</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="소중한 사람마다 죽게 되는 여자 앞에 나타난 죽음에서 몇번이나 살아난 남자의 미친 사랑이 시작된다..">소중한 사람마다 죽게 되는 여자 앞에 나타난 죽음에서 몇번이나 살아난 남자의 미친 사랑이 시작된다..</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=aqeVUPr8BDg" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">37</td>
+              <td class="brand">해시박스 몬스터</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="오픈월드 기대작 이환 CBT 기억에 남았던 순간들?">오픈월드 기대작 이환 CBT 기억에 남았던 순간들?</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=6zXKbqCZnOg" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">38</td>
+              <td class="brand">피싱 클래시</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="&quot;신이 강림한 줄 알았어!&quot; 포레스텔라 MAMA 극찬 쏟아진 해외반응">&quot;신이 강림한 줄 알았어!&quot; 포레스텔라 MAMA 극찬 쏟아진 해외반응</span><span class="note-tag">오가닉파밍스 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=l89GBy0El2k" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">39</td>
+              <td class="brand">CJ웰케어</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="AirTag 2 Review: Range, Sound &amp; REAL-WORLD Tests!">AirTag 2 Review: Range, Sound &amp; REAL-WORLD Tests!</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=tV7E1gPqQyE" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">40</td>
+              <td class="brand">셀릭</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="우리 애들이 참 잘해요">우리 애들이 참 잘해요</span><span class="note-tag">배그 추정 / 광고표시X</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=imy-14lNijA" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">41</td>
+              <td class="brand">하이퍼쉘</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[ 리니지클래식 재범군주 ] 데포르쥬 힘기사 7일도 -45방 힘 25 기사 빠따 체험 호형호제 혈원 모집 #리니지클래식 #불도그 #빅보스 #수삼티비">[ 리니지클래식 재범군주 ] 데포르쥬 힘기사 7일도 -45방 힘 25 기사 빠따 체험 호형호제 혈원 모집 #리니지클래식 #불도그 #빅보스 #수삼...</span><span class="note-tag">확률형 아이템 포함X</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=N5_T2wkMCHE" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">42</td>
+              <td class="brand">멜브</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="&quot;창업은 나이 순서가 아닙니다&quot; 🍝 점주 출신 대표의 솔직한 파스타 프랜차이즈 창업 이야기">&quot;창업은 나이 순서가 아닙니다&quot; 🍝 점주 출신 대표의 솔직한 파스타 프랜차이즈 창업 이야기</span><span class="note-tag">파스타 제작소 추정</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=I7jUu1uFGuc" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">43</td>
+              <td class="brand">꽁피쉐</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="스크린의 여왕 등장! 필드에서 못낸 승부를 스크린에서 다시 한번..!">스크린의 여왕 등장! 필드에서 못낸 승부를 스크린에서 다시 한번..!</span><span class="note-tag">플로우스윙 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=SVCVPnr2gN4" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">44</td>
+              <td class="brand">네오메딕스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="홀덤] 스티플 vs 한방 풀하우스 님들 폴드가능?? 0.00004% 확률로 엮였다">홀덤] 스티플 vs 한방 풀하우스 님들 폴드가능?? 0.00004% 확률로 엮였다</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=LqiDfascPRY" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">45</td>
+              <td class="brand">싱글톤 코리아</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="대구하면 막창아인교🥢[🧳여행 브이로그 EP.대구 2탄]">대구하면 막창아인교🥢[🧳여행 브이로그 EP.대구 2탄]</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=izXcU90BJG8" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">46</td>
+              <td class="brand">닥터퀘르</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="흑해'의 모든 것｜흑해, 세상의 중심이 된 바다의 역사">흑해'의 모든 것｜흑해, 세상의 중심이 된 바다의 역사</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=SbbE4WJ7zsI" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">47</td>
+              <td class="brand">4223 마음센터</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="(셰프들의 속마음은 사실..) 냉부PT 12편을 기다리며 미공개 클립 모음.zip">(셰프들의 속마음은 사실..) 냉부PT 12편을 기다리며 미공개 클립 모음.zip</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=WGZ6rrqQGR0" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">48</td>
+              <td class="brand">인프레쉬</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="&quot;같이 근무했던 사람들이 얘기하길..&quot; 김현태 돌변한 이유는?_오혁진 일요시사 기자">&quot;같이 근무했던 사람들이 얘기하길..&quot; 김현태 돌변한 이유는?_오혁진 일요시사 기자</span><span class="note-tag">자사 제품 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=sHXPm5XEucQ" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">49</td>
+              <td class="brand">골드바렐</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="코스트코 이번주 이거 안사오면 손해">코스트코 이번주 이거 안사오면 손해</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=QFrp1bvMuPY" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">50</td>
+              <td class="brand">요고</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="ebruary_24🌸 어깨 운동🤎shoulder(deltoid)exercise">ebruary_24🌸 어깨 운동🤎shoulder(deltoid)exercise</span><span class="note-tag">스트리밍</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=JRegRX5ZqxY" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">51</td>
+              <td class="brand">에어알로</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="🔥드디어 &quot;군주 최고의 망토&quot; 획득! 내가 이걸 또 할 줄 이야... ">🔥드디어 &quot;군주 최고의 망토&quot; 획득! 내가 이걸 또 할 줄 이야... </span><span class="note-tag">확률형 아이템 포함X</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=do11xbIwGxo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">52</td>
+              <td class="brand">카카오프렌즈</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="저 PT쌤 바꿔주세요..">저 PT쌤 바꿔주세요..</span><span class="note-tag">바디피디아 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=ybSVV5RF-Ro" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">53</td>
+              <td class="brand">휴럼</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="선성권의 마구 같은 커브 모음.zip | Studio C1">선성권의 마구 같은 커브 모음.zip | Studio C1</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=vQ44DTGzSwo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">54</td>
+              <td class="brand">엑스트라조스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="결국 사과한 동탄 경찰, 감춰진 사건의 진실">결국 사과한 동탄 경찰, 감춰진 사건의 진실</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=2ZbP07vpt6U" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">55</td>
+              <td class="brand">유토피아 간장게장</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[#찐시황] 14일 만에 삼성전자를 7800억 매수한 외인.. 폭락장은 끝난 건가?">[#찐시황] 14일 만에 삼성전자를 7800억 매수한 외인.. 폭락장은 끝난 건가?</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=u4EeL06laHI" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">56</td>
+              <td class="brand">밥풀릭스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="‘단종 열풍’ 영화평론가 라이너 [왕과 사는 남자] 1000만 터진 이유">‘단종 열풍’ 영화평론가 라이너 [왕과 사는 남자] 1000만 터진 이유</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=tmxfH1cupZw" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">57</td>
+              <td class="brand">굽네몰</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="&quot;이것은 마약 게이트가 아닌 검찰 게이트&quot; 백해룡 경정의 분노">&quot;이것은 마약 게이트가 아닌 검찰 게이트&quot; 백해룡 경정의 분노</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=2zLQYUKFCps" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">58</td>
+              <td class="brand">동대문엽기떡볶이</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="반반결혼만 고집하던 예비신랑의 최후">반반결혼만 고집하던 예비신랑의 최후</span><span class="note-tag">ai생성 영상</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=0bZ9aFGpObo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">59</td>
+              <td class="brand">파나틱스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="드라이클리닝 하지 마세요. '이것' 한 방울에 땟국물 싹 빠져 새옷 됩니다. ">드라이클리닝 하지 마세요. '이것' 한 방울에 땟국물 싹 빠져 새옷 됩니다. </span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=xl3OtqFgKbc" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">60</td>
+              <td class="brand">뭉클</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="결정사에서 쫓겨날뻔한 이경규와 후배 개그맨 이선민의 결혼시장 등급">결정사에서 쫓겨날뻔한 이경규와 후배 개그맨 이선민의 결혼시장 등급</span><span class="note-tag">당진팜 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=_Dc5fDE1Obs" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">61</td>
+              <td class="brand">메디큐브</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="일반인이 화류계 아가씨가 되는 과정&amp;화류계 아가씨 특징 [화류계 썰 EP.1]">일반인이 화류계 아가씨가 되는 과정&amp;화류계 아가씨 특징 [화류계 썰 EP.1]</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=XvobB3tJEEI" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">62</td>
+              <td class="brand">토리야</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="이광수가 주식 투자 AS하러 시동위키 떴다👁️코스피 고점인가 ">이광수가 주식 투자 AS하러 시동위키 떴다👁️코스피 고점인가 </span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=qwIw2pZ8WP0" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">63</td>
+              <td class="brand">당산오돌</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="연휴 직전에 알려주는 헤지 전략">연휴 직전에 알려주는 헤지 전략</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=hCZGpl6GLno" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">64</td>
+              <td class="brand">lg생활건강</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="[읽은척책방] 삼국지 : 삼국지의 주제를 단 하나만 잡자면? ">[읽은척책방] 삼국지 : 삼국지의 주제를 단 하나만 잡자면? </span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=W_Tso3BS-7M" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">65</td>
+              <td class="brand">이환</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[LIVE 3월 4일 수요일 한국시황] 시총 1000조 증발">[LIVE 3월 4일 수요일 한국시황] 시총 1000조 증발</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=bIkFXgp8kYo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">66</td>
+              <td class="brand">연운</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="[내일의 썬] Ep.6 과제 | Studio C1">[내일의 썬] Ep.6 과제 | Studio C1</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=7pf_8yV8vns" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">67</td>
+              <td class="brand">닥터지</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="설 특집 짠한형 몰아보기🙇🏻‍♀️ [짠한형 EP.133] 짠한형 신동엽 정호철">설 특집 짠한형 몰아보기🙇🏻‍♀️ [짠한형 EP.133] 짠한형 신동엽 정호철</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=Ob3Ai6wqWlc" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">68</td>
+              <td class="brand">마이보험체크</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="역대급 득템🔥&quot;말도 안되게 나왔다&quot; 가격 측정 불가! [리니지 클래식]">역대급 득템🔥&quot;말도 안되게 나왔다&quot; 가격 측정 불가! [리니지 클래식]</span><span class="note-tag">확률형 아이템 포함X</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=JUyD6siMA-I" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">69</td>
+              <td class="brand">테일러메이드</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="광안리에 출몰한 두쫀쿠 아저씨가 허각을 닮음">광안리에 출몰한 두쫀쿠 아저씨가 허각을 닮음</span><span class="note-tag">자사 제품 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=NOyO3UhtZ1U" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">70</td>
+              <td class="brand">두근두근타운</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="한국 아저씨들 사이에서 소주 때려마시는(?) 독일여자 정체..ㄷㄷ">한국 아저씨들 사이에서 소주 때려마시는(?) 독일여자 정체..ㄷㄷ</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=Ln3SYJZ0Isw" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">71</td>
+              <td class="brand">노랑우산</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="금·비트코인 차트에 숨겨진 불편한 진실">금·비트코인 차트에 숨겨진 불편한 진실</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=ctpTfCGn_Vs" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">72</td>
+              <td class="brand">쿠자</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="10조 부자 할머니가 갑자기 기억을 잃어버렸다..ㅜ 배우 이미숙 연기 때민에,">10조 부자 할머니가 갑자기 기억을 잃어버렸다..ㅜ 배우 이미숙 연기 때민에,</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=3KSY3DTGDRI" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">73</td>
+              <td class="brand">Seeking Alpha</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="⚔️붉은사막 첫 느낌🛡️">⚔️붉은사막 첫 느낌🛡️</span><span class="note-tag">붉은사막 추정</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=8AjMG8YhqB4" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">74</td>
+              <td class="brand">호시노</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="AI시대, 재능이 없다면 빨리 깨달아야 하는 '1가지' (조석 작가)">AI시대, 재능이 없다면 빨리 깨달아야 하는 '1가지' (조석 작가)</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=8zkUR5tkl4w" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">75</td>
+              <td class="brand">신전떡볶이</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="양배추물김치는 천연소화제입니다">양배추물김치는 천연소화제입니다</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=tyGyrAnXO6M" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">76</td>
+              <td class="brand">위프</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="🔥27년만에 다시 이런 전투를... &quot;그리고 득템까지&quot; [리니지 클래식]">🔥27년만에 다시 이런 전투를... &quot;그리고 득템까지&quot; [리니지 클래식]</span><span class="note-tag">확률형 아이템 포함X</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=_UHxvU0V780" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">77</td>
+              <td class="brand">세탁나눔방</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="광주의 3대째 내려오는 70년 노포 맛집이 프랜차이즈 가맹사업을 시작하는 방법">광주의 3대째 내려오는 70년 노포 맛집이 프랜차이즈 가맹사업을 시작하는 방법</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=dOSHBEBZ4Xk" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">78</td>
+              <td class="brand">동화자연마루</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="[일당백] 열일곱 소년 왕의 고독한 죽음, 정통성을 잃어버린 성공한 쿠데타의 모습 ">[일당백] 열일곱 소년 왕의 고독한 죽음, 정통성을 잃어버린 성공한 쿠데타의 모습 </span><span class="note-tag">은하수 팜 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=WRj1389c2F8" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">79</td>
+              <td class="brand">LG전자</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="영지를사랑하지않을수없어">영지를사랑하지않을수없어</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=SjGikeUdmYE" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">80</td>
+              <td class="brand">한국송이산삼</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="문교원의 감자력 모음.zip | Studio C1">문교원의 감자력 모음.zip | Studio C1</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=nZTKDOzLrtk" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">81</td>
+              <td class="brand">큐월드</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="주키니 모바일 배그 시작했습니다">주키니 모바일 배그 시작했습니다</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=06gV7S4_wdE" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">82</td>
+              <td class="brand">예림</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="25평이 50평처럼 보이는 인테리어~ 침대에 보일러를 넣은 이유? 홍천 전원주택 랜선집들이">25평이 50평처럼 보이는 인테리어~ 침대에 보일러를 넣은 이유? 홍천 전원주택 랜선집들이</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=uN_8_T4XaI8" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">83</td>
+              <td class="brand">마비노기 모바일</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="🔥신(동)구(라) JB대전🔥대체 왜 재밌는 건데..! 이 와중에 이특은 싱글 도전..?">🔥신(동)구(라) JB대전🔥대체 왜 재밌는 건데..! 이 와중에 이특은 싱글 도전..?</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=Tu4FlyXItEc" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">84</td>
+              <td class="brand">터프소프</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="브레이크 없이 픽시 타는 여중생 참교육하기">브레이크 없이 픽시 타는 여중생 참교육하기</span><span class="note-tag">자사 제품 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=p3QwdJ1cfio" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">85</td>
+              <td class="brand">동아제약</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="&quot;더 이상 고민하지 마세요&quot; 자동 수익 월급만큼 받는다. 2026년 황금 배당 포트폴리오 공개 ">&quot;더 이상 고민하지 마세요&quot; 자동 수익 월급만큼 받는다. 2026년 황금 배당 포트폴리오 공개 </span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=8xS3tFO3o5s" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">86</td>
+              <td class="brand">정관장</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="아무도 알려주지 않는, NASA가 다시 달에 가지 못하고 있는 진짜 이유!">아무도 알려주지 않는, NASA가 다시 달에 가지 못하고 있는 진짜 이유!</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=N2ZrSqbDxfg" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">87</td>
+              <td class="brand">나우케어</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[고성국TV 생방송 26년 2월 20일 (금)] 윤석열은 무죄다">[고성국TV 생방송 26년 2월 20일 (금)] 윤석열은 무죄다</span><span class="note-tag">브랜드 다수 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=_V-6GVTcFCo" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">88</td>
+              <td class="brand">뱅크오브호프</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="유튜브나 주위에서 하도 까서...&quot;기변병 제대로 왔습니다.&quot;">유튜브나 주위에서 하도 까서...&quot;기변병 제대로 왔습니다.&quot;</span><span class="note-tag">조이앤드라이브 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=9nLS2oNVn7g" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">89</td>
+              <td class="brand">상트베른하르트</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="드디어 장항준 감독 카드사용?!">드디어 장항준 감독 카드사용?!</span><span class="note-tag">영진약품 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=HsXEdJkU_eA" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">90</td>
+              <td class="brand">클룹</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="돈 많은 1인 가구면 무조건 행복할 것이라는 착각">돈 많은 1인 가구면 무조건 행복할 것이라는 착각</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=59Ovfd12JUg" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">91</td>
+              <td class="brand">알디콤</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="붉은사막 6시간 해봤습니다. 그런 게임 아닙니다.">붉은사막 6시간 해봤습니다. 그런 게임 아닙니다.</span><span class="note-tag">붉은사막 추정</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=u3Wb6GOaFz8" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">92</td>
+              <td class="brand">하이퍼엑스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="(인생최초) 한일 유부남이 마누라 버리고 여행 가버리기">(인생최초) 한일 유부남이 마누라 버리고 여행 가버리기</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=uLR-igZ87Jw" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">93</td>
+              <td class="brand">아이템매니아 ITEMMANIA</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="LPGA 한 시즌에 홀인원이 3개?! 엄청난 기록을 가진 그녀가 왔습니다..!">LPGA 한 시즌에 홀인원이 3개?! 엄청난 기록을 가진 그녀가 왔습니다..!</span><span class="note-tag">플로우스윙 추정 / 브랜드 조회 실패</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=2S1b_uXdReY" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">94</td>
+              <td class="brand">넷마블</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="어려서 부모에게 사랑받지 못한 어른들에게 나타나는 딱 1가지 공통점 ">어려서 부모에게 사랑받지 못한 어른들에게 나타나는 딱 1가지 공통점 </span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=nX5dA4dh_6w" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">95</td>
+              <td class="brand">로우라이즈</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="[미니 다큐 동심] 전설도 인정한 천재｜최가온">[미니 다큐 동심] 전설도 인정한 천재｜최가온</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=PO1BDA2Tsmc" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">96</td>
+              <td class="brand">델</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="주식전문가 박시동 손흥민 유니폼에 300만원 질렀습니다">주식전문가 박시동 손흥민 유니폼에 300만원 질렀습니다</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=8fu_yl9Hod0" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">97</td>
+              <td class="brand">인터넷끝판왕</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="조회수 13만 해외 광고 🔴&quot;드디어 샀다...&quot; 리니지 클래식">조회수 13만 해외 광고 🔴&quot;드디어 샀다...&quot; 리니지 클래식</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=jY2IjlIwJIM" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">98</td>
+              <td class="brand">한화자산운용</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="[고성국TV 생방송 26년 2월 28일 (토)] 이진숙 &quot;박근혜-윤석열-대한민국 잡아먹은 한동훈">[고성국TV 생방송 26년 2월 28일 (토)] 이진숙 &quot;박근혜-윤석열-대한민국 잡아먹은 한동훈</span><span class="note-tag">브랜드 다수 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=8CmauvpA56w" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">99</td>
+              <td class="brand">원할머니보쌈족발</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="작업속도 20배 높여주는 기발한 26년 3월 출시공구 총정리!!">작업속도 20배 높여주는 기발한 26년 3월 출시공구 총정리!!</span><span class="note-tag">브랜드 다수 광고</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=n-mCYEKhGhk" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">100</td>
+              <td class="brand">선화동실비김치</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="미국주식 공포속에서 강력한 기회 신호 포착!">미국주식 공포속에서 강력한 기회 신호 포착!</span><span class="note-tag">책 리뷰</span></td>
+              <td class="link"><a href="https://www.youtube.com/watch?v=T61uSE3tFoc" target="_blank">▶ 이동</a></td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">101</td>
+              <td class="brand">역전할머니맥주</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">102</td>
+              <td class="brand">통영숙수</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">103</td>
+              <td class="brand">대원제약</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">104</td>
+              <td class="brand">서브노티카</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">105</td>
+              <td class="brand">DX: 각성자들</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">106</td>
+              <td class="brand">구글플레이</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">107</td>
+              <td class="brand">미차이</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">108</td>
+              <td class="brand">WALLHACK</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">109</td>
+              <td class="brand">해링턴</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">110</td>
+              <td class="brand">마누스 AI</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">111</td>
+              <td class="brand">일상카페</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">112</td>
+              <td class="brand">롤키친</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">113</td>
+              <td class="brand">섬마을사람들</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">114</td>
+              <td class="brand">르플렉스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">115</td>
+              <td class="brand">파리바게뜨</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">116</td>
+              <td class="brand">한끼통살</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">117</td>
+              <td class="brand">코링코</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">118</td>
+              <td class="brand">종근당</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">119</td>
+              <td class="brand">닥터오리엘</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">120</td>
+              <td class="brand">스킨1004</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">121</td>
+              <td class="brand">메가칩스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">122</td>
+              <td class="brand">마니커</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">123</td>
+              <td class="brand">우르오스</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">124</td>
+              <td class="brand">퍼셀</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">125</td>
+              <td class="brand">아미</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">126</td>
+              <td class="brand">소댕 &amp; 클래딘</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">127</td>
+              <td class="brand">요고</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">128</td>
+              <td class="brand">어퍼</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">129</td>
+              <td class="brand">메시</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">130</td>
+              <td class="brand">브리쎄</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">131</td>
+              <td class="brand">CJ웰케어</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">132</td>
+              <td class="brand">플리토</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">133</td>
+              <td class="brand">헥스칼 코리아</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">134</td>
+              <td class="brand">KB자산운용</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">135</td>
+              <td class="brand">마이유럽 여행사</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td><span class="badge badge-new">N</span></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">136</td>
+              <td class="brand">라이노쉴드</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">137</td>
+              <td class="brand">핑골프</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td class="title-cell"><span class="title-text" title="">-</span></td>
+              <td class="link">-</td>
+              <td></td>
+              <td style="color:var(--text2);font-size:12px"></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="yk-noise" class="tab-content">
+      <ul class="channel-list">
+        <li class="channel-item">
+          <div class="channel-icon">📡</div>
+          <div>
+            <div class="channel-name">칠성레이블</div>
+            <div class="channel-id">UC-WFvgdXXmZPj4pDI8GFbzQ</div>
+          </div>
+        </li>
+        <li class="channel-item">
+          <div class="channel-icon">🎬</div>
+          <div>
+            <div class="channel-name">백운기의 정어리TV</div>
+            <div class="channel-id">UCnj0yVadEmXKcUN5ztUY4uw</div>
+          </div>
+        </li>
+        <li class="channel-item">
+          <div class="channel-icon">📺</div>
+          <div>
+            <div class="channel-name">0.1통 라이더</div>
+            <div class="channel-id">UCeQQ1EvvvUcGHGFYympQmgw</div>
+          </div>
+        </li>
+        <li class="channel-item">
+          <div class="channel-icon">🔔</div>
+          <div>
+            <div class="channel-name">대한전통명장 청명법사 </div>
+            <div class="channel-id">UCNegqL7rIZodZKjshPNO3Xw</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section">
+    <div class="section-title">
+      <span class="dot" style="background: var(--fail);"></span>
+      유광기 라벨 실패 목록
+      <span class="subtitle">총 36건</span>
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>영상 제목</th>
+            <th>링크</th>
+            <th>해외</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--text3)">1</td>
+            <td class="title-cell"><span class="title-text" title="3 PEG - Kannada Rapper Chandan Shetty">3 PEG - Kannada Rapper Chandan Shetty</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=QdvLj9Wr8Q0" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">뮤비</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">2</td>
+            <td class="title-cell"><span class="title-text" title="보이스피싱범 혼내주기">보이스피싱범 혼내주기</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=xsLJZyih3Ac" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">3</td>
+            <td class="title-cell"><span class="title-text" title="JISOO X ZAYN - EYES CLOSED">JISOO X ZAYN - EYES CLOSED</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=EN1tMeXQii0" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">뮤비</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">4</td>
+            <td class="title-cell"><span class="title-text" title="BTS (방탄소년단) 'We Are Bulletproof Pt.2' Official MV">BTS (방탄소년단) 'We Are Bulletproof Pt.2' Official MV</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=lE9lkSdtZeQ" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">뮤비</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">5</td>
+            <td class="title-cell"><span class="title-text" title="NMIXX &quot;Party O’Clock&quot; M/V">NMIXX &quot;Party O’Clock&quot; M/V</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=Rd2wppggYxo" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">뮤비</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">6</td>
+            <td class="title-cell"><span class="title-text" title="뒷마당 다람쥐 올림픽 3.0">뒷마당 다람쥐 올림픽 3.0</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=lg5wznn3IBE" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">7</td>
+            <td class="title-cell"><span class="title-text" title="쉽고 맛있는 커스터드 팬 빵 만들기">쉽고 맛있는 커스터드 팬 빵 만들기</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=gZN3b9irMQ0" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">8</td>
+            <td class="title-cell"><span class="title-text" title="I Tested 1-Star Camping">I Tested 1-Star Camping</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=vWIzeSA4l-0" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">Shopify 추정</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">9</td>
+            <td class="title-cell"><span class="title-text" title="I Tried Public Sleep Pods">I Tried Public Sleep Pods</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=b_MChcA2YXo" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">Shopify 추정</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">10</td>
+            <td class="title-cell"><span class="title-text" title="I Actually Bought 100 Scam Ads">I Actually Bought 100 Scam Ads</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=jmBRWyZJ4p4" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">shop app 추정 / shop 브랜드 추가 실패</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">11</td>
+            <td class="title-cell"><span class="title-text" title="Amit Ki Varsha - Amit Bhadana">Amit Ki Varsha - Amit Bhadana</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=-pl3sDMtaYE" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">shopsy 추정</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">12</td>
+            <td class="title-cell"><span class="title-text" title="Sipahi - Amit Bhadana">Sipahi - Amit Bhadana</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=-mzyanf-IWs" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">영화</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">13</td>
+            <td class="title-cell"><span class="title-text" title="Jung Kook Live at TSX">Jung Kook Live at TSX</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=geHuX7E3NX8" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">콘서트</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">14</td>
+            <td class="title-cell"><span class="title-text" title="※기내 💊류 반입 금지※ 약 빤 장성규의 꿈의 직장★ 상큼터지는 항공사 직업 리뷰">※기내 💊류 반입 금지※ 약 빤 장성규의 꿈의 직장★ 상큼터지는 항공사 직업 리뷰</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=m8JrVquHNsY" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">이스타항공 추정</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">15</td>
+            <td class="title-cell"><span class="title-text" title="aespa 에스파 'Live My Life' MV">aespa 에스파 'Live My Life' MV</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=YEA1ROHi0Eg" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">뮤비</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">16</td>
+            <td class="title-cell"><span class="title-text" title="বাবা l Baba l Bangla Natok l Rohan, Toni &amp; Tuhina l Palli Gram TV Latest Video">বাবা l Baba l Bangla Natok l Rohan, Toni &amp; Tuhina l Palli Gram TV Latest Vid</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=iFqWXr6KfNk" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">17</td>
+            <td class="title-cell"><span class="title-text" title="Ranking Your CURSED PC Setups">Ranking Your CURSED PC Setups</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=gViXj5Nkh5k" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">18</td>
+            <td class="title-cell"><span class="title-text" title="하체비만 11자다리 최고의 운동">하체비만 11자다리 최고의 운동</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=NDsjmxTROEo" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">19</td>
+            <td class="title-cell"><span class="title-text" title="Ranking Your UNSETTLING Tiktoks">Ranking Your UNSETTLING Tiktoks</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=v0RWnNj6f8c" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">20</td>
+            <td class="title-cell"><span class="title-text" title="피자">피자</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=N7iIvIV-ZCs" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">피델코리아 추정 / 브랜드 추가 실패</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">21</td>
+            <td class="title-cell"><span class="title-text" title="&quot;너 미쳤어?&quot; 강형욱 극대노한 이유. 3개월 카네코르소와 대도시 노부부 가족 ">&quot;너 미쳤어?&quot; 강형욱 극대노한 이유. 3개월 카네코르소와 대도시 노부부 가족 </span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=vftVEbbgHZE" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">유료 광고 포함 / 추정 실패</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">22</td>
+            <td class="title-cell"><span class="title-text" title="I Took a Road Trip in Luxury Cars">I Took a Road Trip in Luxury Cars</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=ZSX8NhHkX3M" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">air up 추정</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">23</td>
+            <td class="title-cell"><span class="title-text" title="SSC | EP 01: First Attempt | Amit Bhadana">SSC | EP 01: First Attempt | Amit Bhadana</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=AlAJ3Ykst7E" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)">adda247 추정</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">24</td>
+            <td class="title-cell"><span class="title-text" title="11자복근 복부 최고의 운동">11자복근 복부 최고의 운동</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=PjGcOP-TQPE" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">25</td>
+            <td class="title-cell"><span class="title-text" title="Ranking Your CURSED Tiktoks">Ranking Your CURSED Tiktoks</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=Ssp5KhmDOvs" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">26</td>
+            <td class="title-cell"><span class="title-text" title="(EN/JP/CN/ID) 저희는 이렇게 10년을 해먹었습니다 l 시즌비시즌 EP.4">(EN/JP/CN/ID) 저희는 이렇게 10년을 해먹었습니다 l 시즌비시즌 EP.4</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=wOiNRq0a92s" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">27</td>
+            <td class="title-cell"><span class="title-text" title="পাশের বাড়ি প্রেম । Paser Bari Prem । Bengali Funny Video । Riyaj &amp; Tuhina । Palli Gram TV Comedy">পাশের বাড়ি প্রেম । Paser Bari Prem । Bengali Funny Video । Riyaj &amp; Tuhina । ...</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=dIMmOJxuECE" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">28</td>
+            <td class="title-cell"><span class="title-text" title="UNDER ATTACK │ Extreme BeamNG Drive Car Chase">UNDER ATTACK │ Extreme BeamNG Drive Car Chase</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=-OG3tsG7q7I" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">29</td>
+            <td class="title-cell"><span class="title-text" title="아니 이런 노래가 묻혀있었다고?!!!!🔥💦 : 𝐏𝐚𝐩𝐞𝐫 𝐊𝐢𝐧𝐠𝐬 - 𝐅𝐢𝐫𝐞 𝐨𝐧 𝐔𝐩 [가사/해석/lyrics]">아니 이런 노래가 묻혀있었다고?!!!!🔥💦 : 𝐏𝐚𝐩𝐞𝐫 𝐊𝐢𝐧𝐠𝐬 - 𝐅𝐢𝐫𝐞 𝐨𝐧 𝐔𝐩 [가사/해석/lyrics]</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=RiyY-LZFLw8" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">뮤비?</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">30</td>
+            <td class="title-cell"><span class="title-text" title="영국 고등학생들이 처음으로 먹어보는 추수감사절 음식!">영국 고등학생들이 처음으로 먹어보는 추수감사절 음식!</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=YyDW4XYQMgs" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">31</td>
+            <td class="title-cell"><span class="title-text" title="Ranking Your SCUFFED Tiktoks">Ranking Your SCUFFED Tiktoks</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=fMvLPkuYbIg" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">32</td>
+            <td class="title-cell"><span class="title-text" title="[HOONIGAN] Ken Block’s Electrikhana TWO: One More Playground; Mexico City in the Audi S1 Hoonitron">[HOONIGAN] Ken Block’s Electrikhana TWO: One More Playground; Mexico City in the...</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=U4FAqwkn-pc" target="_blank">▶ 이동</a></td>
+            <td><span class="badge badge-overseas">해</span></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">33</td>
+            <td class="title-cell"><span class="title-text" title="갈라짐 없는 완벽한 대만 카스테라 만들기 (무조건 성공, 쉬운 베이킹, Taiwanese Castella Cake Recipe)">갈라짐 없는 완벽한 대만 카스테라 만들기 (무조건 성공, 쉬운 베이킹, Taiwanese Castella Cake Recipe)</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=ZkiLXOMJ-ws" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">34</td>
+            <td class="title-cell"><span class="title-text" title="공연!!!!!!">공연!!!!!!</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=Z36Sdy4wRM4" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)">콘서트</td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">35</td>
+            <td class="title-cell"><span class="title-text" title="인터뷰하면서 1++한우 8인분 순삭해버린 알리타 배우 + 감독?! (너무 좋아함ㅋㅋㅋ)">인터뷰하면서 1++한우 8인분 순삭해버린 알리타 배우 + 감독?! (너무 좋아함ㅋㅋㅋ)</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=hsnYsYpV6aE" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+          <tr>
+            <td style="color:var(--text3)">36</td>
+            <td class="title-cell"><span class="title-text" title="???? 빌보드 씹어먹는 대형 가수의 컴백 : ???????? ???????????????????????????? - ???????????? ?????????????????????">???? 빌보드 씹어먹는 대형 가수의 컴백 : ???????? ???????????????????????????? - ???????????? ?...</span></td>
+            <td class="link"><a href="https://www.youtube.com/watch?v=5FNA8Hsj8Vs" target="_blank">▶ 이동</a></td>
+            <td></td>
+            <td style="font-size:12px;color:var(--text2)"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="section">
+    <div class="section-title">
+      <span class="dot" style="background: var(--accent2);"></span>
+      인광기 라벨링 업무 보고
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card c1">
+        <div class="label">총 게시물 수</div>
+        <div class="value">1127<span class="unit">건</span></div>
+        <div class="sub">전체 처리 게시물</div>
+      </div>
+      <div class="stat-card c2">
+        <div class="label">추가 건수</div>
+        <div class="value">984<span class="unit">건</span></div>
+        <div class="sub">신규 라벨링 추가량</div>
+      </div>
+      <div class="stat-card c3">
+        <div class="label">제외 브랜드</div>
+        <div class="value">13<span class="unit">개</span></div>
+        <div class="sub">라벨링 제외 처리</div>
+      </div>
+      <div class="stat-card c4" style="--fail: var(--accent2);">
+        <div class="label">정상 처리 브랜드</div>
+        <div class="value" style="color:var(--accent2)">70<span class="unit">개</span></div>
+        <div class="sub">라벨링 완료</div>
+      </div>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('ig-normal','ig')">✅ 정상 처리 (70개)</button>
+      <button class="tab-btn" onclick="switchTab('ig-excluded','ig')">⚠️ 제외 (13개)</button>
+    </div>
+
+    <!-- 정상 처리 -->
+    <div id="ig-normal" class="tab-content active">
+      <div class="search-bar">
+        <input class="search-input" type="text" placeholder="브랜드 검색..." oninput="filterTable('ig-normal-table', this.value)">
+      </div>
+      <div class="table-wrapper">
+        <table id="ig-normal-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>브랜드</th>
+              <th class="num">게시물</th>
+              <th class="num">추가건수</th>
+              <th>기존</th>
+              <th>신규</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--text3)">1</td>
+              <td class="brand">20thhole</td>
+              <td class="num" style="color:var(--accent2)">8</td>
+              <td class="num" style="color:var(--accent1)">8</td>
+              <td><span class="badge badge-overseas">기</span></td>
+              <td></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">2</td>
+              <td class="brand">mihk_official</td>
+              <td class="num" style="color:var(--accent2)">16</td>
+              <td class="num" style="color:var(--accent1)">16</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">3</td>
+              <td class="brand">curlyshyll</td>
+              <td class="num" style="color:var(--accent2)">103</td>
+              <td class="num" style="color:var(--accent1)">103</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">4</td>
+              <td class="brand">higgsfield</td>
+              <td class="num" style="color:var(--accent2)">13</td>
+              <td class="num" style="color:var(--accent1)">13</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">5</td>
+              <td class="brand">nsprotein</td>
+              <td class="num" style="color:var(--accent2)">25</td>
+              <td class="num" style="color:var(--accent1)">25</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">6</td>
+              <td class="brand">로에비타</td>
+              <td class="num" style="color:var(--accent2)">13</td>
+              <td class="num" style="color:var(--accent1)">13</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">7</td>
+              <td class="brand">루테카</td>
+              <td class="num" style="color:var(--accent2)">8</td>
+              <td class="num" style="color:var(--accent1)">8</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">8</td>
+              <td class="brand">이옴</td>
+              <td class="num" style="color:var(--accent2)">22</td>
+              <td class="num" style="color:var(--accent1)">22</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">9</td>
+              <td class="brand">octavus_official</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">10</td>
+              <td class="brand">Şok Marketler</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">11</td>
+              <td class="brand">beautycam</td>
+              <td class="num" style="color:var(--accent2)">42</td>
+              <td class="num" style="color:var(--accent1)">42</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">12</td>
+              <td class="brand">bigyodaejang_allcar</td>
+              <td class="num" style="color:var(--accent2)">15</td>
+              <td class="num" style="color:var(--accent1)">15</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">13</td>
+              <td class="brand">ilias jewelry</td>
+              <td class="num" style="color:var(--accent2)">26</td>
+              <td class="num" style="color:var(--accent1)">26</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">14</td>
+              <td class="brand">jeongbeautyque</td>
+              <td class="num" style="color:var(--accent2)">18</td>
+              <td class="num" style="color:var(--accent1)">18</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">15</td>
+              <td class="brand">towel_company</td>
+              <td class="num" style="color:var(--accent2)">5</td>
+              <td class="num" style="color:var(--accent1)">5</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">16</td>
+              <td class="brand">마이미니미</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">17</td>
+              <td class="brand">비비드몽타주</td>
+              <td class="num" style="color:var(--accent2)">9</td>
+              <td class="num" style="color:var(--accent1)">9</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">18</td>
+              <td class="brand">어테이션</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">19</td>
+              <td class="brand">온리원헤어</td>
+              <td class="num" style="color:var(--accent2)">13</td>
+              <td class="num" style="color:var(--accent1)">13</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">20</td>
+              <td class="brand">돌쇠네농산물</td>
+              <td class="num" style="color:var(--accent2)">42</td>
+              <td class="num" style="color:var(--accent1)">42</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">21</td>
+              <td class="brand">잠스트</td>
+              <td class="num" style="color:var(--accent2)">7</td>
+              <td class="num" style="color:var(--accent1)">7</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">22</td>
+              <td class="brand">bim</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">23</td>
+              <td class="brand">airssen</td>
+              <td class="num" style="color:var(--accent2)">10</td>
+              <td class="num" style="color:var(--accent1)">10</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">24</td>
+              <td class="brand">forcheri</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">25</td>
+              <td class="brand">goodafter눈</td>
+              <td class="num" style="color:var(--accent2)">22</td>
+              <td class="num" style="color:var(--accent1)">22</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">26</td>
+              <td class="brand">graycity</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-overseas">기</span></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)">브랜드 중복 점검 필요</td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">27</td>
+              <td class="brand">kidikidi</td>
+              <td class="num" style="color:var(--accent2)">203</td>
+              <td class="num" style="color:var(--accent1)">203</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">28</td>
+              <td class="brand">medulla</td>
+              <td class="num" style="color:var(--accent2)">5</td>
+              <td class="num" style="color:var(--accent1)">5</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">29</td>
+              <td class="brand">musinsa_standard_beauty</td>
+              <td class="num" style="color:var(--accent2)">8</td>
+              <td class="num" style="color:var(--accent1)">8</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">30</td>
+              <td class="brand">perfect diary</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">31</td>
+              <td class="brand">pocari sweat</td>
+              <td class="num" style="color:var(--accent2)">6</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-overseas">기</span></td>
+              <td></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">32</td>
+              <td class="brand">살롱드르망</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">33</td>
+              <td class="brand">쉴드라이프</td>
+              <td class="num" style="color:var(--accent2)">19</td>
+              <td class="num" style="color:var(--accent1)">19</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">34</td>
+              <td class="brand">stylevana</td>
+              <td class="num" style="color:var(--accent2)">25</td>
+              <td class="num" style="color:var(--accent1)">25</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">35</td>
+              <td class="brand">깃든</td>
+              <td class="num" style="color:var(--accent2)">14</td>
+              <td class="num" style="color:var(--accent1)">14</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">36</td>
+              <td class="brand">노워터</td>
+              <td class="num" style="color:var(--accent2)">18</td>
+              <td class="num" style="color:var(--accent1)">18</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">37</td>
+              <td class="brand">누홀닭</td>
+              <td class="num" style="color:var(--accent2)">10</td>
+              <td class="num" style="color:var(--accent1)">10</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">38</td>
+              <td class="brand">더파도</td>
+              <td class="num" style="color:var(--accent2)">5</td>
+              <td class="num" style="color:var(--accent1)">5</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">39</td>
+              <td class="brand">디발리쎄</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">40</td>
+              <td class="brand">디에이이펙트</td>
+              <td class="num" style="color:var(--accent2)">18</td>
+              <td class="num" style="color:var(--accent1)">18</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">41</td>
+              <td class="brand">라쿠치</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">42</td>
+              <td class="brand">라한호텔</td>
+              <td class="num" style="color:var(--accent2)">8</td>
+              <td class="num" style="color:var(--accent1)">6</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">43</td>
+              <td class="brand">르메티크</td>
+              <td class="num" style="color:var(--accent2)">13</td>
+              <td class="num" style="color:var(--accent1)">13</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">44</td>
+              <td class="brand">2026-03-11 00:00:00</td>
+              <td class="num" style="color:var(--accent2)">0</td>
+              <td class="num" style="color:var(--accent1)">0</td>
+              <td></td>
+              <td></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">45</td>
+              <td class="brand">밀크티</td>
+              <td class="num" style="color:var(--accent2)">33</td>
+              <td class="num" style="color:var(--accent1)">33</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">46</td>
+              <td class="brand">바디앤</td>
+              <td class="num" style="color:var(--accent2)">8</td>
+              <td class="num" style="color:var(--accent1)">6</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">47</td>
+              <td class="brand">세컨모놀로그</td>
+              <td class="num" style="color:var(--accent2)">5</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td><span class="badge badge-overseas">기</span></td>
+              <td></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">48</td>
+              <td class="brand">아커드</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">49</td>
+              <td class="brand">얼모스트블루</td>
+              <td class="num" style="color:var(--accent2)">18</td>
+              <td class="num" style="color:var(--accent1)">18</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">50</td>
+              <td class="brand">올리페페</td>
+              <td class="num" style="color:var(--accent2)">5</td>
+              <td class="num" style="color:var(--accent1)">5</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">51</td>
+              <td class="brand">칼로</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">52</td>
+              <td class="brand">포인트오브뷰</td>
+              <td class="num" style="color:var(--accent2)">11</td>
+              <td class="num" style="color:var(--accent1)">10</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">53</td>
+              <td class="brand">해운대일품한우</td>
+              <td class="num" style="color:var(--accent2)">17</td>
+              <td class="num" style="color:var(--accent1)">17</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">54</td>
+              <td class="brand">1promath</td>
+              <td class="num" style="color:var(--accent2)">7</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">55</td>
+              <td class="brand">cico</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td><span class="badge badge-overseas">기</span></td>
+              <td></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">56</td>
+              <td class="brand">feelcycle</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">57</td>
+              <td class="brand">muscolo_company</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">58</td>
+              <td class="brand">soonshop</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">59</td>
+              <td class="brand">voghion</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">60</td>
+              <td class="brand">교원웰스</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">61</td>
+              <td class="brand">라누베</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">62</td>
+              <td class="brand">알로</td>
+              <td class="num" style="color:var(--accent2)">11</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td><span class="badge badge-overseas">기</span></td>
+              <td></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">63</td>
+              <td class="brand">에콰</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">64</td>
+              <td class="brand">오후후</td>
+              <td class="num" style="color:var(--accent2)">8</td>
+              <td class="num" style="color:var(--accent1)">8</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">65</td>
+              <td class="brand">우피아</td>
+              <td class="num" style="color:var(--accent2)">2</td>
+              <td class="num" style="color:var(--accent1)">2</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">66</td>
+              <td class="brand">이미저리코드</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">67</td>
+              <td class="brand">케이부스터</td>
+              <td class="num" style="color:var(--accent2)">4</td>
+              <td class="num" style="color:var(--accent1)">4</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">68</td>
+              <td class="brand">코이터널</td>
+              <td class="num" style="color:var(--accent2)">3</td>
+              <td class="num" style="color:var(--accent1)">3</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">69</td>
+              <td class="brand">15그램</td>
+              <td class="num" style="color:var(--accent2)">41</td>
+              <td class="num" style="color:var(--accent1)">41</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">70</td>
+              <td class="brand">4ourb</td>
+              <td class="num" style="color:var(--accent2)">1</td>
+              <td class="num" style="color:var(--accent1)">1</td>
+              <td></td>
+              <td><span class="badge badge-new">N</span></td>
+              <td style="font-size:12px;color:var(--text2)"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 제외 처리 -->
+    <div id="ig-excluded" class="tab-content">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>브랜드</th>
+              <th class="num">게시물</th>
+              <th class="num">추가건수</th>
+              <th>제외 사유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--text3)">1</td>
+              <td class="brand">colnago_kr</td>
+              <td class="num">15</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">2</td>
+              <td class="brand">monton.kr</td>
+              <td class="num">20</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">3</td>
+              <td class="brand">vrtisticaibe</td>
+              <td class="num">13</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">4</td>
+              <td class="brand">홍샘철학관</td>
+              <td class="num">22</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">채널 없음</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">5</td>
+              <td class="brand">vuare</td>
+              <td class="num">8</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">6</td>
+              <td class="brand">디스페이스</td>
+              <td class="num">20</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">7</td>
+              <td class="brand">세계사이버대학</td>
+              <td class="num">3</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">노이즈 의심</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">8</td>
+              <td class="brand">明治</td>
+              <td class="num">6</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">브랜드 점검 필요</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">9</td>
+              <td class="brand">weave suites</td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">브랜드 점검 필요</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">10</td>
+              <td class="brand">키즈위드</td>
+              <td class="num">2</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">11</td>
+              <td class="brand">푸드사이클러</td>
+              <td class="num">6</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">광고 아님</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">12</td>
+              <td class="brand">100nng</td>
+              <td class="num">1</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">브랜드 점검 필요</span></td>
+            </tr>
+            <tr>
+              <td style="color:var(--text3)">13</td>
+              <td class="brand">3w clinic</td>
+              <td class="num">1</td>
+              <td class="num">0</td>
+              <td><span class="result-tag result-exclude">삭제된 피드</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    ⓒ 2026 라벨링 업무 보고서 · 자동 생성 from 라벨링 보고서.xlsx
+  </div>
+</div>
+
+<script>
+function switchTab(targetId, group) {
+  // 같은 그룹 탭 모두 숨기기
+  const buttons = document.querySelectorAll('.tab-btn');
+  const contents = document.querySelectorAll('.tab-content');
+
+  // 같은 그룹 버튼/콘텐츠 찾기 (id prefix로 구분)
+  const prefix = group === 'yk' ? ['yk-success','yk-fail','yk-noise'] : ['ig-normal','ig-excluded'];
+
+  prefix.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+
+  // 버튼 active 처리
+  const target = document.getElementById(targetId);
+  if (target) target.classList.add('active');
+
+  // 해당 그룹 버튼 active 처리
+  buttons.forEach(btn => {
+    const onclick = btn.getAttribute('onclick') || '';
+    if (prefix.some(id => onclick.includes(id))) {
+      btn.classList.remove('active');
+      if (onclick.includes(targetId)) btn.classList.add('active');
+    }
+  });
+}
+
+function filterTable(tableId, query) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const q = query.toLowerCase();
+  Array.from(table.querySelectorAll('tbody tr')).forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

@@ -27,4 +27,5 @@
 - [6월_ad_market_headline](6월_ad_market_headline/) — 광고시장 일일 사건을 헤드라인 10선 카드 피드로 정리하는 마케터 데일리 대시보드
 - [6월_LG_data_insight](6월_LG_data_insight/) — 광고·올리브영·크리에이터 데이터를 회귀·상관·시계열로 분석해 만화·카드뉴스 리포트로 마감한 인사이트 프로젝트
 
-_(작업 정리 진행 중)_
+### 라벨링
+- [3월_youtube_insta_label](3월_youtube_insta_label/) — 유광기 어드민에서 유튜브·인스타 콘텐츠의 광고 브랜드를 태깅하는 라벨링 업무 + 보고서
