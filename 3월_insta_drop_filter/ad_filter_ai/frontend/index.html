@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ad Filter AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'JetBrains Mono', 'SF Mono', monospace;
+            background: #0a0a0a;
+            color: #c0c0c0;
+            min-height: 100vh;
+        }
+
+        /* 스캔라인 오버레이 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 2px,
+                rgba(0, 255, 65, 0.008) 2px, rgba(0, 255, 65, 0.008) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* 헤더 */
+        header {
+            background: #0d0d0d;
+            padding: 16px 32px;
+            border-bottom: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            font-size: 15px;
+            font-weight: 400;
+            color: #555;
+            letter-spacing: 2px;
+        }
+        header h1 span {
+            color: #00ff41;
+            font-weight: 700;
+            text-shadow: 0 0 8px rgba(0, 255, 65, 0.3);
+        }
+        #btn-start {
+            background: transparent;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 8px 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #btn-start:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 12px rgba(0, 255, 65, 0.2);
+        }
+        #btn-start:disabled {
+            color: #333;
+            border-color: #333;
+            cursor: not-allowed;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .container { padding: 20px 32px; max-width: 1400px; margin: 0 auto; }
+
+        /* 카드 */
+        .card {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            padding: 20px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: #00ff41;
+            opacity: 0.3;
+        }
+        .card h2 {
+            font-size: 11px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+        .card h2::before {
+            content: '> ';
+            color: #00ff41;
+        }
+
+        /* 상단 요약 */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .stat-box {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            padding: 14px;
+            text-align: center;
+        }
+        .stat-box .label {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .stat-box .value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #888;
+        }
+        .stat-box .value.accent {
+            color: #00ff41;
+            text-shadow: 0 0 6px rgba(0, 255, 65, 0.2);
+        }
+        .stat-box .value.green { color: #00ff41; }
+        .stat-box .value.red { color: #ff3333; }
+
+        /* 프로그레스 */
+        .progress-wrap {
+            background: #111;
+            height: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #00ff41;
+            box-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        #progress-detail {
+            font-size: 11px;
+            color: #444;
+            min-height: 16px;
+        }
+
+        /* 피처 중요도 */
+        .importance-bar-wrap {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .importance-label {
+            width: 90px;
+            font-size: 11px;
+            color: #555;
+            letter-spacing: 1px;
+        }
+        .importance-track {
+            flex: 1;
+            background: #111;
+            height: 20px;
+            overflow: hidden;
+        }
+        .importance-fill {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #0a0a0a;
+            transition: width 0.5s ease;
+        }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* 로그 */
+        #log-area {
+            background: #080808;
+            border: 1px solid #151515;
+            padding: 12px;
+            font-size: 11px;
+            color: #00ff41;
+            height: 200px;
+            overflow-y: auto;
+            line-height: 1.8;
+        }
+        #log-area::-webkit-scrollbar { width: 4px; }
+        #log-area::-webkit-scrollbar-track { background: #080808; }
+        #log-area::-webkit-scrollbar-thumb { background: #1a1a1a; }
+        #log-area .log-time { color: #333; }
+        #log-area .log-warn { color: #ff8800; }
+        #log-area .log-info { color: #00aaff; }
+
+        /* 테이블 */
+        table { width: 100%; border-collapse: collapse; }
+        th {
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 10px;
+            color: #333;
+            border-bottom: 1px solid #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+        td {
+            padding: 8px 12px;
+            font-size: 12px;
+            border-bottom: 1px solid #111;
+            color: #666;
+        }
+        tr:hover { background: #111; }
+        tr.highlight {
+            background: rgba(0, 255, 65, 0.04);
+            border-left: 2px solid #00ff41;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid;
+        }
+        .badge-xgb { border-color: #00ff41; color: #00ff41; }
+        .badge-tree { border-color: #00aaff; color: #00aaff; }
+        .badge-or { border-color: #ff8800; color: #ff8800; }
+        .badge-and { border-color: #ff3333; color: #ff3333; }
+        .badge-eng { border-color: #aa55ff; color: #aa55ff; }
+
+        /* 연결 상태 */
+        .conn-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .conn-dot.on {
+            background: #00ff41;
+            box-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
+        }
+        .conn-dot.off { background: #ff3333; }
+        #conn-status { font-size: 11px; color: #444; }
+
+        /* 트리 규칙 */
+        .tree-rule {
+            background: #080808;
+            border: 1px solid #151515;
+            padding: 10px;
+            font-size: 10px;
+            color: #00ff41;
+            white-space: pre-wrap;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(2px); }
+            to { opacity: 1; transform: none; }
+        }
+        .fade-in { animation: fadeIn 0.3s ease; }
+
+        /* 글로우 키프레임 (프로그레스 바 펄스) */
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 4px rgba(0, 255, 65, 0.3); }
+            50% { box-shadow: 0 0 12px rgba(0, 255, 65, 0.6); }
+        }
+        .progress-bar { animation: glow 2s ease-in-out infinite; }
+
+        /* SQL 패널 */
+        #sql-panel {
+            display: none;
+            margin-top: 16px;
+        }
+        #sql-panel .sql-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        #sql-panel .sql-header span { font-size: 11px; color: #00ff41; }
+        #sql-panel .sql-copy {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 4px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        #sql-panel .sql-copy:hover { border-color: #00ff41; color: #00ff41; }
+        #sql-code {
+            background: #080808;
+            border: 1px solid #1a1a1a;
+            padding: 14px;
+            font-size: 11px;
+            color: #00ff41;
+            white-space: pre-wrap;
+            line-height: 1.7;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #sql-code .kw { color: #ff8800; }
+        #sql-code .cm { color: #444; }
+        tr { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1><span>AD_FILTER</span> // ai.optimizer.v1</h1>
+    <div style="display:flex;align-items:center;gap:16px;">
+        <span id="conn-status"><span class="conn-dot off"></span>disconnected</span>
+        <button id="btn-start" disabled>run analysis</button>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="summary-grid" id="summary-grid">
+        <div class="stat-box"><div class="label">total</div><div class="value" id="stat-total">--</div></div>
+        <div class="stat-box"><div class="label">confirmed ad</div><div class="value accent" id="stat-ad">--</div></div>
+        <div class="stat-box"><div class="label">normal</div><div class="value" id="stat-normal">--</div></div>
+        <div class="stat-box"><div class="label">reels</div><div class="value" id="stat-reel">--</div></div>
+        <div class="stat-box"><div class="label">feed</div><div class="value" id="stat-post">--</div></div>
+    </div>
+
+    <div class="card">
+        <h2>analysis progress</h2>
+        <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+        <div id="progress-detail">waiting...</div>
+    </div>
+
+    <div class="two-col">
+        <div class="card">
+            <h2>xgboost feature importance</h2>
+            <div id="importance-area">
+                <div style="color:#333;font-size:11px;">run analysis to display</div>
+            </div>
+            <div id="validation-area" style="margin-top:16px;"></div>
+        </div>
+        <div class="card">
+            <h2>live log</h2>
+            <div id="log-area"></div>
+        </div>
+    </div>
+
+    <div class="card" id="tree-card" style="display:none;">
+        <h2>decision tree rules</h2>
+        <div id="tree-rules-area"></div>
+    </div>
+
+    <div class="card">
+        <h2>top ranking // recall >= 95%</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>method</th>
+                    <th>condition</th>
+                    <th>recall</th>
+                    <th>drop rate</th>
+                    <th>ad kept</th>
+                    <th>total kept</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-body">
+                <tr><td colspan="7" style="text-align:center;color:#222;padding:40px;font-size:11px;">run analysis to populate results</td></tr>
+            </tbody>
+        </table>
+
+        <!-- SQL 출력 패널 -->
+        <div id="sql-panel">
+            <div class="sql-header">
+                <span id="sql-title">> select sql query</span>
+                <button class="sql-copy" onclick="copySQL()">copy</button>
+            </div>
+            <div id="sql-code"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const ws_url = `ws://${location.host}/ws`;
+let ws = null;
+let allResults = [];
+
+function connect() {
+    ws = new WebSocket(ws_url);
+
+    ws.onopen = () => {
+        document.getElementById('conn-status').innerHTML = '<span class="conn-dot on"></span>connected';
+        document.getElementById('btn-start').disabled = false;
+        addLog('server connection established', 'info');
+    };
+
+    ws.onclose = () => {
+        document.getElementById('conn-status').innerHTML = '<span class="conn-dot off"></span>disconnected';
+        document.getElementById('btn-start').disabled = true;
+        addLog('connection lost. reconnecting in 3s...', 'warn');
+        setTimeout(connect, 3000);
+    };
+
+    ws.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        handleMessage(msg);
+    };
+}
+
+function handleMessage(msg) {
+    switch(msg.type) {
+        case 'status':
+            document.getElementById('progress-bar').style.width = msg.progress + '%';
+            document.getElementById('progress-detail').textContent = msg.detail || msg.status;
+            addLog(msg.detail || msg.status);
+
+            if (msg.status === 'done' || msg.status === 'restored') {
+                document.getElementById('btn-start').disabled = false;
+                document.getElementById('btn-start').textContent = 're-run analysis';
+            }
+            break;
+
+        case 'data_summary':
+            document.getElementById('stat-total').textContent = Number(msg.total).toLocaleString();
+            document.getElementById('stat-ad').textContent = Number(msg.ad).toLocaleString();
+            document.getElementById('stat-normal').textContent = Number(msg.normal).toLocaleString();
+            document.getElementById('stat-reel').textContent = Number(msg.reel).toLocaleString();
+            document.getElementById('stat-post').textContent = Number(msg.post).toLocaleString();
+            break;
+
+        case 'feature_importance':
+            renderImportance(msg.importance);
+            break;
+
+        case 'validation':
+            renderValidation(msg);
+            break;
+
+        case 'rule_found':
+            if (msg.tree_text) {
+                renderTreeRule(msg);
+            }
+            addLog(`[${msg.method}] recall=${msg.recall}% drop=${msg.drop_rate}%`);
+            break;
+
+        case 'combo_result':
+            allResults.push(msg);
+            updateRankingTable();
+            break;
+
+        case 'final_ranking':
+            allResults = msg.rankings.map((r, i) => ({
+                rank: i + 1,
+                method: r.method,
+                condition: r.condition,
+                recall_pct: (r.recall * 100).toFixed(2),
+                drop_pct: (r.drop_rate * 100).toFixed(2),
+                ad_kept: r.ad_kept,
+                total_kept: r.total_kept,
+                sql: r.sql || null,
+            }));
+            updateRankingTable();
+            addLog('final ranking confirmed', 'info');
+            break;
+
+        case 'error':
+            addLog('ERR: ' + msg.message, 'warn');
+            break;
+    }
+}
+
+function renderImportance(imp) {
+    const area = document.getElementById('importance-area');
+    const max = Math.max(...Object.values(imp));
+    const colors = { views: '#00ff41', likes: '#00aaff', comments: '#ff8800', followers: '#aa55ff' };
+
+    area.innerHTML = Object.entries(imp)
+        .sort((a, b) => b[1] - a[1])
+        .map(([k, v]) => `
+            <div class="importance-bar-wrap fade-in">
+                <div class="importance-label">${k}</div>
+                <div class="importance-track">
+                    <div class="importance-fill" style="width:${(v/max*100).toFixed(1)}%;background:${colors[k]||'#00ff41'}">
+                        ${(v*100).toFixed(1)}%
+                    </div>
+                </div>
+            </div>
+        `).join('');
+}
+
+function renderValidation(v) {
+    document.getElementById('validation-area').innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;" class="fade-in">
+            <div class="stat-box" style="padding:10px;"><div class="label">accuracy</div><div class="value" style="font-size:16px;">${(v.accuracy*100).toFixed(1)}%</div></div>
+            <div class="stat-box" style="padding:10px;"><div class="label">ad recall</div><div class="value green" style="font-size:16px;">${(v.ad_recall*100).toFixed(1)}%</div></div>
+            <div class="stat-box" style="padding:10px;"><div class="label">ad precision</div><div class="value accent" style="font-size:16px;">${(v.ad_precision*100).toFixed(1)}%</div></div>
+            <div class="stat-box" style="padding:10px;"><div class="label">ad f1</div><div class="value" style="font-size:16px;">${(v.ad_f1*100).toFixed(1)}%</div></div>
+        </div>
+    `;
+}
+
+function renderTreeRule(msg) {
+    const card = document.getElementById('tree-card');
+    card.style.display = 'block';
+    const area = document.getElementById('tree-rules-area');
+    area.innerHTML += `
+        <div class="fade-in" style="margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span class="badge badge-tree">${msg.method}</span>
+                <span style="font-size:11px;color:#555;">recall=${msg.recall}% drop=${msg.drop_rate}%</span>
+            </div>
+            <div class="tree-rule">${msg.tree_text}</div>
+        </div>
+    `;
+}
+
+function getBadgeClass(method) {
+    if (method.includes('E:')) return 'badge-xgb';
+    if (method.includes('F:')) return 'badge-eng';
+    if (method.includes('G:')) return 'badge-tree';
+    if (method.includes('LOG')) return 'badge-xgb';
+    if (method.includes('EngRate')) return 'badge-eng';
+    if (method.includes('Reel')) return 'badge-and';
+    if (method.includes('3단계')) return 'badge-tree';
+    if (method.includes('XGBoost')) return 'badge-xgb';
+    if (method.includes('Tree')) return 'badge-tree';
+    if (method.includes('OR')) return 'badge-or';
+    if (method.includes('AND')) return 'badge-and';
+    if (method.includes('Engage')) return 'badge-eng';
+    return 'badge-or';
+}
+
+function updateRankingTable() {
+    const body = document.getElementById('ranking-body');
+    const sorted = [...allResults].sort((a, b) => {
+        const da = parseFloat(a.drop_pct || a.drop_rate * 100);
+        const db = parseFloat(b.drop_pct || b.drop_rate * 100);
+        return db - da;
+    });
+
+    const top20 = sorted.slice(0, 20);
+    body.innerHTML = top20.map((r, i) => {
+        const recall = r.recall_pct || (r.recall * 100).toFixed(2);
+        const drop = r.drop_pct || (r.drop_rate * 100).toFixed(2);
+        const isTop = i === 0;
+        return `
+            <tr class="${isTop ? 'highlight' : ''} fade-in" onclick="showSQL(${i})">
+                <td style="color:#333;">${i + 1}</td>
+                <td><span class="badge ${getBadgeClass(r.method)}">${r.method}</span></td>
+                <td style="max-width:400px;font-size:10px;word-break:break-all;color:#555;">${r.condition || '-'}</td>
+                <td style="color:#00ff41;font-weight:600;">${recall}%</td>
+                <td style="color:#ff3333;font-weight:600;">${drop}%</td>
+                <td>${r.ad_kept ? Number(r.ad_kept).toLocaleString() : '-'}</td>
+                <td>${r.total_kept ? Number(r.total_kept).toLocaleString() : '-'}</td>
+            </tr>
+        `;
+    }).join('');
+
+    // 정렬된 결과를 전역에 저장 (SQL 표시용)
+    window._sortedResults = top20;
+}
+
+function showSQL(idx) {
+    const r = window._sortedResults[idx];
+    if (!r || !r.sql) {
+        document.getElementById('sql-panel').style.display = 'none';
+        return;
+    }
+    const panel = document.getElementById('sql-panel');
+    panel.style.display = 'block';
+
+    const recall = r.recall_pct || (r.recall * 100).toFixed(2);
+    const drop = r.drop_pct || (r.drop_rate * 100).toFixed(2);
+    document.getElementById('sql-title').textContent =
+        `> #${idx+1} ${r.method} // recall=${recall}% drop=${drop}%`;
+
+    // SQL 구문 하이라이팅
+    const highlighted = r.sql
+        .replace(/\b(SELECT|FROM|LEFT JOIN|WHERE|ON|OR|AND|IN|AS)\b/g, '<span class="kw">$1</span>')
+        .replace(/(--.*)/g, '<span class="cm">$1</span>');
+    document.getElementById('sql-code').innerHTML = highlighted;
+}
+
+function copySQL() {
+    const code = document.getElementById('sql-code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        const btn = document.querySelector('.sql-copy');
+        btn.textContent = 'copied!';
+        setTimeout(() => btn.textContent = 'copy', 1500);
+    });
+}
+
+function addLog(text, cls = '') {
+    const area = document.getElementById('log-area');
+    const time = new Date().toLocaleTimeString('ko-KR', {hour12:false});
+    const classAttr = cls ? `class="log-${cls}"` : '';
+    area.innerHTML += `<div ${classAttr}><span class="log-time">${time}</span> ${text}</div>`;
+    area.scrollTop = area.scrollHeight;
+}
+
+document.getElementById('btn-start').addEventListener('click', () => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        document.getElementById('btn-start').disabled = true;
+        document.getElementById('btn-start').textContent = 'running...';
+        allResults = [];
+        document.getElementById('ranking-body').innerHTML = '';
+        document.getElementById('tree-rules-area').innerHTML = '';
+        document.getElementById('tree-card').style.display = 'none';
+        ws.send(JSON.stringify({ action: 'start' }));
+        addLog('analysis started', 'info');
+    }
+});
+
+connect();
+</script>
+
+</body>
+</html>
