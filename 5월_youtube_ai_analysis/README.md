@@ -2,7 +2,7 @@
 
 광고주·마케터가 **자연어로 유튜브 크리에이터를 탐색**하는 Creator Insights B2B SaaS 플랫폼의 코드·시스템 구조를, 개발자와 서비스 기획자 모두가 읽을 수 있게 정리한 기술 분석 문서입니다.
 
-- **분야:** AI / 프롬프트 (코드·시스템 분석)
+- **분야:** 백엔드 / 코드 (소스코드·시스템 분석)
 - **분석 대상:** Creator Insights (Django REST + Next.js + OpenAI + PostgreSQL + JWT + Redis)
 - **도움:** Claude Sonnet 4.6
 
