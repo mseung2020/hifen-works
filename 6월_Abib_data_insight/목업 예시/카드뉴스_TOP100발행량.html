@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>올리브영 TOP100 — 누가 오래 살아남나</title>
+<style>
+/* ===== 폰트 (있으면 물고, 없으면 시스템 폴백) ===== */
+@font-face{font-family:'Gmarket Sans';src:url('./fonts/GmarketSansBold.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'Gmarket Sans';src:url('./fonts/GmarketSansMedium.ttf') format('truetype');font-weight:500;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-Bold.woff2') format('woff2');font-weight:700;font-display:swap;}
+
+:root{
+  --ink:#1a1a1a; --navy:#13233f; --cream:#f5f1e8; --coral:#ff6a5a; --butter:#ffce3a; --mint:#7fd1b9;
+  --disp:'Gmarket Sans','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --body:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#2a2620;font-family:var(--body);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 0 22px;}
+.hd{color:#cdbfa6;text-align:center;font-size:13px;letter-spacing:.25em;margin-bottom:12px;text-transform:uppercase;}
+
+/* ===== 캐러셀 (16:9, 화면 거의 꽉 채움) ===== */
+.viewport{position:relative;width:min(96vw,calc((100vh - 185px) * 16 / 9));}
+.track{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;border-radius:24px;-ms-overflow-style:none;scrollbar-width:none;}
+.track::-webkit-scrollbar{display:none;}
+.card{position:relative;flex:0 0 100%;scroll-snap-align:center;aspect-ratio:16/9;perspective:1800px;}
+.inner{position:absolute;inset:0;transition:transform .6s cubic-bezier(.6,.05,.2,1);transform-style:preserve-3d;}
+.inner.flipped{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;border-radius:24px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;padding:clamp(34px,4.2vw,66px) clamp(40px,5vw,80px);}
+.back{transform:rotateY(180deg);background:var(--navy);color:var(--cream);}
+
+/* 페이지 번호 */
+.pg{font-family:var(--disp);font-weight:700;font-size:clamp(13px,1.1vw,16px);letter-spacing:.05em;opacity:.55;}
+.kicker{font-family:var(--disp);font-weight:500;font-size:clamp(14px,1.25vw,18px);letter-spacing:.02em;margin-top:auto;}
+.title{font-family:var(--disp);font-weight:700;line-height:1.22;letter-spacing:-.02em;margin:12px 0 0;font-size:clamp(28px,3.4vw,50px);max-width:760px;}
+.body{font-size:clamp(15px,1.32vw,20px);line-height:1.68;margin-top:16px;font-weight:400;max-width:680px;}
+.body b{font-weight:700;}
+.eg{margin-top:16px;font-size:clamp(13.5px,1.12vw,17px);line-height:1.6;padding:14px 18px;border-radius:14px;font-weight:600;max-width:680px;}
+.spacer{flex:1;}
+.swipe{font-family:var(--disp);font-weight:500;font-size:clamp(13px,1.05vw,16px);opacity:.6;margin-top:18px;}
+
+/* 하이라이트(형광펜) */
+.mk{background:linear-gradient(transparent 58%,var(--butter) 58%);padding:0 2px;font-weight:700;color:var(--ink);}
+.mk-c{background:linear-gradient(transparent 58%,var(--coral) 58%);padding:0 2px;font-weight:700;color:#fff;}
+
+/* 카드별 테마 */
+.c-cover{background:var(--navy);color:var(--cream);}
+.c-cream{background:var(--cream);color:var(--ink);}
+.c-coral{background:var(--coral);color:#fff;}
+.c-butter{background:var(--butter);color:var(--navy);}
+.c-mint{background:var(--mint);color:#10362c;}
+.c-cover .eg,.c-coral .eg{background:rgba(255,255,255,.16);}
+.c-cream .eg{background:#ece4d2;color:#4a4334;}
+.c-butter .eg{background:rgba(19,35,63,.1);}
+.c-mint .eg{background:rgba(16,54,44,.12);}
+
+/* 자세히 보기 버튼 */
+.btn{align-self:flex-start;margin-top:18px;font-family:var(--disp);font-weight:500;font-size:clamp(13.5px,1.1vw,16px);padding:11px 22px;border-radius:999px;border:1.6px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.18s;}
+.btn:hover{transform:translateY(-1px);}
+.btn .ar{transition:.3s;font-weight:700;}
+.btn.on .ar{transform:rotate(180deg);}
+
+/* 뒷면(통계) */
+.back .pg{opacity:.5;}
+.back .blabel{font-family:var(--disp);font-weight:500;color:var(--butter);font-size:clamp(13px,1.1vw,16px);letter-spacing:.1em;margin-top:auto;text-transform:uppercase;}
+.back .bttl{font-family:var(--disp);font-weight:700;font-size:clamp(21px,2.2vw,32px);margin:8px 0 16px;line-height:1.3;max-width:760px;}
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:clamp(11px,1vw,16px) 0;border-bottom:1px solid rgba(255,255,255,.14);max-width:720px;}
+.stat .k{font-size:clamp(13px,1.18vw,17px);opacity:.8;max-width:52%;}
+.stat .vs{display:flex;gap:clamp(14px,1.6vw,26px);font-family:var(--disp);font-weight:700;}
+.stat .lg{color:#9fc0ff;} .stat .am{color:var(--coral);}
+.stat .num{font-size:clamp(17px,1.7vw,25px);}
+.legend{font-size:clamp(11px,.95vw,14px);opacity:.65;margin-top:14px;line-height:1.5;max-width:720px;}
+.clkey{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:clamp(11.5px,1vw,15px);margin:0 0 12px;line-height:1.4;max-width:720px;}
+.clkey .kk{display:inline-flex;align-items:center;gap:6px;font-weight:600;}
+.clkey .sw{width:13px;height:13px;border-radius:3px;display:inline-block;flex:none;}
+.clkey .note{opacity:.6;font-weight:400;}
+.win{font-size:clamp(13px,1.12vw,16px);font-weight:700;margin-top:16px;padding:13px 16px;border-radius:12px;background:rgba(255,206,58,.16);color:var(--butter);line-height:1.5;max-width:720px;}
+.back .btn{margin-top:auto;border-color:rgba(255,255,255,.4);color:var(--cream);}
+
+/* 스택 바 차트 (앞면) — 4개 항목 합산 */
+.chart{margin-top:16px;max-width:840px;}
+.chart .clab{font-family:var(--disp);font-weight:500;font-size:clamp(12px,1.05vw,15px);opacity:.7;margin-bottom:10px;}
+.clegend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:14px;font-size:clamp(11px,.95vw,13.5px);font-weight:600;}
+.clegend .li{display:inline-flex;align-items:center;gap:6px;}
+.clegend .sw{width:13px;height:13px;border-radius:3px;display:inline-block;flex:none;}
+.srow{display:flex;align-items:center;gap:11px;margin:clamp(7px,.85vw,12px) 0;}
+.srow .sl{flex:0 0 clamp(80px,5.5vw,84px);font-size:clamp(11.5px,1vw,15px);font-weight:600;opacity:.85;text-align:right;}
+.srow .strack{flex:1;display:flex;align-items:center;min-width:0;}
+.srow .sbar{flex:none;height:clamp(28px,3vw,38px);display:flex;border-radius:7px;overflow:hidden;}
+.srow .seg{display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden;font-family:var(--disp);font-weight:700;font-size:clamp(10.5px,1vw,13px);}
+.srow .sv{flex:none;margin-left:10px;font-family:var(--disp);font-weight:700;font-size:clamp(13px,1.3vw,19px);white-space:nowrap;}
+
+/* 네비 */
+.nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;}
+.arw{width:44px;height:44px;border-radius:50%;border:none;background:#4a4438;color:#f5f1e8;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;font-family:var(--disp);}
+.arw:hover{background:var(--coral);}
+.dots{display:flex;gap:7px;}
+.dot{width:8px;height:8px;border-radius:50%;background:#5c5648;transition:.25s;}
+.dot.act{background:var(--coral);width:22px;border-radius:99px;}
+.foot{color:#8a806d;font-size:11px;margin-top:14px;text-align:center;letter-spacing:.04em;}
+.tip{color:#a89c84;font-size:11.5px;margin-top:9px;text-align:center;}
+</style></head>
+<body>
+<div class="hd">TOP100 발행량 리포트 · CH.1 유지기간 · 2026</div>
+<div class="viewport">
+  <div class="track" id="track">
+
+  <!-- 01 COVER -->
+  <div class="card"><div class="inner"><div class="face c-cover">
+    <div class="pg">CH.1 — 01 / 05</div>
+    <div class="spacer"></div>
+    <div class="title" style="font-size:clamp(30px,4.4vw,58px)">한 번 뜬 브랜드,<br><span class="mk-c">얼마나 오래</span><br>버틸까?</div>
+    <div class="body">2026년 올리브영 TOP100에 다녀간 <b>532개 브랜드.</b> 누가 오래 남고, 그 비결은 무엇일까요?</div>
+    <div class="swipe">옆으로 넘겨보세요 →</div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 02 데이터 소개 -->
+  <div class="card"><div class="inner"><div class="face c-cream">
+    <div class="pg">02 / 05</div>
+    <div class="kicker">먼저, 무엇을 봤나</div>
+    <div class="title">올해 TOP100을 밟은 브랜드 <span class="mk">532개</span></div>
+    <div class="body">2026년 1월 1일부터 지금까지 올리브영 일간 TOP100에 한 번이라도 진입한 브랜드는 <b>532개.</b> 이들이 유튜브·인스타에 올린 콘텐츠를 전부 집계했습니다.</div>
+    <div class="eg">유튜브 <b>약 4.3만 건</b> · 인스타 <b>약 5.1만 건.</b> 같은 기간 두 플랫폼에서 쏟아진 발행량입니다.</div>
+    <div class="spacer"></div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 03 핵심1: 73% 반짝 -->
+  <div class="card"><div class="inner"><div class="face c-coral">
+    <div class="pg">03 / 05</div>
+    <div class="kicker">핵심 발견 ①</div>
+    <div class="title">532개 중 <span class="mk">73%</span>는 '반짝' 떴다 사라진다</div>
+    <div class="body">TOP100에 머문 기간이 전체의 <b>10%도 안 되는 브랜드가 389개(73%).</b> 길어야 16일입니다. 대부분에게 TOP100은 스쳐 가는 순간이에요.</div>
+    <div class="eg">반대로 120일 이상(유지율 70%+) 눌러앉은 <b>'장기 생존' 브랜드는 단 33개(6%)</b>뿐입니다.</div>
+    <button class="btn" onclick="flip(this)">자세히 보기 <span class="ar">▾</span></button>
+  </div>
+  <div class="face back">
+    <div class="pg">03 / 05</div>
+    <div class="blabel">체류기간 분포</div>
+    <div class="bttl">86%가 채 50일을 못 버틴다</div>
+    <div class="stat"><span class="k">0~10% 유지 (1~16일)</span><span class="vs"><span class="num" style="color:#fff">389개</span></span></div>
+    <div class="stat"><span class="k">10~30% 유지 (17~48일)</span><span class="vs"><span class="num" style="color:#fff">69개</span></span></div>
+    <div class="stat"><span class="k">30~50% 유지 (51~84일)</span><span class="vs"><span class="num" style="color:#fff">29개</span></span></div>
+    <div class="stat"><span class="k">50~70% 유지 (85~117일)</span><span class="vs"><span class="num" style="color:#fff">12개</span></span></div>
+    <div class="stat"><span class="k">70~100% 유지 (120~168일)</span><span class="vs"><span class="num" style="color:var(--butter)">33개</span></span></div>
+    <div class="legend">＊유지율 = 1월 1일 이후 가능 일수 대비 실제 TOP100 체류일 비율. 유지율 50% 이상은 다 합쳐도 45개뿐입니다.</div>
+    <button class="btn" onclick="flip(this)">← 돌아가기</button>
+  </div></div></div>
+
+  <!-- 04 핵심2: 발행량 ↔ 체류 -->
+  <div class="card"><div class="inner"><div class="face c-cream">
+    <div class="pg">04 / 05</div>
+    <div class="kicker">핵심 발견 ②</div>
+    <div class="title">오래 남는 브랜드일수록 <span class="mk">쉬지 않고 발행한다</span></div>
+    <div class="body">유지율이 높은 구간일수록 발행량 합계가 가파르게 우상향합니다. 반짝 그룹은 월 <b>7건</b> 수준, 장기 생존 그룹은 <b>약 68건</b>으로 10배 가까이 차이 납니다.</div>
+    <div class="chart">
+      <div class="clab">월평균 발행 합계 · 4개 항목 (브랜드당)</div>
+      <div class="clegend">
+        <span class="li"><span class="sw" style="background:#1f3a5f"></span>유튜브 무가</span>
+        <span class="li"><span class="sw" style="background:#7ba3d0"></span>유튜브 유가</span>
+        <span class="li"><span class="sw" style="background:#2e9e87"></span>인스타 무가</span>
+        <span class="li"><span class="sw" style="background:#8fd9c4"></span>인스타 유가</span>
+      </div>
+      <div class="srow"><span class="sl">0~10% 유지</span><span class="strack"><span class="sbar" style="width:10.3%"><span class="seg" style="flex:1.2;background:#1f3a5f;color:#fff"></span><span class="seg" style="flex:0.6;background:#7ba3d0;color:#13233f"></span><span class="seg" style="flex:2.4;background:#2e9e87;color:#fff"></span><span class="seg" style="flex:2.8;background:#8fd9c4;color:#10362c"></span></span><span class="sv">7.0</span></span></div>
+      <div class="srow"><span class="sl">10~30% 유지</span><span class="strack"><span class="sbar" style="width:33.7%"><span class="seg" style="flex:4.4;background:#1f3a5f;color:#fff">4.4</span><span class="seg" style="flex:1.9;background:#7ba3d0;color:#13233f"></span><span class="seg" style="flex:7.0;background:#2e9e87;color:#fff">7.0</span><span class="seg" style="flex:9.5;background:#8fd9c4;color:#10362c">9.5</span></span><span class="sv">22.8</span></span></div>
+      <div class="srow"><span class="sl">50~70% 유지</span><span class="strack"><span class="sbar" style="width:52.3%"><span class="seg" style="flex:9.3;background:#1f3a5f;color:#fff">9.3</span><span class="seg" style="flex:4.0;background:#7ba3d0;color:#13233f">4.0</span><span class="seg" style="flex:10.6;background:#2e9e87;color:#fff">10.6</span><span class="seg" style="flex:11.5;background:#8fd9c4;color:#10362c">11.5</span></span><span class="sv">35.4</span></span></div>
+      <div class="srow"><span class="sl">70~100% 유지</span><span class="strack"><span class="sbar" style="width:100%"><span class="seg" style="flex:17.2;background:#1f3a5f;color:#fff">17.2</span><span class="seg" style="flex:6.6;background:#7ba3d0;color:#13233f">6.6</span><span class="seg" style="flex:22.3;background:#2e9e87;color:#fff">22.3</span><span class="seg" style="flex:21.6;background:#8fd9c4;color:#10362c">21.6</span></span><span class="sv">67.7</span></span></div>
+    </div>
+    <button class="btn" onclick="flip(this)">네 항목 다 보기 <span class="ar">▾</span></button>
+  </div>
+  <div class="face back">
+    <div class="pg">04 / 05</div>
+    <div class="blabel">반짝 vs 장기 생존</div>
+    <div class="bttl">네 항목 모두 8~14배 차이</div>
+    <div class="clkey"><span class="kk"><span class="sw" style="background:#9fc0ff"></span>반짝 (0~10%)</span><span class="kk"><span class="sw" style="background:var(--coral)"></span>장기 생존 (70~100%)</span><span class="note">· 브랜드당 월평균</span></div>
+    <div class="stat"><span class="k">유튜브 무가</span><span class="vs"><span class="num lg">1.2</span><span class="num am">17.2</span></span></div>
+    <div class="stat"><span class="k">유튜브 유가</span><span class="vs"><span class="num lg">0.6</span><span class="num am">6.6</span></span></div>
+    <div class="stat"><span class="k">인스타 무가</span><span class="vs"><span class="num lg">2.4</span><span class="num am">22.3</span></span></div>
+    <div class="stat"><span class="k">인스타 유가</span><span class="vs"><span class="num lg">2.8</span><span class="num am">21.6</span></span></div>
+    <div class="win">0~10% 그룹 대비 70~100% 그룹은 항목당 <b>약 8~14배</b> 더 발행. 발행량과 체류기간은 분명히 함께 움직입니다.</div>
+    <div class="legend">＊유지율 구간이 올라갈수록 네 항목 모두 월평균 발행량이 우상향합니다.</div>
+    <button class="btn" onclick="flip(this)">← 돌아가기</button>
+  </div></div></div>
+
+  <!-- 05 결론 -->
+  <div class="card"><div class="inner"><div class="face c-mint">
+    <div class="pg">05 / 05</div>
+    <div class="kicker">그래서</div>
+    <div class="title">TOP100 '눌러앉기'의 조건은 <span class="mk">꾸준한 발행량</span></div>
+    <div class="body">데이터의 결론은 분명합니다. 오래 살아남은 브랜드일수록 더 자주, 더 많이 발행했습니다. 한두 번의 히트가 아니라 <b>'물량'이 체류를 만든</b> 셈이에요.</div>
+    <div class="eg">단, 인과는 양방향일 수 있습니다 — <b>잘 나가서 더 발행</b>하는 것일 수도. 그래도 '반짝 그룹'과의 발행량 격차는 부정하기 어렵습니다.</div>
+    <div class="spacer"></div>
+    <div style="font-family:var(--disp);font-weight:500;font-size:clamp(12px,1vw,15px);letter-spacing:.12em;opacity:.7">NEXT — CH.2</div>
+    <div style="font-family:var(--disp);font-weight:700;font-size:clamp(17px,1.9vw,26px);margin-top:6px;line-height:1.4">그 발행, 대체 <span class="mk">누가 만들까?</span></div>
+  </div><div class="face back"></div></div></div>
+
+  </div>
+
+  <div class="nav">
+    <button class="arw" onclick="go(-1)" aria-label="이전">‹</button>
+    <div class="dots" id="dots"></div>
+    <button class="arw" onclick="go(1)" aria-label="다음">›</button>
+  </div>
+</div>
+<div class="tip">카드를 넘기며 보세요 · '자세히 보기'를 누르면 숫자가 나옵니다</div>
+<div class="foot">hifen data insight · 2026 · 올리브영 일간 TOP100 진입 532개 브랜드 기준 (1/1~현재)</div>
+
+<script>
+const track=document.getElementById('track');
+const cards=[...track.children];
+const dots=document.getElementById('dots');
+cards.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i==0?' act':'');d.onclick=()=>cards[i].scrollIntoView({behavior:'smooth',inline:'center'});dots.appendChild(d);});
+function cur(){return Math.round(track.scrollLeft/track.clientWidth);}
+function go(dir){const n=Math.max(0,Math.min(cards.length-1,cur()+dir));cards[n].scrollIntoView({behavior:'smooth',inline:'center'});}
+track.addEventListener('scroll',()=>{const c=cur();[...dots.children].forEach((d,i)=>d.classList.toggle('act',i==c));},{passive:true});
+function flip(btn){const inner=btn.closest('.inner');inner.classList.toggle('flipped');btn.classList.toggle('on');}
+</script>
+</body></html>

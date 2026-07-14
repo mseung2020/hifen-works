@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ABIB · 제품 랭킹 & 광고 대시보드</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{ --bg:#f5f6f8; --card:#fff; --ink:#1f2430; --sub:#7b8494;
+         --line:#e8eaef; --accent:#1f9d72; --accent-soft:#e7f5ef; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+       background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  header{padding:18px 26px;background:var(--card);border-bottom:1px solid var(--line);
+         display:flex;align-items:baseline;gap:12px}
+  header h1{font-size:18px;margin:0;letter-spacing:.4px}
+  header .tag{font-size:12px;color:var(--sub)}
+  .wrap{display:flex;gap:18px;padding:18px;align-items:flex-start}
+  .sidebar{flex:0 0 320px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+           overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 110px)}
+  .sidebar .hd{padding:12px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--sub)}
+  .sidebar .hd b{color:var(--ink)}
+  .plist{overflow:auto;padding:6px}
+  .pitem{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;border:1px solid transparent}
+  .pitem:hover{background:#f3f4f7}
+  .pitem.active{background:var(--accent-soft);border-color:#bfe6d6}
+  .badge{flex:0 0 auto;min-width:34px;height:24px;padding:0 7px;border-radius:7px;background:#eef1f5;
+         color:#56607a;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .pitem.active .badge{background:var(--accent);color:#fff}
+  .pname{font-size:13px;line-height:1.3}
+  .main{flex:1;display:flex;flex-direction:column;gap:14px;min-width:0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .card h2{margin:0 0 2px;font-size:15px}
+  .card .desc{margin:0 0 14px;font-size:12px;color:var(--sub)}
+  .chartbox{position:relative;height:460px}
+  .bar-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
+  .bar-controls .lbl{font-size:12px;color:var(--sub);margin:0 2px 0 0}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .seg button{border:0;background:#fafbfc;padding:6px 14px;font-size:12px;cursor:pointer;color:var(--sub)}
+  .seg button.on{background:var(--accent);color:#fff;font-weight:600}
+  .spacer{width:10px}
+  .tg{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--line);
+      border-radius:999px;font-size:12px;cursor:pointer;user-select:none;background:#fafbfc}
+  .tg .dot{width:10px;height:10px;border-radius:3px}
+  .tg.off{opacity:.36}
+  .selname{font-size:13px;color:var(--sub);margin-left:auto;font-weight:500}
+</style>
+</head>
+<body>
+<header>
+  <h1>ABIB 제품 대시보드</h1>
+  <span class="tag">2026 올리브영 랭킹 × 유튜브/인스타 노출</span>
+</header>
+
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="hd">제품 <b id="pcount">0</b>개 · <b>최고등수</b> 순 정렬</div>
+    <div class="plist" id="plist"></div>
+  </aside>
+
+  <section class="main">
+    <div class="card">
+      <h2>노출량 × 랭킹 관계 <span class="selname" id="selname"></span></h2>
+      <p class="desc">
+        막대(오른쪽 축) = 기간별 노출 건수·구성(유튜브/인스타 · 유가/무가, 막대 높이=총 노출) ·
+        라인(왼쪽 축) = 같은 기간 <b>최고 등수</b>(위로 갈수록 상위). 범례로 랭킹 라인을 끌 수 있습니다.
+      </p>
+      <div class="bar-controls" id="controls">
+        <span class="lbl">기간</span>
+        <span class="seg">
+          <button data-p="month" class="on">월별</button>
+          <button data-p="week">주별</button>
+        </span>
+        <span class="spacer"></span>
+        <span class="lbl">노출 구성</span>
+        <!-- leaf 토글이 여기 삽입됨 -->
+      </div>
+      <div class="chartbox"><canvas id="mainChart"></canvas></div>
+    </div>
+  </section>
+</div>
+
+<script>
+// 누적 막대로 쌓는 4개 leaf (합 = 총 노출). 총/유튜브총/인스타총은 막대 높이로 표현됨.
+const LEAVES = [
+  {key:"yt_organic", label:"유튜브 무가", color:"#f4a8a6"},
+  {key:"yt_paid",    label:"유튜브 유가", color:"#d23b3b"},
+  {key:"ig_organic", label:"인스타 무가", color:"#e3aed0"},
+  {key:"ig_paid",    label:"인스타 유가", color:"#a4216f"},
+];
+const LINE_PALETTE = ["#1f9d72","#3b82f6","#f59e0b","#8b5cf6","#14b8a6","#ec4899","#64748b"];
+let period = "month";
+const shownLeaves = new Set(LEAVES.map(m=>m.key));
+let chart=null, currentProduct=null;
+let RANGE={min:"2026-01-01", max:"2026-06-30"};   // 전역 기간 (서버에서 갱신)
+
+const fmt = n => n.toLocaleString("ko-KR");
+const escapeHtml = s => s.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hexA = (h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;};
+
+// 기간 버킷 키/라벨
+function weekStart(s){
+  const [y,m,d]=s.split("-").map(Number);
+  const dt=new Date(Date.UTC(y,m-1,d));
+  const dow=(dt.getUTCDay()+6)%7;          // 월=0
+  dt.setUTCDate(dt.getUTCDate()-dow);
+  return dt.toISOString().slice(0,10);
+}
+const bkey = s => period==="month" ? s.slice(0,7) : weekStart(s);
+const blabel = k => period==="month" ? k.slice(2).replace("-",".") : k.slice(5).replace("-","/");
+
+// 전역 범위 전체를 빠짐없이 생성 (빈 구간 슬롯 유지)
+function monthsBetween(minK,maxK){
+  let [y,m]=minK.split("-").map(Number); const [my,mm]=maxK.split("-").map(Number); const out=[];
+  while(y<my || (y===my && m<=mm)){ out.push(`${y}-${String(m).padStart(2,"0")}`); if(++m>12){m=1;y++;} }
+  return out;
+}
+function weeksBetween(minDate,maxDate){
+  const s=weekStart(minDate).split("-").map(Number); let dt=new Date(Date.UTC(s[0],s[1]-1,s[2]));
+  const e=weekStart(maxDate).split("-").map(Number); const end=Date.UTC(e[0],e[1]-1,e[2]);
+  const out=[]; while(dt.getTime()<=end){ out.push(dt.toISOString().slice(0,10)); dt.setUTCDate(dt.getUTCDate()+7); }
+  return out;
+}
+async function loadMeta(){
+  try{ const m=await (await fetch("/api/meta")).json(); if(m.range && m.range.min) RANGE=m.range; }catch(e){}
+}
+
+// ---------- 사이드바 ----------
+async function loadList(){
+  const list = await (await fetch("/api/products")).json();
+  document.getElementById("pcount").textContent = list.length;
+  const box = document.getElementById("plist"); box.innerHTML="";
+  list.forEach(p=>{
+    const el=document.createElement("div");
+    el.className="pitem"; el.dataset.pid=p.product_id;
+    el.innerHTML=`<span class="badge">${p.best_rank}위</span><span class="pname">${escapeHtml(p.product)}</span>`;
+    el.onclick=()=>selectProduct(p.product_id, el);
+    box.appendChild(el);
+  });
+  const first=box.querySelector(".pitem");
+  if(first) selectProduct(first.dataset.pid, first);
+}
+async function selectProduct(pid, el){
+  document.querySelectorAll(".pitem").forEach(x=>x.classList.remove("active"));
+  if(el) el.classList.add("active");
+  currentProduct = await (await fetch("/api/product/"+encodeURIComponent(pid))).json();
+  document.getElementById("selname").textContent = currentProduct.product;
+  draw();
+}
+
+// ---------- 차트 ----------
+function draw(){
+  const p=currentProduct; if(!p) return;
+  const ts=p.timeseries||{}, md=p.metrics_daily||{};
+
+  // 랭킹: 카테고리별 (기간 최고=최소 등수)
+  const cats = Object.keys(ts).sort((a,b)=> a==="전체"?-1 : b==="전체"?1 : a.localeCompare(b,"ko"));
+  const rankB={};
+  cats.forEach(c=>{ const mp={}; ts[c].forEach(pt=>{const k=bkey(pt.x); mp[k]=(k in mp)?Math.min(mp[k],pt.y):pt.y;}); rankB[c]=mp; });
+
+  // 노출: leaf별 (기간 합계)
+  const metB={};
+  LEAVES.forEach(m=>{ const mp={}; (md[m.key]||[]).forEach(pt=>{const k=bkey(pt.x); mp[k]=(mp[k]||0)+pt.y;}); metB[m.key]=mp; });
+
+  // x축 = 전역 기간 전체 (데이터 없는 칸도 유지: 노출=0, 랭킹=공백)
+  const ks = period==="month"
+    ? monthsBetween(RANGE.min.slice(0,7), RANGE.max.slice(0,7))
+    : weeksBetween(RANGE.min, RANGE.max);
+  const labels = ks.map(blabel);
+
+  const datasets=[];
+  // 막대(누적) — 오른쪽 축
+  LEAVES.filter(m=>shownLeaves.has(m.key)).forEach(m=>{
+    datasets.push({
+      type:"bar", label:m.label, yAxisID:"yCount", stack:"exp",
+      data: ks.map(k => metB[m.key][k] || 0),
+      backgroundColor: hexA(m.color,.88), borderWidth:0,
+      categoryPercentage:.62, barPercentage:.9, order:2,
+    });
+  });
+  // 라인(기간 최고 등수) — 왼쪽 축
+  cats.forEach((c,i)=>{
+    const color = c==="전체" ? "#1f9d72" : LINE_PALETTE[(i+1)%LINE_PALETTE.length];
+    datasets.push({
+      type:"line", label:"등수 · "+c, yAxisID:"yRank",
+      data: ks.map(k => k in rankB[c] ? rankB[c][k] : null),
+      borderColor:color, backgroundColor:color,
+      borderWidth: c==="전체"?3:2, pointRadius: c==="전체"?4:3, pointHoverRadius:6,
+      tension:.3, spanGaps:true, order:0,
+    });
+  });
+
+  const cfg={
+    type:"bar",
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false, interaction:{mode:"index",intersect:false},
+      scales:{
+        x:{ stacked:true, grid:{display:false}, ticks:{color:"#9aa3b2", maxRotation:0, autoSkip:true, maxTicksLimit:14} },
+        yRank:{ position:"left", reverse:true, min:1, title:{display:true,text:"최고 등수 (1위=상단)"},
+                ticks:{precision:0}, grid:{color:"#eef0f4"} },
+        yCount:{ position:"right", stacked:true, beginAtZero:true, title:{display:true,text:"노출 건수"},
+                 ticks:{precision:0}, grid:{drawOnChartArea:false} },
+      },
+      plugins:{
+        legend:{position:"top", labels:{usePointStyle:true, boxWidth:8, font:{size:12}}},
+        tooltip:{ callbacks:{
+          label:(c)=>{
+            if(c.parsed.y==null) return null;
+            return c.dataset.yAxisID==="yRank" ? ` ${c.dataset.label}: ${c.parsed.y}위`
+                                               : ` ${c.dataset.label}: ${fmt(c.parsed.y)}건`;
+          },
+          footer:(items)=>{
+            const tot=items.filter(i=>i.dataset.yAxisID==="yCount").reduce((s,i)=>s+(i.parsed.y||0),0);
+            return tot? `총 노출 ${fmt(tot)}건` : "";
+          }
+        }}
+      }
+    }
+  };
+  if(chart) chart.destroy();
+  chart=new Chart(document.getElementById("mainChart"), cfg);
+}
+
+// ---------- 컨트롤 ----------
+function buildControls(){
+  const box=document.getElementById("controls");
+  // 기간 세그먼트
+  box.querySelectorAll(".seg button").forEach(btn=>{
+    btn.onclick=()=>{
+      period=btn.dataset.p;
+      box.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("on", b===btn));
+      draw();
+    };
+  });
+  // leaf 토글
+  LEAVES.forEach(m=>{
+    const lab=document.createElement("label");
+    lab.className="tg"; lab.innerHTML=`<span class="dot" style="background:${m.color}"></span>${m.label}`;
+    lab.onclick=()=>{
+      if(shownLeaves.has(m.key)) shownLeaves.delete(m.key); else shownLeaves.add(m.key);
+      lab.classList.toggle("off", !shownLeaves.has(m.key));
+      draw();
+    };
+    box.appendChild(lab);
+  });
+}
+
+buildControls();
+(async()=>{ await loadMeta(); loadList(); })();
+</script>
+</body>
+</html>

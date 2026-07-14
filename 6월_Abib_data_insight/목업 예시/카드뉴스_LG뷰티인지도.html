@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>뷰티 인스타 대전 — LG vs 아모레</title>
+<style>
+/* ===== 폰트 (있으면 물고, 없으면 시스템 폴백) ===== */
+@font-face{font-family:'Gmarket Sans';src:url('./fonts/GmarketSansBold.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'Gmarket Sans';src:url('./fonts/GmarketSansMedium.ttf') format('truetype');font-weight:500;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-Bold.woff2') format('woff2');font-weight:700;font-display:swap;}
+
+:root{
+  --ink:#1a1a1a; --navy:#13233f; --cream:#f5f1e8; --coral:#ff6a5a; --butter:#ffce3a; --mint:#7fd1b9;
+  --disp:'Gmarket Sans','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --body:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#2a2620;font-family:var(--body);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:22px 0 30px;}
+.hd{color:#cdbfa6;text-align:center;font-size:12px;letter-spacing:.25em;margin-bottom:14px;text-transform:uppercase;}
+
+/* ===== 캐러셀 ===== */
+.viewport{position:relative;width:min(470px,92vw);}
+.track{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;border-radius:22px;-ms-overflow-style:none;scrollbar-width:none;}
+.track::-webkit-scrollbar{display:none;}
+.card{position:relative;flex:0 0 100%;scroll-snap-align:center;aspect-ratio:4/5;perspective:1400px;}
+.inner{position:absolute;inset:0;transition:transform .6s cubic-bezier(.6,.05,.2,1);transform-style:preserve-3d;}
+.inner.flipped{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;border-radius:22px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;padding:38px 34px;}
+.back{transform:rotateY(180deg);background:var(--navy);color:var(--cream);}
+
+/* 페이지 번호 */
+.pg{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.05em;opacity:.55;}
+.kicker{font-family:var(--disp);font-weight:500;font-size:14px;letter-spacing:.02em;margin-top:auto;}
+.title{font-family:var(--disp);font-weight:700;line-height:1.24;letter-spacing:-.02em;margin:14px 0 0;font-size:clamp(26px,7.2vw,34px);}
+.body{font-size:15px;line-height:1.72;margin-top:16px;font-weight:400;}
+.body b{font-weight:700;}
+.eg{margin-top:16px;font-size:13.5px;line-height:1.6;padding:13px 15px;border-radius:13px;font-weight:600;}
+.spacer{flex:1;}
+.swipe{font-family:var(--disp);font-weight:500;font-size:13px;opacity:.6;margin-top:18px;}
+
+/* 하이라이트(형광펜) */
+.mk{background:linear-gradient(transparent 58%,var(--butter) 58%);padding:0 2px;font-weight:700;color:var(--ink);}
+.mk-c{background:linear-gradient(transparent 58%,var(--coral) 58%);padding:0 2px;font-weight:700;color:#fff;}
+
+/* 카드별 테마 */
+.c-cover{background:var(--navy);color:var(--cream);}
+.c-cream{background:var(--cream);color:var(--ink);}
+.c-coral{background:var(--coral);color:#fff;}
+.c-butter{background:var(--butter);color:var(--navy);}
+.c-mint{background:var(--mint);color:#10362c;}
+.c-cover .eg,.c-coral .eg{background:rgba(255,255,255,.16);}
+.c-cream .eg{background:#ece4d2;color:#4a4334;}
+.c-butter .eg{background:rgba(19,35,63,.1);}
+.c-mint .eg{background:rgba(16,54,44,.12);}
+
+/* 자세히 보기 버튼 */
+.btn{align-self:flex-start;margin-top:18px;font-family:var(--disp);font-weight:500;font-size:13.5px;padding:9px 18px;border-radius:999px;border:1.6px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.18s;}
+.btn:hover{transform:translateY(-1px);}
+.btn .ar{transition:.3s;font-weight:700;}
+.btn.on .ar{transform:rotate(180deg);}
+
+/* 뒷면(통계) */
+.back .pg{opacity:.5;}
+.back .blabel{font-family:var(--disp);font-weight:500;color:var(--butter);font-size:13px;letter-spacing:.1em;margin-top:auto;text-transform:uppercase;}
+.back .bttl{font-family:var(--disp);font-weight:700;font-size:21px;margin:8px 0 18px;line-height:1.3;}
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.14);}
+.stat .k{font-size:13px;opacity:.8;max-width:52%;}
+.stat .vs{display:flex;gap:14px;font-family:var(--disp);font-weight:700;}
+.stat .lg{color:#9fc0ff;} .stat .am{color:var(--coral);}
+.stat .num{font-size:17px;}
+.legend{font-size:11px;opacity:.65;margin-top:14px;line-height:1.5;}
+.win{font-size:13px;font-weight:700;margin-top:16px;padding:11px 14px;border-radius:11px;background:rgba(255,206,58,.16);color:var(--butter);line-height:1.5;}
+.back .btn{margin-top:auto;border-color:rgba(255,255,255,.4);color:var(--cream);}
+
+/* 네비 */
+.nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px;}
+.arw{width:42px;height:42px;border-radius:50%;border:none;background:#4a4438;color:#f5f1e8;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;font-family:var(--disp);}
+.arw:hover{background:var(--coral);}
+.dots{display:flex;gap:7px;}
+.dot{width:8px;height:8px;border-radius:50%;background:#5c5648;transition:.25s;}
+.dot.act{background:var(--coral);width:22px;border-radius:99px;}
+/* 다음 편 티저 */
+.teaser{margin-top:6px;}
+.t-label{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.35em;color:#10362c;opacity:.55;}
+.t-q{font-family:var(--disp);font-weight:700;font-size:clamp(22px,6.4vw,30px);line-height:1.5;margin:7px 0 14px;}
+.t-q .mk{background:#10362c;color:var(--mint);padding:3px 8px;border-radius:5px;box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.t-sub{font-size:13.5px;line-height:1.6;font-weight:400;}
+.t-sub b{font-weight:700;}
+.t-coming{margin-top:16px;display:inline-block;font-family:var(--disp);font-weight:500;font-size:12px;letter-spacing:.12em;padding:8px 15px;border-radius:999px;background:#10362c;color:var(--mint);animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.72;transform:scale(.98);}}
+.foot{color:#8a806d;font-size:11px;margin-top:20px;text-align:center;letter-spacing:.04em;}
+.tip{color:#a89c84;font-size:11.5px;margin-top:9px;text-align:center;}
+</style></head>
+<body>
+<div class="hd">뷰티 인스타 대전 · 2026 데이터 리포트</div>
+<div class="viewport">
+  <div class="track" id="track">
+
+  <!-- 01 COVER -->
+  <div class="card"><div class="inner"><div class="face c-cover">
+    <div class="pg">01 / 06</div>
+    <div class="spacer"></div>
+    <div class="title" style="font-size:clamp(30px,8.5vw,40px)">LG는 왜<br><span class="mk-c">아모레</span>를<br>못 이길까?</div>
+    <div class="body">2026년 인스타그램에 올라온<br>뷰티 광고 게시물 <b>약 4,700개</b>를<br>전부 까봤습니다.</div>
+    <div class="swipe">옆으로 넘겨보세요 →</div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 02 RULE -->
+  <div class="card"><div class="inner"><div class="face c-cream">
+    <div class="pg">02 / 06</div>
+    <div class="kicker">먼저, 게임의 규칙</div>
+    <div class="title">조회수가 곧<br><span class="mk">브랜드 인지도</span>다</div>
+    <div class="body">사람들이 많이 본 게시물일수록 그 브랜드를 더 많이 알게 됩니다. 그래서 <b>'조회수'를 인지도(체급)의 잣대</b>로 삼았어요.</div>
+    <div class="eg">단, 비교가 공정하도록 <b>2026년에 올라온 게시물</b>만, 또 비슷한 광고 개수끼리 묶어서 봤습니다.</div>
+    <div class="spacer"></div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 03 핵심1: 대박 한 방 -->
+  <div class="card"><div class="inner"><div class="face c-butter">
+    <div class="pg">03 / 06</div>
+    <div class="kicker">핵심 발견 ①</div>
+    <div class="title">인지도는 '평타'로 안 오른다<br><span class="mk-c">대박 한 방</span>으로 오른다</div>
+    <div class="body">게시물 100개가 고만고만 잘 되는 것보다, <b>단 1개가 '떡상'</b>하는 게 브랜드를 훨씬 더 알립니다. 인스타는 사실상 <b>복권 게임</b>이에요.</div>
+    <div class="eg">실제로 어떤 브랜드는 <b>게시물 딱 1개</b>가 그 브랜드 전체 조회수의 <b>80%</b>를 혼자 책임졌습니다.</div>
+    <button class="btn" onclick="flip(this)">자세히 보기 <span class="ar">▾</span></button>
+  </div>
+  <div class="face back">
+    <div class="pg">03 / 06</div>
+    <div class="blabel">쏠림의 증거</div>
+    <div class="bttl">소수의 글이 거의 다 먹는다</div>
+    <div class="stat"><span class="k">조회 상위 10% 게시물이 차지하는 비중</span><span class="vs"><span class="num" style="color:#fff">전체의 70~80%</span></span></div>
+    <div class="stat"><span class="k">한 브랜드의 조회 80%를 채운 게시물</span><span class="vs"><span class="num" style="color:#fff">단 1개</span></span></div>
+    <div class="stat"><span class="k">쏠림 지수(지니) · 1에 가까울수록 쏠림</span><span class="vs"><span class="num" style="color:#fff">0.7 ~ 0.9</span></span></div>
+    <div class="legend">＊LG·아모레를 포함한 거의 모든 브랜드가 이렇게 극단적으로 쏠려 있습니다. '꾸준한 평타'가 아니라 '한 방'이 브랜드를 띄웁니다.</div>
+    <button class="btn" onclick="flip(this)">← 돌아가기</button>
+  </div></div></div>
+
+  <!-- 04 반전: LG 평타는 안 밀림 -->
+  <div class="card"><div class="inner"><div class="face c-cream">
+    <div class="pg">04 / 06</div>
+    <div class="kicker">그런데, 반전</div>
+    <div class="title">"LG는 콘텐츠를<br>못 만든다"?</div>
+    <div class="body"><b>아닙니다.</b> 딱 중간 수준의 '보통 게시물'끼리 비교하면, <span class="mk">조회수는 오히려 LG가 살짝 더 높습니다.</span> 기본기는 멀쩡하다는 뜻이에요.</div>
+    <div class="eg">즉 LG의 문제는 "글을 못 만든다"가 <b>아닙니다.</b> 평범한 글의 체급은 아모레와 대등합니다.</div>
+    <button class="btn" onclick="flip(this)">자세히 보기 <span class="ar">▾</span></button>
+  </div>
+  <div class="face back">
+    <div class="pg">04 / 06</div>
+    <div class="blabel">보통 글 비교</div>
+    <div class="bttl">평타는 LG가 안 밀린다</div>
+    <div class="stat"><span class="k">딱 중간 게시물(중앙값) 조회수</span><span class="vs"><span class="num lg">LG 3,499</span><span class="num am">AM 3,084</span></span></div>
+    <div class="stat"><span class="k">하위권 게시물 조회수</span><span class="vs"><span class="num lg">LG 976</span><span class="num am">AM 464</span></span></div>
+    <div class="legend">＊중간~하위 구간에선 LG가 오히려 높습니다. 파란색이 LG, 빨간색이 아모레예요. 그런데도 전체 평균은 아모레가 높죠. 왜일까요? → 다음 장</div>
+    <button class="btn" onclick="flip(this)">← 돌아가기</button>
+  </div></div></div>
+
+  <!-- 05 핵심2: 대박 격차 -->
+  <div class="card"><div class="inner"><div class="face c-coral">
+    <div class="pg">05 / 06</div>
+    <div class="kicker">핵심 발견 ②</div>
+    <div class="title">차이는 딱 하나<br><span class="mk">'초대박'을 못 터뜨린다</span></div>
+    <div class="body">아모레는 게시물 하나가 <b>942만 뷰</b>까지 터집니다. LG의 역대 최고는 <b>201만 뷰.</b> 평타는 같은데, <b>홈런의 크기가 다릅니다.</b></div>
+    <div class="eg">아모레는 가끔 <b>만루홈런</b>을 치고, LG는 깔끔한 <b>안타</b>를 칩니다. 인지도 격차는 전부 여기서 벌어졌어요.</div>
+    <button class="btn" onclick="flip(this)">자세히 보기 <span class="ar">▾</span></button>
+  </div>
+  <div class="face back">
+    <div class="pg">05 / 06</div>
+    <div class="blabel">대박의 크기</div>
+    <div class="bttl">격차는 100% '대박'에서 나온다</div>
+    <div class="stat"><span class="k">역대 최고 조회 게시물</span><span class="vs"><span class="num lg">LG 201만</span><span class="num am">AM 942만</span></span></div>
+    <div class="stat"><span class="k">상위 1% 게시물 조회수</span><span class="vs"><span class="num lg">LG 49만</span><span class="num am">AM 70만</span></span></div>
+    <div class="win">두 회사의 평균 조회 격차 → 그 <b>101%가 '중간값 위(대박권)'</b>에서 발생. 같은 광고량끼리 1:1로 붙여도 아모레 우위 <b>8 / 11</b>.</div>
+    <button class="btn" onclick="flip(this)">← 돌아가기</button>
+  </div></div></div>
+
+  <!-- 06 결론 + teaser -->
+  <div class="card"><div class="inner"><div class="face c-mint">
+    <div class="pg">06 / 06</div>
+    <div class="kicker">그래서, LG의 숙제</div>
+    <div class="title">더 잘 만들기가 아니라<br><span class="mk">'터뜨리는 법'</span>을 찾아야</div>
+    <div class="body">LG에게 필요한 건 콘텐츠를 갈아엎는 게 아닙니다. 인지도를 폭발시킬 <b>'대박 한 방'을 설계하고 다시 만들어내는 힘</b>입니다.</div>
+    <div class="spacer"></div>
+    <div class="teaser">
+      <div class="t-label">NEXT</div>
+      <div class="t-q">그렇다면 그 대박은<br><span class="mk">대체 누가 만드는가?</span></div>
+      <div class="t-sub">우리는 이미 4,700개 게시물 뒤에 숨은<br><b>크리에이터들을 추적하기 시작했다.</b></div>
+      <div class="t-coming">EP.2 — 크리에이터 해부 · COMING SOON</div>
+    </div>
+  </div><div class="face back"></div></div></div>
+
+  </div>
+
+  <div class="nav">
+    <button class="arw" onclick="go(-1)" aria-label="이전">‹</button>
+    <div class="dots" id="dots"></div>
+    <button class="arw" onclick="go(1)" aria-label="다음">›</button>
+  </div>
+</div>
+<div class="tip">카드를 넘기며 보세요 · '자세히 보기'를 누르면 숫자가 나옵니다</div>
+<div class="foot">hifen data insight · 2026 · 조회수 기준은 2026년 발행 게시물</div>
+
+<script>
+const track=document.getElementById('track');
+const cards=[...track.children];
+const dots=document.getElementById('dots');
+cards.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i==0?' act':'');d.onclick=()=>cards[i].scrollIntoView({behavior:'smooth',inline:'center'});dots.appendChild(d);});
+function cur(){return Math.round(track.scrollLeft/track.clientWidth);}
+function go(dir){const n=Math.max(0,Math.min(cards.length-1,cur()+dir));cards[n].scrollIntoView({behavior:'smooth',inline:'center'});}
+track.addEventListener('scroll',()=>{const c=cur();[...dots.children].forEach((d,i)=>d.classList.toggle('act',i==c));},{passive:true});
+function flip(btn){const inner=btn.closest('.inner');inner.classList.toggle('flipped');btn.classList.toggle('on');}
+</script>
+</body></html>

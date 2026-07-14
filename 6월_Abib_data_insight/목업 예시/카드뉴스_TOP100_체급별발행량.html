@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOP100 체급별 발행량 — 누가 만드나</title>
+<style>
+/* ===== 폰트 (있으면 물고, 없으면 시스템 폴백) ===== */
+@font-face{font-family:'Gmarket Sans';src:url('./fonts/GmarketSansBold.ttf') format('truetype');font-weight:700;font-display:swap;}
+@font-face{font-family:'Gmarket Sans';src:url('./fonts/GmarketSansMedium.ttf') format('truetype');font-weight:500;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-Regular.woff2') format('woff2');font-weight:400;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap;}
+@font-face{font-family:'Pretendard';src:url('./fonts/Pretendard-Bold.woff2') format('woff2');font-weight:700;font-display:swap;}
+
+:root{
+  --ink:#1a1a1a; --navy:#13233f; --cream:#f5f1e8; --coral:#ff6a5a; --butter:#ffce3a; --mint:#7fd1b9;
+  --disp:'Gmarket Sans','Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --body:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#2a2620;font-family:var(--body);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:18px 0 22px;}
+.hd{color:#cdbfa6;text-align:center;font-size:13px;letter-spacing:.25em;margin-bottom:12px;text-transform:uppercase;}
+
+/* ===== 캐러셀 (16:9, 화면 거의 꽉 채움) ===== */
+.viewport{position:relative;width:min(96vw,calc((100vh - 185px) * 16 / 9));}
+.track{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;border-radius:24px;-ms-overflow-style:none;scrollbar-width:none;}
+.track::-webkit-scrollbar{display:none;}
+.card{position:relative;flex:0 0 100%;scroll-snap-align:center;aspect-ratio:16/9;perspective:1800px;}
+.inner{position:absolute;inset:0;transition:transform .6s cubic-bezier(.6,.05,.2,1);transform-style:preserve-3d;}
+.inner.flipped{transform:rotateY(180deg);}
+.face{position:absolute;inset:0;border-radius:24px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;padding:clamp(34px,4.2vw,66px) clamp(40px,5vw,80px);}
+.back{transform:rotateY(180deg);background:var(--navy);color:var(--cream);}
+
+/* 페이지 번호 */
+.pg{font-family:var(--disp);font-weight:700;font-size:clamp(13px,1.1vw,16px);letter-spacing:.05em;opacity:.55;}
+.kicker{font-family:var(--disp);font-weight:500;font-size:clamp(14px,1.25vw,18px);letter-spacing:.02em;margin-top:auto;}
+.title{font-family:var(--disp);font-weight:700;line-height:1.22;letter-spacing:-.02em;margin:12px 0 0;font-size:clamp(28px,3.4vw,50px);max-width:820px;}
+.body{font-size:clamp(15px,1.32vw,20px);line-height:1.68;margin-top:16px;font-weight:400;max-width:720px;}
+.body b{font-weight:700;}
+.eg{margin-top:16px;font-size:clamp(13.5px,1.12vw,17px);line-height:1.6;padding:14px 18px;border-radius:14px;font-weight:600;max-width:720px;}
+.spacer{flex:1;}
+.swipe{font-family:var(--disp);font-weight:500;font-size:clamp(13px,1.05vw,16px);opacity:.6;margin-top:18px;}
+
+/* 하이라이트(형광펜) */
+.mk{background:linear-gradient(transparent 58%,var(--butter) 58%);padding:0 2px;font-weight:700;color:var(--ink);}
+.mk-c{background:linear-gradient(transparent 58%,var(--coral) 58%);padding:0 2px;font-weight:700;color:#fff;}
+
+/* 카드별 테마 */
+.c-cover{background:var(--navy);color:var(--cream);}
+.c-cream{background:var(--cream);color:var(--ink);}
+.c-coral{background:var(--coral);color:#fff;}
+.c-butter{background:var(--butter);color:var(--navy);}
+.c-mint{background:var(--mint);color:#10362c;}
+.c-cover .eg,.c-coral .eg{background:rgba(255,255,255,.16);}
+.c-cream .eg{background:#ece4d2;color:#4a4334;}
+.c-butter .eg{background:rgba(19,35,63,.1);}
+.c-mint .eg{background:rgba(16,54,44,.12);}
+
+/* 자세히 보기 버튼 */
+.btn{align-self:flex-start;margin-top:18px;font-family:var(--disp);font-weight:500;font-size:clamp(13.5px,1.1vw,16px);padding:11px 22px;border-radius:999px;border:1.6px solid currentColor;background:transparent;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.18s;}
+.btn:hover{transform:translateY(-1px);}
+.btn .ar{transition:.3s;font-weight:700;}
+.btn.on .ar{transform:rotate(180deg);}
+
+/* 뒷면(통계) */
+.back .pg{opacity:.5;}
+.back .blabel{font-family:var(--disp);font-weight:500;color:var(--butter);font-size:clamp(13px,1.1vw,16px);letter-spacing:.1em;margin-top:auto;text-transform:uppercase;}
+.back .bttl{font-family:var(--disp);font-weight:700;font-size:clamp(21px,2.2vw,32px);margin:8px 0 16px;line-height:1.3;max-width:820px;}
+.legend{font-size:clamp(11px,.95vw,14px);opacity:.65;margin-top:14px;line-height:1.5;max-width:840px;}
+.win{font-size:clamp(13px,1.12vw,16px);font-weight:700;margin-top:16px;padding:13px 16px;border-radius:12px;background:rgba(255,206,58,.16);color:var(--butter);line-height:1.5;max-width:840px;}
+.back .btn{margin-top:auto;border-color:rgba(255,255,255,.4);color:var(--cream);}
+
+/* 범례 칩 */
+.clegend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-bottom:14px;font-size:clamp(11px,.95vw,13.5px);font-weight:600;}
+.clegend .li{display:inline-flex;align-items:center;gap:6px;}
+.clegend .sw{width:13px;height:13px;border-radius:3px;display:inline-block;flex:none;}
+
+/* 스택/단일 바 (.srow) */
+.srow{display:flex;align-items:center;gap:11px;margin:clamp(7px,.85vw,12px) 0;}
+.srow .sl{flex:0 0 clamp(74px,5.5vw,84px);font-size:clamp(11.5px,1vw,15px);font-weight:600;opacity:.85;text-align:right;}
+.srow .strack{flex:1;display:flex;align-items:center;min-width:0;}
+.srow .sbar{flex:none;height:clamp(28px,3vw,38px);display:flex;border-radius:7px;overflow:hidden;}
+.srow .seg{display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden;font-family:var(--disp);font-weight:700;font-size:clamp(10.5px,1vw,13px);}
+.srow .sv{flex:none;margin-left:10px;font-family:var(--disp);font-weight:700;font-size:clamp(13px,1.3vw,19px);white-space:nowrap;}
+
+/* 2단 차트 (체급) */
+.charts2{display:flex;gap:clamp(18px,3vw,48px);flex-wrap:wrap;}
+.chcol{flex:1;min-width:240px;}
+.chh{font-family:var(--disp);font-weight:700;font-size:clamp(13px,1.2vw,17px);margin-bottom:8px;}
+.chh span{opacity:.55;font-weight:500;font-size:.82em;}
+.charts2 .srow{margin:clamp(4px,.55vw,8px) 0;gap:9px;}
+.charts2 .sbar{height:clamp(19px,2.1vw,27px);}
+.charts2 .sl{flex:0 0 clamp(62px,4.6vw,80px);font-size:clamp(10.5px,.92vw,14px);}
+.charts2 .sv{font-size:clamp(11px,1.02vw,15px);margin-left:8px;}
+
+/* 비율 바 (유가비율) */
+.prow{display:flex;align-items:center;gap:9px;margin:clamp(4px,.55vw,8px) 0;}
+.prow .pl{flex:0 0 clamp(62px,4.6vw,80px);font-size:clamp(10.5px,.92vw,14px);font-weight:600;opacity:.85;text-align:right;}
+.prow .ptrack{flex:1;height:clamp(18px,2vw,26px);background:rgba(255,255,255,.1);border-radius:7px;overflow:hidden;min-width:0;}
+.prow .pbar{display:block;height:100%;border-radius:7px;background:var(--coral);}
+.prow .pv{flex:none;width:clamp(34px,3vw,46px);font-family:var(--disp);font-weight:700;font-size:clamp(11.5px,1.1vw,15px);}
+
+/* 네비 */
+.nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:16px;}
+.arw{width:44px;height:44px;border-radius:50%;border:none;background:#4a4438;color:#f5f1e8;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.18s;font-family:var(--disp);}
+.arw:hover{background:var(--coral);}
+.dots{display:flex;gap:7px;}
+.dot{width:8px;height:8px;border-radius:50%;background:#5c5648;transition:.25s;}
+.dot.act{background:var(--coral);width:22px;border-radius:99px;}
+.foot{color:#8a806d;font-size:11px;margin-top:14px;text-align:center;letter-spacing:.04em;}
+.tip{color:#a89c84;font-size:11.5px;margin-top:9px;text-align:center;}
+</style></head>
+<body>
+<div class="hd">TOP100 발행량 리포트 · CH.2 크리에이터 체급 · 2026</div>
+<div class="viewport">
+  <div class="track" id="track">
+
+  <!-- 01 COVER -->
+  <div class="card"><div class="inner"><div class="face c-cover">
+    <div class="pg">CH.2 — 01 / 05</div>
+    <div class="spacer"></div>
+    <div class="title" style="font-size:clamp(30px,4.4vw,58px)">TOP100 콘텐츠,<br><span class="mk-c">누구의 손</span>에서<br>나올까?</div>
+    <div class="body">CH.1에선 '얼마나 오래 머무나'를 봤습니다. 이번엔 발행을 만든 <b>크리에이터 체급</b>과 <b>유가·무가</b>를 쪼개봤어요.</div>
+    <div class="swipe">옆으로 넘겨보세요 →</div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 02 체급 정의 -->
+  <div class="card"><div class="inner"><div class="face c-butter">
+    <div class="pg">02 / 05</div>
+    <div class="kicker">먼저, 체급이란</div>
+    <div class="title">크리에이터를 <span class="mk-c">팔로워 규모</span>로 나눴다</div>
+    <div class="body">발행을 만든 크리에이터를 구독자·팔로워 수로 구간화했습니다. 가장 작은 <b>나노</b>부터 100만+ <b>메가·셀럽</b>까지요.</div>
+    <div class="eg">유튜브는 구독자 기준 <b>5단계</b>(나노~메가), 인스타는 팔로워 기준 <b>7단계</b>(나노~셀럽)로 봤습니다. 플랫폼마다 구간 경계는 조금 다릅니다.</div>
+    <div class="spacer"></div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 03 핵심1: 작은 체급 쏠림 (차트 앞면) -->
+  <div class="card"><div class="inner"><div class="face c-cream">
+    <div class="pg">03 / 05</div>
+    <div class="kicker">핵심 발견 ①</div>
+    <div class="title">발행은 <span class="mk">작은 체급</span>에 쏠려 있다</div>
+    <div class="body">두 플랫폼 모두 나노·마이크로가 발행의 70%대 — 유튜브 <b>73%</b>, 인스타 <b>77%</b>. 큰 체급일수록 섭외가 어렵고 단가가 높아 물량이 작은 쪽으로 몰립니다.</div>
+    <div class="chart" style="margin-top:14px">
+      <div class="clegend">
+        <span class="li"><span class="sw" style="background:#a7c0d8"></span>무가</span>
+        <span class="li"><span class="sw" style="background:#d2674a"></span>유가</span>
+        <span class="li" style="opacity:.6;font-weight:500">막대 길이 = 총 발행건수</span>
+      </div>
+      <div class="charts2">
+        <div class="chcol">
+          <div class="chh">유튜브 <span>구독자 기준</span></div>
+          <div class="srow"><span class="sl">나노</span><span class="strack"><span class="sbar" style="width:100%"><span class="seg" style="flex:14742;background:#a7c0d8"></span><span class="seg" style="flex:3393;background:#d2674a"></span></span><span class="sv">18,135</span></span></div>
+          <div class="srow"><span class="sl">마이크로</span><span class="strack"><span class="sbar" style="width:65.4%"><span class="seg" style="flex:9093;background:#a7c0d8"></span><span class="seg" style="flex:2759;background:#d2674a"></span></span><span class="sv">11,852</span></span></div>
+          <div class="srow"><span class="sl">미드티어</span><span class="strack"><span class="sbar" style="width:45.1%"><span class="seg" style="flex:5953;background:#a7c0d8"></span><span class="seg" style="flex:2229;background:#d2674a"></span></span><span class="sv">8,182</span></span></div>
+          <div class="srow"><span class="sl">매크로</span><span class="strack"><span class="sbar" style="width:8.3%"><span class="seg" style="flex:924;background:#a7c0d8"></span><span class="seg" style="flex:587;background:#d2674a"></span></span><span class="sv">1,511</span></span></div>
+          <div class="srow"><span class="sl">메가</span><span class="strack"><span class="sbar" style="width:7.4%"><span class="seg" style="flex:1041;background:#a7c0d8"></span><span class="seg" style="flex:304;background:#d2674a"></span></span><span class="sv">1,345</span></span></div>
+        </div>
+        <div class="chcol">
+          <div class="chh">인스타 <span>팔로워 기준</span></div>
+          <div class="srow"><span class="sl">나노</span><span class="strack"><span class="sbar" style="width:100%"><span class="seg" style="flex:16410;background:#a7c0d8"></span><span class="seg" style="flex:8937;background:#d2674a"></span></span><span class="sv">25,347</span></span></div>
+          <div class="srow"><span class="sl">마이크로</span><span class="strack"><span class="sbar" style="width:58.2%"><span class="seg" style="flex:5316;background:#a7c0d8"></span><span class="seg" style="flex:9429;background:#d2674a"></span></span><span class="sv">14,745</span></span></div>
+          <div class="srow"><span class="sl">미드티어</span><span class="strack"><span class="sbar" style="width:21.8%"><span class="seg" style="flex:1697;background:#a7c0d8"></span><span class="seg" style="flex:3837;background:#d2674a"></span></span><span class="sv">5,534</span></span></div>
+          <div class="srow"><span class="sl">하이티어</span><span class="strack"><span class="sbar" style="width:15.9%"><span class="seg" style="flex:1297;background:#a7c0d8"></span><span class="seg" style="flex:2726;background:#d2674a"></span></span><span class="sv">4,023</span></span></div>
+          <div class="srow"><span class="sl">매크로</span><span class="strack"><span class="sbar" style="width:7.0%"><span class="seg" style="flex:541;background:#a7c0d8"></span><span class="seg" style="flex:1230;background:#d2674a"></span></span><span class="sv">1,771</span></span></div>
+          <div class="srow"><span class="sl">메가</span><span class="strack"><span class="sbar" style="width:1.2%"><span class="seg" style="flex:99;background:#a7c0d8"></span><span class="seg" style="flex:207;background:#d2674a"></span></span><span class="sv">306</span></span></div>
+          <div class="srow"><span class="sl">셀럽</span><span class="strack"><span class="sbar" style="width:0.6%"><span class="seg" style="flex:45;background:#a7c0d8"></span><span class="seg" style="flex:114;background:#d2674a"></span></span><span class="sv">159</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div><div class="face back"></div></div></div>
+
+  <!-- 04 핵심2: 정반대 유가화 -->
+  <div class="card"><div class="inner"><div class="face c-coral">
+    <div class="pg">04 / 05</div>
+    <div class="kicker">핵심 발견 ②</div>
+    <div class="title">유튜브는 <span class="mk">오가닉</span>,<br>인스타는 <span class="mk">유가</span> — 정반대</div>
+    <div class="body">같은 체급이라도 전략이 정반대입니다. 유튜브는 <b>전 체급에서 무가가 다수</b>(유가 19~39%). 인스타는 <b>마이크로 이상이면 유가가 주류</b>(64~72%)예요.</div>
+    <div class="eg">인스타는 나노만 유가 35%로 낮고, 체급이 오를수록 사실상 '유가로' 움직입니다.</div>
+    <button class="btn" onclick="flip(this)">체급별 유가비율 보기 <span class="ar">▾</span></button>
+  </div>
+  <div class="face back">
+    <div class="pg">04 / 05</div>
+    <div class="blabel">체급별 유가비율</div>
+    <div class="bttl">인스타는 체급 오를수록 대체로 '유가화'</div>
+    <div class="charts2">
+      <div class="chcol">
+        <div class="chh">유튜브 <span>유가비율</span></div>
+        <div class="prow"><span class="pl">나노</span><span class="ptrack"><span class="pbar" style="width:19%"></span></span><span class="pv">19%</span></div>
+        <div class="prow"><span class="pl">마이크로</span><span class="ptrack"><span class="pbar" style="width:23%"></span></span><span class="pv">23%</span></div>
+        <div class="prow"><span class="pl">미드티어</span><span class="ptrack"><span class="pbar" style="width:27%"></span></span><span class="pv">27%</span></div>
+        <div class="prow"><span class="pl">매크로</span><span class="ptrack"><span class="pbar" style="width:39%"></span></span><span class="pv">39%</span></div>
+        <div class="prow"><span class="pl">메가</span><span class="ptrack"><span class="pbar" style="width:23%"></span></span><span class="pv">23%</span></div>
+      </div>
+      <div class="chcol">
+        <div class="chh">인스타 <span>유가비율</span></div>
+        <div class="prow"><span class="pl">나노</span><span class="ptrack"><span class="pbar" style="width:35%"></span></span><span class="pv">35%</span></div>
+        <div class="prow"><span class="pl">마이크로</span><span class="ptrack"><span class="pbar" style="width:64%"></span></span><span class="pv">64%</span></div>
+        <div class="prow"><span class="pl">미드티어</span><span class="ptrack"><span class="pbar" style="width:69%"></span></span><span class="pv">69%</span></div>
+        <div class="prow"><span class="pl">하이티어</span><span class="ptrack"><span class="pbar" style="width:68%"></span></span><span class="pv">68%</span></div>
+        <div class="prow"><span class="pl">매크로</span><span class="ptrack"><span class="pbar" style="width:69%"></span></span><span class="pv">69%</span></div>
+        <div class="prow"><span class="pl">메가</span><span class="ptrack"><span class="pbar" style="width:68%"></span></span><span class="pv">68%</span></div>
+        <div class="prow"><span class="pl">셀럽</span><span class="ptrack"><span class="pbar" style="width:72%"></span></span><span class="pv">72%</span></div>
+      </div>
+    </div>
+    <div class="legend">＊막대 = 유가 비율(%). 유튜브는 전 구간 40% 미만(무가 우세), 인스타는 마이크로부터 60%+ (유가 우세). </div>
+    <button class="btn" onclick="flip(this)">← 돌아가기</button>
+  </div></div></div>
+
+  <!-- 05 결론 -->
+  <div class="card"><div class="inner"><div class="face c-mint">
+    <div class="pg">05 / 05</div>
+    <div class="kicker">그래서</div>
+    <div class="title">플랫폼이 다르면<br><span class="mk">전략도 달라야</span> 한다</div>
+    <div class="body">TOP100 발행의 큰 줄기는 <b>작은 크리에이터의 물량</b>. 단, 유튜브는 오가닉까지 노리는 <b>무가 전략</b>이, 인스타는 마이크로 이상 <b>유가 협업</b>이 핵심입니다.</div>
+    <div class="eg">같은 'TOP100 진입'이라도 유튜브와 인스타는 발행 설계를 다르게 가져가야 한다는 뜻이에요.</div>
+    <div class="spacer"></div>
+    <div style="font-family:var(--disp);font-weight:500;font-size:clamp(12px,1vw,15px);letter-spacing:.12em;opacity:.7">NEXT — CH.3</div>
+    <div style="font-family:var(--disp);font-weight:700;font-size:clamp(17px,1.9vw,26px);margin-top:6px;line-height:1.4">TOP100도 좁았다. 그럼 <span class="mk">TOP10</span>은?</div>
+  </div><div class="face back"></div></div></div>
+
+  </div>
+
+  <div class="nav">
+    <button class="arw" onclick="go(-1)" aria-label="이전">‹</button>
+    <div class="dots" id="dots"></div>
+    <button class="arw" onclick="go(1)" aria-label="다음">›</button>
+  </div>
+</div>
+<div class="tip">카드를 넘기며 보세요 · '자세히 보기'를 누르면 숫자가 나옵니다</div>
+<div class="foot">hifen data insight · 2026 · 올리브영 TOP100 진입 브랜드 · 크리에이터 체급별 발행 (1~6월)</div>
+
+<script>
+const track=document.getElementById('track');
+const cards=[...track.children];
+const dots=document.getElementById('dots');
+cards.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i==0?' act':'');d.onclick=()=>cards[i].scrollIntoView({behavior:'smooth',inline:'center'});dots.appendChild(d);});
+function cur(){return Math.round(track.scrollLeft/track.clientWidth);}
+function go(dir){const n=Math.max(0,Math.min(cards.length-1,cur()+dir));cards[n].scrollIntoView({behavior:'smooth',inline:'center'});}
+track.addEventListener('scroll',()=>{const c=cur();[...dots.children].forEach((d,i)=>d.classList.toggle('act',i==c));},{passive:true});
+function flip(btn){const inner=btn.closest('.inner');inner.classList.toggle('flipped');btn.classList.toggle('on');}
+</script>
+</body></html>
