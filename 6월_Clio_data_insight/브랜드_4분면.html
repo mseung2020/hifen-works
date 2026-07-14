@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>올리브영 브랜드 유형 4분면 · 전체 카테고리 (2026 상반기)</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --ink:#1a1a1a; --sub:#8a8f98; --line:#e8eaed; --accent:#3b82f6;
+    --hi:#2563eb; --soft:#f6f8fb;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;
+    background:#ffffff; color:var(--ink);
+    display:flex; justify-content:center; padding:48px 24px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{ width:100%; max-width:1080px; }
+
+  /* 헤더 */
+  .head{ text-align:center; margin-bottom:40px; }
+  .head .eyebrow{ font-size:13px; letter-spacing:.08em; color:var(--accent); font-weight:600; }
+  .head h1{ font-size:26px; font-weight:700; margin:8px 0 12px; letter-spacing:-.02em; }
+  .head p{ font-size:13px; color:var(--sub); line-height:1.6; }
+
+  /* 차트 */
+  .chart{ position:relative; width:100%; margin:32px 0 50px; }
+  /* 축 라벨 */
+  .axis-y{ position:absolute; top:-28px; left:50%; transform:translateX(-50%);
+           font-size:13px; font-weight:700; color:var(--sub); }
+  .axis-y small,.axis-x small{ color:#b9bec6; font-weight:500; }
+  .axis-x{ position:absolute; bottom:-26px; right:0; font-size:12px; font-weight:600; color:var(--sub); }
+  .axis-x.left{ right:auto; left:0; }
+  .axis-y.bottom{ top:auto; bottom:-26px; }
+
+  /* 2x2 격자 — 굵고 진한 십자 경계 */
+  .grid{ position:relative; display:grid;
+         grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr;
+         gap:3px; background:#3a4150;                 /* 경계선 색(gap으로 표현) */
+         border:3px solid #3a4150; border-radius:16px; overflow:hidden; }
+  .cell{ position:relative; min-height:264px; padding:26px 18px 22px;
+         display:flex; flex-direction:column; align-items:center; }
+
+  /* 사분면별 색상 (1=시그니처 좌상, 2=균형 우상, 3=분산 좌하, 4=포트폴리오 우하) */
+  .cell:nth-child(1){ background:#f3f0fe; }   /* 라벤더 */
+  .cell:nth-child(2){ background:#e9f9f0; }   /* 민트 그린 */
+  .cell:nth-child(3){ background:#fdf1ec; }   /* 피치 */
+  .cell:nth-child(4){ background:#e9f2fd; }   /* 블루 */
+
+  /* 제목·설명: 칸 상단 가운데 정렬 */
+  .cell .qtitle{ font-size:18px; font-weight:800; letter-spacing:-.01em; text-align:center; }
+  .cell .qdesc{ font-size:12.5px; color:var(--sub); text-align:center; margin-top:5px; }
+
+  .cell:nth-child(1) .qtitle{ color:#7c3aed; }
+  .cell:nth-child(2) .qtitle{ color:#15a34a; }
+  .cell:nth-child(3) .qtitle{ color:#ea6a2e; }
+  .cell:nth-child(4) .qtitle{ color:#2563eb; }
+
+  /* 브랜드: 한 줄에 4개 */
+  .brands{ flex:1; display:flex; flex-direction:row;
+           align-items:center; justify-content:center; gap:20px;
+           width:100%; padding-top:16px; }
+  .brand{ display:flex; flex-direction:column; align-items:center; gap:9px; }
+  .logo{ width:84px; height:84px; border-radius:50%; background:#fff;
+         border:1px solid var(--line); box-shadow:0 2px 8px rgba(0,0,0,.07);
+         display:flex; align-items:center; justify-content:center;
+         font-size:19px; font-weight:700; color:var(--ink); overflow:hidden; }
+  .logo img{ width:100%; height:100%; object-fit:contain; }
+  .bname{ font-size:15px; font-weight:700; letter-spacing:-.01em; }
+  .bstat{ font-size:11.5px; color:var(--sub); }
+
+  .foot{ margin-top:38px; font-size:11px; color:#aeb4bd; line-height:1.7; text-align:center; }
+  .foot b{ color:var(--sub); font-weight:600; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="head">
+    <div class="eyebrow">OLIVE YOUNG · 전체 카테고리</div>
+    <h1>브랜드 유형 4분면 맵</h1>
+    <p>2026.01.01–06.30 일간 TOP100 기준 · 가로축 = 탑100 제품 수, 세로축 = 평균 유지기간(제품당 평균 차트인 일수)<br>
+
+  </div>
+
+  <div class="chart">
+    <div class="axis-y">평균 유지기간 높음 ▲</div>
+    <div class="axis-y bottom">▼ 평균 유지기간 낮음</div>
+    <div class="axis-x left">◀ 제품 수 적음</div>
+    <div class="axis-x">제품 수 많음 ▶</div>
+
+    <div class="grid">
+      <!-- 좌상: 제품 少 · 유지 高 -->
+      <div class="cell">
+        <div class="qtitle">시그니처 히트형</div>
+        <div class="qdesc">제품 수 적음 · 평균 유지기간 높음</div>
+        <div class="brands" data-quad="signature"></div>
+      </div>
+      <!-- 우상: 제품 多 · 유지 高 -->
+      <div class="cell r">
+        <div class="qtitle">균형 성장형</div>
+        <div class="qdesc">제품 수 많음 · 평균 유지기간 높음</div>
+        <div class="brands" data-quad="balanced"></div>
+      </div>
+      <!-- 좌하: 제품 少 · 유지 低 -->
+      <div class="cell">
+        <div class="qtitle">분산·단기 노출형</div>
+        <div class="qdesc">제품 수 적음 · 평균 유지기간 낮음</div>
+        <div class="brands" data-quad="scatter"></div>
+      </div>
+      <!-- 우하: 제품 多 · 유지 低 -->
+      <div class="cell r">
+        <div class="qtitle">포트폴리오 확장형</div>
+        <div class="qdesc">제품 수 많음 · 평균 유지기간 낮음</div>
+        <div class="brands" data-quad="portfolio"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>유지기간</b> = 제품이 일간 TOP100에 든 (날짜×제품) 합계 ÷ 제품 수 &nbsp;·&nbsp;
+    데이터: 올리브영 일간 랭킹(전체 카테고리)<br>
+
+  </div>
+</div>
+
+<script>
+  // ── 로고 URL을 여기에 채우면 자동으로 이미지가 뜹니다 (비워두면 브랜드 첫 글자 뱃지) ──
+  const LOGOS = {
+    "메디힐":   "https://yt3.googleusercontent.com/ID_plep2pgwsZtxBF8d74BqaL7mMO2xk3JqVEOVG42xo2pO-DBqLmX2nGk-X1G0YGernMWtcvQ=s900-c-k-c0x00ffffff-no-rj",
+    "아누아":   "https://yt3.googleusercontent.com/ytc/AIdro_mnooZnjYQRf_kXxG0OXNFt_vHD6-jFOR-nQnDRKvzR8Q=s900-c-k-c0x00ffffff-no-rj",
+    "메디큐브": "https://yt3.googleusercontent.com/niE4Ngmw_SS349lSauSdaYJ-5QK8O9rHflROqeDqDPkp6YgoVVT0bncNY0ms2arslw9LIjzbx4g=s900-c-k-c0x00ffffff-no-rj",
+    "달바":     "https://yt3.googleusercontent.com/WpxnMJNmcHQj1igQ8ngD-f1BketV99VXA7QTVEact3mVqfIwRuUMrJG16wL1sz4DJZe0ynylpw=s900-c-k-c0x00ffffff-no-rj",
+    "에스트라": "https://yt3.googleusercontent.com/AfZUu-Hy3KISeOfc_r4uaNjCJ1OBUmU4AYz7u-SJR1XAlBTXzzKK_OXK9Xyrxmbw4qhnXZ8HQw=s900-c-k-c0x00ffffff-no-rj",
+    "토리든":   "https://yt3.googleusercontent.com/bjz7kMxDf4j1ljoNhVdIjISLIKSF4mY3iLl4qKaHj0PmOK7UReaeXcPP352mjLX0xHzo73pZzjQ=s900-c-k-c0x00ffffff-no-rj",
+    "라로슈포제":"https://yt3.googleusercontent.com/QYsic14Yvx4RJKheHVNpcSmR4e7UYEJLjXYCfy_tmMjk8x_o3Mnc6NyyfnygsTiH48C3Ajxdf_I=s900-c-k-c0x00ffffff-no-rj",
+    "넘버즈인": "https://yt3.googleusercontent.com/3vlG8UB1EIxD5LWgMGTvlMWF7hPGBs7t20d1p6Z6dXNgbYIdiYvty4kvoILNqgoUiSwBMXEL=s900-c-k-c0x00ffffff-no-rj",
+    "어노브":   "https://yt3.googleusercontent.com/wLJrtk8FYUgi_jZ2iLs4Gzhik3TaWKjC3t2xvtcxhyXa7--TbkMeQC7bOpmJL7MvI4_dba9suw=s900-c-k-c0x00ffffff-no-rj",
+    "클리오":   "https://yt3.googleusercontent.com/uR9F9WbYQmXsFQ892r4i1wmmTNMJKmYUGNxj_aVyTb5k-udPj1EtkE2cXWMK86zt8k-oH_tDbKI=s900-c-k-c0x00ffffff-no-rj",
+    "퓌":       "https://yt3.googleusercontent.com/nmYHXCyJJNSdVJjsqQnavTxkqZX18h3rrNPbmWNyE2xy9Qj33d2xt5SzJjfkr8CzAvyW-kAsLA=s900-c-k-c0x00ffffff-no-rj",
+    "홀리카홀리카":"https://yt3.googleusercontent.com/QSVzaf9UjZmjgU8NdqhHyY9P1V0UqDu__P2Ye-sBKhY-i-mAExwOWTQGJeBORLQaFqcTfCCH8Eo=s900-c-k-c0x00ffffff-no-rj",
+    "롬앤":     "https://yt3.googleusercontent.com/pNAHQyGIFMUGmOp9j9bQZgNkVOgA4oeUedYPaDPdsX9tkRIw7sZYKTwfU8FT_tfrq48KH5eX=s900-c-k-c0x00ffffff-no-rj",
+    "스킨푸드": "https://yt3.googleusercontent.com/cfq92Rsp49XOPhOdNeJLG2bOdDRijetVtL49RsAM-_87CbKgX4Z3GBQFAVoBCcQzqOCueLud=s900-c-k-c0x00ffffff-no-rj",
+    "메이크프렘":"https://yt3.googleusercontent.com/ytc/AIdro_lfPgE9arjYkx3RAXRoUYw1ZzV3l2sVgwZ6jLCuse5lvHo=s900-c-k-c0x00ffffff-no-rj",
+    "네이밍":   "https://yt3.googleusercontent.com/ytc/AIdro_n-DA9EE6pDErMUlamAV5uTIASuT3UtakvUS6reFZ4uuA=s900-c-k-c0x00ffffff-no-rj",
+  };
+
+  // 데이터 (전체 카테고리 · 사분면별 상위 4개, 총 유지일수 내림차순)
+  const DATA = {
+    balanced:  [["메디힐",30,1158,38.6],["아누아",30,560,18.7],["메디큐브",22,396,18.0],["달바",16,357,22.3]],
+    portfolio: [["에스트라",29,458,15.8],["토리든",39,455,11.7],["라로슈포제",26,367,14.1],["넘버즈인",20,280,14.0]],
+    signature: [["어노브",5,365,73.0],["클리오",10,317,31.7],["퓌",10,247,24.7],["홀리카홀리카",3,230,76.7]],
+    scatter:   [["롬앤",10,169,16.9],["스킨푸드",9,156,17.3],["메이크프렘",10,140,14.0],["네이밍",8,122,15.2]],
+  };
+
+  document.querySelectorAll('.brands').forEach(box=>{
+    DATA[box.dataset.quad].forEach(([name,p,d,a])=>{
+      const url = LOGOS[name];
+      const logo = url
+        ? `<div class="logo"><img src="${url}" alt="${name}"></div>`
+        : `<div class="logo">${name.slice(0,2)}</div>`;
+      box.insertAdjacentHTML('beforeend',
+        `<div class="brand">${logo}
+           <div class="bname">${name}</div>
+           <div class="bstat">제품 ${p} · 평균 ${a}일</div>
+         </div>`);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클리오 월별 발행량 (2026년 1~6월)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;
+    background:#ffffff; color:#1a1a1a;
+    display:flex; justify-content:center; padding:48px 24px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{ width:100%; max-width:920px; }
+  .head{ text-align:center; margin-bottom:26px; }
+  .head .eyebrow{ font-size:13px; letter-spacing:.08em; color:#3b82f6; font-weight:600; }
+  .head h1{ font-size:23px; font-weight:700; margin-top:8px; letter-spacing:-.02em; }
+  .chart-wrap{ position:relative; height:480px; }
+  .foot{ margin-top:24px; font-size:11.5px; color:#aeb4bd; line-height:1.7; text-align:center; }
+  .foot b{ color:#8a8f98; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="head">
+    <div class="eyebrow">CLIO · 2026 상반기</div>
+    <h1>클리오 월별 발행량 (YT vs IG · 유가/무가)</h1>
+  </div>
+  <div class="chart-wrap"><canvas id="chart"></canvas></div>
+  <div class="foot">
+    <b>발행량</b> = 해당 기간동안 클리오 제품을 언급한 고유 컨텐츠 수 ·
+    
+  </div>
+</div>
+
+<script>
+  Chart.register(ChartDataLabels);
+
+  const labels = ["2026-01","2026-02","2026-03","2026-04","2026-05","2026-06"];
+  // [yt_video, yt_ppl, ig_post, ig_ppl]
+  const raw = {
+    yt_video:[201,213,259,85,151,169],
+    yt_ppl:  [6,29,13,4,24,14],
+    ig_post: [40,74,92,71,138,63],
+    ig_ppl:  [21,55,7,36,47,7],
+  };
+  const yt_free = raw.yt_video.map((v,i)=>v-raw.yt_ppl[i]);
+  const ig_free = raw.ig_post.map((v,i)=>v-raw.ig_ppl[i]);
+  const ytTotal = raw.yt_video, igTotal = raw.ig_post;
+
+  const C = { ytFree:'#bccde2', ytPaid:'#4f7cb3', igFree:'#abdcc8', igPaid:'#2f9070' };
+
+  new Chart(document.getElementById('chart'), {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        { label:'YT 무가', data:yt_free, backgroundColor:C.ytFree, stack:'YT',
+          datalabels:{display:false} },
+        { label:'YT 유가', data:raw.yt_ppl, backgroundColor:C.ytPaid, stack:'YT',
+          borderRadius:{topLeft:4,topRight:4},
+          datalabels:{ display:true, anchor:'end', align:'end', offset:2,
+            color:'#334a6f', font:{size:13,weight:'700'},
+            formatter:(v,ctx)=>ytTotal[ctx.dataIndex] } },
+        { label:'IG 무가', data:ig_free, backgroundColor:C.igFree, stack:'IG',
+          datalabels:{display:false} },
+        { label:'IG 유가', data:raw.ig_ppl, backgroundColor:C.igPaid, stack:'IG',
+          borderRadius:{topLeft:4,topRight:4},
+          datalabels:{ display:true, anchor:'end', align:'end', offset:2,
+            color:'#1f6b4f', font:{size:13,weight:'700'},
+            formatter:(v,ctx)=>igTotal[ctx.dataIndex] } },
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      layout:{ padding:{ top:24 } },
+      scales:{
+        x:{ stacked:true, grid:{display:false},
+            ticks:{ font:{size:13, weight:'600'}, color:'#6b7280' } },
+        y:{ stacked:true, beginAtZero:true,
+            title:{ display:true, text:'발행건수 (고유)', font:{size:12}, color:'#9aa1ab' },
+            grid:{ color:'#f0f1f3' }, border:{display:false},
+            ticks:{ color:'#aeb4bd', font:{size:11} } },
+      },
+      plugins:{
+        legend:{ position:'top', align:'end',
+          labels:{ usePointStyle:true, pointStyle:'rectRounded', boxWidth:12, boxHeight:12,
+                   padding:16, font:{size:12.5, weight:'600'}, color:'#4b5563' } },
+        tooltip:{ callbacks:{ label:(c)=>`${c.dataset.label}: ${c.parsed.y}건` } },
+        datalabels:{}
+      }
+    }
+  });
+</script>
+</body>
+</html>
