@@ -1,0 +1,40 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 경쟁 4사 도달 전환율</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd;--clio:#eb6834}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1000px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.chart{width:100%;height:360px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eef7fa;border:1px solid #cce7ee;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)} .take .c{color:var(--clio);font-weight:700}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 경쟁 4사 · 도달 전환율</div>
+  <h1>네이밍은 최대형 인플루언서를 쓰고도 도달 전환이 최하위</h1>
+  <p class="lead">도달 전환율 = <b>브랜드 릴스 실제 조회 ÷ 그 릴스를 올린 크리에이터가 평소 내는 조회</b>. 100%면 평소만큼 터진 것. 막대 옆 = (평소 조회 → 실제 조회).</p>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 4사 중 <b>네이밍만 유독 낮다(13%)</b>. 네이밍은 가장 큰 크리에이터(평소 4.9만 조회)에 얹지만 실제 릴스는 그 <b>13%</b>밖에 안 퍼진다 — 큰 계정에 의존하는데 콘텐츠 도달 전환은 최하. 반면 <b>VDL·정샘물·클리오는 28~31%로 비슷하게 무난</b>하다. <span class="c">클리오</span>는 28%로 이 축에선 평범 — 크리에이터 체급(평소 2만)도 전환도 중간이다. (상관 관찰)</div>
+  <p class="foot">릴스 한정. 평소 조회 = 크리에이터 최근10개 오가닉 릴스 평균조회 중앙값. 실제 조회 = 브랜드 릴스 조회 중앙값. 기간 2025-09~2026-06.</p>
+</div>
+<script>
+const D=[{"b": "VDL", "pot": 14899, "act": 4554, "conv": 30.6}, {"b": "정샘물", "pot": 32800, "act": 9425, "conv": 28.7}, {"b": "클리오", "pot": 19589, "act": 5547, "conv": 28.3}, {"b": "네이밍", "pot": 49042, "act": 6157, "conv": 12.6}];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ grid:{left:70,right:150,top:10,bottom:34},
+ tooltip:{trigger:'item',formatter:d=>d.data.b+'<br/>도달 전환율 '+d.value+'%<br/>평소 '+d.data.pot.toLocaleString()+' → 실제 '+d.data.act.toLocaleString()},
+ xAxis:{type:'value',name:'도달 전환율(%)',nameLocation:'middle',nameGap:26,max:100,axisLabel:{formatter:'{value}%',color:'#898781'},splitLine:{lineStyle:{color:'#ecebe6'}}},
+ yAxis:{type:'category',data:D.map(d=>d.b),axisLine:{lineStyle:{color:'#c3c2b7'}},axisTick:{show:false},axisLabel:{color:'#52514e',fontWeight:700,fontSize:13}},
+ series:[{type:'bar',barWidth:'50%',
+   data:D.map(d=>({value:d.conv,b:d.b,pot:d.pot,act:d.act,
+     itemStyle:{color:d.b==='클리오'?'#eb6834':'#0e9bbd',borderRadius:[0,4,4,0]}})),
+   label:{show:true,position:'right',color:'#52514e',fontSize:12,fontWeight:700,
+     formatter:p=>p.value+'%   (평소 '+Math.round(p.data.pot/1000)+'천 → 실제 '+Math.round(p.data.act/1000)+'천)'}}]
+});
+</script></body></html>

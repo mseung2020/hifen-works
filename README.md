@@ -9,6 +9,7 @@
 - [4월_insta_label_prompt](4월_insta_label_prompt/) — 인스타 계정을 6개 Layer로 점수화하고 오디언스까지 추정하는 라벨링 프롬프트
 - [4월_youtube_comment_prompt](4월_youtube_comment_prompt/) — 유튜브 댓글로 시청자 성별·연령 분석을 검증하고 이상치를 재분배하는 프롬프트
 - [5월_insta_trend_prompt](5월_insta_trend_prompt/) — 트렌드 클러스터를 추출해 광고주 인사이트·트렌드 스토리를 생성하는 Dify 워크플로우 (자기검증 + Python 사실검증)
+- [5월_youtube_ai_analysis](5월_youtube_ai_analysis/) — 자연어로 유튜브 크리에이터를 탐색하는 Creator Insights 플랫폼의 코드·시스템 기술 분석 문서
 - [6월_insta_challenge_prompt](6월_insta_challenge_prompt/) — 릴스 오리지널 오디오 후보 풀에서 챌린지성 콘텐츠 10개를 선별·랭킹·작명하는 프롬프트
 
 ### 백엔드 / 코드
@@ -26,8 +27,9 @@
 - [5월_insta_language_analysis](5월_insta_language_analysis/) — 경쟁 브랜드 광고 캡션의 표현 패턴 점유율·언어 공백을 비교하는 프로토타입
 - [6월_ad_market_headline](6월_ad_market_headline/) — 광고시장 일일 사건을 헤드라인 10선 카드 피드로 정리하는 마케터 데일리 대시보드
 - [6월_LG_data_insight](6월_LG_data_insight/) — 광고·올리브영·크리에이터 데이터를 회귀·상관·시계열로 분석해 만화·카드뉴스 리포트로 마감한 인사이트 프로젝트
-- [6월_Abib_data_insight](6월_Abib_data_insight/) — 아비브 브랜드의 크리에이터 티어 분석을 담은 Flask 간이 리포트 앱
-- [6월_Clio_data_insight](6월_Clio_data_insight/) — 클리오·페리페라의 발행량·올리브영 랭킹·조회수를 HTML로 시각화한 간이 리포트
+- [6월_Abib_data_insight](6월_Abib_data_insight/) — LG 카드뉴스 포맷에 아비브 브랜드를 추가해 마감한 통합 TOP 발행량 리포트
+- [6월_ad_library_filter](6월_ad_library_filter/) — 메타 광고 라이브러리 데이터에서 브랜드를 식별·분류하는 규칙·검증 파이프라인 + 카드뉴스 보고
+- [7월_cution_data_chart](7월_cution_data_chart/) — 메이크업 쿠션 시장을 다각도로 분석한 3장 내러티브 리포트 + 커스텀 차트 웹툴
 
 ### 라벨링
 - [3월_youtube_insta_label](3월_youtube_insta_label/) — 유광기 어드민에서 유튜브·인스타 콘텐츠의 광고 브랜드를 태깅하는 라벨링 업무 + 보고서

@@ -1,0 +1,49 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 1인 1게시</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:960px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 4px}
+.legend{display:flex;gap:16px;margin:8px 0 2px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.dot{width:12px;height:12px;border-radius:50%}
+.chart{width:100%;height:520px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eef7fa;border:1px solid #cce7ee;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 크리에이터 활용 · 1인 1게시</div>
+  <h1>매 게시물이 다른 계정 — 소수에 충성 아닌 "넓게 얕게" 시딩</h1>
+  <p class="lead">점 하나 = 브랜드. <b>가로 = 크리에이터(계정/채널) 수</b>, <b>세로 = 게시물(영상) 수</b>. 회색 45°선 = <b>게시물 = 크리에이터(1인 1게시)</b>. 선에 붙을수록 "한 계정이 한 번만". <b>이름표 = 경쟁 4사(클리오·정샘물·VDL·네이밍)</b>.</p>
+  <div class="legend">
+    <span class="lg"><span class="dot" style="background:#0e9bbd"></span>인스타</span>
+    <span class="lg"><span class="dot" style="background:#FF3B30"></span>유튜브</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> <b style="color:#0e9bbd">인스타(파랑)</b> 점들은 전부 <b>45°선에 딱 붙는다</b> = 게시물 수 ≈ 크리에이터 수(전 제품 1인당 1.0~1.1건). 같은 인플루언서를 반복 기용하는 게 아니라 <b>매 게시물이 다른 계정</b> — 소수 파워 인플루언서 충성이 아니라 <b>다수 소형 계정에 넓게 뿌리는</b> 구조. <b style="color:#FF3B30">유튜브(빨강)</b>는 선보다 살짝 위 = 채널당 1.2~1.4편으로 약간의 반복이 있다.</div>
+  <p class="foot">기간 2025-09~2026-06. 인스타: 고유 계정(user_id) vs 게시물. 유튜브: 고유 채널(channel_id) vs 영상. 핵심 13종.</p>
+</div>
+<script>
+const IG=[{"b": "정샘물", "cr": 99, "po": 100}, {"b": "VDL", "cr": 71, "po": 73}, {"b": "퓌", "cr": 132, "po": 138}, {"b": "헤라", "cr": 26, "po": 27}, {"b": "클리오", "cr": 68, "po": 73}, {"b": "비디비치", "cr": 67, "po": 69}, {"b": "에스쁘아", "cr": 5, "po": 5}, {"b": "네이밍", "cr": 91, "po": 97}, {"b": "투크", "cr": 21, "po": 21}, {"b": "블랑디바", "cr": 16, "po": 17}, {"b": "라네즈", "cr": 133, "po": 144}, {"b": "어바웃톤", "cr": 41, "po": 41}, {"b": "파넬", "cr": 32, "po": 32}], YT=[{"b": "정샘물", "cr": 144, "po": 187}, {"b": "VDL", "cr": 78, "po": 114}, {"b": "퓌", "cr": 62, "po": 83}, {"b": "헤라", "cr": 101, "po": 137}, {"b": "클리오", "cr": 160, "po": 217}, {"b": "비디비치", "cr": 101, "po": 169}, {"b": "에스쁘아", "cr": 32, "po": 38}, {"b": "네이밍", "cr": 153, "po": 196}, {"b": "투크", "cr": 8, "po": 9}, {"b": "블랑디바", "cr": 30, "po": 35}, {"b": "라네즈", "cr": 65, "po": 103}, {"b": "어바웃톤", "cr": 114, "po": 142}, {"b": "파넬", "cr": 109, "po": 130}], MX=300;
+const TG=['클리오','정샘물','VDL','네이밍'];   // 경쟁 4사 강조
+const OFF={'클리오':[-14,7],'VDL':[13,7],'네이밍':[-15,7],'정샘물':[15,7]};  // 인스타 라벨 좌우 분리(겹침 방지)
+const mk=(d,color)=>({value:[d.cr,d.po],b:d.b,itemStyle:{color:color,borderColor:'#fff',borderWidth:1.5,opacity:.88}});
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'item',formatter:d=>d.data.b?d.data.b+'<br/>'+d.seriesName+'<br/>크리에이터 '+d.value[0]+' · 게시물 '+d.value[1]+' (1인당 '+(d.value[1]/d.value[0]).toFixed(2)+'건)':''},
+ grid:{left:56,right:30,top:20,bottom:50},
+ xAxis:{type:'value',name:'크리에이터(계정/채널) 수',nameLocation:'middle',nameGap:32,min:0,max:MX,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781'}},
+ yAxis:{type:'value',name:'게시물(영상) 수',nameLocation:'middle',nameGap:40,min:0,max:MX,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781'}},
+ series:[
+   {type:'line',data:[[0,0],[MX,MX]],showSymbol:false,lineStyle:{type:'dashed',color:'#c3c2b7',width:2},z:1,silent:true},
+   {name:'인스타',type:'scatter',symbolSize:14,z:4,data:IG.map(d=>{const o=mk(d,'#0e9bbd');if(TG.includes(d.b))o.label={show:true,formatter:d.b,position:'bottom',offset:OFF[d.b],color:'#0b0b0b',fontSize:11,fontWeight:700};return o;})},
+   {name:'유튜브',type:'scatter',symbolSize:14,z:3,data:YT.map(d=>mk(d,'#FF3B30')),
+     label:{show:true,formatter:p=>TG.includes(p.data.b)?p.data.b:'',position:'top',color:'#0b0b0b',fontSize:11,fontWeight:700}}
+ ]});
+</script></body></html>

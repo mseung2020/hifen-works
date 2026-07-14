@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #eef2f7;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 52px 32px;
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, sans-serif;
+  }
+  .wrap {
+    background: #fff;
+    border-radius: 28px;
+    padding: 48px 52px 52px;
+    box-shadow: 0 6px 48px rgba(0,0,0,0.09);
+  }
+  .ttl {
+    font-size: 13px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .hdl {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 44px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="ttl">Creator Insights</div>
+  <div class="hdl">광고주가 유튜버를 찾는 방식</div>
+
+<svg width="920" height="440" viewBox="0 0 920 440">
+<defs>
+  <marker id="a" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+    <path d="M0,1 L8,4 L0,7 Z" fill="#cbd5e1"/>
+  </marker>
+  <marker id="ar" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+    <path d="M0,1 L8,4 L0,7 Z" fill="#f97316"/>
+  </marker>
+</defs>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  SECTION 1 — 메인 파이프라인 (5 블록)              -->
+<!-- ══════════════════════════════════════════════════ -->
+
+<!-- ── 블록 1: 마케터 ── -->
+<rect x="13" y="16" width="158" height="140" rx="20" fill="#1d4ed8"/>
+<!-- person head -->
+<circle cx="92" cy="62" r="18" fill="white" opacity="0.95"/>
+<!-- person shoulders -->
+<path d="M 60,108 Q 60,84 92,84 Q 124,84 124,108" fill="white" opacity="0.95" stroke="none"/>
+<text x="92" y="138" text-anchor="middle" font-size="16" font-weight="800" fill="white">마케터</text>
+<text x="92" y="154" text-anchor="middle" font-size="11.5" fill="rgba(255,255,255,0.7)">자연어로 채팅</text>
+
+<!-- arrow →  -->
+<line x1="172" y1="86" x2="199" y2="86" stroke="#cbd5e1" stroke-width="4" marker-end="url(#a)"/>
+
+<!-- ── 블록 2: 의도 파악 ── -->
+<rect x="201" y="16" width="158" height="140" rx="20" fill="#7c3aed"/>
+<!-- lightning bolt -->
+<path d="M 288,38 L 268,80 L 283,80 L 265,112 L 298,74 L 283,74 Z" fill="white" opacity="0.95"/>
+<text x="280" y="138" text-anchor="middle" font-size="16" font-weight="800" fill="white">의도 파악</text>
+<text x="280" y="154" text-anchor="middle" font-size="11.5" fill="rgba(255,255,255,0.7)">8가지로 분류</text>
+
+<!-- arrow → -->
+<line x1="360" y1="86" x2="387" y2="86" stroke="#cbd5e1" stroke-width="4" marker-end="url(#a)"/>
+
+<!-- ── 블록 3: 필터 생성 ── -->
+<rect x="389" y="16" width="158" height="140" rx="20" fill="#ea580c"/>
+<!-- funnel -->
+<path d="M 441,40 L 501,40 L 483,66 L 483,96 L 459,96 L 459,66 Z" fill="white" opacity="0.95"/>
+<text x="468" y="138" text-anchor="middle" font-size="16" font-weight="800" fill="white">필터 생성</text>
+<text x="468" y="154" text-anchor="middle" font-size="11.5" fill="rgba(255,255,255,0.7)">조건 자동 변환</text>
+
+<!-- arrow → -->
+<line x1="548" y1="86" x2="575" y2="86" stroke="#cbd5e1" stroke-width="4" marker-end="url(#a)"/>
+
+<!-- ── 블록 4: 채널 탐색 ── -->
+<rect x="577" y="16" width="158" height="140" rx="20" fill="#059669"/>
+<!-- database cylinder -->
+<ellipse cx="656" cy="50" rx="28" ry="10" fill="white" opacity="0.95"/>
+<rect x="628" y="50" width="56" height="42" fill="white" opacity="0.95"/>
+<ellipse cx="656" cy="92" rx="28" ry="10" fill="white" opacity="0.95"/>
+<ellipse cx="656" cy="71" rx="28" ry="10" fill="none" stroke="#059669" stroke-width="1.5"/>
+<text x="656" y="138" text-anchor="middle" font-size="16" font-weight="800" fill="white">채널 탐색</text>
+<text x="656" y="154" text-anchor="middle" font-size="11.5" fill="rgba(255,255,255,0.7)">DB 자동 조회</text>
+
+<!-- arrow → -->
+<line x1="736" y1="86" x2="763" y2="86" stroke="#cbd5e1" stroke-width="4" marker-end="url(#a)"/>
+
+<!-- ── 블록 5: 결과 전달 ── -->
+<rect x="765" y="16" width="142" height="140" rx="20" fill="#d97706"/>
+<!-- bar chart -->
+<rect x="802" y="82" width="14" height="14" rx="2" fill="white" opacity="0.95"/>
+<rect x="820" y="62" width="14" height="34" rx="2" fill="white" opacity="0.95"/>
+<rect x="838" y="40" width="14" height="56" rx="2" fill="white" opacity="0.95"/>
+<text x="836" y="138" text-anchor="middle" font-size="16" font-weight="800" fill="white">결과 전달</text>
+<text x="836" y="154" text-anchor="middle" font-size="11.5" fill="rgba(255,255,255,0.7)">목록·분석·비교</text>
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  구분선                                            -->
+<!-- ══════════════════════════════════════════════════ -->
+<line x1="0" y1="185" x2="920" y2="185" stroke="#f1f5f9" stroke-width="2"/>
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  SECTION 2 — AI 의도 분류 8가지                    -->
+<!-- ══════════════════════════════════════════════════ -->
+
+<text x="460" y="210" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="1.5">AI 가 나누는 8 가지 상황</text>
+
+<!-- 8 chips: width=100, height=40, gap=8.9, start x=10 -->
+
+<!-- 채널 탐색 -->
+<rect x="10" y="220" width="100" height="40" rx="10" fill="#dbeafe" stroke="#93c5fd" stroke-width="0"/>
+<text x="60" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">채널 탐색</text>
+
+<!-- 유사 채널 -->
+<rect x="119" y="220" width="100" height="40" rx="10" fill="#d1fae5"/>
+<text x="169" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">유사 채널</text>
+
+<!-- 조건 조정 -->
+<rect x="228" y="220" width="100" height="40" rx="10" fill="#ede9fe"/>
+<text x="278" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#4c1d95">조건 조정</text>
+
+<!-- 채널 분석 -->
+<rect x="337" y="220" width="100" height="40" rx="10" fill="#fce7f3"/>
+<text x="387" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#831843">채널 분석</text>
+
+<!-- 채널 비교 -->
+<rect x="446" y="220" width="100" height="40" rx="10" fill="#fff7ed"/>
+<text x="496" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">채널 비교</text>
+
+<!-- 결과 설명 -->
+<rect x="555" y="220" width="100" height="40" rx="10" fill="#fefce8"/>
+<text x="605" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#713f12">결과 설명</text>
+
+<!-- 광고 평가 -->
+<rect x="664" y="220" width="100" height="40" rx="10" fill="#fff1f2"/>
+<text x="714" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">광고 평가</text>
+
+<!-- 일반 대화 -->
+<rect x="773" y="220" width="100" height="40" rx="10" fill="#f1f5f9"/>
+<text x="823" y="245" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">일반 대화</text>
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  구분선                                            -->
+<!-- ══════════════════════════════════════════════════ -->
+<line x1="0" y1="278" x2="920" y2="278" stroke="#f1f5f9" stroke-width="2"/>
+
+
+<!-- ══════════════════════════════════════════════════ -->
+<!--  SECTION 3 — 자동 완화 루프                        -->
+<!-- ══════════════════════════════════════════════════ -->
+
+<text x="460" y="304" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="1.5">결과 없을 때 — 자동 완화 시스템</text>
+
+<!-- 4 process boxes, connected horizontally, feedback loop below -->
+<!-- Box width=174, gap=22, total=4*174+3*22=762, start=(920-762)/2=79 -->
+
+<!-- 필터 검증 -->
+<rect x="79" y="316" width="174" height="58" rx="12" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+<text x="166" y="341" text-anchor="middle" font-size="15" font-weight="800" fill="#334155">필터 검증</text>
+<text x="166" y="362" text-anchor="middle" font-size="11" fill="#94a3b8">5단계 자동 정제</text>
+
+<!-- → -->
+<line x1="254" y1="345" x2="274" y2="345" stroke="#94a3b8" stroke-width="3" marker-end="url(#a)"/>
+
+<!-- DB 조회 -->
+<rect x="275" y="316" width="174" height="58" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="2"/>
+<text x="362" y="341" text-anchor="middle" font-size="15" font-weight="800" fill="#14532d">채널 조회</text>
+<text x="362" y="362" text-anchor="middle" font-size="11" fill="#15803d">DB 필터링 실행</text>
+
+<!-- → -->
+<line x1="450" y1="345" x2="470" y2="345" stroke="#94a3b8" stroke-width="3" marker-end="url(#a)"/>
+
+<!-- 결과 없음 -->
+<rect x="471" y="316" width="174" height="58" rx="12" fill="#fff1f2" stroke="#fca5a5" stroke-width="2"/>
+<text x="558" y="341" text-anchor="middle" font-size="15" font-weight="800" fill="#9f1239">결과 없음</text>
+<text x="558" y="362" text-anchor="middle" font-size="11" fill="#e11d48">조건이 너무 좁음</text>
+
+<!-- → (red) -->
+<line x1="646" y1="345" x2="666" y2="345" stroke="#f97316" stroke-width="3" marker-end="url(#ar)"/>
+
+<!-- 조건 완화 -->
+<rect x="667" y="316" width="174" height="58" rx="12" fill="#fff7ed" stroke="#fdba74" stroke-width="2"/>
+<text x="754" y="341" text-anchor="middle" font-size="15" font-weight="800" fill="#9a3412">조건 완화</text>
+<text x="754" y="362" text-anchor="middle" font-size="11" fill="#ea580c">최대 3회 재시도</text>
+
+<!-- 피드백 루프 (curved arrow back) -->
+<path d="M 754,375 Q 754,416 460,416 Q 166,416 166,375"
+      stroke="#f97316" stroke-width="2.5" fill="none"
+      stroke-dasharray="6,4" marker-end="url(#ar)"/>
+<text x="460" y="434" text-anchor="middle" font-size="12" font-weight="700" fill="#f97316">범위를 자동으로 넓혀 다시 검색</text>
+
+</svg>
+
+</div>
+</body>
+</html>

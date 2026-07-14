@@ -1,0 +1,47 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 클리오 유가 몰빵</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd;--clio:#eb6834}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1000px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--clio);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.legend{display:flex;gap:16px;margin:8px 0 2px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.ln{width:18px;height:3px;border-radius:2px}
+.chart{width:100%;height:440px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#fdf1ea;border:1px solid #f6d8c6;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#3a2417}
+.take b{color:var(--clio)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 클리오 vs 시장 · 유가 집행 패턴</div>
+  <h1>클리오는 유가를 "몰아서" 태운다 — 시장은 꾸준한데 클리오만 롤러코스터</h1>
+  <p class="lead">월별 <b>유튜브 유가(광고) 비율</b> — <b style="color:#eb6834">클리오</b> · <b style="color:#2a78d6">정샘물</b> vs <b style="color:#9a9992">시장 평균(13종)</b>. (유튜브 기준: 인스타는 2026-03부터라 전 기간 일관 비교 위해 제외)</p>
+  <div class="legend">
+    <span class="lg"><span class="ln" style="background:#eb6834"></span>클리오</span>
+    <span class="lg"><span class="ln" style="background:#2a78d6"></span>정샘물</span>
+    <span class="lg"><span class="ln" style="background:#9a9992"></span>시장 평균</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 시장(회색)은 매달 <b>16~32%로 완만</b>(±4.9%p), 1위 <b style="color:#2a78d6">정샘물</b>도 6~43%로 비교적 완만(±10.5%p)한데, <b>클리오만 0%(10·12·1월 오가닉) ↔ 65~75%(2·5월 유가 폭격)</b>로 크게 출렁인다(±26.2%p — 시장의 5.3배·정샘물의 2.5배). 누적 유가비율은 45%로 시장과 같지만, <b>클리오만 "평소 오가닉 → 특정 달 유가 몰빵"</b> 캠페인형 집행이다.</div>
+  <p class="foot">유가 = 유튜브 ads_yn 또는 ppl. 비율 = 그 달 유가 영상 ÷ 전체 영상. 시장 = 핵심 13종 pooled. 기간 2025-09~2026-06. 인스타 제외(수집 2026-03~).</p>
+</div>
+<script>
+const LBL=["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"], CLIO=[17, 0, 32, 0, 0, 65, 27, 50, 75, 11], JSM=[15, 16, 43, 16, 6, 38, 20, 25, 22, 17], MKT=[19, 16, 31, 20, 27, 32, 23, 27, 26, 23];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'axis',valueFormatter:v=>v+'%'},
+ grid:{left:52,right:30,top:20,bottom:36},
+ xAxis:{type:'category',data:LBL,boundaryGap:false,axisTick:{show:false},axisLine:{lineStyle:{color:'#c3c2b7'}},axisLabel:{color:'#898781'}},
+ yAxis:{type:'value',name:'유가 비율(%)',min:0,max:80,nameTextStyle:{color:'#898781',fontSize:11},splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781',formatter:'{value}%'}},
+ series:[
+   {name:'시장 평균',type:'line',data:MKT,smooth:false,showSymbol:true,symbolSize:6,lineStyle:{width:2.5,color:'#9a9992',type:'dashed'},itemStyle:{color:'#9a9992'},z:2},
+   {name:'정샘물',type:'line',data:JSM,smooth:false,showSymbol:true,symbolSize:7,lineStyle:{width:2.5,color:'#2a78d6'},itemStyle:{color:'#2a78d6'},z:3},
+   {name:'클리오',type:'line',data:CLIO,smooth:false,showSymbol:true,symbolSize:9,lineStyle:{width:3.5,color:'#eb6834'},itemStyle:{color:'#eb6834'},z:5,
+     label:{show:true,position:'top',color:'#eb6834',fontSize:11,fontWeight:700,formatter:'{c}%'}}
+ ]});
+</script></body></html>

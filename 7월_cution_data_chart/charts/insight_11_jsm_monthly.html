@@ -1,0 +1,58 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 정샘물 월간랭킹(원본)·유튜브 · 9~6월</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1080px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:23px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 8px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 4px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.dot{width:12px;height:12px;border-radius:3px}.bar{width:20px;height:4px;border-radius:2px}
+.chart{width:100%;height:460px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 정샘물 에센셜 스킨 누더 · 2025.09~2026.06 (월간 원본·유튜브)</div>
+  <h1>정샘물: 왕의 유일한 흔들림 — 월간으로 봐도 2월만 꺾인다</h1>
+  <p class="lead"><b>막대(왼쪽 축)</b> = 월간 유튜브 발행량, <b>점·선(오른쪽 축)</b> = 월간 올영 메이크업 <b>랭킹 원본</b>(위=상위). 노란 구간 = 2월.</p>
+  <div class="legend">
+    <span class="lg"><span class="dot" style="background:#FF3B30"></span>유튜브 발행(월)</span>
+    <span class="lg"><span class="bar" style="background:#0e9bbd"></span>월간 메이크업 순위(원본·위=상위)</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="take">
+    <b>해석:</b> 월 단위로 뭉쳐서 봐도 정샘물은 9월~1월 내내 <b>월간 순위 한 자릿수</b>를 지켰고, <b>2월 딱 한 달만 순위가 꺾였다가</b> 곧바로 회복한다. 주간에서 본 2월 흔들림이 월간에서도 유일한 골로 남는다. (상관 관찰)
+  </div>
+  <p class="foot">막대 = 월별 제품 언급 고유 유튜브 영상(인스타 제외). 점·선 = 올영 메이크업 <b>월간 랭킹 원본</b>(oliveyoung_trend_m_rank_월간, SKU 최고순위), 오른쪽 축. 기간 2025-09~2026-06.</p>
+</div>
+<script>
+const lbl=["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"], ytArr=[20, 31, 37, 31, 18, 8, 10, 8, 18, 7], rankPts=[3, null, 90, 1, 1, 1, 22, 1, 7, 6];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({
+  backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+  tooltip:{trigger:'axis',axisPointer:{type:'line'},
+    formatter:p=>{let yt=0,rk=null;p.forEach(x=>{if(x.seriesName==='유튜브')yt=x.data||0;if(x.seriesName==='월간 순위')rk=x.data;});
+      return p[0].axisValue+'<br/>월간 순위 '+(rk==null?'권외':rk+'위')+'<br/>YT 발행(월) '+yt+'건';}},
+  grid:{left:52,right:58,top:24,bottom:36},
+  xAxis:{type:'category',data:lbl,boundaryGap:true,axisTick:{show:false},axisLine:{lineStyle:{color:'#c3c2b7'}},
+    axisLabel:{color:'#898781',fontSize:12}},
+  yAxis:[
+    {type:'value',name:'월 발행 건수',position:'left',nameTextStyle:{color:'#898781',fontSize:11},splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781'}},
+    {type:'value',name:'월간 순위(위=상위)',position:'right',inverse:true,min:1,max:100,nameTextStyle:{color:'#0e9bbd',fontSize:11},splitLine:{show:false},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}}
+  ],
+  series:[
+    {name:'유튜브',type:'bar',yAxisIndex:0,data:ytArr,barWidth:'46%',itemStyle:{color:'#FF3B30',borderRadius:[3,3,0,0]},
+      label:{show:true,position:'top',color:'#898781',fontSize:11,formatter:p=>p.value||''}},
+    {name:'월간 순위',type:'line',yAxisIndex:1,data:rankPts,smooth:false,connectNulls:true,showSymbol:true,symbolSize:9,z:5,
+      lineStyle:{width:2.5,color:'#0e9bbd'},itemStyle:{color:'#0e9bbd'},
+      label:{show:true,position:'bottom',color:'#0e9bbd',fontSize:11,fontWeight:700,formatter:p=>p.value==null?'':p.value+'위'},
+      markArea:{silent:true,itemStyle:{color:'rgba(250,205,70,0.28)'},data:[[{xAxis:'Feb'},{xAxis:'Feb'}]]}}
+  ]
+});
+</script></body></html>

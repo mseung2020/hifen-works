@@ -1,0 +1,57 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 클리오 vs 정샘물 vs VDL 랭킹 격차</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--clio:#eb6834}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1040px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--clio);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 2px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.ln{width:18px;height:3px;border-radius:2px}
+.chart{width:100%;height:460px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#fdf1ea;border:1px solid #f6d8c6;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#3a2417}
+.take b{color:var(--clio)}
+.stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:12px}
+.stat{flex:1;min-width:180px;background:#f7f6f2;border-radius:10px;padding:10px 14px}
+.stat .n{font-size:12px;color:var(--ink2);font-weight:700}
+.stat .v{font-size:13px;color:var(--ink);margin-top:2px}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 클리오 vs 정샘물 vs VDL · 주간 랭킹 격차</div>
+  <h1>정샘물과의 격차, 좁혀지긴 했지만 클리오가 만든 격차 축소가 아니다</h1>
+  <p class="lead">주간 <b>메이크업 카테고리 랭킹</b>(위=상위) — 좌측 음영은 25년 9~12월, 우측은 26년 1~6월 구간.</p>
+  <div class="legend">
+    <span class="lg"><span class="ln" style="background:#eb6834"></span>클리오</span>
+    <span class="lg"><span class="ln" style="background:#0e9bbd"></span>정샘물</span>
+    <span class="lg"><span class="ln" style="background:#2f9e44"></span>VDL</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="stats">
+    <div class="stat"><div class="n" style="color:#eb6834">클리오</div><div class="v">P1 평균 43.8위 → P2 평균 42.7위</div></div>
+    <div class="stat"><div class="n" style="color:#0e9bbd">정샘물</div><div class="v">P1 평균 2.4위 → P2 평균 8.2위</div></div>
+    <div class="stat"><div class="n" style="color:#2f9e44">VDL</div><div class="v">P1 평균 50.2위 → P2 평균 37.4위</div></div>
+  </div>
+  <div class="take"><b>해석:</b> 정샘물과 클리오의 평균순위 격차는 P1 41.4위 차이에서 P2 34.5위 차이로 줄었다. 하지만 이건 클리오가 크게 올라와서가 아니라(P1 43.8위→P2 42.7위, 사실상 제자리), <b>정샘물이 2월 이후 흔들리며 순위를 다소 내준 영향</b>이 크다. 반면 같은 기간 <b>VDL은 P1 50.2위 → P2 37.4위로 실제로 순위를 끌어올렸다</b> — 이 구간에서 "격차를 스스로 좁힌" 브랜드는 클리오가 아니라 VDL이다.</div>
+  <p class="foot">순위 = 메이크업 카테고리 주간 랭킹 원본(oliveyoung_trend_m_rank_주간, 위=1위=상위). P1=2025-09~2025-12, P2=2026-01~2026-06. 평균은 관측된 주 기준(랭킹 미관측 주 제외). 상관 관찰이며 인과 단정 아님.</p>
+</div>
+<script>
+const LBL=["2025-09-01", "2025-09-08", "2025-09-15", "2025-09-22", "2025-09-29", "2025-10-06", "2025-10-13", "2025-10-20", "2025-10-27", "2025-11-03", "2025-11-10", "2025-11-17", "2025-11-24", "2025-12-01", "2025-12-08", "2025-12-15", "2025-12-22", "2025-12-29", "2026-01-05", "2026-01-12", "2026-01-19", "2026-01-26", "2026-02-02", "2026-02-09", "2026-02-16", "2026-02-23", "2026-03-02", "2026-03-09", "2026-03-16", "2026-03-23", "2026-03-30", "2026-04-06", "2026-04-13", "2026-04-20", "2026-04-27", "2026-05-04", "2026-05-11", "2026-05-18", "2026-05-25", "2026-06-01", "2026-06-08", "2026-06-15", "2026-06-22", "2026-06-29"], SERIES=[{"name": "\ud074\ub9ac\uc624", "color": "#eb6834", "data": [5, 13, 5, 15, 3, 36, 51, 60, 64, 89, 93, 91, null, null, null, null, null, null, 92, 64, 22, 69, 85, null, null, 89, 7, 2, 14, 10, 25, 62, 54, 46, 64, 64, null, 27, 83, 4, 14, 34, 25, 25]}, {"name": "\uc815\uc0d8\ubb3c", "color": "#0e9bbd", "data": [4, 1, 1, 2, 1, null, null, null, null, 4, 4, 3, 8, 2, 1, 1, 1, 1, 2, 1, 1, 2, 10, 42, 23, 18, 9, 3, 2, 3, 7, 21, 6, 5, 5, 6, 5, 8, 5, 10, 6, 7, 5, 2]}, {"name": "VDL", "color": "#2f9e44", "data": [62, 65, 57, 65, 72, 98, null, null, 89, 2, 1, 11, 6, 61, 69, 57, 50, 38, 35, 34, 25, 51, 93, null, null, null, 36, 15, 35, 11, 23, 52, 38, 43, 53, 71, null, 77, 78, 29, 12, 3, 2, 6]}], SPLIT_IDX=17;
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'axis',valueFormatter:v=>v==null?'권외':v+'위'},
+ grid:{left:52,right:30,top:20,bottom:36},
+ xAxis:{type:'category',data:LBL,boundaryGap:false,axisTick:{show:false},axisLine:{lineStyle:{color:'#c3c2b7'}},
+   axisLabel:{color:'#898781',interval:3,formatter:v=>v.slice(2,7)}},
+ yAxis:{type:'value',name:'주간 랭킹(위=상위)',inverse:true,min:1,max:100,nameTextStyle:{color:'#898781',fontSize:11},
+   splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781',formatter:'{value}위'}},
+ series:SERIES.map(s=>({name:s.name,type:'line',data:s.data,connectNulls:true,smooth:false,showSymbol:true,symbolSize:5,
+   lineStyle:{width:2.5,color:s.color},itemStyle:{color:s.color},z:3,
+   markArea: s.name==='클리오' ? {silent:true,itemStyle:{color:'rgba(160,160,150,0.08)'},
+     data:[[{xAxis:LBL[0]},{xAxis:LBL[SPLIT_IDX]}]]} : undefined}))
+});
+</script></body></html>

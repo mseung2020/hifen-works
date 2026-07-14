@@ -1,0 +1,39 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 평균 조회수 대비 광고 성과(개별 배율 중앙값 방식)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd;--red:#FF3B30;--green:#12a594}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1080px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 4px}
+.chart{width:100%;height:360px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:12px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+.warn{background:#fff4e5;border:1px solid #f6d8a8;border-radius:10px;padding:10px 14px;margin-top:12px;font-size:12.5px;color:#6b4a10}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 평균 조회수 대비 광고 성과 · 개별 배율 중앙값 방식</div>
+  <h1>크리에이터 한 명 한 명의 배율부터 구해서 다시 본 순위</h1>
+  <p class="lead">각 크리에이터의 "이번 광고 조회수 ÷ 평소 평균조회수" 배율을 먼저 구하고, 그 배율들의 중앙값을 브랜드별로 비교했습니다.</p>
+  <div id="bar" class="chart"></div>
+  <div class="take"><b>해석:</b> 상위권(클리오·VDL·퓌)과 최하위(파넬)는 공식 계산 방식(분자 중앙값÷분모 중앙값)과 결과가 비슷하지만, 중간권 순위는 이 방식에서 꽤 달라집니다.</div>
+  <div class="warn">⚠ 이 수치는 노션 리포트·도달전환율_릴스기준_검증.xlsx에 쓰인 공식 수치(분자 중앙값÷분모 중앙값)와 다른 계산법입니다. 두 수치를 혼동해서 인용하지 않도록 주의하세요.</div>
+  <p class="foot">배율 = 크리에이터별 (이번 광고 릴스 조회 중앙값 ÷ 평소 오가닉 릴스 평균조회). 매칭 크리에이터 25명 미만(저표본) 제외. 기간 2025-09~2026-06.</p>
+</div>
+<script>
+const D=[{"브랜드": "클리오", "릴스": 69, "크리에이터 표본": 64, "개별배율 중앙값(%)": 51.7, "차트 포함": "O"}, {"브랜드": "VDL", "릴스": 66, "크리에이터 표본": 64, "개별배율 중앙값(%)": 45.1, "차트 포함": "O"}, {"브랜드": "퓌", "릴스": 103, "크리에이터 표본": 98, "개별배율 중앙값(%)": 43.6, "차트 포함": "O"}, {"브랜드": "비디비치", "릴스": 61, "크리에이터 표본": 59, "개별배율 중앙값(%)": 36.1, "차트 포함": "O"}, {"브랜드": "라네즈", "릴스": 124, "크리에이터 표본": 117, "개별배율 중앙값(%)": 34.4, "차트 포함": "O"}, {"브랜드": "정샘물", "릴스": 54, "크리에이터 표본": 53, "개별배율 중앙값(%)": 32.1, "차트 포함": "O"}, {"브랜드": "어바웃톤", "릴스": 34, "크리에이터 표본": 34, "개별배율 중앙값(%)": 26.1, "차트 포함": "O"}, {"브랜드": "네이밍", "릴스": 93, "크리에이터 표본": 87, "개별배율 중앙값(%)": 24.9, "차트 포함": "O"}, {"브랜드": "파넬", "릴스": 25, "크리에이터 표본": 25, "개별배율 중앙값(%)": 20.2, "차트 포함": "O"}];
+const bar=echarts.init(document.getElementById('bar'),null,{devicePixelRatio:3});
+const sorted=[...D].sort((a,b)=>a['개별배율 중앙값(%)']-b['개별배율 중앙값(%)']);
+bar.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ grid:{left:70,right:64,top:8,bottom:30},
+ tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:p=>p[0].name+'<br/>개별배율 중앙값 '+p[0].value+'%'},
+ xAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#898781'},splitLine:{lineStyle:{color:'#ecebe6'}}},
+ yAxis:{type:'category',data:sorted.map(d=>d['브랜드']),axisLine:{lineStyle:{color:'#c3c2b7'}},axisTick:{show:false},axisLabel:{color:'#52514e',fontWeight:600}},
+ series:[{type:'bar',barWidth:'62%',data:sorted.map(d=>({value:d['개별배율 중앙값(%)'],itemStyle:{color:d['브랜드']==='클리오'?'#eb6834':(d['브랜드']==='파넬'?'#FF3B30':'#0e9bbd'),borderRadius:[0,4,4,0]}})),
+   label:{show:true,position:'right',formatter:p=>p.value+'%',color:'#52514e',fontWeight:700,fontSize:12}}]});
+</script></body></html>

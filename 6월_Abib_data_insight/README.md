@@ -1,26 +1,24 @@
 # Abib 브랜드 데이터 인사이트 리포트
 
-아비브(Abib) 브랜드를 대상으로 **크리에이터 티어 분석**을 담은 간이 리포트 Flask 앱입니다. 유튜브·인스타·제품·올리브영 랭킹 데이터를 가공해 브랜드가 어떤 체급(티어)의 크리에이터를 활용했는지 조회할 수 있게 정리했습니다.
+**LG 리포트(20번)의 카드뉴스 포맷을 재활용해 아비브(Abib) 브랜드를 TOP 발행량 편에 추가 진입**시키고, 이해관계자가 한눈에 읽을 수 있게 마감한 통합 카드뉴스 리포트입니다. 별도 앱을 띄우지 않고도 아비브의 시장 내 위치(체급별 발행량·TOP 진입)를 바로 확인할 수 있습니다.
 
 - **분야:** 데이터 분석
-- **결과물 형태:** Flask 조회 리포트 앱 + 목업 시안 모음
+- **결과물 형태:** 통합 카드뉴스 HTML (자체 완결형)
 
-## 실행
+## 결과물
 
-```
-pip install flask
-python app.py        # → static/abib_data.json 을 읽어 리포트 제공
-```
-> `static/abib_data.json`(사전 가공 결과)이 포함되어 있어 원천 CSV 없이 바로 실행됩니다. 데이터 갱신 시 `prepare_data.py`로 재생성.
+[`통합리포트_TOP발행량_아비브.html`](통합리포트_TOP발행량_아비브.html) — **메인 통합 리포트.** LG 리포트의 TOP 발행량 카드뉴스 포맷에 아비브 페이지를 추가해 브랜드 위치를 한눈에 보여줍니다. 브라우저로 바로 열람.
 
-## 구성
+- `목업 예시/` — 통합 리포트에 이르기까지의 카드뉴스 시안 모음 (TOP10/TOP100 발행량, 체급별 발행량 등)
 
-| 경로 | 설명 |
+## 부속: 티어 분석 Flask 앱 (초기 시도)
+통합 카드뉴스로 마감하기 전, 아비브 데이터를 티어 분석해 조회하는 Flask 앱으로도 시도했습니다.
+
+| 파일 | 설명 |
 |---|---|
-| `app.py` | Flask 앱. `static/abib_data.json`을 읽어 티어별 조회 API/리포트 제공 |
-| `prepare_data.py` | 원천 CSV → 티어 분석 → `abib_data.json` 생성 |
-| `analyze_tier.py` | 크리에이터 티어 분석 로직 |
-| `templates/index.html` | 리포트 UI |
-| `static/abib_data.json` | 앱 입력 데이터 (가공 완료) |
-| `data/` | 아비브 원천 CSV(유튜브·인스타·제품·올리브영) + 대용량 CSV 요약([DATA_SUMMARY.md](data/DATA_SUMMARY.md)) |
-| `목업 예시/` | 카드뉴스·만화 리포트 등 리포트 디자인 시안 모음 (HTML + PDF + 페이지 이미지) |
+| `app.py` | Flask 앱 (`static/abib_data.json` 조회) |
+| `prepare_data.py`, `analyze_tier.py` | 티어 분석·데이터 가공 |
+| `templates/`, `static/abib_data.json` | UI·가공 데이터 |
+| `data/` | 아비브 원천 CSV + 대용량 CSV 요약([DATA_SUMMARY.md](data/DATA_SUMMARY.md)) |
+
+> 흐름: 아비브 데이터 준비·티어 분석 → Flask 앱 목업으로 결과 조회 시도 → 최종적으로 LG 카드뉴스에 아비브 페이지를 추가한 **통합 리포트 HTML로 마감**.

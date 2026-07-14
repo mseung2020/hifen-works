@@ -1,0 +1,49 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 클리오 vs 시장 월별 발행량(유가/무가)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--clio:#eb6834}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1040px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--clio);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 2px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.sw{width:13px;height:13px;border-radius:3px}
+.chart{width:100%;height:460px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#fdf1ea;border:1px solid #f6d8c6;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#3a2417}
+.take b{color:var(--clio)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 클리오 vs 시장 · 월별 유튜브 발행량</div>
+  <h1>월별 유튜브 발행량 — 클리오 vs 시장 평균 (막대 안 유가/무가)</h1>
+  <p class="lead">월마다 왼쪽 = <b style="color:#eb6834">클리오</b>, 오른쪽 = <b style="color:#9a9992">시장 제품당 평균(13종)</b>. 막대 높이 = 발행 건수, 막대 안은 <b>진한색 = 유가 / 연한색 = 무가</b>. 유튜브만.</p>
+  <div class="legend">
+    <span class="lg"><span class="sw" style="background:#c0400d"></span>클리오 유가</span>
+    <span class="lg"><span class="sw" style="background:#f4a06f"></span>클리오 무가</span>
+    <span class="lg"><span class="sw" style="background:#6b6a66"></span>시장 유가</span>
+    <span class="lg"><span class="sw" style="background:#cdccc6"></span>시장 무가</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 클리오는 대체로 시장 평균 브랜드보다 <b>발행 물량이 많다</b>(특히 9·2·3월). 그 안에서 유가(진한색)는 <b>2월(28건)·5월</b>에 몰리고, <b>10·12·1월은 유가 0으로 거의 무가(연한색)뿐</b>이다. (앞선 %차트의 "4월 50%"는 물량 6건짜리 소규모라 절대량은 작다 — 물량으로 보면 다르게 읽힌다.) 시장 막대는 매달 비슷한 크기·구성으로 잔잔하다. 클리오의 "평소 오가닉 → 특정 달 유가 몰빵" 캠페인형 집행이 발행량 관점에서도 드러난다.</div>
+  <p class="foot">막대 = 월별 제품 언급 고유 유튜브 영상 수. 유가 = ads_yn 또는 ppl. 시장 = 핵심 13종 제품당 평균(합계÷13). 인스타 제외(수집 2026-03~). 기간 2025-09~2026-06.</p>
+</div>
+<script>
+const LBL=["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun"], CP=[8, 0, 8, 0, 0, 28, 8, 3, 12, 1], CO=[40, 13, 17, 20, 7, 15, 22, 3, 4, 8], MP=[2.3, 2.4, 4.0, 2.8, 2.7, 3.8, 3.0, 2.3, 2.9, 2.8], MO=[9.8, 12.2, 9.0, 10.8, 7.3, 8.3, 9.8, 6.2, 8.3, 9.4];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+ grid:{left:48,right:24,top:16,bottom:34},
+ xAxis:{type:'category',data:LBL,axisTick:{show:false},axisLine:{lineStyle:{color:'#c3c2b7'}},axisLabel:{color:'#898781'}},
+ yAxis:{type:'value',name:'발행 건수',nameTextStyle:{color:'#898781',fontSize:11},splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781'}},
+ barGap:'12%',barCategoryGap:'34%',
+ series:[
+   {name:'클리오 유가',type:'bar',stack:'clio',data:CP,itemStyle:{color:'#c0400d'},emphasis:{focus:'series'}},
+   {name:'클리오 무가',type:'bar',stack:'clio',data:CO,itemStyle:{color:'#f4a06f',borderRadius:[3,3,0,0]},emphasis:{focus:'series'}},
+   {name:'시장 유가',type:'bar',stack:'mkt',data:MP,itemStyle:{color:'#6b6a66'},emphasis:{focus:'series'}},
+   {name:'시장 무가',type:'bar',stack:'mkt',data:MO,itemStyle:{color:'#cdccc6',borderRadius:[3,3,0,0]},emphasis:{focus:'series'}}
+ ]});
+</script></body></html>

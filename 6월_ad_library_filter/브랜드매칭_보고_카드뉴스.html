@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>브랜드 매칭 프로젝트 보고 카드뉴스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Jua&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Noto Sans KR', sans-serif;
+    background:#f4ecff;
+    background-image:
+      radial-gradient(circle at 12% 18%, #ffe3f1 0 12px, transparent 13px),
+      radial-gradient(circle at 88% 42%, #dff5e9 0 10px, transparent 11px),
+      radial-gradient(circle at 22% 80%, #fff4cf 0 14px, transparent 15px),
+      radial-gradient(circle at 78% 88%, #e0ecff 0 11px, transparent 12px);
+    padding:40px 16px 80px;
+    color:#3a3350;
+  }
+  .deck { max-width:520px; margin:0 auto; display:flex; flex-direction:column; gap:34px; }
+  .card {
+    background:#fff; border-radius:32px; padding:44px 38px;
+    box-shadow:0 18px 40px rgba(150,120,200,.18);
+    position:relative; overflow:hidden; border:3px solid #fff;
+  }
+  .card::after{ content:""; position:absolute; inset:0; border-radius:29px; border:2px dashed rgba(180,160,220,.35); margin:10px; pointer-events:none;}
+  .tag { display:inline-block; font-family:'Jua',sans-serif; font-size:14px; padding:6px 16px; border-radius:999px; margin-bottom:18px; letter-spacing:.5px; }
+  .num-badge{ position:absolute; top:26px; right:30px; width:52px; height:52px; border-radius:50%; font-family:'Jua'; font-size:24px; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(0,0,0,.12); z-index:2; }
+  h1 { font-family:'Jua',sans-serif; font-size:34px; line-height:1.3; margin-bottom:14px; }
+  h2 { font-family:'Jua',sans-serif; font-size:26px; line-height:1.35; margin-bottom:16px; }
+  p  { font-size:15.5px; line-height:1.85; color:#544c66; }
+  .hl { background:linear-gradient(transparent 55%, #ffe08a 55%); font-weight:700; color:#3a3350; padding:0 2px;}
+  .hl-pink{ background:linear-gradient(transparent 55%, #ffc2dd 55%); font-weight:700;}
+  .stat-row{ display:flex; gap:12px; margin:20px 0 6px; flex-wrap:wrap;}
+  .stat{ flex:1; min-width:120px; background:#f7f2ff; border-radius:20px; padding:18px 14px; text-align:center;}
+  .stat .n{ font-family:'Jua'; font-size:30px; color:#8a5cf6; display:block;}
+  .stat .l{ font-size:12.5px; color:#7d7490; margin-top:4px;}
+  ul.clean{ list-style:none; margin-top:10px;}
+  ul.clean li{ font-size:15px; line-height:1.7; padding:9px 0 9px 34px; position:relative; border-bottom:1px dashed #eee5f7;}
+  ul.clean li:last-child{ border-bottom:none;}
+  ul.clean li::before{ content:attr(data-i); position:absolute; left:0; top:8px; font-size:18px;}
+  .chip{ display:inline-block; background:#eee9ff; color:#7a5bd6; font-size:12.5px; font-weight:700; padding:4px 12px; border-radius:999px; margin:3px 4px 3px 0;}
+  .chip.g{ background:#ddf5e6; color:#3aa76d;}
+  .chip.r{ background:#ffe1e1; color:#d9534f;}
+  .flow{ display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap; margin:18px 0;}
+  .flow .step{ background:#f7f2ff; border-radius:16px; padding:12px 14px; font-family:'Jua'; font-size:14px; color:#6b52b0; text-align:center;}
+  .flow .arw{ color:#c3b3e8; font-size:20px;}
+  .callout{ background:#fff6fb; border-left:6px solid #ff9dc8; border-radius:14px; padding:16px 18px; margin-top:18px; font-size:14.5px; line-height:1.75;}
+  .callout.mint{ background:#f2fbf6; border-color:#7fd3a5;}
+  .callout.blue{ background:#eff6ff; border-color:#7fb0f5;}
+  .callout b{ color:#3a3350;}
+  .bar{ height:26px; border-radius:999px; background:#efe8fb; overflow:hidden; margin:8px 0 4px; position:relative;}
+  .bar > span{ display:block; height:100%; border-radius:999px; background:linear-gradient(90deg,#a78bfa,#f0abfc);}
+  .bar-lab{ font-size:12.5px; color:#7d7490; display:flex; justify-content:space-between;}
+  .foot{ text-align:center; font-family:'Gaegu'; font-size:16px; color:#a99cc9; padding-top:6px;}
+  .cover{ background:linear-gradient(150deg,#a78bfa,#f472b6); color:#fff; text-align:center; }
+  .cover::after{ border-color:rgba(255,255,255,.4);}
+  .cover h1{ color:#fff; font-size:38px;}
+  .cover .sub{ color:#ffe9f6; font-size:16px; line-height:1.8; margin-top:8px;}
+  .cover .meta{ margin-top:26px; font-family:'Gaegu'; font-size:16px; color:#fff0f8;}
+  .cover .doodle{ font-size:60px; margin-bottom:10px;}
+  .pill{ display:inline-block; background:rgba(255,255,255,.25); border-radius:999px; padding:8px 18px; font-family:'Jua'; font-size:15px; margin-top:20px;}
+  .two{ display:flex; gap:14px; margin-top:14px;}
+  .two .box{ flex:1; background:#faf7ff; border-radius:20px; padding:18px 16px;}
+  .two .box .ic{ font-size:30px;}
+  .two .box h3{ font-family:'Jua'; font-size:17px; margin:8px 0 6px; color:#6b52b0;}
+  .two .box p{ font-size:13.5px; line-height:1.65;}
+  .ex{ font-family:'Gaegu'; font-size:15.5px; background:#fbfaff; border-radius:12px; padding:10px 14px; margin:8px 0; color:#655c7d;}
+  .ex b{ color:#8a5cf6;}
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- COVER -->
+  <div class="card cover">
+    <span class="doodle">🔍🏷️</span>
+    <h1>브랜드 매칭 프로젝트</h1>
+    <p class="sub">메타 광고 라이브러리 데이터에서<br><b>브랜드 이름 → 브랜드 로고 ID</b>를<br>정확히 이어붙이기까지</p>
+    <div class="pill">🎯 목표 매칭률 80~90%</div>
+    <div class="meta">작업 정리 보고 · 2026.07</div>
+  </div>
+
+  <!-- 1. 목표 -->
+  <div class="card">
+    <div class="num-badge" style="background:#a78bfa;">1</div>
+    <span class="tag" style="background:#ede7ff; color:#7a5bd6;">🎯 무엇을 하려 했나</span>
+    <h2>광고마다 "어느 브랜드"인지<br>ID를 붙이고 싶었어요</h2>
+    <p>라이브러리 파일의 <span class="hl">brand_page_name</span>에 적힌 브랜드를,
+    우리 브랜드 테이블의 <span class="hl-pink">brand_logo_id</span>와 매칭하는 작업.</p>
+    <div class="callout">
+      <b>📦 데이터 규모</b><br>
+      광고 <b>36,842건</b> · 고유 브랜드명 <b>3,597개</b> · 브랜드 테이블 <b>10,474개</b>
+    </div>
+  </div>
+
+  <!-- 2. 문제 발견 -->
+  <div class="card">
+    <div class="num-badge" style="background:#f472b6;">2</div>
+    <span class="tag" style="background:#ffe3f1; color:#d9578f;">😵 문제 발견</span>
+    <h2>"이름이 똑같은 것만" 찾으면<br>4개 중 1개밖에 못 잡아요</h2>
+    <div class="bar-lab"><span>단순 정확 일치</span><span><b>28%</b></span></div>
+    <div class="bar"><span style="width:28%"></span></div>
+    <p style="margin-top:14px;">이름이 조금만 달라도 못 찾으니, <span class="hl">기술보다 "데이터 성격"을 먼저 이해</span>해야 했어요. 크게 두 가지 난제가 있었습니다. 👇</p>
+  </div>
+
+  <!-- 3. 두 가지 난제 -->
+  <div class="card">
+    <div class="num-badge" style="background:#fb923c;">3</div>
+    <span class="tag" style="background:#ffedd9; color:#d98324;">🧩 두 가지 난제</span>
+    <h2>왜 매칭이 안 될까?</h2>
+    <div class="two">
+      <div class="box">
+        <span class="ic">🔄</span>
+        <h3>난제 ① 스왑</h3>
+        <p>크롤링 오류로 <b>브랜드와 광고한 사람의 자리가 뒤바뀐</b> 경우. 사람 이름은 브랜드 테이블에서 안 나와요.</p>
+      </div>
+      <div class="box">
+        <span class="ic">✍️</span>
+        <h3>난제 ② 이름 어긋남</h3>
+        <p>브랜드가 맞는데 표기가 달라요. <b>이중언어·수식어·꾸밈말</b> 때문에 정확 일치 실패.</p>
+      </div>
+    </div>
+    <div class="ex" style="margin-top:16px;">예) <b>퍼셀 Purcell</b> · <b>Temu Korea</b> · <b>셀리맥스 (Celimax)</b></div>
+  </div>
+
+  <!-- 4. 접근 1 : 매칭 룰 -->
+  <div class="card">
+    <div class="num-badge" style="background:#a78bfa;">4</div>
+    <span class="tag" style="background:#ede7ff; color:#7a5bd6;">🛠️ 접근 ① 매칭 룰 설계</span>
+    <h2>4단계 룰로 이름을<br>차근차근 풀었어요</h2>
+    <ul class="clean">
+      <li data-i="0️⃣"><b>정확 일치</b> — 대소문자·공백만 정리</li>
+      <li data-i="1️⃣"><b>꾸밈말 제거</b> — Korea · official · 몰 · .kr 떼기</li>
+      <li data-i="2️⃣"><b>조각 분리</b> — 이중언어/수식어를 쪼개서 매칭 <span class="chip">가장 큰 효과</span></li>
+      <li data-i="3️⃣"><b>변형 문자 복원</b> — 광고 회피용 특수문자(î→i) 정규화</li>
+    </ul>
+    <div class="callout mint">🛡️ <b>오탐 방지가 핵심.</b> 짧은 단어(lee, che)·지명(Seoul)이 우연히 걸리지 않게 가드를 걸어, <b>틀리게 매칭하느니 "보류"</b>하도록 설계했어요.</div>
+  </div>
+
+  <!-- 5. 룰 효과 -->
+  <div class="card">
+    <div class="num-badge" style="background:#22c55e;">5</div>
+    <span class="tag" style="background:#ddf5e6; color:#2f9e5f;">📈 룰 적용 효과</span>
+    <h2>28% → 71%<br>두 배 넘게 올랐어요</h2>
+    <div class="bar-lab"><span>정확 일치만</span><span>28%</span></div>
+    <div class="bar"><span style="width:28%"></span></div>
+    <div class="bar-lab" style="margin-top:12px;"><span>룰 0~3 적용 후</span><span><b>70.5%</b></span></div>
+    <div class="bar"><span style="width:70.5%; background:linear-gradient(90deg,#34d399,#a7f3d0);"></span></div>
+    <p style="margin-top:16px;">안전하게 자동화할 수 있는 <span class="hl">문자열 룰의 현실적 상한선</span>이 여기예요.</p>
+  </div>
+
+  <!-- 6. 접근 2 : 스왑 감지 -->
+  <div class="card">
+    <div class="num-badge" style="background:#f472b6;">6</div>
+    <span class="tag" style="background:#ffe3f1; color:#d9578f;">🔄 접근 ② 스왑 감지</span>
+    <h2>뒤바뀐 데이터를<br>3가지 증거로 판별</h2>
+    <ul class="clean">
+      <li data-i="🅰️"><b>page_title가 브랜드로 잡힘</b> (규칙 근거)</li>
+      <li data-i="🅱️"><b>page_title가 "공식/브랜드 계정"</b> (유저 테이블 근거)</li>
+      <li data-i="🅲"><b>brand_page_name이 "개인 인플루언서"</b> (= 사람이 브랜드 자리에)</li>
+    </ul>
+    <div class="callout"><b>💡 핵심 원리 — 양방향 동의</b><br>"pt는 브랜드다" <b>그리고</b> "bpn은 사람이다"가 <b>동시에</b> 성립할 때만 확신. 한쪽 증거만으론 반례(동명이인·노이즈)가 너무 많았어요.</div>
+  </div>
+
+  <!-- 7. 스왑 등급 -->
+  <div class="card">
+    <div class="num-badge" style="background:#fb923c;">7</div>
+    <span class="tag" style="background:#ffedd9; color:#d98324;">⚖️ 반례로 등급 매기기</span>
+    <h2>확실한 것만 자동 교정<br>나머지는 사람 검토로</h2>
+    <p style="margin-bottom:6px;">신호 조합을 <b>반례가 적은 순</b>으로 4등급으로 나눴어요.</p>
+    <ul class="clean">
+      <li data-i="🟢"><b>G1 양방향 동의</b> → 자동 스왑 <span class="chip g">채택</span></li>
+      <li data-i="🟡"><b>G2·G3 한쪽 증거만</b> → 조건부(노이즈 필터 필요)</li>
+      <li data-i="🔴"><b>G4 사람 증거만</b> → 동명이인 위험, 사람 검토</li>
+    </ul>
+    <div class="callout mint">✅ 가장 안전한 <b>G1 158건만 자동 스왑</b> 적용. 규모는 작지만, <b>사람 핸들이 엉뚱한 그룹을 오염시키는 걸 막아</b> 이후 집계가 깨끗해졌어요.</div>
+  </div>
+
+  <!-- 8. 검증 -->
+  <div class="card">
+    <div class="num-badge" style="background:#38bdf8;">8</div>
+    <span class="tag" style="background:#e0f2fe; color:#0284c7;">🔬 접근 ③ 매칭 검증</span>
+    <h2>"맞게 붙었나?"<br>이름 하나하나 전수 확인</h2>
+    <p>매칭된 이름을 <b>전수 검증</b>했어요. 결과는 예상보다 깨끗 👇</p>
+    <div class="stat-row">
+      <div class="stat"><span class="n">99%</span><span class="l">정답 (검증 후)</span></div>
+      <div class="stat"><span class="n">0</span><span class="l">잔존 오탐</span></div>
+    </div>
+    <div class="callout">
+      <b>❌ 오탐은 패턴이 뚜렷했어요</b><br>
+      지명·일반명사가 브랜드로 오인 — <span class="chip r">Seoul→서울시</span><span class="chip r">Glow→글로우</span><span class="chip r">Hug→주택도시보증공사</span>
+    </div>
+    <div class="callout mint">🛡️ <b>이 단어들을 불용어에 반영</b>해서 오탐을 규칙 차원에서 제거하고, <b>앞으로 들어올 데이터에도 똑같이 방어</b>되게 일반화했어요.</div>
+  </div>
+
+  <!-- 9. 근본 원인 발견 -->
+  <div class="card">
+    <div class="num-badge" style="background:#ef4444;">9</div>
+    <span class="tag" style="background:#fee2e2; color:#dc2626;">🔎 결정적 발견</span>
+    <h2>"미등록"인 줄 알았는데<br>사실은 테이블이 반쪽</h2>
+    <p>미매칭을 파다 보니 <b>벨바스킨</b>처럼 명백한 브랜드가 테이블에 아예 없었어요. 원인을 역추적하니 —</p>
+    <div class="callout blue">
+      🧨 <b>브랜드 테이블이 "유튜브 영상 있는 브랜드"만</b> 뽑혀 있었어요.<br>
+      → 유튜브 광고는 안 했지만 <b>인스타 채널만 있는 브랜드가 통째로 누락!</b>
+    </div>
+    <div class="callout mint">🔧 <b>쿼리를 다시 짜서(영상 OR 인스타 채널) 재추출</b> → 브랜드 테이블 <b>9,743 → 10,474개</b>로 보강. 데이터 소스 자체를 바로잡았어요.</div>
+  </div>
+
+  <!-- 10. 인사이트 -->
+  <div class="card">
+    <div class="num-badge" style="background:#a78bfa;">10</div>
+    <span class="tag" style="background:#ede7ff; color:#7a5bd6;">🔑 얻은 인사이트</span>
+    <h2>숫자보다 중요한<br>3가지 깨달음</h2>
+    <ul class="clean">
+      <li data-i="🎯"><b>이건 3.6만 행이 아니라 3,500개 이름 문제.</b> 이름 하나 풀고 전파하면 됨.</li>
+      <li data-i="🔄"><b>스왑은 실재하지만 작다(약 2.5%).</b> 커버리지 레버가 아니라 "청소" 단계.</li>
+      <li data-i="🧱"><b>남은 벽은 룰이 아니라 데이터.</b> 매칭이 안 될 땐 원천 테이블부터 의심.</li>
+    </ul>
+  </div>
+
+  <!-- 11. 남은 과제 -->
+  <div class="card">
+    <div class="num-badge" style="background:#22c55e;">11</div>
+    <span class="tag" style="background:#ddf5e6; color:#2f9e5f;">🚀 남은 과제 & 다음 단계</span>
+    <h2>70.5% → 목표 8~90%<br>이렇게 채웁니다</h2>
+    <div class="flow">
+      <div class="step">70.5%<br><small>현재</small></div>
+      <div class="arw">➕</div>
+      <div class="step">별칭 보강</div>
+      <div class="arw">➕</div>
+      <div class="step">비브랜드 제외</div>
+      <div class="arw">➡️</div>
+      <div class="step" style="background:#e7fbef; color:#2f9e5f;">85~90%</div>
+    </div>
+    <ul class="clean">
+      <li data-i="①"><b>미매칭 이름 3분류</b> — 별칭 어긋남 / 미등록 / 비브랜드</li>
+      <li data-i="②"><b>인스타 채널 ID 직접 매칭</b> — 새 테이블의 insta_channel_id 활용</li>
+      <li data-i="③"><b>비브랜드(콘텐츠·개인) 제외</b>로 유효 정답률 상승</li>
+    </ul>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="card cover" style="background:linear-gradient(150deg,#7fd3a5,#a78bfa);">
+    <span class="doodle">✨🏁</span>
+    <h1>정리하면</h1>
+    <p class="sub">단순 매칭 28% 에서 출발해<br><b>데이터의 성격을 하나씩 파헤치며</b><br>룰·스왑·검증, 그리고 <b>원천 데이터 교정</b>으로 <b>70.5%</b>까지.<br>남은 길과 방법도 명확해졌습니다 🙌</p>
+    <div class="pill">다음: 데이터 보강으로 80~90% 완성</div>
+  </div>
+
+  <div class="foot">— 브랜드 매칭 프로젝트 진행 보고 · 끝 —</div>
+</div>
+</body>
+</html>

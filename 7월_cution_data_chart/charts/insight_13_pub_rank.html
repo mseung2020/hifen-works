@@ -1,0 +1,40 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 발행량 vs 랭킹</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1000px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.chart{width:100%;height:520px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 발행량 × 랭킹</div>
+  <h1>발행량이 많은 브랜드가 랭킹도 높은 편 (상관 -0.73)</h1>
+  <p class="lead">점 하나 = 브랜드. <b>가로 = 총발행량(건)</b>, <b>세로 = 메이크업 중앙순위(위=상위)</b>. 오른쪽·위로 갈수록 "많이 발행 + 상위". 회색 점선 = 추세선.</p>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 점들이 <b>좌하 → 우상</b>으로 흐른다 — 발행량이 많은 브랜드일수록 순위도 높은 경향(상관 -0.73). 다만 <b>파넬</b>은 발행량 축에선 추세선에 걸쳐 멀쩡해 보인다 — 파넬의 약점은 발행량이 아니라 <b>발행이 조회로 이어졌는지(도달 전환율)</b>라, 별도로 심층 분석했다. (상관 관찰이며 인과 아님)</div>
+  <p class="foot">발행량 = 제품 언급 고유 유튜브 영상+인스타 게시물(2025-09~2026-06). 순위 = 올영 메이크업 일별 순위 중앙값. 상관 관찰이며 인과 아님(잘나가서 콘텐츠가 붙는 역방향도 가능).</p>
+</div>
+<script>
+const D=[{"b": "정샘물", "pub": 287, "rank": 4.0}, {"b": "VDL", "pub": 187, "rank": 39.0}, {"b": "퓌", "pub": 221, "rank": 23.0}, {"b": "헤라", "pub": 164, "rank": 17.0}, {"b": "클리오", "pub": 290, "rank": 38.0}, {"b": "비디비치", "pub": 238, "rank": 31.0}, {"b": "에스쁘아", "pub": 43, "rank": 65.0}, {"b": "네이밍", "pub": 293, "rank": 42.0}, {"b": "투크", "pub": 30, "rank": 65.0}, {"b": "블랑디바", "pub": 52, "rank": 64.0}, {"b": "라네즈", "pub": 247, "rank": 39.0}, {"b": "파넬", "pub": 162, "rank": 44.5}], FIT=[[30.0, 61.7], [293.0, 23.6]];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'item',formatter:d=>d.data.b?d.data.b+'<br/>발행량 '+d.data.value[0]+'건<br/>중앙순위 '+d.data.value[1]+'위':''},
+ grid:{left:64,right:40,top:20,bottom:52},
+ xAxis:{type:'value',name:'총발행량(건)',nameLocation:'middle',nameGap:32,min:0,max:310,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781'}},
+ yAxis:{type:'value',name:'중앙순위(위=상위)',nameLocation:'middle',nameGap:44,inverse:true,min:1,max:72,nameTextStyle:{color:'#0e9bbd'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}},
+ series:[
+   {type:'line',data:FIT,showSymbol:false,lineStyle:{type:'dashed',color:'#c3c2b7',width:2},z:1,silent:true},
+   {type:'scatter',symbolSize:20,z:3,
+     data:D.map(d=>({value:[d.pub,d.rank],b:d.b,itemStyle:{color:'#0e9bbd',borderColor:'#fff',borderWidth:1.5,opacity:.95}})),
+     label:{show:true,formatter:p=>p.data.b,position:'right',color:'#52514e',fontSize:11,fontWeight:600}}
+ ]});
+</script></body></html>

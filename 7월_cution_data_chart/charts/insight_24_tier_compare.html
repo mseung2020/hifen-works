@@ -1,0 +1,55 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 저조그룹 vs 우수그룹 크리에이터 특징</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--lo:#9a9992;--hi:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1000px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--hi);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:21px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.legend{display:flex;gap:16px;margin:10px 0 4px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.sw{width:13px;height:13px;border-radius:3px}
+.panels{display:flex;gap:16px;margin-top:10px;flex-wrap:wrap}
+.panel{flex:1;min-width:260px}
+.ptitle{font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:6px;text-align:center}
+.chart{width:100%;height:220px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:14px}
+.take{background:#eef7fa;border:1px solid #cce7ee;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--hi)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 저조그룹 vs 우수그룹 · 크리에이터 특징</div>
+  <h1>성과가 갈리는 두 그룹, 크리에이터 스펙은 오히려 반대로 갈렸다</h1>
+  <p class="lead"><b style="color:#9a9992">저조그룹</b>(파넬·어바웃톤·네이밍) vs <b style="color:#0e9bbd">우수그룹</b>(VDL·퓌·클리오)이 쓴 크리에이터를 모아 특징을 비교했습니다. 그래프는 왼쪽부터 팔로워 수 → 게시물 수(활동 이력) 순이고, 막대가 길수록 그 값이 크다는 뜻이에요.</p>
+  <div class="legend">
+    <span class="lg"><span class="sw" style="background:#9a9992"></span>저조그룹 (n=146)</span>
+    <span class="lg"><span class="sw" style="background:#0e9bbd"></span>우수그룹 (n=226)</span>
+  </div>
+  <div class="panels">
+    <div class="panel"><div class="ptitle">팔로워 수(중앙값)</div><div class="chart" id="p0"></div></div>
+    <div class="panel"><div class="ptitle">게시물 수(중앙값, 활동 이력)</div><div class="chart" id="p1"></div></div>
+  </div>
+  <div class="take"><b>해석:</b> <b style="color:#0e9bbd">우수그룹</b>은 팔로워 수(4,850)와 게시물 수(292)가 <b style="color:#9a9992">저조그룹</b>(각 4,000·148)보다 뚜렷이 높습니다 — 팔로워도 많고 활동 이력도 긴, 자리 잡은 크리에이터를 상대적으로 더 많이 씁니다. 다만 이 특징이 실제로 성과를 만드는 원인인지는 별도로 검증했을 때 뚜렷한 인과관계는 확인되지 않았습니다(상관 관찰).</div>
+  <p class="foot">저조그룹 n=146(파넬·어바웃톤·네이밍), 우수그룹 n=187(VDL·퓌·클리오). 출처: 인플루언서 DB(팔로워·게시물 수). 상관 관찰이며 인과 단정 아님.</p>
+</div>
+<script>
+const LO=[4000, 148], HI=[4850, 292];
+function mk(id, lo, hi, fmt){
+  const ch = echarts.init(document.getElementById(id), null, {devicePixelRatio:3});
+  ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+    grid:{left:36,right:50,top:10,bottom:10,containLabel:false},
+    tooltip:{trigger:'item',formatter:p=>p.name+': '+fmt(p.value)},
+    xAxis:{type:'value',show:false},
+    yAxis:{type:'category',data:['저조','우수'],axisLine:{show:false},axisTick:{show:false},axisLabel:{color:'#52514e',fontWeight:700,fontSize:12}},
+    series:[{type:'bar',barWidth:'46%',data:[
+      {value:lo,itemStyle:{color:'#9a9992',borderRadius:[0,4,4,0]}},
+      {value:hi,itemStyle:{color:'#0e9bbd',borderRadius:[0,4,4,0]}}
+    ],label:{show:true,position:'right',color:'#52514e',fontSize:12,fontWeight:700,formatter:p=>fmt(p.value)}}]
+  });
+}
+mk('p0', LO[0], HI[0], v=>v.toLocaleString()+'명');
+mk('p1', LO[1], HI[1], v=>v.toLocaleString()+'개');
+</script></body></html>

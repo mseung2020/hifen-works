@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 01 · 발행량과 유가/무가 비율</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --ink:#0b0b0b; --ink2:#52514e; --muted:#898781; --line:#e1e0d9;
+    --org:#2a78d6; --paid:#eb6834; --surface:#ffffff; --page:#f4f4f2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);
+    font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+  .card{max-width:1040px;margin:32px auto;background:var(--surface);border-radius:18px;
+    box-shadow:0 4px 24px rgba(0,0,0,.06);padding:34px 40px 26px}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--org);text-transform:uppercase;margin-bottom:6px}
+  h1{font-size:23px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
+  .lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 8px}
+  .chart{width:100%;height:470px}
+  .foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:12px;margin-top:6px}
+  .take{background:#f7faff;border:1px solid #e3edfb;border-radius:12px;padding:14px 16px;margin-top:16px;font-size:13.5px;line-height:1.65;color:#1f2d3d}
+  .take b{color:var(--org)}
+  .legend{display:flex;gap:18px;align-items:center;margin:2px 0 10px}
+  .lg{display:flex;gap:7px;align-items:center;font-size:13px;color:var(--ink2)}
+  .dot{width:12px;height:12px;border-radius:3px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">INSIGHT 01 · 발행량 &amp; 유가·무가</div>
+    <h1>랭킹 상위 제품일수록 &lsquo;유가(광고)&rsquo; 비율이 낮다</h1>
+    <p class="lead">10개 쿠션 제품이 언급된 컨텐츠 발행량(유튜브+인스타, 중복 제거)과 그중 유가(광고) 비율 — <b>전체 보드 상위권 지속력(Top100 유지일수) 순</b>으로 정렬.</p>
+    <div class="legend">
+      <span class="lg"><span class="dot" style="background:var(--org)"></span>무가(자연 발행)</span>
+      <span class="lg"><span class="dot" style="background:var(--paid)"></span>유가(광고)</span>
+    </div>
+    <div id="chart" class="chart"></div>
+    <div class="take" id="take"></div>
+    <p class="foot">발행량 = 해당 제품을 언급한 <b>고유</b> 유튜브 영상 + 인스타 게시물 수(2025-09~2026-06, 인스타는 2026-03~). 유가 = 광고/PPL 표기(YT ppl · IG sponsored/ppl). 막대 위 숫자 = 총 발행량, 괄호 = 유가 비율. 정렬 = 올영 전체 보드 Top100 유지일수 내림차순.</p>
+  </div>
+<script>
+const raw=[
+ {n:"정샘물\n스킨누더",org:171,paid:120},
+ {n:"비디비치\n블랙퍼펙션",org:170,paid:69},
+ {n:"네이밍\n레이어드핏",org:178,paid:115},
+ {n:"VDL\n커버스테인",org:97,paid:90},
+ {n:"클리오\n파운웨어",org:181,paid:109},
+ {n:"힌스\n메쉬매트",org:37,paid:69},
+ {n:"라네즈\n네오",org:97,paid:157},
+ {n:"바닐라코\n화이트",org:122,paid:181},
+ {n:"티르티르\n레드",org:22,paid:62},
+ {n:"루나\n컨실",org:51,paid:228},
+];
+const names=raw.map(d=>d.n), org=raw.map(d=>d.org), paid=raw.map(d=>d.paid);
+const total=raw.map(d=>d.org+d.paid), pct=raw.map(d=>Math.round(d.paid/(d.org+d.paid)*100));
+const ch=echarts.init(document.getElementById('chart'),null,{renderer:'canvas',devicePixelRatio:3});
+ch.setOption({
+  backgroundColor:'transparent',
+  textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+  grid:{left:60,right:24,top:30,bottom:64},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'}},
+  xAxis:{type:'category',data:names,
+    axisLine:{lineStyle:{color:'#c3c2b7'}},axisTick:{show:false},
+    axisLabel:{color:'#52514e',fontSize:12.5,lineHeight:16,interval:0}},
+  yAxis:{type:'value',name:'발행 건수(고유)',nameTextStyle:{color:'#898781',fontSize:11},
+    splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781'}},
+  series:[
+    {name:'무가',type:'bar',stack:'s',data:org,itemStyle:{color:'#2a78d6'},barMaxWidth:52,
+      label:{show:true,position:'inside',color:'#fff',fontSize:11.5,fontWeight:600,formatter:p=>p.value>25?p.value:''}},
+    {name:'유가',type:'bar',stack:'s',data:paid,itemStyle:{color:'#eb6834',borderRadius:[5,5,0,0]},
+      label:{show:true,position:'inside',color:'#fff',fontSize:11.5,fontWeight:600,formatter:p=>p.value>25?p.value:''}},
+    {name:'총',type:'bar',stack:'s',data:total.map(()=>0),
+      label:{show:true,position:'top',color:'#0b0b0b',fontWeight:800,fontSize:13,
+        formatter:p=>total[p.dataIndex]+'  ('+pct[p.dataIndex]+'%)'}},
+  ]
+});
+document.getElementById('take').innerHTML=
+ '<b>해석:</b> 상위권을 오래 지킨 제품일수록 유가(광고) 비율이 낮다. Top100 지속력 최상위인 정샘물(41%)·비디비치(29%)·네이밍(39%)·클리오(38%)는 유가가 30~40%대인 반면, 지속력이 낮은 루나(82%)·티르티르(74%)·바닐라코(60%)·라네즈(62%)는 유가가 60% 이상이다. 즉 이 10종 안에서는 <b>랭킹 상위 제품일수록 광고보다 자연 발행(무가) 비중이 크게 나타난다.</b> (상관 관찰이며 인과는 아님)';
+</script>
+</body>
+</html>

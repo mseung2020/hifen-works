@@ -1,0 +1,39 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 숏폼/롱폼 vs 랭킹</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:980px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:21px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 4px}
+.chart{width:100%;height:500px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eef7fa;border:1px solid #cce7ee;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 유튜브 숏폼/롱폼 · 랭킹 무관</div>
+  <h1>숏폼/롱폼 전략은 브랜드별로 갈리지만, 랭킹과는 뚜렷한 관계 없음</h1>
+  <p class="lead">점 하나 = 브랜드. <b>가로 = 유튜브 숏폼 비중(%)</b>(오른쪽=숏폼형, 왼쪽=롱폼형), <b>세로 = 메이크업 중앙순위(위=상위)</b>. 회색 점선 = 추세선(약함).</p>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 가로로 <b>22%(투크·롱폼형) ~ 64%(파넬·숏폼형)</b> 넓게 퍼져 브랜드마다 포맷 전략이 갈린다. 하지만 점들이 <b>세로로 흩어져 추세선이 완만</b>하다 — 숏폼 비중과 순위의 상관은 <b>−0.37로 약함</b>. 즉 숏폼을 많이 만든다고 순위가 오른다고 보기 어렵다(포맷은 랭킹의 결정 요인이 아님). 숏폼형=파넬·헤라·네이밍·클리오 / 롱폼형=투크·에스쁘아·퓌·비디비치·VDL. (상관 관찰)</div>
+  <p class="foot">숏폼 = duration ≤ 60초. 순위 = 올영 메이크업 일별 순위 중앙값. 기간 2025-09~2026-06. 핵심 13종.</p>
+</div>
+<script>
+const D=[{"b": "정샘물", "short": 47, "rank": 4.0}, {"b": "VDL", "short": 32, "rank": 39.0}, {"b": "퓌", "short": 28, "rank": 23.0}, {"b": "헤라", "short": 55, "rank": 17.0}, {"b": "클리오", "short": 52, "rank": 38.0}, {"b": "비디비치", "short": 29, "rank": 31.0}, {"b": "에스쁘아", "short": 24, "rank": 65.0}, {"b": "네이밍", "short": 54, "rank": 42.0}, {"b": "투크", "short": 22, "rank": 65.0}, {"b": "블랑디바", "short": 43, "rank": 64.0}, {"b": "라네즈", "short": 46, "rank": 39.0}, {"b": "어바웃톤", "short": 32, "rank": 79.0}, {"b": "파넬", "short": 64, "rank": 44.5}], FIT=[[22.0, 53.2], [64.0, 28.7]];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'item',formatter:d=>d.data.b?d.data.b+'<br/>숏폼 '+d.value[0]+'%<br/>중앙순위 '+d.value[1]+'위':''},
+ grid:{left:60,right:40,top:20,bottom:50},
+ xAxis:{type:'value',name:'유튜브 숏폼 비중(%)  →  숏폼형',nameLocation:'middle',nameGap:32,min:15,max:70,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781',formatter:'{value}%'}},
+ yAxis:{type:'value',name:'중앙순위(위=상위)',nameLocation:'middle',nameGap:42,inverse:true,min:1,max:85,nameTextStyle:{color:'#0e9bbd'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}},
+ series:[
+   {type:'line',data:FIT,showSymbol:false,lineStyle:{type:'dashed',color:'#d9d8d2',width:2},z:1,silent:true},
+   {type:'scatter',symbolSize:18,z:3,data:D.map(d=>({value:[d.short,d.rank],b:d.b,itemStyle:{color:'#0e9bbd',borderColor:'#fff',borderWidth:1.5,opacity:.92}})),
+     label:{show:true,formatter:p=>p.data.b,position:'right',color:'#52514e',fontSize:11,fontWeight:600}}
+ ]});
+</script></body></html>

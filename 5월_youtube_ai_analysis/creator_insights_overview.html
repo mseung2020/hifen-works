@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creator Insights — 시스템 개요</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px 24px;
+    min-height: 100vh;
+  }
+
+  .canvas {
+    width: 1100px;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  }
+
+  /* ── 헤더 ── */
+  .header {
+    background: #1a1f2e;
+    padding: 28px 36px 24px;
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+  }
+  .header-title {
+    flex: 1;
+  }
+  .header-badge {
+    display: inline-block;
+    background: #3b82f6;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+  }
+  .header-sub {
+    color: #94a3b8;
+    font-size: 12.5px;
+    margin-top: 5px;
+  }
+  .header-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-self: center;
+  }
+  .tag {
+    background: #2d3448;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #3d4460;
+  }
+
+  /* ── 바디 ── */
+  .body {
+    padding: 28px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  /* ── 섹션 타이틀 ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* ── 메인 플로우 ── */
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .flow-step {
+    flex: 1;
+    padding: 16px 14px;
+    text-align: center;
+    position: relative;
+    border-right: 1.5px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+  .flow-step:last-child { border-right: none; }
+
+  .flow-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .flow-step-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.3;
+  }
+  .flow-step-desc {
+    font-size: 10.5px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .arrow-between {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    overflow: visible;
+    position: relative;
+    z-index: 2;
+  }
+  .arrow-between::after {
+    content: '▶';
+    position: absolute;
+    font-size: 10px;
+    color: #94a3b8;
+    background: #f8fafc;
+    padding: 2px;
+  }
+
+  /* ── 2단 레이아웃 ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  /* ── 카드 ── */
+  .card {
+    border-radius: 10px;
+    padding: 18px 18px 16px;
+    border: 1.5px solid transparent;
+  }
+  .card-blue   { background: #eff6ff; border-color: #bfdbfe; }
+  .card-gray   { background: #f8fafc; border-color: #e2e8f0; }
+  .card-green  { background: #f0fdf4; border-color: #bbf7d0; }
+  .card-orange { background: #fff7ed; border-color: #fed7aa; }
+  .card-purple { background: #faf5ff; border-color: #e9d5ff; }
+  .card-red    { background: #fff1f2; border-color: #fecdd3; }
+
+  .card-title {
+    font-size: 11.5px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .card-blue   .card-title { color: #1d4ed8; }
+  .card-gray   .card-title { color: #374151; }
+  .card-green  .card-title { color: #15803d; }
+  .card-orange .card-title { color: #c2410c; }
+  .card-purple .card-title { color: #7e22ce; }
+  .card-red    .card-title { color: #be123c; }
+
+  /* ── 라우트 그리드 ── */
+  .route-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .route-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px 10px 9px;
+    border: 1.5px solid #e2e8f0;
+    text-align: center;
+  }
+  .route-code {
+    font-size: 10px;
+    font-weight: 800;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+  }
+  .route-desc {
+    font-size: 9.5px;
+    color: #64748b;
+    line-height: 1.4;
+  }
+  .r-blue   .route-code { color: #2563eb; }
+  .r-teal   .route-code { color: #0d9488; }
+  .r-violet .route-code { color: #7c3aed; }
+  .r-amber  .route-code { color: #d97706; }
+  .r-rose   .route-code { color: #e11d48; }
+  .r-slate  .route-code { color: #475569; }
+
+  /* ── 파이프라인 ── */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .pipe-step {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #334155;
+    white-space: nowrap;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    letter-spacing: -0.3px;
+  }
+  .pipe-arrow {
+    color: #94a3b8;
+    font-size: 12px;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+  .pipe-alert {
+    background: #fff7ed;
+    border-color: #fed7aa;
+    color: #c2410c;
+  }
+  .pipe-note {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+  /* ── 필터 태그 ── */
+  .filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 2px;
+  }
+  .ftag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+  .ftag-blue   { background: #dbeafe; color: #1e40af; }
+  .ftag-green  { background: #dcfce7; color: #166534; }
+  .ftag-orange { background: #ffedd5; color: #9a3412; }
+  .ftag-purple { background: #ede9fe; color: #5b21b6; }
+  .ftag-gray   { background: #f1f5f9; color: #475569; }
+  .ftag-red    { background: #ffe4e6; color: #9f1239; line-through: line-through; }
+
+  /* ── 티켓 ── */
+  .ticket-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .ticket-item {
+    flex: 1;
+    background: #fff;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8f0;
+    padding: 10px 10px;
+    text-align: center;
+  }
+  .ticket-tier {
+    font-size: 11px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 5px;
+  }
+  .ticket-num {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .ticket-unit {
+    font-size: 9px;
+    color: #94a3b8;
+    font-weight: 600;
+  }
+  .t-basic  .ticket-num { color: #64748b; }
+  .t-team   .ticket-num { color: #3b82f6; }
+  .t-partner .ticket-num { color: #8b5cf6; }
+
+  /* ── 설계 특징 ── */
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-top: 2px;
+  }
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 11px;
+    color: #334155;
+    line-height: 1.5;
+  }
+  .feature-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  /* ── 기술 스택 ── */
+  .stack-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 2px;
+  }
+  .stack-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+  }
+  .stack-layer {
+    font-size: 9.5px;
+    font-weight: 700;
+    color: #94a3b8;
+    width: 52px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .stack-tech {
+    font-weight: 700;
+    color: #1e293b;
+  }
+  .stack-detail {
+    color: #94a3b8;
+    font-size: 10px;
+  }
+
+  /* ── 푸터 ── */
+  .footer {
+    background: #f8fafc;
+    border-top: 1.5px solid #e2e8f0;
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-note {
+    font-size: 10.5px;
+    color: #94a3b8;
+  }
+  .footer-path {
+    font-size: 10px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #94a3b8;
+    background: #e2e8f0;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+
+  .divider-line {
+    border: none;
+    border-top: 1.5px solid #f1f5f9;
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- ── 헤더 ── -->
+  <div class="header">
+    <div class="header-title">
+      <span class="header-badge">B2B SaaS · AI Chat</span>
+      <h1>Creator Insights AI 채팅 시스템</h1>
+      <div class="header-sub">광고주/마케터가 자연어로 유튜브 크리에이터를 탐색·분석하는 플랫폼</div>
+    </div>
+    <div class="header-tags">
+      <span class="tag">Django REST</span>
+      <span class="tag">Next.js</span>
+      <span class="tag">OpenAI API</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">Redis</span>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- ── 사용자 흐름 ── -->
+    <div>
+      <div class="section-label" style="color:#3b82f6;">사용자 흐름</div>
+      <div class="flow-row">
+        <div class="flow-step">
+          <div class="flow-num" style="background:#3b82f6;">1</div>
+          <div class="flow-step-title">로그인</div>
+          <div class="flow-step-desc">JWT 인증<br>등급 확인</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:#6366f1;">2</div>
+          <div class="flow-step-title">자연어 입력</div>
+          <div class="flow-step-desc">"뷰티 채널<br>구독자 10~50만"</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:#8b5cf6;">3</div>
+          <div class="flow-step-title">AI 라우팅</div>
+          <div class="flow-step-desc">의도 분류<br>→ 라우트 결정</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:#a855f7;">4</div>
+          <div class="flow-step-title">필터 생성</div>
+          <div class="flow-step-desc">JSON 필터<br>자동 생성</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:#ec4899;">5</div>
+          <div class="flow-step-title">DB 조회</div>
+          <div class="flow-step-desc">PostgreSQL<br>채널 탐색</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:#f43f5e;">6</div>
+          <div class="flow-step-title">결과 표시</div>
+          <div class="flow-step-desc">테이블·카드<br>대화 조정</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num" style="background:#10b981;">7</div>
+          <div class="flow-step-title">CSV 내보내기</div>
+          <div class="flow-step-desc">채널 리스트<br>다운로드</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI 라우팅 + 파이프라인 ── -->
+    <div class="two-col">
+
+      <!-- AI 라우팅 -->
+      <div class="card card-blue">
+        <div class="card-title">AI 라우팅 — 8가지 의도 분류</div>
+        <div class="route-grid">
+          <div class="route-item r-blue">
+            <div class="route-code">list_up</div>
+            <div class="route-desc">조건 기반<br>채널 탐색</div>
+          </div>
+          <div class="route-item r-teal">
+            <div class="route-code">similar_list_up</div>
+            <div class="route-desc">유사 채널<br>추천</div>
+          </div>
+          <div class="route-item r-violet">
+            <div class="route-code">filters_adjust</div>
+            <div class="route-desc">기존 조건<br>조정</div>
+          </div>
+          <div class="route-item r-blue">
+            <div class="route-code">channel_info</div>
+            <div class="route-desc">단일 채널<br>분석</div>
+          </div>
+          <div class="route-item r-teal">
+            <div class="route-code">channel_compare</div>
+            <div class="route-desc">두 채널<br>비교</div>
+          </div>
+          <div class="route-item r-amber">
+            <div class="route-code">explain_result</div>
+            <div class="route-desc">결과 이유<br>설명</div>
+          </div>
+          <div class="route-item r-rose">
+            <div class="route-code">ad_evaluation</div>
+            <div class="route-desc">광고 적합성<br>평가</div>
+          </div>
+          <div class="route-item r-slate">
+            <div class="route-code">small_talk</div>
+            <div class="route-desc">그 외<br>대화</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 필터 검증 파이프라인 -->
+      <div class="card card-gray">
+        <div class="card-title">필터 검증 파이프라인</div>
+        <div class="pipeline" style="flex-wrap:wrap; gap:6px;">
+          <div class="pipe-step">AI 필터 생성</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">sanitize</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">validate</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">null 정규화</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">날짜 검증</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">DB 쿼리</div>
+        </div>
+        <div style="margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div class="pipe-step pipe-alert">결과 0건</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step pipe-alert">relax_filters()</div>
+          <div class="pipe-arrow">→</div>
+          <div class="pipe-step">재시도</div>
+          <div class="pipe-note">최대 3회 자동 완화</div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-size:10px; color:#94a3b8; font-weight:600; margin-bottom:6px;">핵심 파일</div>
+          <div style="font-size:10px; font-family:'SF Mono','Fira Code',monospace; color:#475569; background:#f1f5f9; padding:7px 10px; border-radius:6px; line-height:1.8;">
+            views.py <span style="color:#94a3b8;">1,686줄</span><br>
+            filter_pipeline.py <span style="color:#94a3b8;">1,254줄</span><br>
+            systems/ <span style="color:#94a3b8;">프롬프트 15개+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 필터 목록 + 티켓 + 설계 특징 ── -->
+    <div class="three-col">
+
+      <!-- 필터 -->
+      <div class="card card-green">
+        <div class="card-title">사용 가능한 필터</div>
+        <div style="font-size:10px; color:#166534; font-weight:700; margin-bottom:5px;">규모·성과</div>
+        <div class="filter-tags">
+          <span class="ftag ftag-green">subscribers</span>
+          <span class="ftag ftag-green">average_views</span>
+          <span class="ftag ftag-green">average_views_ads</span>
+          <span class="ftag ftag-green">engagement_rate</span>
+          <span class="ftag ftag-green">subs_growth_3m</span>
+          <span class="ftag ftag-green">short_ratio</span>
+        </div>
+        <div style="font-size:10px; color:#166534; font-weight:700; margin-top:9px; margin-bottom:5px;">시청자 특성</div>
+        <div class="filter-tags">
+          <span class="ftag ftag-blue">age</span>
+          <span class="ftag ftag-blue">gender</span>
+          <span class="ftag ftag-blue">min_demo</span>
+        </div>
+        <div style="font-size:10px; color:#166534; font-weight:700; margin-top:9px; margin-bottom:5px;">콘텐츠·채널</div>
+        <div class="filter-tags">
+          <span class="ftag ftag-purple">category</span>
+          <span class="ftag ftag-purple">video_category</span>
+          <span class="ftag ftag-purple">channel_keyword</span>
+          <span class="ftag ftag-orange">last_update_diff</span>
+          <span class="ftag ftag-orange">include_industries</span>
+          <span class="ftag ftag-orange">trend_count</span>
+        </div>
+        <div style="font-size:10px; color:#9f1239; font-weight:700; margin-top:9px; margin-bottom:5px;">사용 불가</div>
+        <div class="filter-tags">
+          <span class="ftag ftag-red">budget</span>
+          <span class="ftag ftag-red">CPM</span>
+          <span class="ftag ftag-red">지역</span>
+          <span class="ftag ftag-red">언어</span>
+        </div>
+      </div>
+
+      <!-- 티켓 시스템 -->
+      <div class="card card-purple">
+        <div class="card-title">티켓 (사용량) 시스템</div>
+        <div class="ticket-row">
+          <div class="ticket-item t-basic">
+            <div class="ticket-tier">Basic</div>
+            <div class="ticket-num">10</div>
+            <div class="ticket-unit">회 / 월</div>
+            <div style="margin-top:5px; font-size:9px; color:#94a3b8;">일 20회</div>
+          </div>
+          <div class="ticket-item t-team">
+            <div class="ticket-tier">Team</div>
+            <div class="ticket-num">90</div>
+            <div class="ticket-unit">회 / 월</div>
+            <div style="margin-top:5px; font-size:9px; color:#94a3b8;">일 50회</div>
+          </div>
+          <div class="ticket-item t-partner">
+            <div class="ticket-tier">Partner</div>
+            <div class="ticket-num">∞</div>
+            <div class="ticket-unit">무제한</div>
+            <div style="margin-top:5px; font-size:9px; color:#94a3b8;">일 80회</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;">
+          <div style="font-size:10px; color:#7e22ce; font-weight:700; margin-bottom:6px;">AI 처리 2단계</div>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <div style="background:#fff; border:1.5px solid #e9d5ff; border-radius:7px; padding:8px 10px;">
+              <div style="font-size:10px; font-weight:800; color:#6d28d9; margin-bottom:2px;">1단계 — 라우터</div>
+              <div style="font-size:9.5px; color:#64748b; line-height:1.5;">router-system-improved.txt<br>메시지 의도를 8가지로 분류</div>
+            </div>
+            <div style="background:#fff; border:1.5px solid #e9d5ff; border-radius:7px; padding:8px 10px;">
+              <div style="font-size:10px; font-weight:800; color:#6d28d9; margin-bottom:2px;">2단계 — 필터 생성</div>
+              <div style="font-size:9.5px; color:#64748b; line-height:1.5;">filters-generate-system.txt<br>자연어 → JSON 필터 자동 변환</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 설계 특징 -->
+      <div class="card card-orange">
+        <div class="card-title">핵심 설계 결정</div>
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-dot" style="background:#3b82f6;"></div>
+            <div><strong>프롬프트 파일 분리</strong><br><span style="font-size:10px; color:#64748b;">코드 배포 없이 AI 동작 수정 가능. .txt 파일 15개+로 라우트별 관리</span></div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot" style="background:#10b981;"></div>
+            <div><strong>자동 필터 완화</strong><br><span style="font-size:10px; color:#64748b;">결과 0건 시 조건을 자동으로 넓혀 최대 3회 재시도</span></div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot" style="background:#6366f1;"></div>
+            <div><strong>멀티턴 컨텍스트</strong><br><span style="font-size:10px; color:#64748b;">최근 6턴 대화 + 요약 문자열로 대화 흐름 유지</span></div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot" style="background:#f59e0b;"></div>
+            <div><strong>기본 제외 필터</strong><br><span style="font-size:10px; color:#64748b;">기업·브랜드·키즈 채널 자동 제외 (명시 시 해제 가능)</span></div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-dot" style="background:#ef4444;"></div>
+            <div><strong>캐싱 전략</strong><br><span style="font-size:10px; color:#64748b;">필터 결과 600초 / 채널 데이터 600초 / 브랜드 300초</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 푸터 ── -->
+  <div class="footer">
+    <div class="footer-note">Creator Insights AI 채팅 시스템 — 기술 분석 문서</div>
+    <div class="footer-path">ai_analysis / backend + frontend</div>
+  </div>
+
+</div>
+</body>
+</html>

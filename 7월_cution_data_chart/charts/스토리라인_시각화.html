@@ -1,0 +1,135 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>쿠션 시장 스토리라인 · 랭킹 × 발행량</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{
+  --plane:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --rank:#4a3aa7; --paid:#2a78d6; --org:#1baf7a;
+  --up:#006300; --down:#c0392b;
+}
+@media (prefers-color-scheme:dark){:root{
+  --plane:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --rank:#9085e9; --paid:#3987e5; --org:#199e70;
+  --up:#0ca30c; --down:#e66767;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--ink);
+  font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:34px 20px 60px}
+.head{margin:6px 4px 22px}
+.head h1{font-size:24px;font-weight:800;margin:0 0 8px}
+.head p{font-size:13.5px;color:var(--ink2);line-height:1.6;margin:0}
+.note{background:rgba(234,163,0,.10);border:1px solid rgba(234,163,0,.35);border-radius:10px;
+  padding:10px 14px;margin-top:12px;font-size:12.5px;color:var(--ink2);line-height:1.55}
+.card{background:var(--surface);border:1px solid var(--grid);border-radius:16px;
+  box-shadow:0 3px 18px rgba(0,0,0,.05);padding:24px 26px 20px;margin:18px 0}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:5px}
+.card h2{font-size:20px;font-weight:800;margin:0 0 5px;line-height:1.28}
+.lead{font-size:13px;color:var(--ink2);line-height:1.55;margin:0 0 14px}
+.tiles{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.tile{flex:1;min-width:120px;background:var(--plane);border:1px solid var(--grid);border-radius:10px;padding:9px 12px}
+.tile .k{font-size:11px;color:var(--muted);margin-bottom:3px}
+.tile .v{font-size:19px;font-weight:800}
+.tile.up .v{color:var(--up)} .tile.down .v{color:var(--down)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 2px 2px;font-size:12px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}
+.dot{width:11px;height:11px;border-radius:3px} .ln{width:16px;height:3px;border-radius:2px}
+.chart{width:100%;height:340px}
+.take{background:var(--plane);border:1px solid var(--grid);border-left:3px solid var(--rank);
+  border-radius:10px;padding:12px 15px;margin-top:12px;font-size:13px;line-height:1.6;color:var(--ink2)}
+.take b{color:var(--ink)}
+.foot{font-size:11.5px;color:var(--muted);line-height:1.5;margin:22px 4px 0}
+</style></head><body>
+<div class="wrap">
+  <div class="head">
+    <h1>쿠션 시장 스토리라인 · 랭킹 × 발행량</h1>
+    <p>13종 쿠션의 올리브영 메이크업 <b>월별 순위</b>(위 패널, 위쪽=상위)와 <b>월별 발행량</b>(아래 패널, 유가/무가)을 같은 월 축에 정렬했다. 노란 띠 = 스토리의 핵심 시점.</p>
+    <div class="note">⚠️ <b>인스타 데이터는 2026-03부터 수집</b>됨(그 전은 유튜브만). 2월 이전 발행량이 낮은 것은 브랜드 행동이 아니라 데이터 커버리지 탓 — 플랫폼 비교는 3월 이후만 유효. 순위·발행 관계는 '동반 관측'이며 인과 단정 아님.</div>
+  </div>
+  <div id="cards"></div>
+  <p class="foot">순위 = 올영 메이크업 보드 일별 순위의 월평균(권외=선 끊김). 발행량 = 제품 언급 고유 유튜브 영상+인스타 게시물 건수, 유가=IG is_sponsored_or_ppl·YT ads_yn/ppl. 기간 2025-09~2026-06.</p>
+</div>
+<script>
+const DATA = {"VDL": {"rank": [57.2, 62.4, 14.7, 50.5, 44.2, 79.5, 25.3, 47.5, 75.3, 8.3], "paid": [1, 6, 6, 1, 3, 2, 11, 9, 46, 12], "org": [4, 11, 16, 14, 11, 8, 13, 1, 5, 7]}, "퓌": {"rank": [null, null, null, null, null, null, null, 1.0, 48.4, 20.9], "paid": [0, 0, 0, 0, 0, 0, 0, 88, 27, 19], "org": [0, 0, 0, 0, 0, 0, 0, 18, 29, 40]}, "라네즈": {"rank": [null, null, null, null, null, null, 29.1, 20.1, 48.1, 69.1], "paid": [0, 0, 0, 0, 0, 0, 49, 77, 18, 17], "org": [0, 0, 0, 0, 0, 0, 20, 29, 25, 13]}, "정샘물": {"rank": [1.6, 3.5, 7.0, 1.4, 2.3, 24.9, 5.2, 8.4, 7.7, 6.7], "paid": [3, 5, 16, 5, 1, 3, 31, 13, 27, 29], "org": [17, 26, 21, 26, 17, 5, 11, 7, 19, 8]}, "파넬": {"rank": [37.4, 74.0, 23.8, 30.2, 54.0, 24.7, 89.7, 92.9, 77.0, 89.3], "paid": [1, 2, 1, 5, 12, 7, 27, 0, 4, 0], "org": [12, 10, 14, 19, 12, 21, 7, 3, 4, 1]}, "에스쁘아": {"rank": [42.9, 69.7, 70.7, 84.2, 84.3, 67.2, 63.1, 81.8, 55.1, 53.4], "paid": [1, 0, 1, 1, 0, 0, 1, 0, 1, 1], "org": [7, 6, 0, 0, 7, 3, 5, 1, 2, 6]}};
+const STORIES = [{"key": "VDL", "tone": "up", "eyebrow": "CASE ① · VDL 커버 스테인", "title": "가라앉다가 유가 인스타 물량으로 6월 8위 반등", "lead": "55~80위를 맴돌던 VDL이 4~5월 유가 인스타 블리츠 직후 6월 8위로 급등. 발행(아래)이 앞서고 순위(위)가 한 박자 뒤 따라 오른다.", "hi": ["2026-04", "2026-05"], "tiles": [["5월 발행", "51건"], ["5월 유가비율", "90%"], ["6월 순위", "8위 ▲"]], "take": "5월 발행 51건 중 <b>90%가 유가·44건이 인스타</b>. 유튜브 중심이던 브랜드가 봄에 유가 인스타로 화력을 옮기자 6월 순위가 75→8위로 튀었다. (동반 관측)"}, {"key": "퓌", "tone": "up", "eyebrow": "CASE ② · 퓌 올데이 커버 블랙", "title": "유가 인스타 런칭 폭격 → 데뷔 즉시 1위", "lead": "2026년 4월 신규 진입과 동시에 1위. 그 달 카테고리 최대 런칭 물량을 쏟아부었다.", "hi": ["2026-04"], "tiles": [["4월 발행", "106건"], ["유가비율", "83%"], ["데뷔 순위", "1위"]], "take": "데뷔월 발행 <b>106건(93건 인스타·83% 유가)</b>로 즉시 1위. 이후 물량이 줄자 순위는 48→21위로 자연 안착 — '현금 태워 데뷔 1위' 곡선."}, {"key": "라네즈", "tone": "down", "eyebrow": "CASE ③ · 라네즈 네오 매트  (vs 퓌)", "title": "같은 유가 런칭, 물량 꺼지며 후퇴", "lead": "라네즈도 3~4월 유가 인스타로 20위까지 올랐지만, 5~6월 발행이 꺼지자 순위도 밀렸다. 퓌와의 차이는 '지속력'.", "hi": ["2026-03", "2026-04"], "tiles": [["4월 발행", "106건"], ["4월 순위", "20위"], ["6월 발행", "30건 ▼"]], "take": "4월 106건(유가 73%)로 20위 → 5~6월 43·30건으로 발행이 반토막 나며 순위 48→69위 후퇴. 퓌는 물량 유지로 버텼고, 라네즈는 못 버텼다."}, {"key": "정샘물", "tone": "up", "eyebrow": "CASE ④ · 정샘물 에센셜 스킨 누더", "title": "왕의 유일한 흔들림 — 2월 물량 공백", "lead": "9월~1월 내내 1~7위를 사수한 절대강자. 딱 한 번 2월에 25위로 흔들렸는데, 공교롭게 그 달 발행이 연중 최저였다.", "hi": ["2026-02"], "tiles": [["2월 발행", "8건 (최저)"], ["2월 순위", "25위 ▼"], ["3월 유가비율", "74%"]], "take": "2월 발행 8건으로 급감하자 순위가 25위로 급락. 3월 발행 42건·<b>유가 74%</b>로 즉시 되받아쳐 5~8위 복귀 — 압도적 1위도 물량 공백엔 흔들리고, 유가로 곧장 방어한다."}, {"key": "파넬", "tone": "down", "eyebrow": "CASE ⑤ · 파넬 시카마누 세럼쿠션", "title": "유가 푸시에도 못 막은 구조적 하락", "lead": "24~30위권이던 파넬이 2026 상반기 90위권으로 붕괴. 3월 유가 인스타 푸시를 넣었지만 하락을 되돌리지 못했다.", "hi": ["2026-03"], "tiles": [["3월 발행", "34건"], ["3월 유가비율", "79%"], ["6월 순위", "89위 ▼"]], "take": "3월 34건(유가 79%)의 인스타 푸시에도 순위는 계속 하락 → <b>유가 발행량은 상승의 필요조건이지 충분조건이 아니다.</b> 될 브랜드만 된다."}, {"key": "에스쁘아", "tone": "flat", "eyebrow": "CASE ⑥ · 에스쁘아 비벨벳", "title": "손 놓은 정체 — 마케팅 최소, 순위 장기 횡보", "lead": "발행량이 월 1~8건에 그치는 최소 투자 브랜드. 랭킹은 50~84위에서 장기 횡보한다.", "hi": [], "tiles": [["월 평균 발행", "4.3건"], ["누적 발행", "43건 (최저)"], ["순위대", "50~84위"]], "take": "발행 자체가 미미해 반등 트리거가 없다. 마케팅 화력을 사실상 접은 상태의 전형 — 앞으로도 큰 변동을 기대하기 어렵다."}];
+const MONTHS = ["2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"];
+const mlab = MONTHS.map(m=>{const [y,mm]=m.split('-');return (mm==='01')?("'"+y.slice(2)+" "+mm):mm;});
+
+function C(){const s=getComputedStyle(document.documentElement);
+  const g=n=>s.getPropertyValue(n).trim();
+  return {surface:g('--surface'),ink:g('--ink'),ink2:g('--ink2'),muted:g('--muted'),
+    grid:g('--grid'),axis:g('--axis'),rank:g('--rank'),paid:g('--paid'),org:g('--org')};}
+
+const charts=[];
+function build(){
+  const host=document.getElementById('cards'); host.innerHTML=''; charts.length=0;
+  STORIES.forEach((st,idx)=>{
+    const d=DATA[st.key];
+    const card=document.createElement('div'); card.className='card';
+    const tiles=st.tiles.map(t=>{
+      const cls=/[▲]/.test(t[1])?'up':(/[▼]/.test(t[1])?'down':'');
+      return `<div class="tile ${st.tone==='up'&&cls==='up'?'up':(cls==='down'?'down':'')}"><div class="k">${t[0]}</div><div class="v">${t[1]}</div></div>`;
+    }).join('');
+    card.innerHTML=`<div class="eyebrow">${st.eyebrow}</div>
+      <h2>${st.title}</h2><p class="lead">${st.lead}</p>
+      <div class="tiles">${tiles}</div>
+      <div class="legend">
+        <span class="lg"><span class="ln" style="background:var(--rank)"></span>메이크업 순위(위=상위)</span>
+        <span class="lg"><span class="dot" style="background:var(--paid)"></span>유가 발행</span>
+        <span class="lg"><span class="dot" style="background:var(--org)"></span>무가 발행</span>
+      </div>
+      <div class="chart" id="ch${idx}"></div>`;
+    host.appendChild(card);
+    const ch=echarts.init(document.getElementById('ch'+idx),null,{devicePixelRatio:2.5});
+    ch.setOption(opt(d,st)); charts.push(ch);
+  });
+}
+
+function opt(d,st){
+  const c=C();
+  const hiIdx=st.hi.map(m=>MONTHS.indexOf(m)).filter(i=>i>=0);
+  const band=hiIdx.length?[[{xAxis:hiIdx[0]-0.5},{xAxis:hiIdx[hiIdx.length-1]+0.5}]]:[];
+  const mk=band.length?{silent:true,itemStyle:{color:'rgba(234,161,0,.16)'},data:band}:undefined;
+  const lab={show:true,color:c.ink2,fontSize:10,fontWeight:600};
+  return {
+    backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+    tooltip:{trigger:'axis',axisPointer:{type:'line',link:[{xAxisIndex:'all'}]},
+      backgroundColor:c.surface,borderColor:c.grid,textStyle:{color:c.ink,fontSize:12},
+      formatter:p=>{const i=p[0].dataIndex;const rk=d.rank[i],pd=d.paid[i],og=d.org[i],tot=pd+og;
+        const pr=tot?Math.round(pd/tot*100):0;
+        return `<b>${MONTHS[i]}</b><br/>순위 ${rk==null?'권외':rk+'위'}<br/>발행 ${tot}건 (유가 ${pd}·무가 ${og}, 유가 ${pr}%)`;}},
+    grid:[{left:52,right:16,top:26,height:104},{left:52,right:16,top:186,height:110}],
+    axisPointer:{link:[{xAxisIndex:'all'}]},
+    xAxis:[
+      {type:'category',gridIndex:0,data:mlab,boundaryGap:true,axisTick:{show:false},
+        axisLine:{lineStyle:{color:c.axis}},axisLabel:{show:false}},
+      {type:'category',gridIndex:1,data:mlab,boundaryGap:true,axisTick:{show:false},
+        axisLine:{lineStyle:{color:c.axis}},axisLabel:{color:c.muted,fontSize:11}}
+    ],
+    yAxis:[
+      {type:'value',gridIndex:0,inverse:true,min:1,max:101,interval:25,name:'순위',
+        nameTextStyle:{color:c.muted,fontSize:10},splitLine:{lineStyle:{color:c.grid}},
+        axisLabel:{color:c.muted,fontSize:10,formatter:v=>v>=101?'권외':v}},
+      {type:'value',gridIndex:1,name:'발행(건)',nameTextStyle:{color:c.muted,fontSize:10},
+        splitLine:{lineStyle:{color:c.grid}},axisLabel:{color:c.muted,fontSize:10}}
+    ],
+    series:[
+      {name:'순위',type:'line',xAxisIndex:0,yAxisIndex:0,data:d.rank,connectNulls:false,
+        showSymbol:true,symbolSize:8,z:5,lineStyle:{width:2.5,color:c.rank},itemStyle:{color:c.rank,borderColor:c.surface,borderWidth:1.5},
+        label:{show:true,position:'top',color:c.rank,fontSize:10,fontWeight:700,formatter:o=>o.value==null?'':o.value},
+        markArea:mk},
+      {name:'유가',type:'bar',xAxisIndex:1,yAxisIndex:1,stack:'p',data:d.paid,barWidth:'52%',
+        itemStyle:{color:c.paid},label:{...lab,formatter:o=>o.value>=8?o.value:'' }},
+      {name:'무가',type:'bar',xAxisIndex:1,yAxisIndex:1,stack:'p',data:d.org,barWidth:'52%',
+        itemStyle:{color:c.org,borderColor:c.surface,borderWidth:0,borderRadius:[3,3,0,0]},
+        label:{...lab,formatter:o=>o.value>=8?o.value:'' },
+        markArea:mk}
+    ]
+  };
+}
+
+build();
+addEventListener('resize',()=>charts.forEach(c=>c.resize()));
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',build);
+</script></body></html>

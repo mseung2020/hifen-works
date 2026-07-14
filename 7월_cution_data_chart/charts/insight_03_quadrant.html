@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 제품 유형 4분면 맵</title>
+<style>
+  :root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#2a78d6}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+  .wrap{max-width:1180px;margin:28px auto;background:#fff;border-radius:20px;box-shadow:0 4px 26px rgba(0,0,0,.06);padding:30px 40px 26px}
+  .eyebrow{text-align:center;font-size:12.5px;font-weight:700;letter-spacing:.12em;color:var(--accent)}
+  h1{text-align:center;font-size:26px;font-weight:800;margin:6px 0 4px}
+  .sub{text-align:center;color:var(--ink2);font-size:13px;margin:0 0 6px}
+  .axtop{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin:10px 0 6px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .q{border-radius:16px;padding:20px 22px 22px;min-height:290px}
+  .q h2{margin:0 0 2px;font-size:18px;font-weight:800}
+  .q .desc{font-size:12.5px;color:var(--ink2);margin-bottom:16px}
+  .items{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+  .it{width:118px;text-align:center}
+  .circle{width:82px;height:82px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.12);line-height:1.1;padding:6px}
+  .it .pl{font-size:12.5px;font-weight:700}
+  .it .st{font-size:11px;color:var(--ink2);margin-top:2px;line-height:1.4}
+  .client{outline:3px solid var(--accent);outline-offset:3px}
+  .badge{display:inline-block;font-size:9.5px;background:var(--accent);color:#fff;border-radius:6px;padding:1px 5px;margin-top:3px;font-weight:700}
+  .qlab{font-size:11.5px;color:var(--muted);font-weight:600}
+  .axbot{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:600;margin-top:8px}
+  .foot{font-size:11.5px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6;border-top:1px solid #ecebe6;padding-top:12px}
+  .take{background:#f7faff;border:1px solid #e3edfb;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#1f2d3d}
+  .take b{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">OLIVE YOUNG · 쿠션 10종</div>
+  <h1>제품 유형 4분면 맵</h1>
+  <p class="sub">2025.09~2026.06 · 가로축 = 발행량(제품 언급 컨텐츠 수) · 세로축 = Top100 유지일수(전체 보드 상위권 지속)</p>
+  <div class="axtop">▲ 상위권 오래 유지</div>
+  <div class="grid">
+    <!-- 좌상: 적게 회자 + 오래 유지 -->
+    <div class="q" style="background:#efeaf7">
+      <div class="qlab">발행 적음 · 유지 높음</div>
+      <h2 style="color:#6a4fb0">조용한 실속형</h2>
+      <div class="desc">덜 회자돼도 상위권을 오래 지키는 제품</div>
+      <div class="items">
+        <div class="it"><div class="circle" style="background:#e0607a">VDL</div><div class="pl">커버스테인</div><div class="st">발행 187 · 유지 84일</div></div>
+        <div class="it"><div class="circle" style="background:#222">비디비치</div><div class="pl">블랙퍼펙션</div><div class="st">발행 239 · 유지 100일</div></div>
+      </div>
+    </div>
+    <!-- 우상: 많이 회자 + 오래 유지 -->
+    <div class="q" style="background:#e6f4ec">
+      <div class="qlab">발행 많음 · 유지 높음</div>
+      <h2 style="color:#1f8a4c">대세 강자형</h2>
+      <div class="desc">많이 회자되고 상위권도 오래 지키는 주도 제품</div>
+      <div class="items">
+        <div class="it"><div class="circle" style="background:#b08968">정샘물</div><div class="pl">스킨누더</div><div class="st">발행 291 · 유지 281일</div></div>
+        <div class="it"><div class="circle client" style="background:#3b4a9c">클리오</div><div class="pl">파운웨어</div><div class="st">발행 290 · 유지 82일</div></div>
+        <div class="it"><div class="circle" style="background:#8a7fd4">네이밍</div><div class="pl">레이어드핏</div><div class="st">발행 293 · 유지 90일</div></div>
+      </div>
+    </div>
+    <!-- 좌하: 적게 회자 + 못 유지 -->
+    <div class="q" style="background:#eef1f6">
+      <div class="qlab">발행 적음 · 유지 낮음</div>
+      <h2 style="color:#5b6b86">약세·고전형</h2>
+      <div class="desc">회자도 적고 상위권 지속도 짧은 제품</div>
+      <div class="items">
+        <div class="it"><div class="circle" style="background:#e23b3b">티르티르</div><div class="pl">마스크핏레드</div><div class="st">발행 84 · 유지 6일</div></div>
+        <div class="it"><div class="circle" style="background:#6b8f9c">힌스</div><div class="pl">메쉬매트</div><div class="st">발행 106 · 유지 29일</div></div>
+        <div class="it"><div class="circle" style="background:#2aa1b3">라네즈</div><div class="pl">네오</div><div class="st">발행 254 · 유지 25일</div></div>
+      </div>
+    </div>
+    <!-- 우하: 많이 회자 + 못 유지 -->
+    <div class="q" style="background:#fdeee6">
+      <div class="qlab">발행 많음 · 유지 낮음</div>
+      <h2 style="color:#e0662f">반짝 화제형</h2>
+      <div class="desc">많이 회자되지만 상위권을 오래 못 지킨 제품</div>
+      <div class="items">
+        <div class="it"><div class="circle" style="background:#f4a6c0;color:#7a2540">바닐라코</div><div class="pl">얼티밋화이트</div><div class="st">발행 303 · 유지 7일</div></div>
+        <div class="it"><div class="circle" style="background:#f0c14b;color:#5a4500">루나</div><div class="pl">롱래스팅컨실</div><div class="st">발행 279 · 유지 2일</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="axbot"><span>◀ 발행 적음</span><span>▼ 상위권 못 유지</span><span>발행 많음 ▶</span></div>
+  <div class="take">
+    <b>해석:</b> 발행량(회자)과 상위권 지속력을 두 축으로 놓으면 10종이 <b>3/2/2/3</b>으로 뚜렷이 갈린다. 클리오는 정샘물·네이밍과 함께 <b>&lsquo;대세 강자형&rsquo;</b>(많이 회자+오래 상위)에 속한다. 반대로 <b>바닐라코·루나는 발행량이 최상위(303·279)인데도 유지일수가 7·2일에 불과</b>해 &lsquo;반짝 화제형&rsquo;이다 — <b>발행량이 많다고 랭킹을 오래 지키는 건 아니라는</b> 점이 이 맵에서 가장 분명하게 드러난다.
+  </div>
+  <p class="foot">발행량 = 제품 언급 고유 유튜브 영상+인스타 게시물(2025-09~2026-06, 인스타 2026-03~). Top100 유지일수 = 올영 전체 보드 Top100에 든 일수(SKU 병합·그날 최고순위). 사분면 경계 = 두 축의 중앙값. 원 = 제품(색=브랜드), 파란 테두리 = 자사(클리오).</p>
+</div>
+</body>
+</html>

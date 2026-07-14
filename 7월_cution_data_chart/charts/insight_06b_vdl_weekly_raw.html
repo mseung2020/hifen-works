@@ -1,0 +1,59 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · VDL 발행량 & 주간랭킹(원본) · 3월~</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1080px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:23px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 8px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 4px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.dot{width:12px;height:12px;border-radius:3px}.bar{width:20px;height:4px;border-radius:2px}
+.chart{width:100%;height:480px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · VDL 커버스테인 · 2026 3~6월 (주간 원본)</div>
+  <h1>VDL: 주간 발행량과 그 주의 랭킹 (날것)</h1>
+  <p class="lead">한 차트에 겹쳐 표시 — <b>막대(왼쪽 축)</b> = 주간 발행량, <b>점·선(오른쪽 축)</b> = 그 주의 올영 메이크업 <b>주간 랭킹 원본</b>(이동평균 아님, 위=상위). 노란 구간 = 발행 급증 시점.</p>
+  <div class="legend">
+    <span class="lg"><span class="dot" style="background:#FF3B30"></span>유튜브 발행(주)</span>
+    <span class="lg"><span class="dot" style="background:#8B3DFF"></span>인스타 발행(주)</span>
+    <span class="lg"><span class="bar" style="background:#0e9bbd"></span>주간 메이크업 순위(원본·위=상위)</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="take">
+    <b>해석:</b> 30일 평균 대신 <b>매주 실제 랭킹</b>을 그 주 발행량 막대 위에 그대로 얹었다. VDL은 4월까지 발행이 적고 순위도 40~50위대였는데, <b>5월 하순 발행 급증(5/25 인스타 28건) 직후 주간 순위가 급격히 상위로 점프</b>했다. 주 단위로 봐도 발행과 랭킹의 선후 관계가 그대로 드러난다. (상관 관찰)
+  </div>
+  <p class="foot">막대 = 주별 제품 언급 고유 유튜브 영상+인스타 게시물. 점·선 = 올영 메이크업 보드 <b>주간 랭킹 원본</b>(oliveyoung_trend_m_rank_주간, SKU 최고순위), 오른쪽 축. 점 없는 주 = 그 주 Top100 밖. 기간 2026-03-01~06-30.</p>
+</div>
+<script>
+const grid=["2026-03-01","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-07","2026-03-08","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-14","2026-03-15","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-21","2026-03-22","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-28","2026-03-29","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-11","2026-04-12","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-18","2026-04-19","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-25","2026-04-26","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-02","2026-05-03","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-09","2026-05-10","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-16","2026-05-17","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-23","2026-05-24","2026-05-25","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-05-30","2026-05-31","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-06","2026-06-07","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-13","2026-06-14","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-19","2026-06-20","2026-06-21","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-27","2026-06-28","2026-06-29","2026-06-30"];
+const ytArr=[0,0,0,0,3,0,0,0,0,0,0,3,0,0,0,0,0,0,2,0,0,0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,6,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0], igArr=[0,0,0,0,3,0,0,0,0,0,0,1,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,13,0,0,0,0,0,0,28,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0], rankPts=[null,null,null,null,36,null,null,null,null,null,null,15,null,null,null,null,null,null,35,null,null,null,null,null,null,11,null,null,null,null,null,null,23,null,null,null,null,null,null,52,null,null,null,null,null,null,38,null,null,null,null,null,null,43,null,null,null,null,null,null,53,null,null,null,null,null,null,71,null,null,null,null,null,null,null,null,null,null,null,null,null,77,null,null,null,null,null,null,78,null,null,null,null,null,null,29,null,null,null,null,null,null,12,null,null,null,null,null,null,3,null,null,null,null,null,null,2,null,null,null,null,6];
+const monthName={'03':'Mar','04':'Apr','05':'May','06':'Jun'};
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({
+  backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+  tooltip:{trigger:'axis',axisPointer:{type:'line'}},
+  grid:{left:52,right:58,top:24,bottom:40},
+  xAxis:{type:'category',data:grid,boundaryGap:true,axisTick:{show:false},axisLine:{lineStyle:{color:'#c3c2b7'}},
+    axisLabel:{color:'#898781',fontSize:11,interval:(i,v)=>/-01$/.test(v)||/-17$/.test(v),
+      formatter:v=>v.endsWith('-01')?(monthName[v.slice(5,7)]||v.slice(5)):'17'}},
+  yAxis:[
+    {type:'value',name:'주 발행 건수',position:'left',nameTextStyle:{color:'#898781',fontSize:11},splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781'}},
+    {type:'value',name:'주간 순위(위=상위)',position:'right',inverse:true,min:1,max:100,nameTextStyle:{color:'#0e9bbd',fontSize:11},splitLine:{show:false},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}}
+  ],
+  series:[
+    {name:'유튜브',type:'bar',stack:'pub',yAxisIndex:0,data:ytArr,barWidth:34,itemStyle:{color:'#FF3B30'}},
+    {name:'인스타',type:'bar',stack:'pub',yAxisIndex:0,data:igArr,barWidth:34,itemStyle:{color:'#8B3DFF',borderRadius:[3,3,0,0]}},
+    {name:'주간 순위',type:'line',yAxisIndex:1,data:rankPts,smooth:false,connectNulls:true,showSymbol:true,symbolSize:7,z:5,
+      lineStyle:{width:2.5,color:'#0e9bbd'},itemStyle:{color:'#0e9bbd'},
+      markArea:{silent:true,itemStyle:{color:'rgba(250,205,70,0.28)'},data:[[{xAxis:'2026-05-18'},{xAxis:'2026-06-07'}]]}}
+  ]
+});
+</script></body></html>

@@ -1,0 +1,47 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 릴스 천하</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#8B3DFF}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:960px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 4px}
+.legend{display:flex;gap:16px;margin:8px 0 2px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.sw{width:13px;height:13px;border-radius:3px}
+.chart{width:100%;height:460px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#f4ecff;border:1px solid #ddc9f7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#2a1747}
+.take b{color:#7b28e0}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 인스타 포맷 · 릴스 vs 피드</div>
+  <h1>인스타는 릴스 천하 — 1등 정샘물만 예외</h1>
+  <p class="lead">브랜드별 인스타 게시물의 <b>릴스(숏폼 영상) vs 피드(정적)</b> 비중(100% 누적). 릴스 비중 내림차순.</p>
+  <div class="legend">
+    <span class="lg"><span class="sw" style="background:#8B3DFF"></span>릴스(숏폼 영상)</span>
+    <span class="lg"><span class="sw" style="background:#c3c2b7"></span>피드(정적)</span>
+  </div>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 12개 브랜드는 릴스 비중이 <b>80~100%</b>(투크·파넬은 100%) — 쿠션 인스타 콘텐츠는 사실상 <b>숏폼 릴스 영상</b>이다. 그런데 <b>정샘물만 릴스 53%</b>, 나머지 46%가 정적 피드로 유독 높다 — 1위 브랜드의 다른 결(피드 게시물을 함께 쓰는 유일한 브랜드).</p></div>
+  <p class="foot">기간 2025-09~2026-06. 릴스 = is_reel=1. 인스타 수집 2026-03~. 핵심 13종.</p>
+</div>
+<script>
+const D=[{"b": "투크", "reel": 100, "feed": 0, "n": 21}, {"b": "파넬", "reel": 100, "feed": 0, "n": 32}, {"b": "네이밍", "reel": 98, "feed": 2, "n": 97}, {"b": "클리오", "reel": 97, "feed": 3, "n": 73}, {"b": "VDL", "reel": 90, "feed": 10, "n": 73}, {"b": "비디비치", "reel": 90, "feed": 10, "n": 69}, {"b": "어바웃톤", "reel": 88, "feed": 12, "n": 41}, {"b": "라네즈", "reel": 87, "feed": 13, "n": 144}, {"b": "헤라", "reel": 85, "feed": 15, "n": 27}, {"b": "블랑디바", "reel": 82, "feed": 18, "n": 17}, {"b": "퓌", "reel": 80, "feed": 20, "n": 138}, {"b": "에스쁘아", "reel": 80, "feed": 20, "n": 5}, {"b": "정샘물", "reel": 53, "feed": 47, "n": 100}];
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'axis',axisPointer:{type:'shadow'},valueFormatter:v=>v+'%'},
+ grid:{left:66,right:24,top:10,bottom:34},
+ xAxis:{type:'value',max:100,axisLabel:{formatter:'{value}%',color:'#898781'},splitLine:{lineStyle:{color:'#ecebe6'}}},
+ yAxis:{type:'category',data:D.map(d=>d.b).reverse(),axisLine:{lineStyle:{color:'#c3c2b7'}},axisTick:{show:false},
+   axisLabel:{color:'#52514e',fontWeight:600,formatter:v=>v==='정샘물'?'{a|'+v+'}':v,rich:{a:{color:'#7b28e0',fontWeight:800}}}},
+ series:[
+   {name:'릴스',type:'bar',stack:'x',data:D.map(d=>d.reel).reverse(),itemStyle:{color:'#8B3DFF'},
+     label:{show:true,color:'#fff',fontWeight:700,fontSize:11,formatter:'{c}%'}},
+   {name:'피드',type:'bar',stack:'x',data:D.map(d=>d.feed).reverse(),itemStyle:{color:'#c3c2b7'},
+     label:{show:true,color:'#52514e',fontWeight:700,fontSize:11,formatter:p=>p.value>=20?p.value+'%':''}}
+ ]});
+</script></body></html>

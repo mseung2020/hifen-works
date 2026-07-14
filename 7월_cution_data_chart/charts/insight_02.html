@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 02 · 유가 크리에이터 체급 비율</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+  :root{--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--line:#e1e0d9;--surface:#fff;--page:#f4f4f2;--accent:#2a78d6}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+  .card{max-width:1040px;margin:32px auto;background:var(--surface);border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:34px 40px 26px}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+  h1{font-size:23px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
+  .lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;margin:12px 0 6px}
+  .lg{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--ink2)}
+  .dot{width:12px;height:12px;border-radius:3px}
+  .chart{width:100%;height:460px}
+  .foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:12px;margin-top:6px}
+  .take{background:#f7faff;border:1px solid #e3edfb;border-radius:12px;padding:14px 16px;margin-top:16px;font-size:13.5px;line-height:1.65;color:#1f2d3d}
+  .take b{color:var(--accent)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">INSIGHT 02 · 유가 크리에이터 체급</div>
+    <h1>&lsquo;상위 제품 = 나노 위주&rsquo;는 통념일 뿐, 뚜렷하지 않다</h1>
+    <p class="lead">각 제품을 <b>광고(유가)</b>한 크리에이터(유튜브 채널+인스타 계정, 중복 제거)의 체급 구성 — 전체 보드 Top100 유지일수 순 정렬. x축 아래 = 크리에이터 수 · 유지일수.</p>
+    <div class="legend" id="legend"></div>
+    <div id="chart" class="chart"></div>
+    <div class="take" id="take"></div>
+    <p class="foot">체급 = 유튜브 구독자·인스타 팔로워 기준 7단계(나노 &lt;1만 / 마이크로 1~5만 / 미드티어 5~10만 / 하이티어 10~20만 / 매크로 20~50만 / 메가 50~100만 / 셀럽 100만+). 유가 = YT ppl · IG sponsored/ppl. 미분류 = 크리에이터 메타 없음(대부분 초소형). 기간 2025-09~2026-06(인스타 2026-03~).</p>
+  </div>
+<script>
+const TIERS=["나노","마이크로","미드티어","하이티어","매크로","메가","셀럽","미분류"];
+const COLORS=["#cde2fb","#9ec5f4","#6da7ec","#3987e5","#256abf","#184f95","#0d366b","#cfcec8"];
+const rows=[
+ {n:"정샘물\n스킨누더",d:281,v:[65,25,7,6,2,2,1,6]},
+ {n:"비디비치\n블랙퍼펙션",d:100,v:[25,19,11,5,4,0,0,1]},
+ {n:"네이밍\n레이어드핏",d:90,v:[53,25,15,3,5,1,0,6]},
+ {n:"VDL\n커버스테인",d:84,v:[35,22,13,2,7,1,1,6]},
+ {n:"클리오\n파운웨어",d:82,v:[32,23,4,7,13,2,2,14]},
+ {n:"힌스\n메쉬매트",d:29,v:[31,12,6,7,2,1,4,6]},
+ {n:"라네즈\n네오",d:25,v:[61,42,16,7,5,4,1,2]},
+ {n:"바닐라코\n화이트",d:7,v:[39,54,12,16,12,7,5,8]},
+ {n:"티르티르\n레드",d:6,v:[25,21,1,1,1,0,0,12]},
+ {n:"루나\n컨실",d:2,v:[99,65,18,19,8,0,1,15]},
+];
+// 커스텀 HTML 범례 (echarts 범례 대신 → 겹침 방지)
+document.getElementById('legend').innerHTML=TIERS.map((t,i)=>
+ `<span class="lg"><span class="dot" style="background:${COLORS[i]}"></span>${t}</span>`).join('');
+
+const names=rows.map(r=>r.n), tot=rows.map(r=>r.v.reduce((a,b)=>a+b,0));
+const pct=rows.map(r=>{const s=r.v.reduce((a,b)=>a+b,0);return r.v.map(x=>+(x/s*100).toFixed(1));});
+const series=TIERS.map((t,ti)=>({name:t,type:'bar',stack:'s',data:pct.map(p=>p[ti]),itemStyle:{color:COLORS[ti]},
+  label:{show:true,position:'inside',color:ti<3?'#1f2d3d':'#fff',fontSize:10.5,fontWeight:600,formatter:p=>p.value>=9?Math.round(p.value)+'%':''}}));
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({
+  backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+  grid:{left:52,right:20,top:16,bottom:76},
+  tooltip:{trigger:'axis',axisPointer:{type:'shadow'},valueFormatter:v=>v+'%'},
+  xAxis:{type:'category',data:names,axisLine:{lineStyle:{color:'#c3c2b7'}},axisTick:{show:false},
+    axisLabel:{interval:0,lineHeight:15,color:'#52514e',fontSize:12,
+      formatter:(val,idx)=>val+'\n'+tot[idx]+'명·'+rows[idx].d+'일'}},
+  yAxis:{type:'value',max:100,name:'체급 비율(%)',nameTextStyle:{color:'#898781',fontSize:11},
+    splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781',formatter:'{value}%'}},
+  series:series
+});
+document.getElementById('take').innerHTML=
+ '<b>해석:</b> "랭킹 상위 제품일수록 나노 크리에이터 비중이 높다"는 통념은 이 10종에선 <b>뚜렷하지 않다.</b> 1위 정샘물은 나노 57%로 높지만, 상위권인 클리오는 나노 33%로 오히려 낮다. 다만 눈에 띄는 건 <b>클리오 vs 정샘물의 전략 차이</b> — 정샘물은 나노·마이크로(소형)가 79%로 소형 다수 전략, 클리오는 매크로+(20만↑) 비중이 18%로 10종 중 가장 높아 대형 인플루언서 의존도가 상대적으로 크다. 공통점은 10종 모두 유가 크리에이터의 과반이 소형(나노+마이크로)이라는 점.';
+</script>
+</body>
+</html>

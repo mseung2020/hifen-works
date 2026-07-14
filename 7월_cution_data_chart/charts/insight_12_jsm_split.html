@@ -1,0 +1,70 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 정샘물 주간 랭킹×발행 (구간 분리)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.page{max-width:1080px;margin:0 auto;padding:22px 0 50px}
+.ptitle{margin:14px 40px 2px;font-size:15px;font-weight:800;color:var(--ink2)}
+.card{max-width:1080px;margin:20px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:30px 40px 24px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:13.5px;color:var(--ink2);line-height:1.55;margin:0 0 8px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0 4px;font-size:12.5px;color:var(--ink2)}
+.lg{display:flex;gap:6px;align-items:center}.dot{width:12px;height:12px;border-radius:3px}.bar{width:20px;height:4px;border-radius:2px}
+.chart{width:100%;height:420px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:13px 15px;margin-top:12px;font-size:13px;line-height:1.6;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="page">
+<div class="ptitle">정샘물 주간 랭킹 × 발행 — 인스타 수집 시점(2026-03) 기준으로 구간 분리</div>
+
+<div class="card">
+  <div class="eyebrow">A · 2025.09~2026.02 · 유튜브만 (인스타 데이터 없음)</div>
+  <h1>9~2월: 유튜브 발행 × 주간 랭킹 — 2월 발행 공백에서 흔들림</h1>
+  <p class="lead"><b>막대</b> = 주간 유튜브 발행량, <b>점·선(오른쪽)</b> = 주간 메이크업 순위 원본(위=상위). 노란 구간 = 2월.</p>
+  <div class="legend"><span class="lg"><span class="dot" style="background:#FF3B30"></span>유튜브 발행(주)</span>
+    <span class="lg"><span class="bar" style="background:#0e9bbd"></span>주간 순위(원본·위=상위)</span></div>
+  <div id="chA" class="chart"></div>
+  <div class="take"><b>해석:</b> 9월~1월 내내 주간 1~8위를 사수. <b>2월 유튜브 발행이 주 1~2건으로 꺾인 구간(노랑)</b>에서 주간 순위가 42위까지 밀렸다. (상관 관찰)</div>
+  <p class="foot">막대 = 주별 고유 유튜브 영상. 점·선 = 주간 랭킹 원본(oliveyoung_trend_m_rank_주간). 인스타는 이 구간 데이터 없음(수집 2026-03~). 10월 주간랭킹 공백은 원본에 해당 주가 없음.</p>
+</div>
+
+<div class="card">
+  <div class="eyebrow">B · 2026.03~2026.06 · 유튜브 + 인스타</div>
+  <h1>3~6월: 유튜브+인스타 발행 × 주간 랭킹 — 5~8위 안정 유지</h1>
+  <p class="lead"><b>막대</b> = 주간 발행량(유튜브+인스타 누적), <b>점·선(오른쪽)</b> = 주간 메이크업 순위 원본(위=상위).</p>
+  <div class="legend"><span class="lg"><span class="dot" style="background:#FF3B30"></span>유튜브 발행(주)</span>
+    <span class="lg"><span class="dot" style="background:#8B3DFF"></span>인스타 발행(주)</span>
+    <span class="lg"><span class="bar" style="background:#0e9bbd"></span>주간 순위(원본·위=상위)</span></div>
+  <div id="chB" class="chart"></div>
+  <div class="take"><b>해석:</b> 3월부터 인스타가 가세하며 발행이 유튜브·인스타 양쪽으로 유지된다. 그 사이 주간 순위는 <b>5~8위에서 큰 흔들림 없이 안정</b>(2월 급락 이후 복귀 상태 유지). (상관 관찰)</div>
+  <p class="foot">막대 = 주별 고유 유튜브 영상 + 인스타 게시물(누적). 점·선 = 주간 랭킹 원본. 기간 2026-03-01~06-30.</p>
+</div>
+</div>
+<script>
+const A={"grid": ["2025-09-01", "2025-09-02", "2025-09-03", "2025-09-04", "2025-09-05", "2025-09-06", "2025-09-07", "2025-09-08", "2025-09-09", "2025-09-10", "2025-09-11", "2025-09-12", "2025-09-13", "2025-09-14", "2025-09-15", "2025-09-16", "2025-09-17", "2025-09-18", "2025-09-19", "2025-09-20", "2025-09-21", "2025-09-22", "2025-09-23", "2025-09-24", "2025-09-25", "2025-09-26", "2025-09-27", "2025-09-28", "2025-09-29", "2025-09-30", "2025-10-01", "2025-10-02", "2025-10-03", "2025-10-04", "2025-10-05", "2025-10-06", "2025-10-07", "2025-10-08", "2025-10-09", "2025-10-10", "2025-10-11", "2025-10-12", "2025-10-13", "2025-10-14", "2025-10-15", "2025-10-16", "2025-10-17", "2025-10-18", "2025-10-19", "2025-10-20", "2025-10-21", "2025-10-22", "2025-10-23", "2025-10-24", "2025-10-25", "2025-10-26", "2025-10-27", "2025-10-28", "2025-10-29", "2025-10-30", "2025-10-31", "2025-11-01", "2025-11-02", "2025-11-03", "2025-11-04", "2025-11-05", "2025-11-06", "2025-11-07", "2025-11-08", "2025-11-09", "2025-11-10", "2025-11-11", "2025-11-12", "2025-11-13", "2025-11-14", "2025-11-15", "2025-11-16", "2025-11-17", "2025-11-18", "2025-11-19", "2025-11-20", "2025-11-21", "2025-11-22", "2025-11-23", "2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-11-29", "2025-11-30", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-06", "2025-12-07", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-13", "2025-12-14", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-20", "2025-12-21", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-27", "2025-12-28", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-10", "2026-01-11", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-17", "2026-01-18", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-24", "2026-01-25", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-01-31", "2026-02-01", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-07", "2026-02-08", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-02-28"], "yt": [0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0], "ig": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "rank": [4, null, null, null, null, null, null, 1, null, null, null, null, null, null, 1, null, null, null, null, null, null, 2, null, null, null, null, null, null, 1, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4, null, null, null, null, null, null, 4, null, null, null, null, null, null, 3, null, null, null, null, null, null, 8, null, null, null, null, null, null, 2, null, null, null, null, null, null, 1, null, null, null, null, null, null, 1, null, null, null, null, null, null, 1, null, null, null, null, null, null, 1, null, null, null, null, null, null, 2, null, null, null, null, null, null, 1, null, null, null, null, null, null, 1, null, null, null, null, null, null, 2, null, null, null, null, null, null, 10, null, null, null, null, null, null, 42, null, null, null, null, null, null, 23, null, null, null, null, null, null, 18, null, null, null, null, null]}, B={"grid": ["2026-03-01", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-14", "2026-03-15", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-21", "2026-03-22", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-28", "2026-03-29", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-01", "2026-05-02", "2026-05-03", "2026-05-04", "2026-05-05", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-09", "2026-05-10", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-16", "2026-05-17", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-23", "2026-05-24", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-05-30", "2026-05-31", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-27", "2026-06-28", "2026-06-29", "2026-06-30"], "yt": [0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1], "ig": [0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2], "rank": [null, 9, null, null, null, null, null, null, 3, null, null, null, null, null, null, 2, null, null, null, null, null, null, 3, null, null, null, null, null, null, 7, null, null, null, null, null, null, 21, null, null, null, null, null, null, 6, null, null, null, null, null, null, 5, null, null, null, null, null, null, 5, null, null, null, null, null, null, 6, null, null, null, null, null, null, 5, null, null, null, null, null, null, 8, null, null, null, null, null, null, 5, null, null, null, null, null, null, 10, null, null, null, null, null, null, 6, null, null, null, null, null, null, 7, null, null, null, null, null, null, 5, null, null, null, null, null, null, 2, null]};
+const mn={'09':'Sep','10':'Oct','11':'Nov','12':'Dec','01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun'};
+function draw(id,D,igOn,hi){
+  const ch=echarts.init(document.getElementById(id),null,{devicePixelRatio:3});
+  const series=[{name:'유튜브',type:'bar',stack:'pub',yAxisIndex:0,data:D.yt,barWidth:9,itemStyle:{color:'#FF3B30',borderRadius:igOn?[0,0,0,0]:[2,2,0,0]}}];
+  if(igOn) series.push({name:'인스타',type:'bar',stack:'pub',yAxisIndex:0,data:D.ig,barWidth:9,itemStyle:{color:'#8B3DFF',borderRadius:[2,2,0,0]}});
+  const line={name:'주간 순위',type:'line',yAxisIndex:1,data:D.rank,smooth:false,connectNulls:true,showSymbol:true,symbolSize:7,z:5,
+    lineStyle:{width:2.5,color:'#0e9bbd'},itemStyle:{color:'#0e9bbd'}};
+  if(hi) line.markArea={silent:true,itemStyle:{color:'rgba(250,205,70,0.28)'},data:[[{xAxis:hi[0]},{xAxis:hi[1]}]]};
+  series.push(line);
+  ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+    tooltip:{trigger:'axis',axisPointer:{type:'line'},formatter:p=>{let yt=0,ig=0,rk=null;p.forEach(x=>{if(x.seriesName==='유튜브')yt=x.data||0;if(x.seriesName==='인스타')ig=x.data||0;if(x.seriesName==='주간 순위')rk=x.data;});return p[0].axisValue+'<br/>주간 순위 '+(rk==null?'권외':rk+'위')+'<br/>발행 '+(yt+ig)+'건'+(igOn?' (YT '+yt+'·IG '+ig+')':'');}},
+    grid:{left:52,right:58,top:20,bottom:36},
+    xAxis:{type:'category',data:D.grid,boundaryGap:true,axisTick:{show:false},axisLine:{lineStyle:{color:'#c3c2b7'}},
+      axisLabel:{color:'#898781',fontSize:11,interval:(i,v)=>v.endsWith('-01'),formatter:v=>mn[v.slice(5,7)]||v.slice(5)}},
+    yAxis:[{type:'value',name:'주 발행 건수',nameTextStyle:{color:'#898781',fontSize:11},splitLine:{lineStyle:{color:'#ecebe6'}},axisLabel:{color:'#898781'}},
+      {type:'value',name:'주간 순위(위=상위)',position:'right',inverse:true,min:1,max:100,nameTextStyle:{color:'#0e9bbd',fontSize:11},splitLine:{show:false},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}}],
+    series});
+}
+draw('chA',A,false,['2026-02-01','2026-02-28']);
+draw('chB',B,true,null);
+</script></body></html>

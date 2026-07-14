@@ -1,0 +1,59 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 파넬 도달 전환율</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd;--red:#FF3B30}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1080px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:23px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 4px}
+.sub{font-size:12.5px;color:var(--muted);margin:14px 2px 2px;font-weight:700}
+.chart{width:100%}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:12px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)} .take .r{color:var(--red);font-weight:700}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 파넬 시카마누 · 도달 전환율</div>
+  <h1>파넬: 좋은 크리에이터를 썼지만, 도달로 이어지지 못했다</h1>
+  <p class="lead">도달 전환율 = <b>게시물 실제 조회 ÷ 크리에이터 평소 조회</b>. 크리에이터가 평소 내는 도달을 그 브랜드 콘텐츠가 얼마나 살렸는지. 높을수록 효율적.</p>
+
+  <div class="sub">① 도달 전환율 순위 — 파넬이 압도적 꼴찌</div>
+  <div id="bar" class="chart" style="height:380px"></div>
+
+  <div class="sub">② 왜? 잠재(크리에이터 평소조회) vs 실제(게시물 조회) — 파넬은 우하단(잠재는 최상위, 실제는 최하위)</div>
+  <div id="scat" class="chart" style="height:440px"></div>
+
+  <div class="take"><b>해석:</b> 파넬 크리에이터는 평소 <b>2.7만 조회</b>를 내는 고도달·뷰티(96%) 계정이었지만, 파넬 게시물은 <span class="r">1,331 조회(전환율 약 5%, 꼴찌)</span>에 그쳤다. 즉 <b>작은 크리에이터가 문제가 아니라, 콘텐츠가 그들의 평소 도달을 못 살린 것.</b> VDL은 같은 유가 물량이 33% 전환으로 이어져 반등했고, 파넬은 헛돌아 랭킹 하락을 못 막았다. (상관 관찰)</p></div>
+  <p class="foot">전환율 = IG 게시물 조회 중앙값 ÷ 크리에이터 최근10개 오가닉 릴스 평균조회 중앙값. 산점도 x=크리에이터 평소조회, y=게시물 실제조회(둘 다 로그축). 표본 적은 에스쁘아·블랑디바·투크는 신뢰도 낮음. 기간 2025-09~2026-06, 인스타 기준.</p>
+</div>
+<script>
+const D=[{"브랜드": "VDL", "IG 게시물 수": 73, "크리에이터 평소 조회(중앙)": 11880, "게시물 실제 조회(중앙)": 3971, "도달 전환율(%)": 33.4, "게시물 좋아요(중앙)": 8, "YT 영상 조회(중앙)": 14039, "뷰티 주제 비중(%)": 80.0, "크리에이터 표본(매칭)": 71, "신뢰도": "높음"}, {"브랜드": "에스쁘아", "IG 게시물 수": 5, "크리에이터 평소 조회(중앙)": 8478, "게시물 실제 조회(중앙)": 2626, "도달 전환율(%)": 31.0, "게시물 좋아요(중앙)": 45, "YT 영상 조회(중앙)": 10419, "뷰티 주제 비중(%)": 100.0, "크리에이터 표본(매칭)": 5, "신뢰도": "낮음"}, {"브랜드": "투크", "IG 게시물 수": 21, "크리에이터 평소 조회(중앙)": 6842, "게시물 실제 조회(중앙)": 2037, "도달 전환율(%)": 29.8, "게시물 좋아요(중앙)": 21, "YT 영상 조회(중앙)": 5116, "뷰티 주제 비중(%)": 95.0, "크리에이터 표본(매칭)": 21, "신뢰도": "낮음"}, {"브랜드": "클리오", "IG 게시물 수": 73, "크리에이터 평소 조회(중앙)": 19589, "게시물 실제 조회(중앙)": 5396, "도달 전환율(%)": 27.5, "게시물 좋아요(중앙)": 42, "YT 영상 조회(중앙)": 6723, "뷰티 주제 비중(%)": 88.0, "크리에이터 표본(매칭)": 66, "신뢰도": "높음"}, {"브랜드": "헤라", "IG 게시물 수": 27, "크리에이터 평소 조회(중앙)": 25117, "게시물 실제 조회(중앙)": 6122, "도달 전환율(%)": 24.4, "게시물 좋아요(중앙)": 58, "YT 영상 조회(중앙)": 2257, "뷰티 주제 비중(%)": 77.0, "크리에이터 표본(매칭)": 26, "신뢰도": "중간"}, {"브랜드": "퓌", "IG 게시물 수": 138, "크리에이터 평소 조회(중앙)": 10131, "게시물 실제 조회(중앙)": 1969, "도달 전환율(%)": 19.4, "게시물 좋아요(중앙)": 27, "YT 영상 조회(중앙)": 6431, "뷰티 주제 비중(%)": 96.0, "크리에이터 표본(매칭)": 121, "신뢰도": "높음"}, {"브랜드": "라네즈", "IG 게시물 수": 144, "크리에이터 평소 조회(중앙)": 18911, "게시물 실제 조회(중앙)": 3348, "도달 전환율(%)": 17.7, "게시물 좋아요(중앙)": 48, "YT 영상 조회(중앙)": 9270, "뷰티 주제 비중(%)": 96.0, "크리에이터 표본(매칭)": 132, "신뢰도": "높음"}, {"브랜드": "비디비치", "IG 게시물 수": 69, "크리에이터 평소 조회(중앙)": 20805, "게시물 실제 조회(중앙)": 2944, "도달 전환율(%)": 14.2, "게시물 좋아요(중앙)": 40, "YT 영상 조회(중앙)": 10708, "뷰티 주제 비중(%)": 83.0, "크리에이터 표본(매칭)": 66, "신뢰도": "높음"}, {"브랜드": "네이밍", "IG 게시물 수": 97, "크리에이터 평소 조회(중앙)": 49042, "게시물 실제 조회(중앙)": 6090, "도달 전환율(%)": 12.4, "게시물 좋아요(중앙)": 102, "YT 영상 조회(중앙)": 4680, "뷰티 주제 비중(%)": 89.0, "크리에이터 표본(매칭)": 89, "신뢰도": "높음"}, {"브랜드": "어바웃톤", "IG 게시물 수": 41, "크리에이터 평소 조회(중앙)": 20095, "게시물 실제 조회(중앙)": 1750, "도달 전환율(%)": 8.7, "게시물 좋아요(중앙)": 38, "YT 영상 조회(중앙)": 6926, "뷰티 주제 비중(%)": 97.0, "크리에이터 표본(매칭)": 39, "신뢰도": "중간"}, {"브랜드": "정샘물", "IG 게시물 수": 102, "크리에이터 평소 조회(중앙)": 10066, "게시물 실제 조회(중앙)": 742, "도달 전환율(%)": 7.4, "게시물 좋아요(중앙)": 27, "YT 영상 조회(중앙)": 5948, "뷰티 주제 비중(%)": 76.0, "크리에이터 표본(매칭)": 98, "신뢰도": "높음"}, {"브랜드": "블랑디바", "IG 게시물 수": 17, "크리에이터 평소 조회(중앙)": 37650, "게시물 실제 조회(중앙)": 1987, "도달 전환율(%)": 5.3, "게시물 좋아요(중앙)": 8, "YT 영상 조회(중앙)": 5925, "뷰티 주제 비중(%)": 79.0, "크리에이터 표본(매칭)": 14, "신뢰도": "낮음"}, {"브랜드": "파넬", "IG 게시물 수": 32, "크리에이터 평소 조회(중앙)": 26881, "게시물 실제 조회(중앙)": 1331, "도달 전환율(%)": 5.0, "게시물 좋아요(중앙)": 56, "YT 영상 조회(중앙)": 2206, "뷰티 주제 비중(%)": 96.0, "크리에이터 표본(매칭)": 25, "신뢰도": "중간"}];
+const red='#FF3B30',teal='#0e9bbd',green='#12a594',muted='#c7c6c1';
+const sorted=[...D].sort((a,b)=>a['도달 전환율(%)']-b['도달 전환율(%)']);
+const bar=echarts.init(document.getElementById('bar'),null,{devicePixelRatio:3});
+bar.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ grid:{left:70,right:60,top:10,bottom:30},
+ tooltip:{trigger:'axis',axisPointer:{type:'shadow'},formatter:p=>{const d=p[0];return d.name+'<br/>도달 전환율 '+d.value+'%';}},
+ xAxis:{type:'value',axisLabel:{formatter:'{value}%',color:'#898781'},splitLine:{lineStyle:{color:'#ecebe6'}},max:35},
+ yAxis:{type:'category',data:sorted.map(d=>d['브랜드']),axisLine:{lineStyle:{color:'#c3c2b7'}},axisTick:{show:false},axisLabel:{color:'#52514e',fontWeight:600}},
+ series:[{type:'bar',data:sorted.map(d=>({value:d['도달 전환율(%)'],
+     itemStyle:{color:d['브랜드']==='파넬'?red:(d['브랜드']==='VDL'?green:teal),borderRadius:[0,4,4,0]}})),
+   barWidth:'62%',label:{show:true,position:'right',formatter:p=>p.value+'%',color:'#52514e',fontWeight:700,fontSize:12}}]
+});
+const scat=echarts.init(document.getElementById('scat'),null,{devicePixelRatio:3});
+scat.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ grid:{left:70,right:40,top:20,bottom:52},
+ tooltip:{trigger:'item',formatter:d=>d.data.b+'<br/>크리에이터 평소조회 '+d.data.value[0].toLocaleString()+'<br/>게시물 실제조회 '+d.data.value[1].toLocaleString()+'<br/>전환율 '+d.data.c+'%'},
+ xAxis:{type:'log',name:'크리에이터 평소 조회(잠재 도달)',nameLocation:'middle',nameGap:34,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781',formatter:v=>v>=1000?(v/1000)+'k':v}},
+ yAxis:{type:'log',name:'게시물 실제 조회(실현 도달)',nameLocation:'middle',nameGap:48,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781',formatter:v=>v>=1000?(v/1000)+'k':v}},
+ series:[{type:'scatter',symbolSize:d=>18,
+   data:D.map(d=>({value:[d['크리에이터 평소 조회(중앙)'],d['게시물 실제 조회(중앙)']],b:d['브랜드'],c:d['도달 전환율(%)'],
+     itemStyle:{color:d['브랜드']==='파넬'?red:(d['브랜드']==='VDL'?green:teal),borderColor:'#fff',borderWidth:1.5,opacity:d['신뢰도']==='낮음'?0.4:0.95}})),
+   label:{show:true,formatter:p=>p.data.b,position:'right',color:'#52514e',fontSize:11,fontWeight:600}}]
+});
+addEventListener('resize',()=>{bar.resize();scat.resize();});
+</script></body></html>
