@@ -10,6 +10,7 @@
 - [4월_youtube_comment_prompt](4월_youtube_comment_prompt/) — 유튜브 댓글로 시청자 성별·연령 분석을 검증하고 이상치를 재분배하는 프롬프트
 - [5월_insta_trend_prompt](5월_insta_trend_prompt/) — 트렌드 클러스터를 추출해 광고주 인사이트·트렌드 스토리를 생성하는 Dify 워크플로우 (자기검증 + Python 사실검증)
 - [6월_insta_challenge_prompt](6월_insta_challenge_prompt/) — 릴스 오리지널 오디오 후보 풀에서 챌린지성 콘텐츠 10개를 선별·랭킹·작명하는 프롬프트
+- [7월_creator_report_ai](7월_creator_report_ai/) — 크리에이터 프로필·성과 데이터를 스토리라인 카드뉴스 형식의 세일즈 리포트로 자동 생성하는 Dify 워크플로우
 
 ### 백엔드 / 코드
 - [3월_coupon_analysis](3월_coupon_analysis/) — 하이픈 백엔드의 쿠폰 코드를 분석해 퍼센티지 할인 도입 개편안과 코드 수정 가이드를 작성

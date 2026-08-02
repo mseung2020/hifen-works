@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>김진아 — 크리에이터 세일즈 리포트</title>
+<style>
+  /* =========================================================================
+     스토리라인 카드뉴스 v3 — 2단 구성.
+       1차: AI 강조 3가지 + 각 강조점을 지탱하는 근거 블록(AI가 지정)만.
+       2차: 강조점과 직접 엮이지 않은 나머지 데이터/시각화 모음.
+     근거 블록은 하단 '풀'에 정의돼 있고, assemble가 추출해 1차/2차로 재배치한다.
+     ========================================================================= */
+  :root{
+    --ink:#1a1a1a; --navy:#13233f; --cream:#f5f1e8; --paper:#efe7d6;
+    --coral:#ff6a5a; --butter:#ffce3a; --mint:#7fd1b9;
+    --card:#ffffff; --line:#e2d9c6; --muted:#8a806d;
+    --seq1:#c3d0e2; --seq2:#9fb3cf; --seq3:#7791b4; --seq4:#526f97; --seq5:#33507b; --seq6:#1e3a63; --seq7:#13233f;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:#c9beab; color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  .page{max-width:860px; margin:24px auto; background:var(--cream);
+    box-shadow:0 18px 50px -20px rgba(0,0,0,.6); overflow:hidden;}
+  .h{font-weight:900; letter-spacing:-0.035em;}
+
+  .mk{background:linear-gradient(transparent 56%, rgba(255,206,58,.85) 56%); padding:0 3px; font-weight:900;}
+  .mk-c{background:linear-gradient(transparent 56%, rgba(255,106,90,.85) 56%); padding:0 3px; font-weight:900; color:var(--ink);}
+  .navy .mk-c, .coral .mk, .mint .mk{color:inherit;}
+
+  @keyframes rise{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
+  @keyframes grow{from{transform:scaleX(0);} to{transform:scaleX(1);}}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @media (prefers-reduced-motion:no-preference){
+    .panel{animation:rise .6s cubic-bezier(.2,.7,.2,1) both;}
+    .bar-fill,.seg-fill{transform-origin:left center; animation:grow .95s cubic-bezier(.2,.8,.2,1) both;}
+    .spark polyline{stroke-dasharray:900; stroke-dashoffset:900; animation:draw 1.8s ease-out .3s forwards;}
+  }
+
+  /* ---- 패널 공통 ---- */
+  .panel{padding:44px 52px;}
+  .panel.navy{background:var(--navy); color:var(--cream);}
+  .panel.coral{background:var(--coral); color:#fff;}
+  .panel.mint{background:var(--mint); color:#0f3b30;}
+  .panel.cream{background:var(--cream); color:var(--ink);}
+  .kicker{font-size:12px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; opacity:.9;}
+  .navy .kicker{color:var(--butter);} .coral .kicker{color:#fff;} .mint .kicker{color:#0f3b30;} .cream .kicker{color:var(--coral);}
+  .ptitle{font-size:34px; line-height:1.2; margin-top:12px; max-width:640px;}
+  .pbody{font-size:15.5px; line-height:1.72; margin-top:16px; max-width:620px;}
+  .cream .pbody{color:#4a4436;} .navy .pbody{color:rgba(245,241,232,.82);}
+  .coral .pbody{color:rgba(255,255,255,.92);} .mint .pbody{color:#155345;}
+
+  .eg{margin-top:18px; padding:15px 18px; border-radius:14px; font-size:14px; line-height:1.66; font-weight:600; max-width:620px;}
+  .cream .eg{background:#ece2cf; color:#4a4436;} .navy .eg{background:rgba(255,255,255,.1);}
+  .coral .eg{background:rgba(255,255,255,.16);} .mint .eg{background:rgba(15,59,48,.1);}
+
+  .win{margin-top:18px; padding:15px 18px; border-radius:14px; font-size:14.5px; line-height:1.6; font-weight:800;
+    background:rgba(255,206,58,.2); color:var(--ink); max-width:620px; display:flex; gap:11px; align-items:flex-start;}
+  .navy .win,.coral .win,.mint .win{color:#fff; background:rgba(0,0,0,.22);}
+  .win svg{flex:none; margin-top:2px;}
+
+  /* ---- 커버 ---- */
+  .cover{position:relative; overflow:hidden;}
+  .cover::after{content:""; position:absolute; right:-80px; top:-80px; width:260px; height:260px;
+    border-radius:50%; background:var(--coral); opacity:.16;}
+  .cover .ptitle{font-size:42px; position:relative; z-index:1;}
+  .cover-claim{font-size:15px; line-height:1.6; color:rgba(245,241,232,.9); margin-top:18px; max-width:600px; font-weight:600; position:relative; z-index:1;}
+  .who{display:flex; align-items:center; gap:15px; margin-top:26px; position:relative; z-index:1;}
+  .who .ava{width:60px; height:60px; border-radius:18px; background-size:cover; background-position:center;
+    border:2px solid rgba(255,255,255,.25); background-color:rgba(255,255,255,.12); flex:none;}
+  .who .n{font-weight:900; font-size:17px;}
+  .who .g{font-size:12.5px; color:rgba(245,241,232,.6); font-weight:700; margin-top:3px;}
+  .who .links{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+  .who .links a{font-size:11.5px; font-weight:800; color:#fff; text-decoration:none;
+    border:1.5px solid rgba(255,255,255,.3); padding:6px 11px; border-radius:20px; transition:.16s;}
+  .who .links a:hover{background:#fff; color:var(--navy);}
+  .desc{font-size:12.5px; line-height:1.6; color:rgba(245,241,232,.62); margin-top:16px; max-width:600px; white-space:pre-line;}
+  .strip{display:flex; margin-top:26px; border:1px solid rgba(255,255,255,.18); border-radius:16px; overflow:hidden; position:relative; z-index:1;}
+  .strip .cell{flex:1; padding:16px 18px; border-right:1px solid rgba(255,255,255,.13);}
+  .strip .cell:last-child{border-right:0;}
+  .strip .v{font-weight:900; font-size:24px; letter-spacing:-.03em; display:block; color:#fff;}
+  .strip .l{font-size:11px; color:rgba(245,241,232,.55); font-weight:800; margin-top:5px; display:block;}
+  .strip .spark{display:block; margin-top:7px; width:96px; height:24px;}
+
+  /* ---- AI PICK ---- */
+  .aibadge{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:900; letter-spacing:.1em;
+    background:rgba(255,255,255,.22); padding:7px 14px; border-radius:30px;}
+  .mint .aibadge{background:rgba(15,59,48,.14);}
+
+  /* ---- 1차 근거 패널 (강조점 바로 아래, 컬러 카드에 붙임) ---- */
+  .ev-under{padding-top:34px;}
+  .ev-chapter{font-size:11.5px; font-weight:900; letter-spacing:.09em; text-transform:uppercase; color:var(--coral); margin-bottom:2px;}
+  .ev-block + .ev-block{border-top:1px dashed var(--line); margin-top:30px; padding-top:6px;}
+
+  /* ---- 소제목 ---- */
+  .sub{font-size:12px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; margin:24px 0 12px;
+    display:flex; align-items:center; gap:8px; color:var(--muted);}
+  .sub .tick{width:16px; height:4px; border-radius:2px; background:var(--coral);}
+  .ev-block > .sub:first-child{margin-top:6px;}
+
+  /* ---- 랭킹 막대 ---- */
+  .rank{display:flex; flex-direction:column; gap:10px;}
+  .rank .r{display:flex; align-items:center; gap:11px; font-size:13.5px; font-weight:800;}
+  .rank .r .lab{width:96px; flex:none; color:#4a4436;}
+  .rank .r .track{flex:1; height:16px; background:#e6dcc8; border-radius:9px; overflow:hidden;}
+  .rank .r .bar-fill{display:block; height:100%; border-radius:9px; background:var(--navy);}
+  .rank .r .pc{width:34px; text-align:right; font-weight:900;}
+  .cols3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .cols3 .rank .r .lab{width:auto; flex:1;} .cols3 .rank .r{font-size:12px; gap:7px;} .cols3 .rank .r .pc{width:26px;}
+  .cardbox{background:var(--card); border:1.5px solid var(--line); border-radius:18px; padding:18px 20px;}
+  .cardbox .bt{font-size:12px; font-weight:900; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:12px;}
+
+  /* 키워드 */
+  .kwcloud{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .kw{background:#fff; border:1.5px solid var(--line); border-radius:20px; padding:7px 13px; font-size:13px; font-weight:800; color:#4a4436;}
+  .kw:nth-child(4n+1){background:var(--navy); color:#fff; border-color:var(--navy);}
+  .kw:nth-child(7n+3){background:var(--cream); color:var(--coral); border-color:#f0c9c1; font-size:15px;}
+
+  /* 오디언스 헤드라인 */
+  .audhero{margin-top:4px; background:var(--navy); color:var(--cream); border-radius:16px; padding:18px 22px;
+    font-size:17px; font-weight:800; letter-spacing:-.02em; line-height:1.4;}
+  .audhero b{color:var(--butter); font-weight:900;}
+
+  /* 스택 바 */
+  .stackbar{height:40px; border-radius:12px; overflow:hidden; display:flex; margin-top:6px; background:#e6dcc8;}
+  .stackbar .seg-fill{height:100%; display:flex; align-items:center; justify-content:center; color:#fff;
+    font-weight:900; font-size:12.5px; white-space:nowrap; overflow:hidden;}
+  .stacklabels{display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:10px; font-size:11.5px; font-weight:700; color:#4a4436;}
+  .stacklabels i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:5px; vertical-align:-1px;}
+  .splitbar{height:44px; border-radius:13px; overflow:hidden; display:flex;}
+  .splitbar .seg-fill{height:100%; display:flex; align-items:center; padding:0 16px; color:#fff; font-weight:900; font-size:15px;}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{background:#fff; border:1.5px solid var(--line); border-radius:20px; padding:8px 15px; font-size:13px; font-weight:800;}
+  .chip.on{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+  /* 등급칩 */
+  .mband{font-size:10.5px; font-weight:900; padding:4px 9px; border-radius:20px; white-space:nowrap; letter-spacing:-.01em;}
+  .mband.b5{background:var(--coral); color:#fff;}
+  .mband.b10{background:#ff9184; color:#fff;}
+  .mband.b25{background:var(--navy); color:#fff;}
+  .mband.bam{background:var(--mint); color:#0f3b30;}
+  .mband.bbm,.mband.bmute{background:#e6dcc8; color:var(--muted);}
+
+  /* 오가닉 vs 협찬 */
+  .vs{padding:12px 2px;} .vs + .vs{border-top:1px solid var(--line);}
+  .vs-h{font-size:13px; font-weight:900; color:var(--ink); margin-bottom:9px; display:flex; align-items:center; gap:9px;}
+  .vs-mult{font-size:11px; font-weight:900; color:#fff; background:var(--coral); padding:3px 9px; border-radius:20px;}
+  .vs-row{display:grid; grid-template-columns:52px 1fr 72px; align-items:center; gap:10px; margin:5px 0;}
+  .vs-tag{font-size:11px; font-weight:900; text-align:center; padding:3px 0; border-radius:6px;}
+  .vs-tag.org{background:#dff0e9; color:#0f6b47;} .vs-tag.ad{background:#ffe1dc; color:#c0392b;}
+  .vs-bar{height:20px; background:#efe6d3; border-radius:7px; overflow:hidden;}
+  .vs-fill{display:block; height:100%; border-radius:7px;}
+  .vs-fill.org{background:var(--mint);} .vs-fill.ad{background:var(--coral);}
+  .vs-val{text-align:right; font-weight:900; font-size:14px; letter-spacing:-.02em;}
+
+  /* 백분위 스펙트럼 */
+  .specrows{display:flex; flex-direction:column; gap:16px;}
+  .spec{background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:15px 18px 12px;}
+  .spec-top{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .spec-lab{font-size:13.5px; font-weight:800; color:#4a4436;}
+  .spec-val{margin-left:auto; font-size:20px; font-weight:900; letter-spacing:-.03em; color:var(--ink);}
+  .spec-track{position:relative; height:10px; background:#ece2cf; border-radius:6px;}
+  .spec-fill{position:absolute; left:0; top:0; height:100%; border-radius:6px; background:var(--navy); opacity:.16;}
+  .spec-med{position:absolute; left:50%; top:-3px; width:2px; height:16px; background:var(--muted); opacity:.5; transform:translateX(-50%);}
+  .spec-dot{position:absolute; top:50%; width:16px; height:16px; border-radius:50%; background:var(--coral);
+    border:3px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.35); transform:translate(-50%,-50%);}
+  .spec-ends{display:flex; justify-content:space-between; margin-top:7px; font-size:10.5px; font-weight:700; color:var(--muted);}
+
+  /* 성장 모멘텀 */
+  .growthead{display:flex; align-items:center; gap:20px; margin-top:8px;}
+  .growthead-num{font-size:46px; font-weight:900; letter-spacing:-.04em; line-height:1;}
+  .growthead-num.gtop{color:#159b7a;} .growthead-num.gmid{color:var(--navy);} .growthead-num.gbot{color:var(--coral);}
+  .gbadge{display:inline-block; font-size:13px; font-weight:900; padding:6px 14px; border-radius:20px;}
+  .gbadge.gtop{background:var(--mint); color:#0f3b30;} .gbadge.gmid{background:var(--navy); color:#fff;} .gbadge.gbot{background:#ffe1dc; color:#c0392b;}
+  .growthead-sub{font-size:12.5px; font-weight:700; color:var(--muted); margin-top:8px;} .growthead-sub b{color:#4a4436;}
+  .distrack{position:relative; height:14px; border-radius:8px; margin-top:26px; background:#ece2cf; overflow:hidden;}
+  .dz{position:absolute; top:0; height:100%;}
+  .dz-lo{background:#f3d9d2;} .dz-mid{background:#e6dcc8;} .dz-hi{background:#cfe7dd;}
+  .dtick{position:absolute; top:-4px; width:2px; height:22px; background:var(--muted); opacity:.55; transform:translateX(-50%);}
+  .dmark{position:absolute; top:50%; width:18px; height:18px; border-radius:50%; background:var(--navy);
+    border:3px solid #fff; box-shadow:0 1px 5px rgba(0,0,0,.4); transform:translate(-50%,-50%); z-index:2;}
+  .distlabels{display:flex; justify-content:space-between; margin-top:9px; font-size:10.5px; font-weight:800; color:var(--muted);}
+
+  /* 게이지 큰 숫자 */
+  .bignum{display:flex; gap:14px; flex-wrap:wrap; margin-top:6px;}
+  .bignum .g{flex:1; min-width:150px; text-align:center; border-radius:16px; padding:20px 14px; background:var(--card); border:1.5px solid var(--line);}
+  .bignum .g .b{font-size:34px; font-weight:900; letter-spacing:-.04em; line-height:1; color:var(--navy);}
+  .bignum .g .c{font-size:11.5px; font-weight:800; margin-top:9px; color:var(--muted);}
+
+  /* 썸네일 포스트 */
+  .postgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+  .pcard{background:var(--card); border:1.5px solid var(--line); border-radius:16px; overflow:hidden;
+    text-decoration:none; color:inherit; transition:.18s; display:flex; flex-direction:column;}
+  .pcard:hover{transform:translateY(-3px); box-shadow:0 12px 26px -14px rgba(0,0,0,.5); border-color:var(--navy);}
+  .pcard .thumb{position:relative; aspect-ratio:4/5; background:var(--navy); background-size:cover; background-position:center;}
+  .pcard .thumb .rk{position:absolute; top:8px; left:8px; width:26px; height:26px; border-radius:8px; background:var(--coral);
+    color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .pcard .thumb .tags{position:absolute; top:8px; right:8px; display:flex; gap:4px;}
+  .pcard .thumb .tg{font-size:9.5px; font-weight:900; padding:3px 6px; border-radius:5px; color:#fff; background:rgba(0,0,0,.55);}
+  .pcard .thumb .views{position:absolute; left:0; right:0; bottom:0; padding:14px 10px 8px; color:#fff; font-weight:900; font-size:14px;
+    background:linear-gradient(transparent, rgba(0,0,0,.72));}
+  .pcard .cap{padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px;}
+  .pcard .cap-txt{font-size:11.5px; line-height:1.5; font-weight:600; color:#4a4436;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+  .pcard .st{color:var(--muted); font-weight:800; font-size:10.5px;}
+
+  .brands{display:flex; flex-wrap:wrap; gap:10px;}
+  .brand{display:flex; align-items:center; gap:9px; background:var(--card); border:1.5px solid var(--line);
+    border-radius:14px; padding:9px 15px 9px 9px; font-size:13px; font-weight:800;}
+  .brand .lg{width:34px; height:34px; border-radius:10px; background-size:cover; background-position:center;
+    background-color:var(--cream); flex:none;}
+  .brand small{display:block; font-size:10.5px; color:var(--muted); font-weight:700;}
+
+  .htags{display:flex; flex-wrap:wrap; gap:8px;}
+  .htag{font-size:14px; font-weight:900; color:var(--navy);}
+  .htag::before{content:"#"; color:var(--coral);}
+
+  .foot{background:var(--navy); color:rgba(245,241,232,.6); text-align:center;
+    font-size:11.5px; font-weight:700; padding:24px; letter-spacing:.03em;}
+  .foot b{color:var(--butter);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============================ 커버 ============================ -->
+  <div class="panel navy cover">
+    <div class="kicker">WHY THIS CREATOR · 왜 지금 이 크리에이터인가</div>
+    <h1 class="ptitle h">전직 아나운서의 말하기로 신뢰를 파는 <span class="mk-c">단단한 자존감</span> 연애심리 작가</h1>
+    <div class="who">
+      <div class="ava" style="background-image:url('https://storage.googleapis.com/instagram-profile-picture/jinjin.adores.you-profile-picture.jpg')"></div>
+      <div>
+        <div class="n">김진아 · @jinjin.adores.you</div>
+        <div class="g">휴먼 인플루언서 · 연애/결혼</div>
+      </div>
+      <div class="links">
+        <a href="https://litt.ly/jinjin.pink" target="_blank" rel="noopener">litt.ly/jinjin.pink</a>
+      </div>
+    </div>
+    <p class="cover-claim">자극적 후킹 없이 진솔·차분한 톤으로 신뢰를 쌓아, 무거운 주제에서도 광고 거부감이 낮은 화자입니다. 아나운서 출신의 전달력이 정보성 콘텐츠에 설득력을 더합니다.</p>
+    <div class="strip">
+      <div class="cell">
+        <span class="v">7.4만</span><span class="l">팔로워</span>
+        <svg class="spark" viewBox="0 0 600 100" preserveAspectRatio="none"><polyline points="8.0,8.0 300.0,43.1 592.0,92.0" fill="none" stroke="#ffce3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cell"><span class="v">655</span><span class="l">팔로잉</span></div>
+      <div class="cell"><span class="v">391</span><span class="l">게시물</span></div>
+      <div class="cell"><span class="v">3.9%</span><span class="l">최근 참여율</span></div>
+    </div>
+  </div>
+
+  <!-- ============================ 1차: AI 강조 3가지 + 근거 ============================ -->
+  <div class="panel coral"><div class="aibadge">✦ AI PICK 01</div><h2 class="ptitle h"><span class="mk-c">전문가인데 친근한</span> 흔치 않은 포지션</h2><p class="pbody">아나운서 출신의 발음·톤에 사적인 순간을 섞어 신뢰와 친근함을 동시에 잡았습니다. 연애심리라는 무거운 주제를 부담 없이 소비하게 만드는 드문 화자입니다.</p><div class="win"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg><div>브랜드 메시지를 '전문가의 진심'으로 전달하고 싶은 캠페인에 최적입니다.</div></div></div><div class="panel cream ev-under"><div class="ev-chapter">이 강조점을 뒷받침하는 근거</div><div class="ev-block"><div class="sub"><span class="tick"></span>콘텐츠 성격 · 독립 점수</div>
+    <div class="cardbox"><div class="rank o">
+      <div class="r"><span class="lab">팁/노하우</span><span class="track"><span class="bar-fill" style="width:85%"></span></span><span class="pc">85</span></div><div class="r"><span class="lab">일상</span><span class="track"><span class="bar-fill" style="width:60%"></span></span><span class="pc">60</span></div><div class="r"><span class="lab">엔터테인먼트</span><span class="track"><span class="bar-fill" style="width:45%"></span></span><span class="pc">45</span></div><div class="r"><span class="lab">홍보/광고</span><span class="track"><span class="bar-fill" style="width:35%"></span></span><span class="pc">35</span></div><div class="r"><span class="lab">루틴</span><span class="track"><span class="bar-fill" style="width:20%"></span></span><span class="pc">20</span></div><div class="r"><span class="lab">큐레이션</span><span class="track"><span class="bar-fill" style="width:10%"></span></span><span class="pc">10</span></div>
+    </div></div>
+    <div class="sub"><span class="tick"></span>무드 · 페르소나 · 토픽</div>
+    <div class="cols3">
+      <div class="cardbox"><div class="bt">무드</div><div class="rank b"><div class="r"><span class="lab">자연스러움</span><span class="track"><span class="bar-fill" style="width:80%"></span></span><span class="pc">80</span></div><div class="r"><span class="lab">감성적</span><span class="track"><span class="bar-fill" style="width:65%"></span></span><span class="pc">65</span></div><div class="r"><span class="lab">화사함</span><span class="track"><span class="bar-fill" style="width:60%"></span></span><span class="pc">60</span></div><div class="r"><span class="lab">귀여움</span><span class="track"><span class="bar-fill" style="width:40%"></span></span><span class="pc">40</span></div><div class="r"><span class="lab">미니멀</span><span class="track"><span class="bar-fill" style="width:30%"></span></span><span class="pc">30</span></div></div></div>
+      <div class="cardbox"><div class="bt">페르소나</div><div class="rank a"><div class="r"><span class="lab">얼굴 중심</span><span class="track"><span class="bar-fill" style="width:85%"></span></span><span class="pc">85</span></div><div class="r"><span class="lab">보이스 중심</span><span class="track"><span class="bar-fill" style="width:75%"></span></span><span class="pc">75</span></div><div class="r"><span class="lab">정보성 콘텐츠 중심</span><span class="track"><span class="bar-fill" style="width:65%"></span></span><span class="pc">65</span></div><div class="r"><span class="lab">제품 중심</span><span class="track"><span class="bar-fill" style="width:30%"></span></span><span class="pc">30</span></div><div class="r"><span class="lab">가족 중심</span><span class="track"><span class="bar-fill" style="width:10%"></span></span><span class="pc">10</span></div></div></div>
+      <div class="cardbox"><div class="bt">토픽</div><div class="rank"><div class="r"><span class="lab">관계</span><span class="track"><span class="bar-fill" style="width:90%"></span></span><span class="pc">90</span></div><div class="r"><span class="lab">교육/커리어</span><span class="track"><span class="bar-fill" style="width:50%"></span></span><span class="pc">50</span></div><div class="r"><span class="lab">엔터테인먼트</span><span class="track"><span class="bar-fill" style="width:40%"></span></span><span class="pc">40</span></div><div class="r"><span class="lab">건강/의료</span><span class="track"><span class="bar-fill" style="width:30%"></span></span><span class="pc">30</span></div><div class="r"><span class="lab">뷰티</span><span class="track"><span class="bar-fill" style="width:25%"></span></span><span class="pc">25</span></div></div></div>
+    </div>
+    <div class="eg"><b>이 조합이 만드는 화면은</b> — 차분한 조명 아래 얼굴을 마주 보고 말하는 토킹헤드 형식에, 아나운서 특유의 또렷한 발음과 감성적 문장이 얹혀 '가까운 언니의 상담'같은 화면을 만듭니다. 자극적 편집 대신 담담한 호흡으로 흘러가 신뢰가 쌓이는 톤입니다.</div>
+    <div class="sub"><span class="tick"></span>이 계정을 설명하는 키워드</div><div class="kwcloud"><span class="kw">연애</span><span class="kw">연애심리</span><span class="kw">고민상담</span><span class="kw">광고</span><span class="kw">김진아</span><span class="kw">심리학</span><span class="kw">연애고민</span><span class="kw">이별</span><span class="kw">London</span><span class="kw">davidhockney</span><span class="kw">london</span><span class="kw">reels</span><span class="kw">wedding</span><span class="kw">wlw</span><span class="kw">감자튀김</span><span class="kw">개집사</span><span class="kw">결혼</span><span class="kw">고맙고</span></div></div></div>
+<div class="panel navy"><div class="aibadge">✦ AI PICK 02</div><h2 class="ptitle h">오가닉이 협찬을 압도하는 <span class="mk-c">진심 반응형</span> 계정</h2><p class="pbody">비협찬 콘텐츠의 참여율이 협찬의 다섯 배에 달합니다. 팔로워가 이 사람의 진짜 조언에만 반응하는 구조라, 광고도 '조언처럼' 설계해야 통합니다.</p><div class="win"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg><div>하드셀 대신 스토리텔링형 협업을 제안하면 성과가 크게 달라집니다.</div></div></div><div class="panel cream ev-under"><div class="ev-chapter">이 강조점을 뒷받침하는 근거</div><div class="ev-block"><div class="sub"><span class="tick"></span>오가닉 vs 협찬 · 릴스 정면 비교</div>
+    <div class="cardbox">
+      <div class="vs">
+        <div class="vs-h">평균 조회<span class="vs-mult">오가닉 ×4.5</span></div>
+        <div class="vs-row"><span class="vs-tag org">오가닉</span><span class="vs-bar"><span class="vs-fill org bar-fill" style="width:100%"></span></span><span class="vs-val">9.4만</span></div>
+        <div class="vs-row"><span class="vs-tag ad">협찬</span><span class="vs-bar"><span class="vs-fill ad bar-fill" style="width:22%"></span></span><span class="vs-val">2.1만</span></div>
+      </div><div class="vs">
+        <div class="vs-h">릴스 참여율<span class="vs-mult">오가닉 ×2.3</span></div>
+        <div class="vs-row"><span class="vs-tag org">오가닉</span><span class="vs-bar"><span class="vs-fill org bar-fill" style="width:100%"></span></span><span class="vs-val">2.5%</span></div>
+        <div class="vs-row"><span class="vs-tag ad">협찬</span><span class="vs-bar"><span class="vs-fill ad bar-fill" style="width:43%"></span></span><span class="vs-val">1.1%</span></div>
+      </div>
+    </div>
+    
+    <div class="sub"><span class="tick"></span>동종 크리에이터 사이에서 이 계정의 위치</div>
+    <div class="specrows">
+      <div class="spec">
+        <div class="spec-top"><span class="spec-lab">오가닉 릴스 · 평균 조회</span><span class="spec-val">9.4만</span><span class="mband b10">TOP 10%</span></div>
+        <div class="spec-track"><span class="spec-med"></span><span class="spec-fill" style="width:93%"></span><span class="spec-dot" style="left:93%"></span></div>
+        <div class="spec-ends"><span>하위</span><span>중앙값</span><span>상위</span></div>
+      </div><div class="spec">
+        <div class="spec-top"><span class="spec-lab">오가닉 피드 · 평균 좋아요</span><span class="spec-val">4,419</span><span class="mband b5">TOP 5%</span></div>
+        <div class="spec-track"><span class="spec-med"></span><span class="spec-fill" style="width:98%"></span><span class="spec-dot" style="left:98%"></span></div>
+        <div class="spec-ends"><span>하위</span><span>중앙값</span><span>상위</span></div>
+      </div><div class="spec">
+        <div class="spec-top"><span class="spec-lab">오가닉 피드 · 평균 댓글</span><span class="spec-val">21</span><span class="mband b25">TOP 25%</span></div>
+        <div class="spec-track"><span class="spec-med"></span><span class="spec-fill" style="width:86%"></span><span class="spec-dot" style="left:86%"></span></div>
+        <div class="spec-ends"><span>하위</span><span>중앙값</span><span>상위</span></div>
+      </div><div class="spec">
+        <div class="spec-top"><span class="spec-lab">오가닉 피드 · 참여율</span><span class="spec-val">36.1%</span><span class="mband bam">평균 이상</span></div>
+        <div class="spec-track"><span class="spec-med"></span><span class="spec-fill" style="width:71%"></span><span class="spec-dot" style="left:71%"></span></div>
+        <div class="spec-ends"><span>하위</span><span>중앙값</span><span>상위</span></div>
+      </div><div class="spec">
+        <div class="spec-top"><span class="spec-lab">팔로워/팔로잉 비율</span><span class="spec-val">113.1</span><span class="mband b25">TOP 25%</span></div>
+        <div class="spec-track"><span class="spec-med"></span><span class="spec-fill" style="width:87%"></span><span class="spec-dot" style="left:87%"></span></div>
+        <div class="spec-ends"><span>하위</span><span>중앙값</span><span>상위</span></div>
+      </div>
+    </div>
+    <div class="win"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg><div>오가닉 참여율 5.8% vs 협찬 1.2%로 격차가 크지만, 이는 협찬을 '광고답게' 만들 때의 얘기입니다. 개인 서사에 녹인 협찬은 오가닉에 근접한 반응을 냈던 만큼, 스토리형 설계가 관건입니다.</div></div></div><div class="ev-block"><div class="sub"><span class="tick"></span>가장 반응이 좋았던 게시물</div>
+    <div class="postgrid">
+      <a class="pcard" href="https://www.instagram.com/reels/DLh6Rx7Jtov/" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('https://aqua-batteries-sku-map.trycloudflare.com/thumbs/DLh6Rx7Jtov.jpg')">
+          <span class="rk">1</span>
+          <span class="tags"><span class="tg" style="background:var(--coral)">릴스</span></span>
+          <span class="views">조회 26.7만</span>
+        </div>
+        <div class="cap"><p class="cap-txt">days in Shanghai, it was perfect❤️‍🔥😬✨🫷🏻 . . #상해 #상해여행 #reels</p><span class="st">좋아요 5,275 · 댓글 73</span></div>
+      </a><a class="pcard" href="https://www.instagram.com/reels/DVNJp5AkT5d/" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('https://aqua-batteries-sku-map.trycloudflare.com/thumbs/DVNJp5AkT5d.jpg')">
+          <span class="rk">2</span>
+          <span class="tags"><span class="tg" style="background:var(--coral)">릴스</span></span>
+          <span class="views">조회 16.1만</span>
+        </div>
+        <div class="cap"><p class="cap-txt">어딜 도망가ㅠ❤️‍🔥(도망) 풀영상은 유튜브에 . . #연애 #연애심리 #고민상담</p><span class="st">좋아요 888 · 댓글 8</span></div>
+      </a><a class="pcard" href="https://www.instagram.com/reels/DZ1dn8HxV-A/" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('https://aqua-batteries-sku-map.trycloudflare.com/thumbs/DZ1dn8HxV-A.jpg')">
+          <span class="rk">3</span>
+          <span class="tags"><span class="tg" style="background:var(--coral)">릴스</span></span>
+          <span class="views">조회 16.1만</span>
+        </div>
+        <div class="cap"><p class="cap-txt">우리 모두에게 아주 소중했던 날 나에게도 잊지못할   #wlw #wedding 🤍🫷🏻✨</p><span class="st">좋아요 1.1만 · 댓글 42</span></div>
+      </a><a class="pcard" href="https://www.instagram.com/reels/DaekTbSxMqm/" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('https://aqua-batteries-sku-map.trycloudflare.com/thumbs/DaekTbSxMqm.jpg')">
+          <span class="rk">4</span>
+          <span class="tags"><span class="tg" style="background:var(--coral)">릴스</span></span>
+          <span class="views">조회 5.2만</span>
+        </div>
+        <div class="cap"><p class="cap-txt">다시 만나도 분명 불행할텐데, 자꾸 습관처럼 연락하고 붙잡는 사람들 다 이리 와요(안아주게ㅠ🩵) 전체 영상은 유튜브에  . . #이별 #연애 #자존감 #심리학</p><span class="st">좋아요 489 · 댓글 8</span></div>
+      </a><a class="pcard" href="https://www.instagram.com/reels/DPnZ2NHArFy/" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('https://aqua-batteries-sku-map.trycloudflare.com/thumbs/DPnZ2NHArFy.jpg')">
+          <span class="rk">5</span>
+          <span class="tags"><span class="tg" style="background:var(--coral)">릴스</span></span>
+          <span class="views">조회 5.0만</span>
+        </div>
+        <div class="cap"><p class="cap-txt">Days in London🇬🇧💂🫷🏻 Couldn’t be happier! #런던여행   그리고 days in #london with @margarinfingers  영상 속 모든 옷이 전부 마가린핑거스🧈💛</p><span class="st">좋아요 781 · 댓글 14</span></div>
+      </a><a class="pcard" href="https://www.instagram.com/reels/DacjrGSxxTL/" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('https://aqua-batteries-sku-map.trycloudflare.com/thumbs/DacjrGSxxTL.jpg')">
+          <span class="rk">6</span>
+          <span class="tags"><span class="tg" style="background:var(--coral)">릴스</span></span>
+          <span class="views">조회 3.9만</span>
+        </div>
+        <div class="cap"><p class="cap-txt">아무튼 우리가 찌질한 것 아님 ㅠ! 풀영상은 유튜브에  #이별 #연애 #심리학 반팔 니트는 @generalidea_official</p><span class="st">좋아요 351 · 댓글 3</span></div>
+      </a>
+    </div></div></div>
+<div class="panel mint"><div class="aibadge">✦ AI PICK 03</div><h2 class="ptitle h">여성 85%가 <span class="mk-c">자기 이야기로</span> 듣는 밀착 오디언스</h2><p class="pbody">25~34세 여성이 60%로, 연애·자존감 고민을 직접 겪는 층입니다. 댓글이 상담 스레드처럼 흐르며 관계가 깊습니다.</p><div class="win"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0f3b30" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg><div>여성 타깃 뷰티·리빙·자기계발 브랜드와 정합성이 높습니다.</div></div></div><div class="panel cream ev-under"><div class="ev-chapter">이 강조점을 뒷받침하는 근거</div><div class="ev-block"><div class="audhero">주력 오디언스는 <b>25-34세 여성</b> — 전체의 <b>51%</b></div>
+    <div class="sub"><span class="tick"></span>팔로워 성별</div>
+    <div class="splitbar">
+      <span class="seg-fill" style="width:85%; background:var(--coral)">여성 85%</span>
+      <span class="seg-fill" style="width:15%; background:var(--navy)">남성 15%</span>
+    </div>
+    <div class="sub"><span class="tick"></span>연령대 분포</div>
+    <div class="stackbar">
+      <span class="seg-fill" style="width:2%; background:var(--seq1); color:#2a3550">2</span>
+      <span class="seg-fill" style="width:20%; background:var(--seq3)">20</span>
+      <span class="seg-fill" style="width:60%; background:var(--seq5)">60</span>
+      <span class="seg-fill" style="width:15%; background:var(--seq6)">15</span>
+      <span class="seg-fill" style="width:2%; background:var(--seq7)">2</span>
+      <span class="seg-fill" style="width:1%; background:#0d1a2e"></span>
+      <span class="seg-fill" style="width:0%; background:#070f1c"></span>
+    </div>
+    <div class="stacklabels">
+      <span><i style="background:var(--seq1)"></i>13–17 2%</span>
+      <span><i style="background:var(--seq3)"></i>18–24 20%</span>
+      <span><i style="background:var(--seq5)"></i>25–34 60%</span>
+      <span><i style="background:var(--seq6)"></i>35–44 15%</span>
+      <span><i style="background:var(--seq7)"></i>45–54 2%</span>
+    </div>
+    <div class="sub"><span class="tick"></span>주요 도달 국가</div>
+    <div class="chips"><span class="chip">대한민국</span></div>
+    <div class="eg"><b>팔로워 한 명을 상상하면</b> — 이제 막 서른을 앞둔 직장인 여성으로, 퇴근길 지하철에서 연애 고민을 곱씹다 이 계정의 릴스에 멈춰 섭니다. 자극적인 조언보다 '내 편이 되어주는 언니'의 담담한 말에 위로받고, 저장 버튼을 누른 뒤 비슷한 상황의 친구에게 공유합니다.</div></div></div>
+
+  <!-- ============================ 2차: 그 외 데이터 ============================ -->
+  <div class="panel cream"><div class="kicker">2차 · 그 외 데이터</div><h2 class="ptitle h" style="font-size:26px">추가로 살펴볼 데이터</h2><div class="ev-block"><div class="sub"><span class="tick"></span>콘텐츠 믹스 (최근 게시물 기준)</div>
+    <div class="splitbar">
+      <span class="seg-fill" style="width:63%; background:var(--coral)">릴스 63%</span>
+      <span class="seg-fill" style="width:37%; background:var(--navy)">피드 37%</span>
+    </div>
+    <div class="sub"><span class="tick"></span>최신 발행일</div>
+    <div class="bignum">
+      <div class="g"><div class="b" style="font-size:20px">2026-07-12</div><div class="c">최근 릴스</div></div>
+      <div class="g"><div class="b" style="font-size:20px">2026-06-26</div><div class="c">최근 피드</div></div>
+    </div></div><div class="ev-block"><div class="sub"><span class="tick"></span>이미 브랜드가 검증한 계정</div>
+    <div class="brands"><div class="brand"><span class="lg" style="background-image:url('https://yt3.googleusercontent.com/WopSa_1tJT2lQthlRuak2pwT4AKWmqLtihsn3_JSSU9gvwiJNPTKnV5mhm-cMFaQG5vhfU2uFJQ=s900-c-k-c0x00ffffff-no-rj')"></span><div>롯데칠성음료<small>음식 & 음료</small></div></div><div class="brand"><span class="lg" style="background-image:url('https://yt3.googleusercontent.com/GGnglyeeyGGxayaeeL5pT3TSprkIzE3V95Y3K7YYu9B61yEgKL2nAc8EOlheQdVIMsIrs9xo=s900-c-k-c0x00ffffff-no-rj')"></span><div>수면공감<small>리빙 & 인테리어</small></div></div></div>
+    <div class="sub"><span class="tick"></span>광고 이력 · 주력 산업 50%</div>
+    <div class="chips"><span class="chip on">음식 & 음료</span><span class="chip">리빙 & 인테리어</span></div>
+    <div class="sub"><span class="tick"></span>PPL 노출 랭킹 (최근 90일 · 조회순)</div>
+    <div class="bignum"><div class="g"><div class="b">1건</div><div class="c">리빙 & 인테리어 · 3.8만 조회</div></div><div class="g"><div class="b">1건</div><div class="c">음식 & 음료 · 6,006 조회</div></div></div></div><div class="ev-block"><div class="sub"><span class="tick"></span>대표 해시태그</div>
+    <div class="cardbox"><div class="htags"><span class="htag">연애심리</span><span class="htag">연애</span><span class="htag">삿포로여행</span><span class="htag">광고</span><span class="htag">연애고민</span><span class="htag">고민상담</span><span class="htag">김진아</span><span class="htag">이별</span><span class="htag">심리학</span><span class="htag">성공</span><span class="htag">광주</span><span class="htag">광주술집</span></div></div></div></div>
+
+  <!-- ============================ 마무리 ============================ -->
+  <div class="panel navy">
+    <div class="kicker">그래서, 이 크리에이터와</div>
+    <h2 class="ptitle h">한 문장으로 요약하면</h2>
+    <p class="pbody">김진아는 연애·자존감 니치에서 신뢰를 검증받은 미드티어입니다.
+
+여성 2534 타깃 브랜드라면, 하드셀 대신 '개인 서사에 녹인 스토리형 릴스'로 협업할 때 강점이 극대화됩니다.</p>
+  </div>
+
+  <div class="foot">이 리포트는 <b>Hifen</b> 데이터를 기반으로 자동 생성되었습니다.</div>
+</div>
+
+<!-- ===== 근거 블록 풀 (assemble가 데이터 채운 뒤 추출·재배치, 원본은 제거) ===== -->
+</body>
+</html>

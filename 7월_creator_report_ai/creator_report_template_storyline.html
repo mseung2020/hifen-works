@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{profile.username}} — 크리에이터 세일즈 리포트</title>
+<style>
+  /* =========================================================================
+     스토리라인 카드뉴스 v3 — 2단 구성.
+       1차: AI 강조 3가지 + 각 강조점을 지탱하는 근거 블록(AI가 지정)만.
+       2차: 강조점과 직접 엮이지 않은 나머지 데이터/시각화 모음.
+     근거 블록은 하단 '풀'에 정의돼 있고, assemble가 추출해 1차/2차로 재배치한다.
+     ========================================================================= */
+  :root{
+    --ink:#1a1a1a; --navy:#13233f; --cream:#f5f1e8; --paper:#efe7d6;
+    --coral:#ff6a5a; --butter:#ffce3a; --mint:#7fd1b9;
+    --card:#ffffff; --line:#e2d9c6; --muted:#8a806d;
+    --seq1:#c3d0e2; --seq2:#9fb3cf; --seq3:#7791b4; --seq4:#526f97; --seq5:#33507b; --seq6:#1e3a63; --seq7:#13233f;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:#c9beab; color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;}
+  .page{max-width:860px; margin:24px auto; background:var(--cream);
+    box-shadow:0 18px 50px -20px rgba(0,0,0,.6); overflow:hidden;}
+  .h{font-weight:900; letter-spacing:-0.035em;}
+
+  .mk{background:linear-gradient(transparent 56%, rgba(255,206,58,.85) 56%); padding:0 3px; font-weight:900;}
+  .mk-c{background:linear-gradient(transparent 56%, rgba(255,106,90,.85) 56%); padding:0 3px; font-weight:900; color:var(--ink);}
+  .navy .mk-c, .coral .mk, .mint .mk{color:inherit;}
+
+  @keyframes rise{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:none;}}
+  @keyframes grow{from{transform:scaleX(0);} to{transform:scaleX(1);}}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @media (prefers-reduced-motion:no-preference){
+    .panel{animation:rise .6s cubic-bezier(.2,.7,.2,1) both;}
+    .bar-fill,.seg-fill{transform-origin:left center; animation:grow .95s cubic-bezier(.2,.8,.2,1) both;}
+    .spark polyline{stroke-dasharray:900; stroke-dashoffset:900; animation:draw 1.8s ease-out .3s forwards;}
+  }
+
+  /* ---- 패널 공통 ---- */
+  .panel{padding:44px 52px;}
+  .panel.navy{background:var(--navy); color:var(--cream);}
+  .panel.coral{background:var(--coral); color:#fff;}
+  .panel.mint{background:var(--mint); color:#0f3b30;}
+  .panel.cream{background:var(--cream); color:var(--ink);}
+  .kicker{font-size:12px; font-weight:900; letter-spacing:.16em; text-transform:uppercase; opacity:.9;}
+  .navy .kicker{color:var(--butter);} .coral .kicker{color:#fff;} .mint .kicker{color:#0f3b30;} .cream .kicker{color:var(--coral);}
+  .ptitle{font-size:34px; line-height:1.2; margin-top:12px; max-width:640px;}
+  .pbody{font-size:15.5px; line-height:1.72; margin-top:16px; max-width:620px;}
+  .cream .pbody{color:#4a4436;} .navy .pbody{color:rgba(245,241,232,.82);}
+  .coral .pbody{color:rgba(255,255,255,.92);} .mint .pbody{color:#155345;}
+
+  .eg{margin-top:18px; padding:15px 18px; border-radius:14px; font-size:14px; line-height:1.66; font-weight:600; max-width:620px;}
+  .cream .eg{background:#ece2cf; color:#4a4436;} .navy .eg{background:rgba(255,255,255,.1);}
+  .coral .eg{background:rgba(255,255,255,.16);} .mint .eg{background:rgba(15,59,48,.1);}
+
+  .win{margin-top:18px; padding:15px 18px; border-radius:14px; font-size:14.5px; line-height:1.6; font-weight:800;
+    background:rgba(255,206,58,.2); color:var(--ink); max-width:620px; display:flex; gap:11px; align-items:flex-start;}
+  .navy .win,.coral .win,.mint .win{color:#fff; background:rgba(0,0,0,.22);}
+  .win svg{flex:none; margin-top:2px;}
+
+  /* ---- 커버 ---- */
+  .cover{position:relative; overflow:hidden;}
+  .cover::after{content:""; position:absolute; right:-80px; top:-80px; width:260px; height:260px;
+    border-radius:50%; background:var(--coral); opacity:.16;}
+  .cover .ptitle{font-size:42px; position:relative; z-index:1;}
+  .cover-claim{font-size:15px; line-height:1.6; color:rgba(245,241,232,.9); margin-top:18px; max-width:600px; font-weight:600; position:relative; z-index:1;}
+  .who{display:flex; align-items:center; gap:15px; margin-top:26px; position:relative; z-index:1;}
+  .who .ava{width:60px; height:60px; border-radius:18px; background-size:cover; background-position:center;
+    border:2px solid rgba(255,255,255,.25); background-color:rgba(255,255,255,.12); flex:none;}
+  .who .n{font-weight:900; font-size:17px;}
+  .who .g{font-size:12.5px; color:rgba(245,241,232,.6); font-weight:700; margin-top:3px;}
+  .who .links{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+  .who .links a{font-size:11.5px; font-weight:800; color:#fff; text-decoration:none;
+    border:1.5px solid rgba(255,255,255,.3); padding:6px 11px; border-radius:20px; transition:.16s;}
+  .who .links a:hover{background:#fff; color:var(--navy);}
+  .desc{font-size:12.5px; line-height:1.6; color:rgba(245,241,232,.62); margin-top:16px; max-width:600px; white-space:pre-line;}
+  .strip{display:flex; margin-top:26px; border:1px solid rgba(255,255,255,.18); border-radius:16px; overflow:hidden; position:relative; z-index:1;}
+  .strip .cell{flex:1; padding:16px 18px; border-right:1px solid rgba(255,255,255,.13);}
+  .strip .cell:last-child{border-right:0;}
+  .strip .v{font-weight:900; font-size:24px; letter-spacing:-.03em; display:block; color:#fff;}
+  .strip .l{font-size:11px; color:rgba(245,241,232,.55); font-weight:800; margin-top:5px; display:block;}
+  .strip .spark{display:block; margin-top:7px; width:96px; height:24px;}
+
+  /* ---- AI PICK ---- */
+  .aibadge{display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:900; letter-spacing:.1em;
+    background:rgba(255,255,255,.22); padding:7px 14px; border-radius:30px;}
+  .mint .aibadge{background:rgba(15,59,48,.14);}
+
+  /* ---- 1차 근거 패널 (강조점 바로 아래, 컬러 카드에 붙임) ---- */
+  .ev-under{padding-top:34px;}
+  .ev-chapter{font-size:11.5px; font-weight:900; letter-spacing:.09em; text-transform:uppercase; color:var(--coral); margin-bottom:2px;}
+  .ev-block + .ev-block{border-top:1px dashed var(--line); margin-top:30px; padding-top:6px;}
+
+  /* ---- 소제목 ---- */
+  .sub{font-size:12px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; margin:24px 0 12px;
+    display:flex; align-items:center; gap:8px; color:var(--muted);}
+  .sub .tick{width:16px; height:4px; border-radius:2px; background:var(--coral);}
+  .ev-block > .sub:first-child{margin-top:6px;}
+
+  /* ---- 랭킹 막대 ---- */
+  .rank{display:flex; flex-direction:column; gap:10px;}
+  .rank .r{display:flex; align-items:center; gap:11px; font-size:13.5px; font-weight:800;}
+  .rank .r .lab{width:96px; flex:none; color:#4a4436;}
+  .rank .r .track{flex:1; height:16px; background:#e6dcc8; border-radius:9px; overflow:hidden;}
+  .rank .r .bar-fill{display:block; height:100%; border-radius:9px; background:var(--navy);}
+  .rank .r .pc{width:34px; text-align:right; font-weight:900;}
+  .cols3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .cols3 .rank .r .lab{width:auto; flex:1;} .cols3 .rank .r{font-size:12px; gap:7px;} .cols3 .rank .r .pc{width:26px;}
+  .cardbox{background:var(--card); border:1.5px solid var(--line); border-radius:18px; padding:18px 20px;}
+  .cardbox .bt{font-size:12px; font-weight:900; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:12px;}
+
+  /* 키워드 */
+  .kwcloud{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .kw{background:#fff; border:1.5px solid var(--line); border-radius:20px; padding:7px 13px; font-size:13px; font-weight:800; color:#4a4436;}
+  .kw:nth-child(4n+1){background:var(--navy); color:#fff; border-color:var(--navy);}
+  .kw:nth-child(7n+3){background:var(--cream); color:var(--coral); border-color:#f0c9c1; font-size:15px;}
+
+  /* 오디언스 헤드라인 */
+  .audhero{margin-top:4px; background:var(--navy); color:var(--cream); border-radius:16px; padding:18px 22px;
+    font-size:17px; font-weight:800; letter-spacing:-.02em; line-height:1.4;}
+  .audhero b{color:var(--butter); font-weight:900;}
+
+  /* 스택 바 */
+  .stackbar{height:40px; border-radius:12px; overflow:hidden; display:flex; margin-top:6px; background:#e6dcc8;}
+  .stackbar .seg-fill{height:100%; display:flex; align-items:center; justify-content:center; color:#fff;
+    font-weight:900; font-size:12.5px; white-space:nowrap; overflow:hidden;}
+  .stacklabels{display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:10px; font-size:11.5px; font-weight:700; color:#4a4436;}
+  .stacklabels i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:5px; vertical-align:-1px;}
+  .splitbar{height:44px; border-radius:13px; overflow:hidden; display:flex;}
+  .splitbar .seg-fill{height:100%; display:flex; align-items:center; padding:0 16px; color:#fff; font-weight:900; font-size:15px;}
+
+  .chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{background:#fff; border:1.5px solid var(--line); border-radius:20px; padding:8px 15px; font-size:13px; font-weight:800;}
+  .chip.on{background:var(--navy); color:#fff; border-color:var(--navy);}
+
+  /* 등급칩 */
+  .mband{font-size:10.5px; font-weight:900; padding:4px 9px; border-radius:20px; white-space:nowrap; letter-spacing:-.01em;}
+  .mband.b5{background:var(--coral); color:#fff;}
+  .mband.b10{background:#ff9184; color:#fff;}
+  .mband.b25{background:var(--navy); color:#fff;}
+  .mband.bam{background:var(--mint); color:#0f3b30;}
+  .mband.bbm,.mband.bmute{background:#e6dcc8; color:var(--muted);}
+
+  /* 오가닉 vs 협찬 */
+  .vs{padding:12px 2px;} .vs + .vs{border-top:1px solid var(--line);}
+  .vs-h{font-size:13px; font-weight:900; color:var(--ink); margin-bottom:9px; display:flex; align-items:center; gap:9px;}
+  .vs-mult{font-size:11px; font-weight:900; color:#fff; background:var(--coral); padding:3px 9px; border-radius:20px;}
+  .vs-row{display:grid; grid-template-columns:52px 1fr 72px; align-items:center; gap:10px; margin:5px 0;}
+  .vs-tag{font-size:11px; font-weight:900; text-align:center; padding:3px 0; border-radius:6px;}
+  .vs-tag.org{background:#dff0e9; color:#0f6b47;} .vs-tag.ad{background:#ffe1dc; color:#c0392b;}
+  .vs-bar{height:20px; background:#efe6d3; border-radius:7px; overflow:hidden;}
+  .vs-fill{display:block; height:100%; border-radius:7px;}
+  .vs-fill.org{background:var(--mint);} .vs-fill.ad{background:var(--coral);}
+  .vs-val{text-align:right; font-weight:900; font-size:14px; letter-spacing:-.02em;}
+
+  /* 백분위 스펙트럼 */
+  .specrows{display:flex; flex-direction:column; gap:16px;}
+  .spec{background:var(--card); border:1.5px solid var(--line); border-radius:16px; padding:15px 18px 12px;}
+  .spec-top{display:flex; align-items:center; gap:10px; margin-bottom:12px;}
+  .spec-lab{font-size:13.5px; font-weight:800; color:#4a4436;}
+  .spec-val{margin-left:auto; font-size:20px; font-weight:900; letter-spacing:-.03em; color:var(--ink);}
+  .spec-track{position:relative; height:10px; background:#ece2cf; border-radius:6px;}
+  .spec-fill{position:absolute; left:0; top:0; height:100%; border-radius:6px; background:var(--navy); opacity:.16;}
+  .spec-med{position:absolute; left:50%; top:-3px; width:2px; height:16px; background:var(--muted); opacity:.5; transform:translateX(-50%);}
+  .spec-dot{position:absolute; top:50%; width:16px; height:16px; border-radius:50%; background:var(--coral);
+    border:3px solid #fff; box-shadow:0 1px 4px rgba(0,0,0,.35); transform:translate(-50%,-50%);}
+  .spec-ends{display:flex; justify-content:space-between; margin-top:7px; font-size:10.5px; font-weight:700; color:var(--muted);}
+
+  /* 성장 모멘텀 */
+  .growthead{display:flex; align-items:center; gap:20px; margin-top:8px;}
+  .growthead-num{font-size:46px; font-weight:900; letter-spacing:-.04em; line-height:1;}
+  .growthead-num.gtop{color:#159b7a;} .growthead-num.gmid{color:var(--navy);} .growthead-num.gbot{color:var(--coral);}
+  .gbadge{display:inline-block; font-size:13px; font-weight:900; padding:6px 14px; border-radius:20px;}
+  .gbadge.gtop{background:var(--mint); color:#0f3b30;} .gbadge.gmid{background:var(--navy); color:#fff;} .gbadge.gbot{background:#ffe1dc; color:#c0392b;}
+  .growthead-sub{font-size:12.5px; font-weight:700; color:var(--muted); margin-top:8px;} .growthead-sub b{color:#4a4436;}
+  .distrack{position:relative; height:14px; border-radius:8px; margin-top:26px; background:#ece2cf; overflow:hidden;}
+  .dz{position:absolute; top:0; height:100%;}
+  .dz-lo{background:#f3d9d2;} .dz-mid{background:#e6dcc8;} .dz-hi{background:#cfe7dd;}
+  .dtick{position:absolute; top:-4px; width:2px; height:22px; background:var(--muted); opacity:.55; transform:translateX(-50%);}
+  .dmark{position:absolute; top:50%; width:18px; height:18px; border-radius:50%; background:var(--navy);
+    border:3px solid #fff; box-shadow:0 1px 5px rgba(0,0,0,.4); transform:translate(-50%,-50%); z-index:2;}
+  .distlabels{display:flex; justify-content:space-between; margin-top:9px; font-size:10.5px; font-weight:800; color:var(--muted);}
+
+  /* 게이지 큰 숫자 */
+  .bignum{display:flex; gap:14px; flex-wrap:wrap; margin-top:6px;}
+  .bignum .g{flex:1; min-width:150px; text-align:center; border-radius:16px; padding:20px 14px; background:var(--card); border:1.5px solid var(--line);}
+  .bignum .g .b{font-size:34px; font-weight:900; letter-spacing:-.04em; line-height:1; color:var(--navy);}
+  .bignum .g .c{font-size:11.5px; font-weight:800; margin-top:9px; color:var(--muted);}
+
+  /* 썸네일 포스트 */
+  .postgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:14px;}
+  .pcard{background:var(--card); border:1.5px solid var(--line); border-radius:16px; overflow:hidden;
+    text-decoration:none; color:inherit; transition:.18s; display:flex; flex-direction:column;}
+  .pcard:hover{transform:translateY(-3px); box-shadow:0 12px 26px -14px rgba(0,0,0,.5); border-color:var(--navy);}
+  .pcard .thumb{position:relative; aspect-ratio:4/5; background:var(--navy); background-size:cover; background-position:center;}
+  .pcard .thumb .rk{position:absolute; top:8px; left:8px; width:26px; height:26px; border-radius:8px; background:var(--coral);
+    color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .pcard .thumb .tags{position:absolute; top:8px; right:8px; display:flex; gap:4px;}
+  .pcard .thumb .tg{font-size:9.5px; font-weight:900; padding:3px 6px; border-radius:5px; color:#fff; background:rgba(0,0,0,.55);}
+  .pcard .thumb .views{position:absolute; left:0; right:0; bottom:0; padding:14px 10px 8px; color:#fff; font-weight:900; font-size:14px;
+    background:linear-gradient(transparent, rgba(0,0,0,.72));}
+  .pcard .cap{padding:10px 12px 12px; display:flex; flex-direction:column; gap:6px;}
+  .pcard .cap-txt{font-size:11.5px; line-height:1.5; font-weight:600; color:#4a4436;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+  .pcard .st{color:var(--muted); font-weight:800; font-size:10.5px;}
+
+  .brands{display:flex; flex-wrap:wrap; gap:10px;}
+  .brand{display:flex; align-items:center; gap:9px; background:var(--card); border:1.5px solid var(--line);
+    border-radius:14px; padding:9px 15px 9px 9px; font-size:13px; font-weight:800;}
+  .brand .lg{width:34px; height:34px; border-radius:10px; background-size:cover; background-position:center;
+    background-color:var(--cream); flex:none;}
+  .brand small{display:block; font-size:10.5px; color:var(--muted); font-weight:700;}
+
+  .htags{display:flex; flex-wrap:wrap; gap:8px;}
+  .htag{font-size:14px; font-weight:900; color:var(--navy);}
+  .htag::before{content:"#"; color:var(--coral);}
+
+  .foot{background:var(--navy); color:rgba(245,241,232,.6); text-align:center;
+    font-size:11.5px; font-weight:700; padding:24px; letter-spacing:.03em;}
+  .foot b{color:var(--butter);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============================ 커버 ============================ -->
+  <div class="panel navy cover">
+    <div class="kicker">WHY THIS CREATOR · 왜 지금 이 크리에이터인가</div>
+    <h1 class="ptitle h">{{INSIGHT:lead_headline}}</h1>
+    <div class="who">
+      <div class="ava" style="background-image:url('{{profile.profile_picture_url}}')"></div>
+      <div>
+        <div class="n">{{profile.username}} · @{{profile.user_id}}</div>
+        <!-- OPTIONAL_BLOCK: identity --><div class="g">{{identity.user_type_label}} · {{identity.topic_label}}</div><!-- /OPTIONAL_BLOCK -->
+      </div>
+      <div class="links">
+        <!-- REPEAT: external_urls --><a href="{{this}}" target="_blank" rel="noopener">{{this_short}}</a><!-- /REPEAT -->
+      </div>
+    </div>
+    <p class="cover-claim">{{INSIGHT:identity_claim_body}}</p>
+    <div class="strip">
+      <div class="cell">
+        <span class="v">{{format_compact profile.followers}}</span><span class="l">팔로워</span>
+        <!-- OPTIONAL_BLOCK: follower_trend --><svg class="spark" viewBox="0 0 600 100" preserveAspectRatio="none"><polyline points="{{sparkline_points profile.follower_trend}}" fill="none" stroke="#ffce3a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><!-- /OPTIONAL_BLOCK -->
+      </div>
+      <div class="cell"><span class="v">{{format_compact profile.following}}</span><span class="l">팔로잉</span></div>
+      <div class="cell"><span class="v">{{format_compact profile.posts}}</span><span class="l">게시물</span></div>
+      <!-- OPTIONAL_BLOCK: benchmark_rate --><div class="cell"><span class="v">{{format_percent benchmark.recent_engagement_rate}}</span><span class="l">최근 참여율</span></div><!-- /OPTIONAL_BLOCK -->
+    </div>
+  </div>
+
+  <!-- ============================ 1차: AI 강조 3가지 + 근거 ============================ -->
+  <!-- SLOT: primary -->
+
+  <!-- ============================ 2차: 그 외 데이터 ============================ -->
+  <!-- SLOT: secondary -->
+
+  <!-- ============================ 마무리 ============================ -->
+  <div class="panel navy">
+    <div class="kicker">그래서, 이 크리에이터와</div>
+    <h2 class="ptitle h">한 문장으로 요약하면</h2>
+    <p class="pbody">{{INSIGHT:closing}}</p>
+  </div>
+
+  <div class="foot">이 리포트는 <b>Hifen</b> 데이터를 기반으로 자동 생성되었습니다.</div>
+</div>
+
+<!-- ===== 근거 블록 풀 (assemble가 데이터 채운 뒤 추출·재배치, 원본은 제거) ===== -->
+<div id="evpool" style="display:none">
+
+  <!-- EVIDENCE: identity -->
+    <div class="sub"><span class="tick"></span>콘텐츠 성격 · 독립 점수</div>
+    <div class="cardbox"><div class="rank o">
+      <!-- REPEAT: identity.content_function --><div class="r"><span class="lab">{{key}}</span><span class="track"><span class="bar-fill" style="width:{{score}}%"></span></span><span class="pc">{{score}}</span></div><!-- /REPEAT -->
+    </div></div>
+    <div class="sub"><span class="tick"></span>무드 · 페르소나 · 토픽</div>
+    <div class="cols3">
+      <div class="cardbox"><div class="bt">무드</div><div class="rank b"><!-- REPEAT: identity.mood_axes --><div class="r"><span class="lab">{{key}}</span><span class="track"><span class="bar-fill" style="width:{{score}}%"></span></span><span class="pc">{{score}}</span></div><!-- /REPEAT --></div></div>
+      <div class="cardbox"><div class="bt">페르소나</div><div class="rank a"><!-- REPEAT: identity.persona_axes --><div class="r"><span class="lab">{{key}}</span><span class="track"><span class="bar-fill" style="width:{{score}}%"></span></span><span class="pc">{{score}}</span></div><!-- /REPEAT --></div></div>
+      <div class="cardbox"><div class="bt">토픽</div><div class="rank"><!-- REPEAT: identity.topic_axes --><div class="r"><span class="lab">{{key}}</span><span class="track"><span class="bar-fill" style="width:{{score}}%"></span></span><span class="pc">{{score}}</span></div><!-- /REPEAT --></div></div>
+    </div>
+    <div class="eg"><b>이 조합이 만드는 화면은</b> — {{INSIGHT:signature_read}}</div>
+    <!-- OPTIONAL_BLOCK: keywords --><div class="sub"><span class="tick"></span>이 계정을 설명하는 키워드</div><div class="kwcloud"><!-- REPEAT: keywords --><span class="kw">{{this}}</span><!-- /REPEAT --></div><!-- /OPTIONAL_BLOCK -->
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: audience -->
+    <!-- OPTIONAL_BLOCK: aud_head --><div class="audhero">주력 오디언스는 <b>{{metrics.primary_age}} {{metrics.primary_gender_kr}}</b> — 전체의 <b>{{metrics.primary_audience_ratio}}%</b></div><!-- /OPTIONAL_BLOCK -->
+    <div class="sub"><span class="tick"></span>팔로워 성별</div>
+    <div class="splitbar">
+      <span class="seg-fill" style="width:{{audience.gender_female_percent}}%; background:var(--coral)">여성 {{audience.gender_female_percent}}%</span>
+      <span class="seg-fill" style="width:{{audience.gender_male_percent}}%; background:var(--navy)">남성 {{audience.gender_male_percent}}%</span>
+    </div>
+    <div class="sub"><span class="tick"></span>연령대 분포</div>
+    <div class="stackbar">
+      <span class="seg-fill" style="width:{{audience.age_13_17}}%; background:var(--seq1); color:#2a3550">{{audience.age_13_17}}</span>
+      <span class="seg-fill" style="width:{{audience.age_18_24}}%; background:var(--seq3)">{{audience.age_18_24}}</span>
+      <span class="seg-fill" style="width:{{audience.age_25_34}}%; background:var(--seq5)">{{audience.age_25_34}}</span>
+      <span class="seg-fill" style="width:{{audience.age_35_44}}%; background:var(--seq6)">{{audience.age_35_44}}</span>
+      <span class="seg-fill" style="width:{{audience.age_45_54}}%; background:var(--seq7)">{{audience.age_45_54}}</span>
+      <span class="seg-fill" style="width:{{audience.age_55_64}}%; background:#0d1a2e"></span>
+      <span class="seg-fill" style="width:{{audience.age_65_plus}}%; background:#070f1c"></span>
+    </div>
+    <div class="stacklabels">
+      <span><i style="background:var(--seq1)"></i>13–17 {{audience.age_13_17}}%</span>
+      <span><i style="background:var(--seq3)"></i>18–24 {{audience.age_18_24}}%</span>
+      <span><i style="background:var(--seq5)"></i>25–34 {{audience.age_25_34}}%</span>
+      <span><i style="background:var(--seq6)"></i>35–44 {{audience.age_35_44}}%</span>
+      <span><i style="background:var(--seq7)"></i>45–54 {{audience.age_45_54}}%</span>
+    </div>
+    <div class="sub"><span class="tick"></span>주요 도달 국가</div>
+    <div class="chips"><!-- REPEAT: audience.target_countries --><span class="chip">{{this}}</span><!-- /REPEAT --></div>
+    <div class="eg"><b>팔로워 한 명을 상상하면</b> — {{INSIGHT:audience_persona}}</div>
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: performance -->
+    <!-- OPTIONAL_BLOCK: versus -->
+    <div class="sub"><span class="tick"></span>오가닉 vs 협찬 · 릴스 정면 비교</div>
+    <div class="cardbox">
+      <!-- REPEAT: metrics_versus --><div class="vs">
+        <div class="vs-h">{{label}}<span class="vs-mult">오가닉 ×{{mult}}</span></div>
+        <div class="vs-row"><span class="vs-tag org">오가닉</span><span class="vs-bar"><span class="vs-fill org bar-fill" style="width:{{org_w}}%"></span></span><span class="vs-val">{{org_val}}</span></div>
+        <div class="vs-row"><span class="vs-tag ad">협찬</span><span class="vs-bar"><span class="vs-fill ad bar-fill" style="width:{{ad_w}}%"></span></span><span class="vs-val">{{ad_val}}</span></div>
+      </div><!-- /REPEAT -->
+    </div>
+    <!-- /OPTIONAL_BLOCK -->
+    <div class="sub"><span class="tick"></span>동종 크리에이터 사이에서 이 계정의 위치</div>
+    <div class="specrows">
+      <!-- REPEAT: metrics_spectrum --><div class="spec">
+        <div class="spec-top"><span class="spec-lab">{{label}}</span><span class="spec-val">{{value}}</span><span class="mband {{band_class}}">{{band_label}}</span></div>
+        <div class="spec-track"><span class="spec-med"></span><span class="spec-fill" style="width:{{pct}}%"></span><span class="spec-dot" style="left:{{pct}}%"></span></div>
+        <div class="spec-ends"><span>하위</span><span>중앙값</span><span>상위</span></div>
+      </div><!-- /REPEAT -->
+    </div>
+    <div class="win"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg><div>{{INSIGHT:content_read}}</div></div>
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: growth -->
+    <div class="sub"><span class="tick"></span>같은 팔로워대 또래 대비 3개월 성장률</div>
+    <div class="growthead">
+      <div class="growthead-num {{growth.grade_class}}">{{growth.rate}}</div>
+      <div>
+        <span class="gbadge {{growth.grade_class}}">{{growth.grade_label}}</span>
+        <div class="growthead-sub">동급 구간 <b>{{growth.band}}</b> · 또래 {{growth.band_users}}명 대비</div>
+      </div>
+    </div>
+    <div class="distrack">
+      <span class="dz dz-lo" style="left:0; width:{{growth.lo_w}}%"></span>
+      <span class="dz dz-mid" style="left:{{growth.p20_pos}}%; width:{{growth.mid_w}}%"></span>
+      <span class="dz dz-hi" style="left:{{growth.p80_pos}}%; width:{{growth.hi_w}}%"></span>
+      <span class="dtick" style="left:{{growth.p20_pos}}%"></span>
+      <span class="dtick" style="left:{{growth.p50_pos}}%"></span>
+      <span class="dtick" style="left:{{growth.p80_pos}}%"></span>
+      <span class="dmark" style="left:{{growth.user_pos}}%"></span>
+    </div>
+    <div class="distlabels"><span>하위권</span><span>p20 {{growth.p20}}</span><span>중앙 {{growth.p50}}</span><span>p80 {{growth.p80}}</span><span>상위권</span></div>
+    <div class="win"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M21 7v6h-6"/></svg><div>{{growth.verdict}}</div></div>
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: brands -->
+    <!-- OPTIONAL_BLOCK: collaborations --><div class="sub"><span class="tick"></span>이미 브랜드가 검증한 계정</div>
+    <div class="brands"><!-- REPEAT: collaborations --><div class="brand"><span class="lg" style="background-image:url('{{brand_logo_url}}')"></span><div>{{brand_name_kr}}<small>{{topic}}</small></div></div><!-- /REPEAT --></div><!-- /OPTIONAL_BLOCK -->
+    <!-- OPTIONAL_BLOCK: ad_industry --><div class="sub"><span class="tick"></span>광고 이력 · 주력 산업 {{metrics.primary_ad_industry_ratio}}%</div>
+    <div class="chips"><span class="chip on">{{metrics.primary_ad_industry}}</span><!-- REPEAT: ad_industries --><span class="chip">{{this}}</span><!-- /REPEAT --></div><!-- /OPTIONAL_BLOCK -->
+    <!-- OPTIONAL_BLOCK: ppl_ranking --><div class="sub"><span class="tick"></span>PPL 노출 랭킹 (최근 90일 · 조회순)</div>
+    <div class="bignum"><!-- REPEAT: ppl_ranking --><div class="g"><div class="b">{{total_ppl_count}}건</div><div class="c">{{topic}} · {{format_compact total_views}} 조회</div></div><!-- /REPEAT --></div><!-- /OPTIONAL_BLOCK -->
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: content_mix -->
+    <!-- OPTIONAL_BLOCK: content_mix -->
+    <div class="sub"><span class="tick"></span>콘텐츠 믹스 (최근 게시물 기준)</div>
+    <div class="splitbar">
+      <span class="seg-fill" style="width:{{metrics.reel_share_pct}}%; background:var(--coral)">릴스 {{metrics.reel_share_pct}}%</span>
+      <span class="seg-fill" style="width:{{metrics.feed_share_pct}}%; background:var(--navy)">피드 {{metrics.feed_share_pct}}%</span>
+    </div>
+    <div class="sub"><span class="tick"></span>최신 발행일</div>
+    <div class="bignum">
+      <div class="g"><div class="b" style="font-size:20px">{{metrics.latest_reel_date}}</div><div class="c">최근 릴스</div></div>
+      <div class="g"><div class="b" style="font-size:20px">{{metrics.latest_feed_date}}</div><div class="c">최근 피드</div></div>
+    </div>
+    <!-- /OPTIONAL_BLOCK -->
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: top_posts -->
+    <div class="sub"><span class="tick"></span>가장 반응이 좋았던 게시물</div>
+    <div class="postgrid">
+      <!-- REPEAT: top_posts --><a class="pcard" href="{{url}}" target="_blank" rel="noopener">
+        <div class="thumb" style="background-image:url('{{thumbnail}}')">
+          <span class="rk">{{rank}}</span>
+          <span class="tags">{{#if is_reel}}<span class="tg" style="background:var(--coral)">릴스</span>{{/if}}{{#if is_sponsored_or_ppl}}<span class="tg" style="background:var(--butter);color:#3a2c00">협찬</span>{{/if}}</span>
+          <span class="views">조회 {{format_compact views}}</span>
+        </div>
+        <div class="cap"><p class="cap-txt">{{description}}</p><span class="st">좋아요 {{format_compact likes}} · 댓글 {{format_compact comments}}</span></div>
+      </a><!-- /REPEAT -->
+    </div>
+  <!-- /EVIDENCE -->
+
+  <!-- EVIDENCE: hashtags -->
+    <div class="sub"><span class="tick"></span>대표 해시태그</div>
+    <div class="cardbox"><div class="htags"><!-- REPEAT: top_hashtags --><span class="htag">{{this}}</span><!-- /REPEAT --></div></div>
+  <!-- /EVIDENCE -->
+
+</div>
+</body>
+</html>
