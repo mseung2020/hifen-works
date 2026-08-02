@@ -18,6 +18,7 @@
 - [4월_hifen_scheme_analysis](4월_hifen_scheme_analysis/) — 하이픈 백엔드·프론트 레포 전체의 DB 스키마·API 사용 현황을 분석해 만든 개발자용 지식백과 HTML
 - [5월_youtube_ai_analysis](5월_youtube_ai_analysis/) — 자연어로 유튜브 크리에이터를 탐색하는 Creator Insights 플랫폼의 소스코드·시스템을 분석·정리한 기술 문서
 - [6월_hifen_user_guide](6월_hifen_user_guide/) — 하이픈 40개 레포와 UI 화면을 분석해 기능별 사용자 흐름을 담은 유저 가이드 HTML
+- [7월_deepseek_token_analysis](7월_deepseek_token_analysis/) — gpt-4o-mini를 DeepSeek으로 교체 검토 위해 prompt cache 토큰·건당 비용을 측정한 실험
 
 ### 데이터 분석
 - [3월_insta_drop_filter](3월_insta_drop_filter/) — 인스타 광고성 게시물을 걸러내는 최적 필터 조건을 recall/drop rate로 탐색하는 FastAPI 대시보드
