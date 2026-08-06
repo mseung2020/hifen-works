@@ -1,0 +1,41 @@
+SELECT
+  'Instagram' AS platform,
+  bl.brand_name_kr AS brand,
+  COUNT(DISTINCT p.post_id) AS ppl_count,
+  SUM(CASE WHEN p.is_reel = 1 THEN p.views ELSE 0 END) AS total_views
+FROM instagram_ppl_brand ppb
+JOIN instagram_post p ON p.post_id = ppb.post_id
+JOIN brand_logo bl ON bl.brand_logo_id = ppb.brand_logo_id
+WHERE p.is_sponsored_or_ppl = 1
+  AND p.publish_date >= '{start_date}'
+  AND p.publish_date <  '{end_date}'
+  AND bl.brand_name_kr IN ({brand_list})
+GROUP BY bl.brand_name_kr
+
+UNION ALL
+
+SELECT
+  'YouTube' AS platform,
+  matched_brand AS brand,
+  COUNT(DISTINCT video_id) AS ppl_count,
+  SUM(views) AS total_views
+FROM (
+  SELECT
+    video_id, views,
+    CASE
+      WHEN brand1 IN ({brand_list}) THEN brand1
+      WHEN brand2 IN ({brand_list}) THEN brand2
+      WHEN brand3 IN ({brand_list}) THEN brand3
+    END AS matched_brand
+  FROM brand
+  WHERE publishDate >= '{start_date_ymd}'
+    AND publishDate <  '{end_date_ymd}'
+    AND NOT ({exclude_clause})
+    AND (
+      brand1 IN ({brand_list})
+      OR brand2 IN ({brand_list})
+      OR brand3 IN ({brand_list})
+    )
+) yt
+GROUP BY matched_brand
+ORDER BY platform, brand;

@@ -1,0 +1,50 @@
+SELECT
+  'Instagram' AS platform,
+  bl.brand_name_kr AS brand,
+  p.post_id AS content_id,
+  p.user_id AS user_or_channel_id,
+  ius.followers AS followers,
+  NULL AS channel_cost,
+  NULL AS subscribers,
+  CASE WHEN p.is_reel = 1 THEN '릴스' ELSE '피드' END AS content_type
+FROM instagram_ppl_brand ppb
+JOIN instagram_post p ON p.post_id = ppb.post_id
+JOIN brand_logo bl ON bl.brand_logo_id = ppb.brand_logo_id
+LEFT JOIN instagram_user_stat ius ON ius.user_id = p.user_id
+WHERE p.is_sponsored_or_ppl = 1
+  AND p.publish_date >= '{start_date}'
+  AND p.publish_date <  '{end_date}'
+  AND bl.brand_name_kr IN ({brand_list})
+
+UNION ALL
+
+SELECT
+  'YouTube' AS platform,
+  matched_brand AS brand,
+  video_id AS content_id,
+  channel_id AS user_or_channel_id,
+  NULL AS followers,
+  channel_cost,
+  subscribers,
+  CASE WHEN duration_seconds <= 60 THEN '쇼츠' ELSE '일반' END AS content_type
+FROM (
+  SELECT
+    vt.video_id, vt.channel_id, vt.duration_seconds,
+    yi.channel_cost, yi.subscribers,
+    CASE
+      WHEN vt.brand1 IN ({brand_list}) THEN vt.brand1
+      WHEN vt.brand2 IN ({brand_list}) THEN vt.brand2
+      WHEN vt.brand3 IN ({brand_list}) THEN vt.brand3
+    END AS matched_brand
+  FROM brand vt
+  LEFT JOIN youtuber_info yi ON yi.channel_id = vt.channel_id
+  WHERE vt.publishDate >= '{start_date_ymd}'
+    AND vt.publishDate <  '{end_date_ymd}'
+    AND NOT ({exclude_clause})
+    AND (
+      vt.brand1 IN ({brand_list})
+      OR vt.brand2 IN ({brand_list})
+      OR vt.brand3 IN ({brand_list})
+    )
+) yt
+ORDER BY platform, brand, content_id;

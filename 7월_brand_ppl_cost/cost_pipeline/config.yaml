@@ -1,0 +1,75 @@
+# =========================================================================
+# 브랜드 PPL 비용 리포트 파이프라인 설정
+# 이 파일만 고치면 수집 기간 / 브랜드 리스트 / 단가 / 조정 비율이 전부 반영됩니다.
+# =========================================================================
+
+period:
+  label: "2026-07"                     # 출력 파일명에 붙는 라벨 (예: output/2026-07/...)
+  start_date: "2026-07-01 00:00:00"    # 이상 (포함)
+  end_date: "2026-08-01 00:00:00"      # 미만 (제외)
+
+output_dir: "output"
+
+# YouTube 영상 설명에 아래 키워드가 모두 포함되면 집계에서 제외 (쿠팡 파트너스 링크 영상 등)
+exclude_description_keywords:
+  - ["쿠팡", "파트너스"]
+
+# 브랜드 목록: db_name은 DB에 저장된 실제 브랜드명(WHERE 절 매칭용),
+# display_name은 최종 리포트(csv/xlsx)에 표시할 이름입니다.
+# 여기 한 곳만 고치면 brand_cost / brand_user_cost 쿼리와 최종 리포트에 모두 동일하게 반영됩니다.
+brands:
+  - { db_name: "설화수",         display_name: "설화수" }
+  - { db_name: "에스티로더",      display_name: "에스티로더" }
+  - { db_name: "메디큐브",        display_name: "메디큐브" }
+  - { db_name: "톰",             display_name: "톰더글로우" }
+  - { db_name: "리쥬란코스메틱",   display_name: "리쥬란" }
+  - { db_name: "라네즈",          display_name: "라네즈" }
+  - { db_name: "키엘",           display_name: "키엘" }
+  - { db_name: "이지듀",          display_name: "이지듀" }
+  - { db_name: "닥터멜락신",       display_name: "닥터멜락신" }
+  - { db_name: "에스트라",        display_name: "에스트라" }
+  - { db_name: "라로슈포제",       display_name: "라로슈포제" }
+  - { db_name: "이니스프리",       display_name: "이니스프리" }
+  - { db_name: "비플레인",        display_name: "비플레인" }
+  - { db_name: "정샘물",          display_name: "정샘물" }
+  - { db_name: "에스쁘아",        display_name: "에스쁘아" }
+  - { db_name: "닥터포헤어",       display_name: "닥터포헤어" }
+  - { db_name: "라보에이치",       display_name: "라보에이치" }
+  - { db_name: "덴티스테",        display_name: "덴티스테" }
+  - { db_name: "마비스 코리아",    display_name: "마비스" }
+  - { db_name: "미쟝센",          display_name: "미장센" }
+  - { db_name: "어노브",          display_name: "어노브" }
+  - { db_name: "콜게이트 코리아",   display_name: "콜게이트" }
+  - { db_name: "2080",          display_name: "2080" }
+  - { db_name: "도브",           display_name: "도브" }
+  - { db_name: "일리윤",          display_name: "일리윤" }
+  - { db_name: "다우니",          display_name: "다우니" }
+  - { db_name: "랩신",           display_name: "랩신" }
+  - { db_name: "유한락스",        display_name: "유한락스" }
+  - { db_name: "핑크스터프",       display_name: "핑크스터프" }
+
+# 단가 산정표 (단위: 만 원) — 비용 산정.md 기준
+# min <= 팔로워/구독자 < max 구간에서 [저가, 고가] 사이를 선형 보간한 뒤 adjustment(절감율)를 곱합니다.
+# 최상위 구간을 초과하면 고가에, 최하위 구간 미만이면 저가에 고정(clamp)됩니다.
+pricing:
+  buckets:
+    - min: 10000
+      max: 100000
+      adjustment: 0.50          # 1~10만: 50% 절감
+      instagram: { feed: [100, 200],  reel: [150, 400] }
+      youtube:   { ppl:  [200, 300],  shorts: [250, 300] }
+    - min: 100000
+      max: 300000
+      adjustment: 0.30          # 10~30만: 30% 절감
+      instagram: { feed: [400, 600],  reel: [700, 1500] }
+      youtube:   { ppl:  [600, 800],  shorts: [300, 600] }
+    - min: 300000
+      max: 500000
+      adjustment: 0.20          # 30~50만: 20% 절감
+      instagram: { feed: [300, 400],  reel: [600, 1000] }
+      youtube:   { ppl:  [1000, 1200], shorts: [600, 800] }
+    - min: 500000
+      max: 1000000
+      adjustment: 0.10          # 50~100만 이상: 10% 절감
+      instagram: { feed: [500, 800],  reel: [900, 1200] }
+      youtube:   { ppl:  [1500, 2000], shorts: [1000, 1500] }

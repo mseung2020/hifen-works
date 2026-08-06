@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>브랜드 PPL 예상지출</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>브랜드 PPL 예상지출 리포트</h1>
+
+  <section class="card">
+    <h2>1. 기간</h2>
+    <label>리포트 이름 <input id="label" type="text" placeholder="예: 2026-07"></label>
+    <label>시작일 <input id="startDate" type="date"></label>
+    <label>종료일(제외) <input id="endDate" type="date"></label>
+  </section>
+
+  <section class="card">
+    <h2>2. 브랜드 선택</h2>
+    <div class="brand-controls">
+      <input id="brandSearch" type="text" placeholder="브랜드명 검색...">
+      <select id="topicFilter"><option value="">전체 카테고리</option></select>
+      <button id="clearSelectionBtn" type="button">선택 초기화</button>
+    </div>
+    <div id="brandList" class="brand-list"></div>
+    <p><strong id="selectedCount">0</strong>개 선택됨</p>
+    <div id="selectedChips" class="chips"></div>
+  </section>
+
+  <section class="card">
+    <h2>3. 단가 산정 기준 (단위: 만 원)</h2>
+    <table id="bucketTable">
+      <thead>
+        <tr>
+          <th>팔로워/구독자 구간(명)</th>
+          <th>조정비율(절감%)</th>
+          <th>인스타 피드(₩)</th>
+          <th>인스타 릴스(₩)</th>
+          <th>유튜브 롱폼(₩)</th>
+          <th>유튜브 쇼츠(₩)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="addBucketBtn" type="button">+ 구간 추가</button>
+  </section>
+
+  <section class="card">
+    <button id="generateBtn" type="button" class="primary">실행 — 예상지출 생성</button>
+    <span id="status"></span>
+  </section>
+
+  <section class="card" id="resultCard" hidden>
+    <h2>결과</h2>
+    <div id="downloads"></div>
+    <table id="summaryTable"></table>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
