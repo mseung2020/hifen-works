@@ -1,0 +1,110 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 참여지표 vs 랭킹 (앰플/세럼/에센스)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;
+  --blue:#2a78d6;--orange:#eb6834;--aqua:#1baf7a}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1120px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--ink2);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.platform{font-size:15px;font-weight:800;margin:26px 0 2px;display:flex;align-items:center;gap:8px}
+.chart{width:100%;height:240px}
+.chart-title{font-size:12.5px;font-weight:700;margin:16px 0 -6px;display:flex;align-items:center;gap:7px;color:var(--ink2)}
+.chart-title b{color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:20px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:18px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:#0e9bbd}
+hr.sep{border:none;border-top:1px dashed #e1e0d9;margin:22px 0 0}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 참여지표 × 랭킹 (앰플/세럼/에센스)</div>
+  <h1>1등이라고 '좋아요'도 제일 많이 받을까? 꼭 그렇진 않아요</h1>
+  <p class="lead">아래 브랜드 20곳을 <b>왼쪽부터 랭킹이 좋은 순서(1위 → 20위)</b>로 나란히 세워봤어요. 만약 "반응이 좋을수록 랭킹도 좋다"는 말이 맞다면, 막대그래프가 왼쪽에서 오른쪽으로 갈수록 점점 작아져야겠죠? 유튜브와 인스타그램은 성격이 달라서 따로 나눠서 살펴봤어요. 플랫폼에 발행 이력이 없는 브랜드는 해당 플랫폼 차트에서 뺐어요.</p>
+
+  <div class="platform">🎬 유튜브</div>
+  <div class="chart-title"><span class="dot" style="background:var(--blue)"></span><b>영상 1개당 평균 조회수</b></div>
+  <div id="yt1" class="chart"></div>
+  <div class="chart-title"><span class="dot" style="background:var(--orange)"></span><b>영상 1개당 평균 좋아요</b></div>
+  <div id="yt2" class="chart"></div>
+  <div class="chart-title"><span class="dot" style="background:var(--aqua)"></span><b>영상 1개당 평균 댓글</b></div>
+  <div id="yt3" class="chart"></div>
+
+  <hr class="sep">
+
+  <div class="platform">📷 인스타그램</div>
+  <div class="chart-title"><span class="dot" style="background:var(--blue)"></span><b>게시물 1개당 평균 조회수</b>(릴스만)</div>
+  <div id="ig1" class="chart"></div>
+  <div class="chart-title"><span class="dot" style="background:var(--orange)"></span><b>게시물 1개당 평균 좋아요</b></div>
+  <div id="ig2" class="chart"></div>
+  <div class="chart-title"><span class="dot" style="background:var(--aqua)"></span><b>게시물 1개당 평균 댓글</b></div>
+  <div id="ig3" class="chart"></div>
+
+  <div class="take"><b>한 줄 정리:</b> 유튜브에서는 <b>좋아요·댓글이 많다고 랭킹이 좋은 게 전혀 아니에요.</b> 랭킹 1위 아누아는 영상당 좋아요를 479개 받았는데, 8위인 바이오힐보는 986개 — 1위보다 2배 넘게 많이 받았어요. 좋아요를 가장 많이 받은 셀라딕스(1,770개)도 랭킹은 6위에 그쳤고요. 인스타그램은 그나마 상위권 브랜드의 좋아요·댓글이 대체로 높은 편이지만, 그래도 완벽하게 맞아떨어지진 않아요. 결론적으로, 1장에서 봤던 "발행량이 많으면 랭킹도 좋다"는 관계만큼 강력한 관계는 어느 플랫폼·어느 지표에서도 나오지 않았어요.</div>
+  <p class="foot">브랜드당 1-1에서 쓴 대표 제품 1개 기준. 유튜브 지표 = 해당 제품을 언급한 영상의 조회수·좋아요·댓글을 영상 건수로 나눈 평균(유가·무가 포함, 매칭 실패 건 제외 — 리쥬란·라로슈포제 일부 해당). 인스타그램 지표 = 해당 제품을 언급한 게시물 기준 평균 — 피드 게시물은 조회수 데이터가 없어 평균 조회수는 릴스만으로 계산했고, 좋아요는 결측치(-1)로 표기된 건을 제외하고 계산했다(댓글은 결측 없음). 랭킹 = 2026년 3~7월 올리브영 스킨케어 일간랭킹 평균, 순위 표기는 20개 브랜드 내 랭킹 순서. 차트 제외 = 더마젼시·션리는 유튜브 발행 0건이라 유튜브 차트에서 제외, 리쥬란은 인스타그램 지표 미수집(매칭 0건)으로 인스타그램 차트에서 제외.</p>
+</div>
+<script>
+const D=[
+ {r:1,b:"아누아",rank:8.8,yt_views:35831,yt_likes:479.2,yt_comments:65.1,ig_views:37725,ig_likes:269.2,ig_comments:19.4},
+ {r:2,b:"웰라쥬",rank:10.1,yt_views:35483,yt_likes:328.0,yt_comments:38.3,ig_views:18184,ig_likes:727.1,ig_comments:19.0},
+ {r:3,b:"토리든",rank:11.7,yt_views:328076,yt_likes:930.3,yt_comments:48.5,ig_views:39392,ig_likes:470.0,ig_comments:23.5},
+ {r:4,b:"메디힐",rank:13.5,yt_views:141066,yt_likes:1513.5,yt_comments:105.6,ig_views:110534,ig_likes:1149.6,ig_comments:20.8},
+ {r:5,b:"메디큐브",rank:18.1,yt_views:38854,yt_likes:615.7,yt_comments:65.9,ig_views:67790,ig_likes:554.4,ig_comments:23.1},
+ {r:6,b:"셀라딕스",rank:22.7,yt_views:128643,yt_likes:1769.9,yt_comments:135.2,ig_views:107785,ig_likes:900.6,ig_comments:23.8},
+ {r:7,b:"이니스프리",rank:23.6,yt_views:12666,yt_likes:142.4,yt_comments:25.1,ig_views:34440,ig_likes:507.1,ig_comments:17.7},
+ {r:8,b:"바이오힐보",rank:47.8,yt_views:72638,yt_likes:985.8,yt_comments:135.4,ig_views:21997,ig_likes:276.8,ig_comments:17.9},
+ {r:9,b:"설화수",rank:52.3,yt_views:111041,yt_likes:1114.3,yt_comments:91.3,ig_views:30171,ig_likes:347.1,ig_comments:20.6},
+ {r:10,b:"나인위시스",rank:52.6,yt_views:27470,yt_likes:596.9,yt_comments:48.4,ig_views:7986,ig_likes:113.4,ig_comments:9.4},
+ {r:11,b:"톤28",rank:55.7,yt_views:2989,yt_likes:55.1,yt_comments:20.4,ig_views:5852,ig_likes:75.2,ig_comments:8.0},
+ {r:12,b:"레이어랩",rank:59.5,yt_views:5227,yt_likes:35.3,yt_comments:24.3,ig_views:17835,ig_likes:165.9,ig_comments:15.9},
+ {r:13,b:"리쥬란",rank:59.6,yt_views:4600,yt_likes:93.7,yt_comments:30.0,ig_views:null,ig_likes:null,ig_comments:null},
+ {r:14,b:"성분에디터",rank:62.2,yt_views:33441,yt_likes:583.6,yt_comments:18.3,ig_views:64841,ig_likes:213.9,ig_comments:19.9},
+ {r:15,b:"한스킨",rank:63.2,yt_views:69,yt_likes:0.0,yt_comments:0.0,ig_views:13486,ig_likes:144.0,ig_comments:16.0},
+ {r:16,b:"더마젼시",rank:64.5,yt_views:null,yt_likes:null,yt_comments:null,ig_views:605,ig_likes:39.4,ig_comments:4.0},
+ {r:17,b:"션리",rank:65.1,yt_views:null,yt_likes:null,yt_comments:null,ig_views:1773,ig_likes:144.2,ig_comments:8.5},
+ {r:18,b:"차앤박",rank:65.1,yt_views:22533,yt_likes:264.9,yt_comments:35.2,ig_views:566,ig_likes:120.1,ig_comments:4.0},
+ {r:19,b:"샤이샤이샤이",rank:65.3,yt_views:24350,yt_likes:519.5,yt_comments:22.5,ig_views:30145,ig_likes:212.3,ig_comments:10.4},
+ {r:20,b:"라로슈포제",rank:65.8,yt_views:95860,yt_likes:1088.3,yt_comments:21.3,ig_views:1714,ig_likes:14.4,ig_comments:0.1}
+];
+// 플랫폼별 데이터셋: 발행 0건 또는 지표 미수집 브랜드 제외
+const YT=D.filter(d=>d.yt_views!==null);   // 더마젼시·션리 제외 (YT 발행 0건)
+const IG=D.filter(d=>d.ig_views!==null);   // 리쥬란 제외 (IG 지표 미수집)
+
+function bar(id,color,data,field,fmt){
+  const ch=echarts.init(document.getElementById(id),null,{devicePixelRatio:3});
+  ch.setOption({
+    backgroundColor:'transparent',
+    textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+    grid:{left:64,right:16,top:16,bottom:62},
+    tooltip:{trigger:'axis',axisPointer:{type:'shadow'},
+      formatter:p=>{const d=data[p[0].dataIndex];return d.r+'위 '+d.b+' (5개월 평균 '+d.rank+'위)<br/>'+fmt(d[field]);}},
+    xAxis:{type:'category',data:data.map(d=>d.b),
+      axisLabel:{interval:0,rotate:34,margin:10,
+        formatter:v=>{const d=data.find(x=>x.b===v);return '{rk|'+d.r+'위}{name| '+v+'}';},
+        rich:{
+          rk:{color:'#9a9992',fontSize:9,fontWeight:700},
+          name:{color:'#52514e',fontSize:10,fontWeight:600}
+        }},
+      axisLine:{lineStyle:{color:'#e1e0d9'}},axisTick:{show:false}},
+    yAxis:{type:'value',axisLabel:{color:'#898781',formatter:fmt},
+      splitLine:{lineStyle:{color:'#f0efec'}}},
+    series:[{type:'bar',data:data.map(d=>d[field]),barMaxWidth:26,
+      itemStyle:{color:color,borderRadius:[4,4,0,0]},
+      label:{show:true,position:'top',color:'#52514e',fontSize:9,fontWeight:600,formatter:p=>fmt(p.value)}}]
+  });
+  return ch;
+}
+const fmtViews=v=>v>=10000?Math.round(v/1000)+'k':Math.round(v).toLocaleString();
+const fmtInt=v=>Math.round(v).toLocaleString();
+bar('yt1','#2a78d6',YT,'yt_views',fmtViews);
+bar('yt2','#eb6834',YT,'yt_likes',fmtInt);
+bar('yt3','#1baf7a',YT,'yt_comments',fmtInt);
+bar('ig1','#2a78d6',IG,'ig_views',fmtViews);
+bar('ig2','#eb6834',IG,'ig_likes',fmtInt);
+bar('ig3','#1baf7a',IG,'ig_comments',fmtInt);
+window.addEventListener('resize',()=>{['yt1','yt2','yt3','ig1','ig2','ig3'].forEach(id=>echarts.getInstanceByDom(document.getElementById(id)).resize());});
+</script></body></html>

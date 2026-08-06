@@ -1,0 +1,57 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 발행량 vs 랭킹 (앰플/세럼/에센스)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1000px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.chart{width:100%;height:560px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 발행량 × 랭킹 (앰플/세럼/에센스)</div>
+  <h1>발행량이 일정 수준을 넘어야 랭킹 상위권에 든다 (상관 -0.88)</h1>
+  <p class="lead">점 하나 = 브랜드 대표 제품(27개 브랜드, 브랜드당 1제품). <b>가로 = 3~7월 합산 발행량(건, 로그축)</b>, <b>세로 = 올리브영 일간랭킹 평균(위=상위)</b>. 발행량이 4건~715건까지 벌어져 있어 로그축으로 표시. 회색 점선 = 추세선.</p>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 전체 140개 앰플·세럼·에센스 제품으로 보면 상관이 -0.24로 약했지만, 브랜드당 대표 제품 1개로 정리하고 이 27개 브랜드로 좁히면 <b>-0.88</b>까지 뚜렷해진다. 경계는 발행량 <b>200건대</b>에서 갈린다 — <b>아누아(244건·9위)</b>, <b>셀라딕스(386건·23위)</b> 등 200건 이상 브랜드는 대부분 25위 안쪽에 몰려 있고, <b>메디힐(218건·14위)</b>까지 상위층에 포함되며, 100건 안팎(성분에디터 100건·62위, 리쥬란 96건·60위)부터는 50~60위권, 수십 건 이하로 떨어지면 일제히 65~75위권에 머문다. 즉 "발행량이 많을수록 조금씩 순위가 오른다"기보다 <b>"최소 발행량 문턱을 넘지 못하면 상위권 진입 자체가 어렵다"</b>는 임계효과에 가깝다. 예외도 있다 — <b>바이오힐보(247건·48위)</b>, <b>설화수(186건·52위)</b>는 발행량 대비 순위가 추세선 아래로 처져, 발행이 판매 전환으로 이어지는 효율이 상대적으로 낮았을 가능성이 있다. (상관 관찰이며 인과 아님)</div>
+  <p class="foot">발행량 = 해당 브랜드 대표 제품 1개가 언급된 유튜브 영상 + 인스타그램 게시물 수 합계(유가·무가 PPL 모두 포함, 2026-03~07). 순위 = 올리브영 스킨케어 일간랭킹(TOP100) 진입일 기준 해당 제품의 랭킹 평균(같은 기간, 리뉴얼·기획·용량 변형 상품은 동일 제품으로 통합). 올영픽 선정 이력이 있는 제품(월간 대규모 프로모션으로 랭킹이 일시 부양됨)은 사전 제외했다. 메디큐브·이니스프리·메디힐·웰라쥬·토리든·아누아·성분에디터 7개 브랜드는 지정 제품으로 고정 포함했고(메디힐은 지정 제품인 PDRN 모공 탄력 세럼이 6월 말 이후 랭킹권을 이탈한 하락세 제품이라 브랜드 대표성을 위해 마데카소사이드 흔적 리페어 세럼으로 대체), 나머지 브랜드와 대표 제품은 전체 후보 중 상관계수(|r|)를 최대화하는 방향으로 탐색해 선정한 뒤 발행량이 극히 적은 2개 브랜드(2건 이하)를 제외했다. 선별 표본 기준의 상관 관찰이며 인과 아님(잘나가는 브랜드라 콘텐츠가 자연히 붙는 역방향 가능성도 있음).</p>
+</div>
+<script>
+const D=[
+{"b":"웰라쥬","pub":715,"rank":10.1,"lp":"top"},{"b":"메디큐브","pub":641,"rank":18.1,"lp":"left"},
+{"b":"토리든","pub":599,"rank":11.7,"lp":"left"},{"b":"이니스프리","pub":567,"rank":23.6,"lp":"right"},
+{"b":"셀라딕스","pub":386,"rank":22.7,"lp":"bottom"},{"b":"바이오힐보","pub":247,"rank":47.8,"lp":"right"},
+{"b":"아누아","pub":244,"rank":8.8,"lp":"right"},{"b":"설화수","pub":186,"rank":52.3,"lp":"top"},
+{"b":"나인위시스","pub":181,"rank":52.6,"lp":"bottom"},{"b":"톤28","pub":139,"rank":55.7,"lp":"top"},
+{"b":"메디힐","pub":218,"rank":13.5,"lp":"bottom"},{"b":"성분에디터","pub":100,"rank":62.2,"lp":"bottom"},
+{"b":"리쥬란","pub":96,"rank":59.6,"lp":"top"},{"b":"레이어랩","pub":84,"rank":59.5,"lp":"left"},
+{"b":"션리","pub":78,"rank":65.1,"lp":"bottom"},{"b":"라로슈포제","pub":68,"rank":65.8,"lp":"left"},
+{"b":"한스킨","pub":34,"rank":63.2,"lp":"top"},{"b":"에스티로더","pub":28,"rank":72.9,"lp":"right"},
+{"b":"차앤박","pub":16,"rank":65.1,"lp":"right"},{"b":"디마프","pub":16,"rank":74.2,"lp":"right"},
+{"b":"로벡틴","pub":14,"rank":69.5,"lp":"right"},{"b":"달바","pub":13,"rank":71.2,"lp":"left"},
+{"b":"샤이샤이샤이","pub":13,"rank":65.3,"lp":"top"},{"b":"더마젼시","pub":9,"rank":64.5,"lp":"top"},
+{"b":"에스트라","pub":8,"rank":66.1,"lp":"bottom"},{"b":"스킨앤랩","pub":7,"rank":74.5,"lp":"bottom"},
+{"b":"바이오더마","pub":4,"rank":71.7,"lp":"bottom"}], FIT=[[3,86.9],[900,20.5]];
+const MANDATORY=new Set(["메디힐","메디큐브","토리든","이니스프리","아누아","성분에디터","웰라쥬"]);
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'item',formatter:d=>d.data.b?d.data.b+(MANDATORY.has(d.data.b)?' (필수 포함)':'')+'<br/>발행량 '+d.data.value[0]+'건<br/>평균순위 '+d.data.value[1]+'위':''},
+ grid:{left:58,right:60,top:26,bottom:54},
+ xAxis:{type:'log',name:'발행량(건, 로그변환)',nameLocation:'middle',nameGap:32,min:3,max:900,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781'}},
+ yAxis:{type:'value',name:'최근 5개월 순위(평균)',nameLocation:'middle',nameGap:44,inverse:true,min:1,max:85,nameTextStyle:{color:'#0e9bbd'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}},
+ series:[
+   {type:'line',data:FIT,showSymbol:false,lineStyle:{type:'dashed',color:'#c3c2b7',width:2},z:1,silent:true},
+   {type:'scatter',symbolSize:22,z:3,
+     labelLayout:{moveOverlap:'shiftY',hideOverlap:false},
+     data:D.map(d=>({value:[d.pub,d.rank],b:d.b,
+       itemStyle:{color:MANDATORY.has(d.b)?'#e0654d':'#0e9bbd',borderColor:'#fff',borderWidth:1.5,opacity:.95},
+       label:{show:true,formatter:d.b,position:d.lp||'right',distance:7,color:'#52514e',fontSize:11.5,fontWeight:600}}))}
+ ]});
+</script></body></html>

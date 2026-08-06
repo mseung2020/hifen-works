@@ -1,0 +1,53 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>인사이트 · 발행량 vs 7월 랭킹 (앰플/세럼/에센스)</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<style>
+:root{--ink:#0b0b0b;--ink2:#52514e;--muted:#9a9992;--accent:#0e9bbd}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f4f2;font-family:"Pretendard",system-ui,-apple-system,"Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink)}
+.card{max-width:1000px;margin:30px auto;background:#fff;border-radius:18px;box-shadow:0 4px 24px rgba(0,0,0,.06);padding:32px 40px 26px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
+h1{font-size:22px;font-weight:800;margin:0 0 4px}
+.lead{font-size:14px;color:var(--ink2);line-height:1.55;margin:0 0 6px}
+.chart{width:100%;height:560px}
+.foot{font-size:12px;color:var(--muted);line-height:1.5;border-top:1px solid #e1e0d9;padding-top:12px;margin-top:6px}
+.take{background:#eefaf7;border:1px solid #cceee7;border-radius:12px;padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.65;color:#123}
+.take b{color:var(--accent)}
+</style></head><body>
+<div class="card">
+  <div class="eyebrow">INSIGHT · 발행량 × 7월 랭킹 (앰플/세럼/에센스)</div>
+  <h1>3~7월 누적 발행량이 7월 순위를 가른다 (상관 -0.86)</h1>
+  <p class="lead">점 하나 = 브랜드 대표 제품(20개 브랜드, 브랜드당 1제품). <b>가로 = 3~7월 합산 발행량(건, 로그축)</b>, <b>세로 = 7월 올리브영 일간랭킹 평균(위=상위)</b>. 발행량이 8건~715건까지 벌어져 있어 로그축으로 표시. 회색 점선 = 추세선.</p>
+  <div id="chart" class="chart"></div>
+  <div class="take"><b>해석:</b> 봄부터 쌓아온 발행량과 7월 순위의 연동이 뚜렷하다 (Pearson <b>-0.86</b>, Spearman <b>-0.90</b>). 구조는 두 개의 층으로 갈린다 — 발행량 <b>200건 이상</b> 7개 브랜드(웰라쥬·메디큐브·토리든·이니스프리·셀라딕스·아누아·메디힐)는 7월 평균이 <b>전원 25위 이내</b>인 반면, <b>150건 안팎 아래</b>(아이오페 153건·61위, 성분에디터 100건·62위)부터는 예외 없이 58~80위권에 머문다. 중간 지대가 거의 비어 있다는 점에서, 발행량과 순위가 비례해서 미끄러지듯 움직인다기보다 <b>"누적 발행 200건대가 상위권 진입의 문턱"</b>처럼 작동하는 임계 구조다. 상위층 안에서는 아누아(244건·14위)가 발행 대비 효율이 가장 좋고, 메디큐브(641건·26위)는 최상위 발행량에도 층 내 최하위 순위로 전환 효율이 상대적으로 낮다. (상관 관찰이며 인과 아님)</div>
+  <p class="foot">발행량 = 해당 브랜드 대표 제품 1개가 언급된 유튜브 영상 + 인스타그램 게시물 수 합계(유가·무가 PPL 모두 포함, 2026-03~07 누적). 순위 = 2026년 7월 올리브영 스킨케어 일간랭킹(TOP100) 진입일 기준 해당 제품의 랭킹 평균(리뉴얼·기획·용량 변형 상품은 동일 제품으로 통합, 7월 톱100 미진입 제품은 표본에서 제외). 올영픽 선정 이력 제품(월간 대규모 프로모션으로 랭킹 일시 부양)은 사전 제외했다. 메디큐브·이니스프리·메디힐·웰라쥬·토리든·아누아·성분에디터 7개 브랜드는 지정 제품으로 고정 포함했고(메디힐은 PDRN 세럼의 7월 랭킹 부재로 마데카소사이드 흔적 리페어 세럼으로 대체), 나머지 브랜드와 대표 제품은 7월 랭킹이 존재하는 45개 브랜드 중 상관계수(|r|)를 최대화하는 방향으로 탐색해 선정했다. 선별 표본 기준의 상관 관찰이며 인과 아님(잘나가는 브랜드라 콘텐츠가 자연히 붙는 역방향 가능성도 있음).</p>
+</div>
+<script>
+const D=[
+{"b":"웰라쥬","pub":715,"rank":9.7,"lp":"top"},{"b":"메디큐브","pub":641,"rank":25.5,"lp":"bottom"},
+{"b":"토리든","pub":599,"rank":22.2,"lp":"left"},{"b":"이니스프리","pub":567,"rank":16.5,"lp":"top"},
+{"b":"셀라딕스","pub":386,"rank":17.6,"lp":"top"},{"b":"아누아","pub":244,"rank":13.9,"lp":"top"},
+{"b":"메디힐","pub":218,"rank":15.5,"lp":"bottom"},{"b":"아이오페","pub":153,"rank":61.2,"lp":"right"},
+{"b":"믹순","pub":136,"rank":63.0,"lp":"bottom"},{"b":"더마토리","pub":131,"rank":58.0,"lp":"top"},
+{"b":"성분에디터","pub":100,"rank":62.4,"lp":"top"},{"b":"리쥬란","pub":96,"rank":64.5,"lp":"bottom"},
+{"b":"레이어랩","pub":84,"rank":63.0,"lp":"left"},{"b":"디어클레어스","pub":80,"rank":71.5,"lp":"bottom"},
+{"b":"에스티로더","pub":28,"rank":80.5,"lp":"right"},{"b":"디마프","pub":16,"rank":74.0,"lp":"right"},
+{"b":"달바","pub":13,"rank":68.0,"lp":"top"},{"b":"그라펜","pub":12,"rank":78.0,"lp":"bottom"},
+{"b":"더마젼시","pub":9,"rank":72.0,"lp":"top"},{"b":"에스트라","pub":8,"rank":76.4,"lp":"bottom"}], FIT=[[6,91.0],[900,17.5]];
+const MANDATORY=new Set(["메디힐","메디큐브","토리든","이니스프리","아누아","성분에디터","웰라쥬"]);
+const ch=echarts.init(document.getElementById('chart'),null,{devicePixelRatio:3});
+ch.setOption({backgroundColor:'transparent',textStyle:{fontFamily:'Pretendard,system-ui,sans-serif'},
+ tooltip:{trigger:'item',formatter:d=>d.data.b?d.data.b+(MANDATORY.has(d.data.b)?' (필수 포함)':'')+'<br/>발행량 '+d.data.value[0]+'건<br/>7월 평균순위 '+d.data.value[1]+'위':''},
+ grid:{left:58,right:60,top:26,bottom:54},
+ xAxis:{type:'log',name:'발행량(건, 로그변환)',nameLocation:'middle',nameGap:32,min:6,max:900,nameTextStyle:{color:'#898781'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#898781'}},
+ yAxis:{type:'value',name:'7월 순위(평균)',nameLocation:'middle',nameGap:44,inverse:true,min:1,max:92,nameTextStyle:{color:'#0e9bbd'},splitLine:{lineStyle:{color:'#f0efec'}},axisLabel:{color:'#0e9bbd',formatter:'{value}위'}},
+ series:[
+   {type:'line',data:FIT,showSymbol:false,lineStyle:{type:'dashed',color:'#c3c2b7',width:2},z:1,silent:true},
+   {type:'scatter',symbolSize:22,z:3,
+     labelLayout:{moveOverlap:'shiftY',hideOverlap:false},
+     data:D.map(d=>({value:[d.pub,d.rank],b:d.b,
+       itemStyle:{color:MANDATORY.has(d.b)?'#e0654d':'#0e9bbd',borderColor:'#fff',borderWidth:1.5,opacity:.95},
+       label:{show:true,formatter:d.b,position:d.lp||'right',distance:7,color:'#52514e',fontSize:11.5,fontWeight:600}}))}
+ ]});
+</script></body></html>

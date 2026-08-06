@@ -32,6 +32,7 @@
 - [6월_Abib_data_insight](6월_Abib_data_insight/) — LG 카드뉴스 포맷에 아비브 브랜드를 추가해 마감한 통합 TOP 발행량 리포트
 - [6월_ad_library_filter](6월_ad_library_filter/) — 메타 광고 라이브러리 데이터에서 브랜드를 식별·분류하는 규칙·검증 파이프라인 + 카드뉴스 보고
 - [7월_cution_data_chart](7월_cution_data_chart/) — 메이크업 쿠션 시장을 다각도로 분석한 3장 내러티브 리포트 + 커스텀 차트 웹툴
+- [7월_Amore_data_insight](7월_Amore_data_insight/) — 앰플·세럼 7개 브랜드의 발행량-올리브영 랭킹 상관관계와 참여지표, 30일 이동평균 발행 추세를 분석한 3장 인사이트 리포트
 
 ### 라벨링
 - [3월_youtube_insta_label](3월_youtube_insta_label/) — 유광기 어드민에서 유튜브·인스타 콘텐츠의 광고 브랜드를 태깅하는 라벨링 업무 + 보고서
